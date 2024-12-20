@@ -1,9 +1,9 @@
 {
   "version": "1",
-  "name": "openmarket",
+  "name": "BaroFarmAPI",
   "type": "collection",
   "ignore": [
-    "node_modules",
+    "node_modules", 
     ".git"
   ]
 }
