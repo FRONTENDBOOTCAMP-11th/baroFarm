@@ -14,8 +14,8 @@ export default {
         "bg-primary": "#8EB486",
         "btn-primary": "#72BF78",
         "primary-darkmode": "#C2FFC7",
-        red: "#FF0000",
-        yellow: "#FEE500",
+        red1: "#FF0000",
+        yellow1: "#FEE500",
       },
       boxShadow: {
         top: "0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)",
