@@ -6,7 +6,7 @@ export default function Layout() {
   return (
     <div className="max-w-[390px] mx-auto">
       <Header />
-      <main className="p-5">
+      <main className="px-5">
         <Outlet />
       </main>
       <Footer />
