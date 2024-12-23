@@ -1,1 +1,0 @@
-# pages sample file
