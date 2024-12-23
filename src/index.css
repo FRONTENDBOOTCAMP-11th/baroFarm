@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 @layer base {
-    :root{
-        @apply font-pre
-    }
+  :root {
+    font-family: Pretendard;
+  }
 }
