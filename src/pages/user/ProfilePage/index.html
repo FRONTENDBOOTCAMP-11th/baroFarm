@@ -16,8 +16,8 @@
   <body>
     <div class="max-w-[390px] mx-auto">
       <header class="h-[70px] bg-red-100">헤더</header>
-      <div class="bg-yellow-100 p-[20px]">
-        <div class="h-[144px]">
+      <div class="bg-yellow-100 pt-[18px]">
+        <div class="h-[144px] mr-[20px] ml-[20px]">
           <div>
             <div class="flex flex-row items-center">
               <img src="ProfileImage.svg" class="mr-5" />
@@ -27,13 +27,16 @@
                   온도감님! 어서오세요
                 </h2>
               </div>
-              <a class="ml-auto h-fit justify-center text-gray2/50 text-[14px]">
+              <a
+                class="flex ml-auto h-fit items-center text-gray2/50 text-[14px]"
+              >
                 프로필 보기
+                <img
+                  src="../../../../public/icons/icon_forward.svg"
+                  class="h-[16px] ml-[11px]"
+                  alt="profileDetail icon"
+                />
               </a>
-              <img
-                src="../../../../public/icons/icon_forward.svg"
-                class="h-[16px] ml-[11px]"
-              />
             </div>
             <div
               class="flex items-center border-gray3 border-t-[1px] mt-[14px] h-[58px]"
@@ -45,13 +48,13 @@
                 판매 내역
               </button>
               <button class="flex-1 text-center h-[50px]">
-                작성한 글 <span>3건</span>
+                작성한 글 <span class="text-btn-primary">3건</span>
               </button>
             </div>
           </div>
         </div>
-        <div class="h-[152px]">2</div>
-        <div class="h-[152px]">3</div>
+        <div class="h-[152px] mr-[20px] ml-[20px]">2</div>
+        <div class="h-[152px] mr-[20px] ml-[20px]">3</div>
       </div>
       <footer class="h-[70px] bg-blue-300">푸터</footer>
     </div>
