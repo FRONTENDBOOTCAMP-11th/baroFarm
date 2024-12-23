@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 export default function Layout() {
   return (
-    <div>
+    <div className="w-[390px] mx-auto">
       <Header />
       <Outlet />
       <Footer />
