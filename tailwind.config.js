@@ -16,6 +16,7 @@ export default {
         "primary-darkmode": "#C2FFC7",
         red1: "#FF0000",
         yellow1: "#FEE500",
+        green1: "#A8EA8C",
       },
       boxShadow: {
         top: "0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)",
