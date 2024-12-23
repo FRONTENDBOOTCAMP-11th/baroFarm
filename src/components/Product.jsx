@@ -10,8 +10,13 @@ export default function Product({
   rate,
   review,
 }) {
+  const navigate = useNavigate();
+
+  const goDetailPage = () => {
+    navigate(`/product/${id}`);
+  };
   return (
-    <section className="flex-col py-5 w-[165px]">
+    <section className="flex-col py-5 w-[165px]" onClick={goDetailPage}>
       <img
         className="h-[165px] rounded-lg object-cover alt={title}"
         src={image}
