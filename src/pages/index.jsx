@@ -6,6 +6,7 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import productImage1 from "/images/Sample1.svg";
 import productImage2 from "/images/Sample2.svg";
 import Product from "@components/Product";
+import ProductBig from "@components/ProductBig";
 
 const productsData = [
   {
@@ -171,6 +172,11 @@ export default function MainPage() {
               />
             </button>
           </div>
+        </div>
+        <div className="flex overflow-scroll gap-3">
+          {productsData.map((product) => (
+            <ProductBig key={product.id} {...product} />
+          ))}
         </div>
       </section>
     </div>
