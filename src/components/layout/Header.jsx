@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 Header.propTypes = {
   leftChild: PropTypes.node,
-  title: PropTypes.node.isRequired,
+  title: PropTypes.node,
   rightChild: PropTypes.node,
 };
 
