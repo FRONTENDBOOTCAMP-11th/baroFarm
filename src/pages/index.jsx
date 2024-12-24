@@ -113,13 +113,64 @@ export default function MainPage() {
         </div>
       </section>
       <section className="px-5 mb-4">
-        <h2 className="text-xl">
-          지금 최고 <span className="font-bold">인기 상품!</span>
-        </h2>
+        <div className="flex justify-between">
+          <h2 className="text-xl">
+            지금 최고 <span className="font-bold">인기 상품!</span>
+          </h2>
+          <div className="flex gap-1 items-start relative *:relative *:top-1">
+            <span className="text-xs">더보기</span>
+            <button>
+              <img
+                src="/icons/icon_move.svg"
+                alt="더보기 버튼"
+                className="size-4"
+              />
+            </button>
+          </div>
+        </div>
         <div className="flex flex-wrap justify-between">
           {productsData.map((product) => (
             <Product key={product.id} {...product} />
           ))}
+        </div>
+      </section>
+      <section className="px-5 mb-4">
+        <div className="flex justify-between">
+          <h2 className="text-xl">
+            따끈따끈한 <span className="font-bold">신상품!</span>
+          </h2>
+          <div className="flex gap-1 items-start relative *:relative *:top-1">
+            <span className="text-xs">더보기</span>
+            <button>
+              <img
+                src="/icons/icon_move.svg"
+                alt="더보기 버튼"
+                className="size-4"
+              />
+            </button>
+          </div>
+        </div>
+        <div className="flex flex-wrap justify-between">
+          {productsData.map((product) => (
+            <Product key={product.id} {...product} />
+          ))}
+        </div>
+      </section>
+      <section className="px-5 mb-4">
+        <div className="flex justify-between">
+          <h2 className="text-xl">
+            이 맛이야! <span className="font-bold">제철 음식</span>
+          </h2>
+          <div className="flex gap-1 items-start relative *:relative *:top-1">
+            <span className="text-xs">더보기</span>
+            <button>
+              <img
+                src="/icons/icon_move.svg"
+                alt="더보기 버튼"
+                className="size-4"
+              />
+            </button>
+          </div>
         </div>
       </section>
     </div>
