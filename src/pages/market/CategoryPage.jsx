@@ -71,8 +71,7 @@ export default function CategoryPage() {
   const { category } = useParams();
 
   return (
-    // px-5
-    <div className=" flex flex-wrap justify-between">
+    <div className="flex flex-wrap justify-between px-5">
       {productsData.map((product) => (
         <Product key={product.id} {...product} />
       ))}
