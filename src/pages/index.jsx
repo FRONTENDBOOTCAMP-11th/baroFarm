@@ -116,7 +116,7 @@ export default function MainPage() {
       <section className="px-5 mb-4">
         <div className="flex justify-between">
           <h2 className="text-xl">
-            지금 최고 <span className="font-bold">인기 상품!</span>
+            지금 최고 <span className="font-bold">인기 상품! 🔥</span>
           </h2>
           <div className="flex gap-1 items-start relative *:relative *:top-1">
             <span className="text-xs">더보기</span>
@@ -138,7 +138,7 @@ export default function MainPage() {
       <section className="px-5 mb-4">
         <div className="flex justify-between">
           <h2 className="text-xl">
-            따끈따끈한 <span className="font-bold">신상품!</span>
+            따끈따끈한 <span className="font-bold">신상품! ⏰</span>
           </h2>
           <div className="flex gap-1 items-start relative *:relative *:top-1">
             <span className="text-xs">더보기</span>
@@ -160,7 +160,7 @@ export default function MainPage() {
       <section className="px-5 mb-4">
         <div className="flex justify-between">
           <h2 className="text-xl">
-            이 맛이야! <span className="font-bold">제철 음식</span>
+            이 맛이야! <span className="font-bold">제철 음식 🍂</span>
           </h2>
           <div className="flex gap-1 items-start relative *:relative *:top-1">
             <span className="text-xs">더보기</span>
@@ -178,6 +178,39 @@ export default function MainPage() {
             <ProductBig key={product.id} {...product} />
           ))}
         </div>
+      </section>
+      <section className="mb-4">
+        <div className="flex justify-between px-5 mb-4">
+          <h2 className="text-xl">
+            나만의 <span className="font-bold">요리 스토리 🥘</span>
+          </h2>
+          <div className="flex gap-1 items-start relative *:relative *:top-1">
+            <span className="text-xs">커뮤니티 가기</span>
+            <button>
+              <img
+                src="/icons/icon_move.svg"
+                alt="더보기 버튼"
+                className="size-4"
+              />
+            </button>
+          </div>
+        </div>
+        <div className="w-[390px] h-[504px] bg-gray2"></div>
+      </section>
+      <section className="flex flex-col gap-1 px-5 bg-bg-primary text-white text-sm">
+        <p className="font-semibold">(주) 농담 사업자 정보</p>
+        <p>
+          (주)농담 | 대표자 : 넝담~ <br />
+          사업자 등록번호 : 023-25-59672 <br />
+          주소 : 서울 강남구 옆집의 옆집 234로 무천타워 2층 <br />
+          대표번호 : 1588-1028 <br />
+          메일 : nongDam@nongDam.co.kr
+        </p>
+        <p className="font-semibold">고객센터 1800-1800</p>
+        <p className="mb-[58px]">
+          누구보다 빠르게 남들과는 다르게 상담해 드립니다.
+        </p>
+        <p>이용약관 | 개인정보처리방침 | 게시글 수집 및 이용 안내</p>
       </section>
     </div>
   );
