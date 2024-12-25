@@ -7,7 +7,7 @@ export default function BoardPageDetail() {
       <Link to={"1"}>
         <div className="flex flex-row mt-5">
           <img
-            src="../../../../public/images/ProfileImage_Sample.svg"
+            src="/images/ProfileImage_Sample.svg"
             alt="ProfileImage"
             className="w-6 h-6"
           />

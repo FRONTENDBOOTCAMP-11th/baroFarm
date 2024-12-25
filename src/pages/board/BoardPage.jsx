@@ -2,7 +2,7 @@ import BoardPageDetail from "@pages/board/BoardPageDetail";
 
 export default function BoardPage() {
   return (
-    <div className=" w-full max-w-[390px] relative">
+    <div className="relative">
       <div className="flex flex-row h-[50px] mx-[-20px] max-w-[calc(100%+40px)] ">
         <div className="flex w-full max-w-[120px] justify-center text-sm items-center border-r-[1px] border-gray3/50">
           자유
