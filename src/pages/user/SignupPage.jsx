@@ -14,7 +14,7 @@ export default function SignupPage() {
   }, [])
 
   return (
-    <form className="p-5 bg-slate-200">
+    <form className="p-5">
       {/* 이메일 */}
       <div className="mb-2.5 text-sm">
         <label className="block mb-2.5 font-semibold" htmlFor="email">
