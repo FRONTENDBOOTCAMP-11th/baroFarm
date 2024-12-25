@@ -20,7 +20,7 @@ export default function BoardPageDetail() {
         </div>
         <img
           className="relative mt-10 w-[calc(100%+40px)] max-w-[390px] -translate-x-5"
-          src="../../../../public/images/BoardImage_Sample.svg"
+          src="/images/BoardImage_Sample.svg"
         />
       </Link>
     </div>
