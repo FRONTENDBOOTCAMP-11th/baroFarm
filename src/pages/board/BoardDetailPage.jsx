@@ -29,8 +29,8 @@ export default function BoardDetailPage() {
         />
       </div>
       <div className="bg-red-200">
-        <span className="mt-5 font-semibold">댓글 (1)</span>
-        <div className="px-[15px]">
+        <span className="mt-5 font-semibold">댓글 (2)</span>
+        <div className="px-[15px] ">
           <div className="flex flex-row mt-5">
             <img
               src="/images/ProfileImage_Sample.svg"
@@ -39,10 +39,10 @@ export default function BoardDetailPage() {
             />
             <span className="mx-[5px] text-sm">떡보369</span>
             <span className="text-[10px] mt-[6px] ml-auto text-gray4">
-              15분 전
+              3분 전
             </span>
           </div>
-          <div className="flex mb-5">
+          <div className="flex pb-5 border-b-[1px] border-gray3/50">
             <div className="mt-3 text-xs text-gray5">
               와 보기만 해도 정말 맛있겠네요!
             </div>
@@ -51,8 +51,43 @@ export default function BoardDetailPage() {
             </span>
           </div>
         </div>
+        <div className="px-[15px] ">
+          <div className="flex flex-row mt-5">
+            <img
+              src="/images/ProfileImage_Sample.svg"
+              alt="ProfileImage"
+              className="w-6 h-6"
+            />
+            <span className="mx-[5px] text-sm">삼행시 빌런</span>
+            <span className="text-[10px] mt-[6px] ml-auto text-gray4">
+              15분 전
+            </span>
+          </div>
+          <div className="flex pb-5 border-b-[1px] border-gray3/50">
+            <div className="mt-3 text-xs text-gray5">
+              토: 토마토
+              <br />
+              마: 마지막으로 말하지만
+              <br />
+              토: 토-메이-토입니다
+            </div>
+            <span className="ml-auto text-xs mt-auto">
+              <button>수정</button> | <button>삭제</button>
+            </span>
+          </div>
+        </div>
       </div>
-      <div className="h-[7px] bg-gray1 -mx-5 mb-80"></div>
+      <div className="h-[7px] bg-gray1 -mx-5"></div>
+      <div className="bg-blue-200 h-[65px] flex items-center px-5">
+        <input
+          type="text"
+          name="comment"
+          className="max-w-[285px] h-[35px] rounded-full px-[15px] mr-5 bg-gray1  "
+        />
+        <button className="flex-grow h-[35px] bg-btn-primary rounded-full text-white">
+          등록
+        </button>
+      </div>
     </div>
   );
 }
