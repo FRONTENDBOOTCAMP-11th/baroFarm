@@ -1,4 +1,18 @@
+import HeaderIcon from "@components/HeaderIcon"
+import { useEffect } from "react"
+import { useNavigate, useOutletContext } from "react-router-dom"
+
 export default function SignupPage() {
+  const { setHeadetContents } = useOutletContext()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    setHeadetContents({
+      leftChild: <HeaderIcon name="x_black" onClick={() => navigate("/")} />,
+      title: "회원가입",
+    })
+  }, [])
+
   return (
     <form className="p-5 bg-slate-200">
       {/* 이메일 */}
