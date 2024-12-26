@@ -100,7 +100,7 @@ export default function BoardDetailPage() {
           name="comment"
           className="max-w-[285px] h-[35px] rounded-full px-[15px] mr-5 bg-gray1 flex-grow"
         />
-        <button className="h-[35px] w-[45px] bg-btn-primary rounded-full text-white">
+        <button className="h-[35px] w-[45px] bg-btn-primary rounded-full text-white hover:bg-bg-primary">
           등록
         </button>
       </div>
