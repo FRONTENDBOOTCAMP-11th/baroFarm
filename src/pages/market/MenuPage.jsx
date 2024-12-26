@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
+
 import fruitImage from "/images/menu/Fruit.svg";
 import vegetableImage from "/images/menu/Vegetable.svg";
 import kimchiImage from "/images/menu/Kimchi.svg";
@@ -8,8 +11,24 @@ import riceImage from "/images/menu/Rice.svg";
 import riceCakeImage from "/images/menu/Ricecake.svg";
 
 import MenuItem from "@components/MenuItem";
+import HeaderIcon from "@components/HeaderIcon";
 
 export default function MenuPage() {
+  // Outlet 컴포넌트로 전달받은 props.setHeadetContents 접근
+  const { setHeadetContents } = useOutletContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setHeadetContents({
+      title: "카테고리",
+      rightChild: (
+        <>
+          <HeaderIcon name="search" onClick={() => navigate("/search")} />
+        </>
+      ),
+    });
+  }, []);
+
   return (
     <>
       <MenuItem to="/menu/fruit" image={fruitImage} title="제철과일" />

@@ -1,5 +1,8 @@
+import { useEffect } from "react";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+
 import Product from "@components/Product";
-import { useParams } from "react-router-dom";
+import HeaderIcon from "@components/HeaderIcon";
 
 import productImage1 from "/images/Sample1.svg";
 import productImage2 from "/images/Sample2.svg";
@@ -69,6 +72,21 @@ const productsData = [
 
 export default function CategoryPage() {
   const { category } = useParams();
+
+  const { setHeadetContents } = useOutletContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setHeadetContents({
+      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      title: "제철과일",
+      rightChild: (
+        <>
+          <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
+        </>
+      ),
+    });
+  }, []);
 
   return (
     <div className="flex flex-wrap justify-between px-5">
