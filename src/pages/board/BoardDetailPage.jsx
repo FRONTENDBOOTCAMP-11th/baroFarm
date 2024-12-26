@@ -4,11 +4,11 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 
 export default function BoardDetailPage() {
   const { _id } = useParams();
-  const { setHeadetContents } = useOutletContext();
+  const { setHeadeeContents } = useOutletContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setHeadetContents({
+    setHeadeeContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "게시글",
       rightChild: (
