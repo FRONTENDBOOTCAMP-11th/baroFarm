@@ -1,7 +1,23 @@
-import { useParams } from "react-router-dom";
+import HeaderIcon from "@components/HeaderIcon";
+import { useEffect } from "react";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 
 export default function BoardDetailPage() {
   const { _id } = useParams();
+  const { setHeadetContents } = useOutletContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setHeadetContents({
+      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      title: "게시글",
+      rightChild: (
+        <>
+          <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
+        </>
+      ),
+    });
+  }, []);
 
   return (
     <div className="relative mx-5">
@@ -28,8 +44,8 @@ export default function BoardDetailPage() {
           src="/images/BoardImage_Sample.svg"
         />
       </div>
-      <div className="bg-red-200">
-        <span className="mt-5 font-semibold">댓글 (2)</span>
+      <div className="pt-5">
+        <span className="font-semibold">댓글 (2)</span>
         <div className="px-[15px] ">
           <div className="flex flex-row mt-5">
             <img
@@ -77,14 +93,14 @@ export default function BoardDetailPage() {
           </div>
         </div>
       </div>
-      <div className="h-[7px] bg-gray1 -mx-5"></div>
-      <div className="bg-blue-200 h-[65px] flex items-center px-5">
+
+      <div className="h-[65px] flex items-center px-5 -mx-5">
         <input
           type="text"
           name="comment"
-          className="max-w-[285px] h-[35px] rounded-full px-[15px] mr-5 bg-gray1  "
+          className="max-w-[285px] h-[35px] rounded-full px-[15px] mr-5 bg-gray1 flex-grow"
         />
-        <button className="flex-grow h-[35px] bg-btn-primary rounded-full text-white">
+        <button className="h-[35px] w-[45px] bg-btn-primary rounded-full text-white">
           등록
         </button>
       </div>
