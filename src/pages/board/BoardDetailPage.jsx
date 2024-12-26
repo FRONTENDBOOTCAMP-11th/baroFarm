@@ -3,12 +3,11 @@ import { useEffect } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 
 export default function BoardDetailPage() {
-  const { _id } = useParams();
-  const { setHeadeeContents } = useOutletContext();
+  const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setHeadeeContents({
+    setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "게시글",
       rightChild: (
