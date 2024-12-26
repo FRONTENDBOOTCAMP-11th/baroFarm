@@ -7,6 +7,7 @@ import productImage1 from "/images/Sample1.svg";
 import productImage2 from "/images/Sample2.svg";
 import Product from "@components/Product";
 import ProductBig from "@components/ProductBig";
+import Carousel from "@components/Carousel";
 
 const productsData = [
   {
@@ -71,9 +72,7 @@ export default function MainPage() {
 
   return (
     <div>
-      <section className="flex h-[225px] bg-gray2 text-center mb-[10px]">
-        특가상품 캐러셀
-      </section>
+      <Carousel />
       <section className="px-5 mb-4">
         <h2 className="text-xl mb-3">
           관심있는 <span className="font-bold">카테고리</span> 선택하기
