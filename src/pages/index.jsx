@@ -72,7 +72,7 @@ export default function MainPage() {
 
   return (
     <div>
-      <Carousel />
+      <Carousel height={225} data={productsData} />
       <section className="px-5 mb-4">
         <h2 className="text-xl mb-3">
           관심있는 <span className="font-bold">카테고리</span> 선택하기
