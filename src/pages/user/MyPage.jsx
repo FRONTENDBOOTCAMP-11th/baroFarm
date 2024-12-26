@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function MyPage() {
-  const { setHeadetContents } = useOutletContext();
+  const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setHeadetContents({
+    setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "마이 페이지",
       rightChild: (
@@ -20,7 +20,7 @@ export default function MyPage() {
   }, []);
 
   return (
-    <div className="pt-[18px] mb-[70px] relative">
+    <div className="pt-[18px] px-5 mb-[70px]">
       <div className="h-[144px]">
         <div>
           <div className="flex flex-row items-center">
