@@ -17,7 +17,14 @@ export default function BoardNewPage() {
       ></textarea>
       <br />
       <label>이미지 첨부</label>
-      <div className="w-full h-[200px]">이미지 첨부 영역</div>
+      <input
+        type="file"
+        id="attach"
+        accept="image/*"
+        placeholder="이미지를 선택하세요"
+        className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700"
+        name="attach"
+      />
     </div>
   );
 }
