@@ -1,6 +1,6 @@
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function MyPage() {
   const { setHeaderContents } = useOutletContext();
@@ -80,14 +80,17 @@ export default function MyPage() {
       <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
       <div className="h-[152px] pt-[18px] ">
         <h2 className="text-base leading-[19px]">판매 정보</h2>
-        <a className="flex items-center text-[14px] mt-[27px] mb-[24px]">
+        <Link
+          to={"/product/new"}
+          className="flex items-center text-[14px] mt-[27px] mb-[24px]"
+        >
           상품 등록
           <img
             src="/icons/icon_forward.svg"
             className="h-[16px] ml-auto"
             alt="addProduct icon"
           />
-        </a>
+        </Link>
       </div>
     </div>
   );
