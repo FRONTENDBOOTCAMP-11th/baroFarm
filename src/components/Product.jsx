@@ -15,15 +15,17 @@ export default function Product({
   const goDetailPage = () => {
     navigate(`/product/${id}`);
   };
+
   return (
-    <section className="flex-col py-5 w-[165px]" onClick={goDetailPage}>
+    <section className="flex flex-col py-5 w-[165px]" onClick={goDetailPage}>
       <img
-        className="h-[165px] rounded-lg object-cover alt={title}"
+        className="h-[165px] rounded-lg object-cover"
+        alt={title}
         src={image}
       />
       <div className="pl-[5px] pt-[10px]">
         <span className="font-semibold pt-[10px] text-sm">{title}</span>
-        <p className="text-xs">{content}</p>
+        <p className="text-xs line-clamp-1">{content}</p>
         <div className="pt-1">
           <span className="text-red1 font-semibold text-base pr-1">{sale}</span>
           <span className="font-extrabold text-lg">{price}</span>
