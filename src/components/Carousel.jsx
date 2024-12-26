@@ -38,7 +38,6 @@ export default function Carousel({ width = 390, height, data }) {
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
-          pauseOnMouseEnter: true,
         }}
         loop={true}
       >
