@@ -103,7 +103,7 @@ export default function CartPage() {
       : DUMMY_CARTS_ITEMS.cost.shippingFees;
 
   return (
-    <div className="mb-[100px]">
+    <div className="">
       {cartItems.length > 0 ? (
         <>
           <section className="py-[14px] flex gap-[6px] items-center border-b border-gray2">
