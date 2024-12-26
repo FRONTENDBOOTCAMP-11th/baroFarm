@@ -1,4 +1,7 @@
 import CartItem from "@components/CartItem";
+import HeaderIcon from "@components/HeaderIcon";
+import { useEffect } from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 const DUMMY_CARTS_ITEMS = {
   ok: 1,
@@ -79,6 +82,16 @@ const DUMMY_EMPTY_CARTS = {
 };
 
 export default function CartPage() {
+  const { setHeaderContents } = useOutletContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setHeaderContents({
+      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      title: "장바구니",
+    });
+  }, []);
+
   const cartItems = DUMMY_CARTS_ITEMS.item.map((item) => (
     <CartItem key={item._id} {...item.product} />
   ));

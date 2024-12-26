@@ -18,6 +18,11 @@ const SearchResultsPage = lazy(() => import("@pages/market/SearchResultsPage"));
 const MainPage = lazy(() => import("@pages/index"));
 const LoginPage = lazy(() => import("@pages/user/LoginPage"));
 const SignupPage = lazy(() => import("@pages/user/SignupPage"));
+const SearchBestPage = lazy(() => import("@pages/market/SearchBestPage"));
+const SearchNewPage = lazy(() => import("@pages/market/SearchNewPage"));
+const SearchSeasonalPage = lazy(() =>
+  import("@pages/market/SearchSeasonalPage")
+);
 const Layout = lazy(() => import("@components/layout"));
 
 const router = createBrowserRouter(
@@ -48,6 +53,9 @@ const router = createBrowserRouter(
           children: [
             { index: true, element: <SearchPage /> },
             { path: "results", element: <SearchResultsPage /> },
+            { path: "best", element: <SearchBestPage /> },
+            { path: "new", element: <SearchNewPage /> },
+            { path: "seasonal", element: <SearchSeasonalPage /> },
           ],
         },
         {
