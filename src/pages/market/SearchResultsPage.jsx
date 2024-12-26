@@ -91,13 +91,13 @@ export default function SearchResultsPage() {
           <p>다른 검색어로 시도하시거나 맞춤법을 확인해주세요.</p>
         </div>
       ) : (
-        <section className="p-5 mb-4">
+        <div className="p-5 mb-4">
           <div className="flex flex-wrap justify-between">
             {productsData.map((product) => (
               <Product key={product.id} {...product} />
             ))}
           </div>
-        </section>
+        </div>
       )}
     </div>
   );
