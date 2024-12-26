@@ -1,4 +1,18 @@
+import HeaderIcon from "@components/HeaderIcon"
+import { useEffect } from "react"
+import { useNavigate, useOutletContext } from "react-router-dom"
+
 export default function LoginPage() {
+  const { setHeadetContents } = useOutletContext()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    setHeadetContents({
+      leftChild: <HeaderIcon name="back_thin" onClick={() => navigate("/")} />,
+      title: "로그인",
+    })
+  }, [])
+
   return (
     <div className="p-5">
       {/* 로고 영역 */}
