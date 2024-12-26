@@ -17,7 +17,7 @@ export default function Product({
   };
 
   return (
-    <section className="flex flex-col py-5 w-[165px]" onClick={goDetailPage}>
+    <section className="flex flex-col w-[165px]" onClick={goDetailPage}>
       <img
         className="h-[165px] rounded-lg object-cover"
         alt={title}

@@ -89,7 +89,7 @@ export default function CategoryPage() {
   }, []);
 
   return (
-    <div className="flex flex-wrap justify-between px-5">
+    <div className="flex flex-wrap justify-between p-5 gap-5">
       {productsData.map((product) => (
         <Product key={product.id} {...product} />
       ))}

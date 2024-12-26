@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useOutletContext, Link } from "react-router-dom";
+
+import Modal from "@components/Modal";
 
 import productImage1 from "/images/Sample1.svg";
 import forwardIcon from "/icons/icon_forward.svg";
+import cartIcon from "/icons/icon_cart_modal.svg";
 
 const likeIcon = {
   default: "/icons/icon_likeHeart_no.svg",
@@ -18,11 +21,19 @@ export default function ProductDetailPage() {
 
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+
+  const modalRef = useRef();
+
+  const openModal = () => {
+    modalRef.current.open();
+  };
+
   const [isLiked, setIsLiked] = useState(true);
 
   const handleLike = () => {
     setIsLiked(!isLiked);
   };
+
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
@@ -117,9 +128,22 @@ export default function ProductDetailPage() {
           />
           <span className="text-sm font-medium">찜</span>
         </button>
-        <button className="w-[280px] text-lg text-white bg-btn-primary p-4 rounded-[10px]">
+        <button
+          onClick={openModal}
+          className="w-[280px] text-lg text-white bg-btn-primary p-4 rounded-[10px]"
+        >
           구매하기
         </button>
+        <Modal ref={modalRef}>
+          <p className="text-center text-lg font-">
+            <strong className="font-semibold">장바구니</strong>에 <br /> 상품을
+            담았어요
+          </p>
+          <img src={cartIcon} className="w-[66px]" />
+          <Link to="/cart">
+            <span className="font-light border-b border-b-black">바로가기</span>
+          </Link>
+        </Modal>
       </footer>
     </>
   );
