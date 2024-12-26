@@ -118,8 +118,8 @@ export default function MainPage() {
           <h2 className="text-xl">
             지금 최고 <span className="font-bold">인기 상품! 🔥</span>
           </h2>
-          <div className="flex gap-1 items-start relative *:relative *:top-1">
-            <span className="text-xs cursor-pointer">더보기</span>
+          <Link to="/search/best" className="text-xs flex gap-1 items-start ">
+            더보기
             <button>
               <img
                 src="/icons/icon_move.svg"
@@ -127,7 +127,7 @@ export default function MainPage() {
                 className="size-4"
               />
             </button>
-          </div>
+          </Link>
         </div>
         <div className="flex flex-wrap justify-between">
           {productsData.map((product) => (
@@ -140,8 +140,8 @@ export default function MainPage() {
           <h2 className="text-xl">
             따끈따끈한 <span className="font-bold">신상품! ⏰</span>
           </h2>
-          <div className="flex gap-1 items-start relative *:relative *:top-1">
-            <span className="text-xs cursor-pointer">더보기</span>
+          <Link to="/search/new" className="text-xs flex gap-1 items-start ">
+            더보기
             <button>
               <img
                 src="/icons/icon_move.svg"
@@ -149,7 +149,7 @@ export default function MainPage() {
                 className="size-4"
               />
             </button>
-          </div>
+          </Link>
         </div>
         <div className="flex flex-wrap justify-between">
           {productsData.map((product) => (
@@ -162,8 +162,11 @@ export default function MainPage() {
           <h2 className="text-xl">
             이 맛이야! <span className="font-bold">제철 음식 🍂</span>
           </h2>
-          <div className="flex gap-1 items-start relative *:relative *:top-1">
-            <span className="text-xs cursor-pointer">더보기</span>
+          <Link
+            to="/search/seasonal"
+            className="text-xs flex gap-1 items-start "
+          >
+            더보기
             <button>
               <img
                 src="/icons/icon_move.svg"
@@ -171,7 +174,7 @@ export default function MainPage() {
                 className="size-4"
               />
             </button>
-          </div>
+          </Link>
         </div>
         <div className="flex overflow-scroll gap-3">
           {productsData.map((product) => (
