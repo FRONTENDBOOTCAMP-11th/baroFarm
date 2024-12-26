@@ -1,3 +1,4 @@
+import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -99,9 +100,9 @@ export default function BoardDetailPage() {
           name="comment"
           className="max-w-[285px] h-[35px] rounded-full px-[15px] mr-5 bg-gray1 flex-grow"
         />
-        <button className="h-[35px] w-[45px] bg-btn-primary rounded-full text-white hover:bg-bg-primary">
+        <Button width={45} height={35} onClick={() => navigate("/board")}>
           등록
-        </button>
+        </Button>
       </div>
     </div>
   );
