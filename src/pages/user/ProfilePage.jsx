@@ -19,13 +19,7 @@ export default function ProfilePage() {
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
-      title: "마이 페이지",
-      rightChild: (
-        <>
-          <HeaderIcon name="search" onClick={() => navigate("/search")} />
-          <HeaderIcon name="cart_empty" onClick={() => navigate("/cart")} />
-        </>
-      ),
+      title: "프로필 상세",
     });
   }, []);
 
