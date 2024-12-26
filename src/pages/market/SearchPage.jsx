@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function SearchPage() {
-  const { setHeadetContents } = useOutletContext();
+  const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setHeadetContents({
+    setHeaderContents({
       leftChild: <HeaderIcon name="back_thin" onClick={() => navigate("/")} />,
       title: "검색",
     });
