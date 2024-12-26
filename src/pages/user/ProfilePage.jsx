@@ -11,6 +11,7 @@ export default function ProfilePage() {
     age: 42,
     email: "kimamuge@gmail.com",
     phone: "000-1111-2222",
+    auth: "판매자",
     extra: {
       userName: "온도감",
     },
