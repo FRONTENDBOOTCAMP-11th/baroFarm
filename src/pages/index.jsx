@@ -1,6 +1,6 @@
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 // image
 import productImage1 from "/images/Sample1.svg";
@@ -52,12 +52,12 @@ const productsData = [
 ];
 
 export default function MainPage() {
-  // Outlet 컴포넌트로 전달받은 props.setHeadetContents 접근
-  const { setHeadetContents } = useOutletContext();
+  // Outlet 컴포넌트로 전달받은 props.setHeaderContents 접근
+  const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setHeadetContents({
+    setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: <img src="/images/BaroFarmLogo.svg" alt="홈 버튼" />,
       rightChild: (
@@ -119,7 +119,7 @@ export default function MainPage() {
             지금 최고 <span className="font-bold">인기 상품! 🔥</span>
           </h2>
           <div className="flex gap-1 items-start relative *:relative *:top-1">
-            <span className="text-xs">더보기</span>
+            <span className="text-xs cursor-pointer">더보기</span>
             <button>
               <img
                 src="/icons/icon_move.svg"
@@ -141,7 +141,7 @@ export default function MainPage() {
             따끈따끈한 <span className="font-bold">신상품! ⏰</span>
           </h2>
           <div className="flex gap-1 items-start relative *:relative *:top-1">
-            <span className="text-xs">더보기</span>
+            <span className="text-xs cursor-pointer">더보기</span>
             <button>
               <img
                 src="/icons/icon_move.svg"
@@ -163,7 +163,7 @@ export default function MainPage() {
             이 맛이야! <span className="font-bold">제철 음식 🍂</span>
           </h2>
           <div className="flex gap-1 items-start relative *:relative *:top-1">
-            <span className="text-xs">더보기</span>
+            <span className="text-xs cursor-pointer">더보기</span>
             <button>
               <img
                 src="/icons/icon_move.svg"
@@ -185,7 +185,9 @@ export default function MainPage() {
             나만의 <span className="font-bold">요리 스토리 🥘</span>
           </h2>
           <div className="flex gap-1 items-start relative *:relative *:top-1">
-            <span className="text-xs">커뮤니티 가기</span>
+            <Link to="/board" className="text-xs">
+              커뮤니티 가기
+            </Link>
             <button>
               <img
                 src="/icons/icon_move.svg"
