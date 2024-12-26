@@ -16,7 +16,11 @@ export default function Carousel({ width = 390, height, data }) {
       <img
         src={item.image}
         alt={`${index}번 이미지`}
-        className={`w-[${width}px] h-[${height}px] object-cover`}
+        style={{
+          width: `${width}px`,
+          height: `${height}px`,
+          objectFit: "cover",
+        }}
       />
     </SwiperSlide>
   ));
