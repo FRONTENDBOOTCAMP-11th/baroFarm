@@ -1,13 +1,13 @@
-import { useEffect } from "react";
-import {
-  useNavigate,
-  useOutletContext,
-  useParams,
-  Link,
-} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useOutletContext, Link } from "react-router-dom";
 
 import productImage1 from "/images/Sample1.svg";
 import forwardIcon from "/icons/icon_forward.svg";
+
+const likeIcon = {
+  default: "/icons/icon_likeHeart_no.svg",
+  active: "/icons/icon_likeHeart_yes.svg",
+};
 
 import HeaderIcon from "@components/HeaderIcon";
 import ReviewItem from "@components/ReviewBox";
@@ -15,6 +15,26 @@ import ReviewItem from "@components/ReviewBox";
 export default function ProductDetailPage() {
   // const { _id } = useParams();
   // _id 사용해서 데이터 가져오기
+
+  const { setHeaderContents } = useOutletContext();
+  const navigate = useNavigate();
+  const [isLiked, setIsLiked] = useState(true);
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+  };
+  useEffect(() => {
+    setHeaderContents({
+      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      title: "제철과일",
+      rightChild: (
+        <>
+          <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
+          <HeaderIcon name="cart_empty" onClick={() => navigate("/cart")} />
+        </>
+      ),
+    });
+  }, []);
 
   const productsData = {
     // example
@@ -31,22 +51,6 @@ export default function ProductDetailPage() {
     productContent:
       '\n          <div class="product-detail">\n            <p>레고 테크닉 42151 부가티 볼리드 상세 설명</p>\n          </div>',
   };
-
-  const { setHeaderContents } = useOutletContext();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
-      title: "제철과일",
-      rightChild: (
-        <>
-          <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
-          <HeaderIcon name="cart_empty" onClick={() => navigate("/cart")} />
-        </>
-      ),
-    });
-  }, []);
 
   return (
     <>
@@ -105,6 +109,18 @@ export default function ProductDetailPage() {
           dangerouslySetInnerHTML={{ __html: productsData.productContent }}
         />
       </section>
+      <footer className="h-[100px] p-5 border-t-[1px] border-gray1 flex items-center justify-between fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto bg-white">
+        <button onClick={handleLike} className="pl-2">
+          <img
+            src={isLiked ? likeIcon.active : likeIcon.default}
+            className="w-10"
+          />
+          <span className="text-sm font-medium">찜</span>
+        </button>
+        <button className="w-[280px] text-lg text-white bg-btn-primary p-4 rounded-[10px]">
+          구매하기
+        </button>
+      </footer>
     </>
   );
 }
