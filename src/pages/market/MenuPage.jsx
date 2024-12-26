@@ -15,11 +15,11 @@ import HeaderIcon from "@components/HeaderIcon";
 
 export default function MenuPage() {
   // Outlet 컴포넌트로 전달받은 props.setHeadetContents 접근
-  const { setHeadetContents } = useOutletContext();
+  const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setHeadetContents({
+    setHeaderContents({
       title: "카테고리",
       rightChild: (
         <>

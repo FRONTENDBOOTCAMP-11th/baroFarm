@@ -73,11 +73,11 @@ const productsData = [
 export default function CategoryPage() {
   const { category } = useParams();
 
-  const { setHeadetContents } = useOutletContext();
+  const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setHeadetContents({
+    setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "제철과일",
       rightChild: (

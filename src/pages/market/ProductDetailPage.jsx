@@ -10,7 +10,7 @@ import productImage1 from "/images/Sample1.svg";
 import forwardIcon from "/icons/icon_forward.svg";
 
 import HeaderIcon from "@components/HeaderIcon";
-import ReviewItem from "@components/ReviewItem";
+import ReviewItem from "@components/ReviewBox";
 
 export default function ProductDetailPage() {
   // const { _id } = useParams();
@@ -32,11 +32,11 @@ export default function ProductDetailPage() {
       '\n          <div class="product-detail">\n            <p>레고 테크닉 42151 부가티 볼리드 상세 설명</p>\n          </div>',
   };
 
-  const { setHeadetContents } = useOutletContext();
+  const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setHeadetContents({
+    setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "제철과일",
       rightChild: (
