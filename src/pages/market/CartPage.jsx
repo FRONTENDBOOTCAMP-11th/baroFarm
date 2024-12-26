@@ -83,8 +83,6 @@ export default function CartPage() {
     <CartItem key={item._id} {...item.product} />
   ));
 
-  console.log(cartItems);
-
   const totalShippingFees =
     DUMMY_CARTS_ITEMS.cost.shippingFees ===
     DUMMY_CARTS_ITEMS.cost.discount.shippingFees
