@@ -1,3 +1,4 @@
+import Button from "@components/Button";
 import CartItem from "@components/CartItem";
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect } from "react";
@@ -106,10 +107,12 @@ export default function CartPage() {
     <div className="">
       {cartItems.length > 0 ? (
         <>
-          <section className="py-[14px] flex gap-[6px] items-center border-b border-gray2">
+          <section className="py-[14px] px-5 flex gap-[6px] items-center border-b border-gray2">
             <input type="checkbox" id="checkAll" />
-            <label htmlFor="checkAll">전체 선택 (1/2)</label>
-            <button className="ml-auto bg-gray3 px-3 py-1">삭제</button>
+            <label htmlFor="checkAll" className="grow">
+              전체 선택 (1/2)
+            </label>
+            <Button width={80}>삭제</Button>
           </section>
           <section className="px-5 pb-4 border-b-4 border-gray2">
             {cartItems}
@@ -132,7 +135,7 @@ export default function CartPage() {
               <span>{DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원</span>
             </div>
           </section>
-          <section className="px-5 py-8 bg-gray1 shadow-top">
+          <section className="px-5 py-8 bg-gray1 shadow-top fixed bottom-0 left-0 right-0">
             <button className="bg-btn-primary py-3 w-full text-white text-xl font-bold rounded-lg">
               {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 결제하기
             </button>
