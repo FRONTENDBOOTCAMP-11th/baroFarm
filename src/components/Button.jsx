@@ -14,8 +14,8 @@ export default function Button({
   type = "button",
   onClick: clickHandler,
   color = "btn-primary",
-  width = 45,
-  height = 30,
+  width = 40,
+  height = 25,
 }) {
   return (
     <button
