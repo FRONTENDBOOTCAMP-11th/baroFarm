@@ -1,6 +1,6 @@
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function MyPage() {
   const { setHeaderContents } = useOutletContext();
@@ -13,7 +13,6 @@ export default function MyPage() {
       rightChild: (
         <>
           <HeaderIcon name="search" onClick={() => navigate("/search")} />
-          <HeaderIcon name="cart_empty" onClick={() => navigate("/cart")} />
         </>
       ),
     });
@@ -25,8 +24,8 @@ export default function MyPage() {
         <div>
           <div className="flex flex-row items-center">
             <img
-              src="/images/ProfileImage_Sample.svg"
-              className="mr-5 w-[49px] h-[50px]"
+              src="/images/profile/Profile_sample_1.jpg"
+              className="mr-5 w-[49px] h-[50px] rounded-full"
               loading="lazy"
             />
             <div>
@@ -35,14 +34,17 @@ export default function MyPage() {
                 온도감님! 어서오세요
               </h2>
             </div>
-            <a className="flex ml-auto h-fit items-center text-[14px]">
+            <Link
+              to={"/users/profile"}
+              className="flex ml-auto h-fit items-center text-[14px]"
+            >
               프로필 보기
               <img
                 src="/icons/icon_forward.svg"
                 className="h-4 ml-2"
                 alt="profileDetail icon"
               />
-            </a>
+            </Link>
           </div>
           <div className="flex items-center border-t-[1px] border-gray2 h-[58px] mt-[16px]">
             <button className="flex-1 text-center h-[50px] border-r-[1px] border-gray2">
