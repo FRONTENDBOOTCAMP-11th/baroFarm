@@ -8,6 +8,7 @@ import productImage2 from "/images/Sample2.svg";
 import Product from "@components/Product";
 import ProductBig from "@components/ProductBig";
 import Carousel from "@components/Carousel";
+import BoardDetailPage from "@pages/board/BoardDetailPage";
 
 const productsData = [
   {
@@ -52,6 +53,18 @@ const productsData = [
   },
 ];
 
+const images = [
+  "/images/menu/Fruit_full.svg",
+  "/images/menu/Kimchi_full.svg",
+  "/images/menu/Livestock_full.svg",
+  "/images/menu/Rice_full.svg",
+  "/images/menu/Ricecake_full.svg",
+  "/images/menu/Seafood_full.svg",
+  "/images/menu/Simple_full.svg",
+  "/images/menu/Vegetable_full.svg",
+  "/images/sample/food.svg",
+];
+
 export default function MainPage() {
   // Outlet 컴포넌트로 전달받은 props.setHeaderContents 접근
   const { setHeaderContents } = useOutletContext();
@@ -69,6 +82,11 @@ export default function MainPage() {
       ),
     });
   }, []);
+
+  // 임시 이미지. 나중에 게시글에서 가져올 예정.
+  const storyImages = images.map((item, index) => (
+    <img key={index} src={item} />
+  ));
 
   return (
     <div>
@@ -95,7 +113,7 @@ export default function MainPage() {
             <span>축산물</span>
           </div>
           <div>
-            <img src="/images/menu/Seefood_full.svg" alt="수산물 카테고리" />
+            <img src="/images/menu/Seafood_full.svg" alt="수산물 카테고리" />
             <span>수산물</span>
           </div>
           <div>
@@ -199,9 +217,11 @@ export default function MainPage() {
             </button>
           </div>
         </div>
-        <div className="w-[390px] h-[504px] bg-gray2"></div>
+        <div className="grid grid-cols-3 grid-rows-3 px-5 gap-1 *:size-[120px] *:object-cover">
+          {storyImages}
+        </div>
       </section>
-      <section className="flex flex-col gap-1 px-5 bg-bg-primary text-white text-sm">
+      <section className="flex flex-col gap-1 px-5 bg-bg-primary3 text-white text-sm">
         <p className="font-semibold">(주) 농담 사업자 정보</p>
         <p>
           (주)농담 | 대표자 : 넝담~ <br />
