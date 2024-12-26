@@ -1,6 +1,6 @@
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect } from "react";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function BoardDetailPage() {
   const { setHeaderContents } = useOutletContext();
@@ -19,8 +19,8 @@ export default function BoardDetailPage() {
   }, []);
 
   return (
-    <div className="relative mx-5">
-      <div className="relative">
+    <div className="mx-5">
+      <div>
         <div className="flex flex-row mt-5">
           <img
             src="/images/ProfileImage_Sample.svg"
@@ -39,7 +39,7 @@ export default function BoardDetailPage() {
           글을 올립니다~
         </div>
         <img
-          className="relative mt-10 w-[calc(100%+40px)] max-w-[390px] -translate-x-5"
+          className="relative mt-10 w-[calc(100%+40px)] max-w-[390px] -translate-x-5 -z-50"
           src="/images/BoardImage_Sample.svg"
         />
       </div>
