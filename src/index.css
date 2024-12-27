@@ -11,3 +11,9 @@
     @apply rounded-[10px] mb-1 shadow-md;
   }
 }
+
+@layer components {
+  .swiper-pagination-bullet-active {
+    @apply bg-white scale-110 !important; /* 활성화 dot */
+  }
+}
