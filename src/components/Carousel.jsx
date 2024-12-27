@@ -47,10 +47,10 @@ export default function Carousel({ width = 390, height, data }) {
           clickable: true,
           bulletActiveClass: "swiper-pagination-bullet-active",
         }}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
+        // autoplay={{
+        //   delay: 3000,
+        //   disableOnInteraction: false,
+        // }}
         loop={true}
       >
         {slides}
