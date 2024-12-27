@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 
-import Product from "@components/Product";
 import HeaderIcon from "@components/HeaderIcon";
 
 import productImage1 from "/images/Sample1.svg";
 import productImage2 from "/images/Sample2.svg";
+import Products from "@components/Products";
 
 const productsData = [
   {
@@ -88,11 +88,5 @@ export default function CategoryPage() {
     });
   }, []);
 
-  return (
-    <div className="flex flex-wrap justify-between p-5 gap-5">
-      {productsData.map((product) => (
-        <Product key={product.id} {...product} />
-      ))}
-    </div>
-  );
+  return <Products productsData={productsData} />;
 }
