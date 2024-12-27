@@ -1,14 +1,13 @@
-import HeaderIcon from "@components/HeaderIcon";
 import { useEffect } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import HeaderIcon from "@components/HeaderIcon";
+import Product from "@components/Product";
+import ProductBig from "@components/ProductBig";
+import Carousel from "@components/Carousel";
 
 // image
 import productImage1 from "/images/Sample1.svg";
 import productImage2 from "/images/Sample2.svg";
-import Product from "@components/Product";
-import ProductBig from "@components/ProductBig";
-import Carousel from "@components/Carousel";
-import BoardDetailPage from "@pages/board/BoardDetailPage";
 
 const productsData = [
   {

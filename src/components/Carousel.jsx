@@ -22,13 +22,21 @@ export default function Carousel({ width = 390, height, data }) {
           objectFit: "cover",
         }}
       />
+      <div className="absolute flex bottom-3 left-3 bg-white/80 rounded-lg px-3 py-1 items-center gap-2">
+        <span className="text-red1 font-semibold text-lg pr-1">
+          {item.sale}
+        </span>
+        <span className="text-[14px] line-clamp-1">
+          {item.content} ({item.rate})
+        </span>
+      </div>
     </SwiperSlide>
   ));
 
   return (
     <section
       style={{ width: `${width}px`, height: `${height}px` }}
-      className="flex text-center mb-[10px]"
+      className="flex text-center mb-[10px] relative"
     >
       <Swiper
         style={{ height: `${height}}px` }}
