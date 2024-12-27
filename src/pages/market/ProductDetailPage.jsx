@@ -28,7 +28,7 @@ export default function ProductDetailPage() {
     modalRef.current.open();
   };
 
-  const [isLiked, setIsLiked] = useState(true);
+  const [isLiked, setIsLiked] = useState(false);
 
   const handleLike = () => {
     setIsLiked(!isLiked);
