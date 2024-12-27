@@ -9,7 +9,10 @@ export default function Layout() {
   const { pathname } = useLocation();
 
   const showFooter =
-    !pathname.includes("product") && !pathname.includes("cart");
+    !pathname.includes("product") &&
+    !pathname.includes("cart") &&
+    !pathname.includes("login") &&
+    !pathname.includes("signup");
 
   return (
     <div className="max-w-[390px] mx-auto">
