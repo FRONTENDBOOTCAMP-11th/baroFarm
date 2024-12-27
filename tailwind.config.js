@@ -12,6 +12,8 @@ export default {
         gray5: "#5F5F5F",
         black: "#000000",
         "bg-primary": "#8EB486",
+        "bg-primary2": "#A8C8A2",
+        "bg-primary3": "#5E7A58",
         "btn-primary": "#72BF78",
         "primary-darkmode": "#C2FFC7",
         red1: "#FF0000",
