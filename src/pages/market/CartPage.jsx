@@ -112,7 +112,7 @@ export default function CartPage() {
             <label htmlFor="checkAll" className="grow">
               전체 선택 (1/2)
             </label>
-            <Button width={80}>삭제</Button>
+            <Button>삭제</Button>
           </section>
           <section className="px-5 pb-4 border-b-4 border-gray2">
             {cartItems}
