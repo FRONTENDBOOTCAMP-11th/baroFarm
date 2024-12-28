@@ -13,6 +13,7 @@ const MyPage = lazy(() => import("@pages/user/MyPage"));
 const ProfilePage = lazy(() => import("@pages/user/ProfilePage"));
 const MenuPage = lazy(() => import("@pages/market/MenuPage"));
 const CartPage = lazy(() => import("@pages/market/CartPage"));
+const PaymentPage = lazy(() => import("@pages/market/PaymentPage"));
 const SearchPage = lazy(() => import("@pages/market/SearchPage"));
 const SearchResultsPage = lazy(() => import("@pages/market/SearchResultsPage"));
 const MainPage = lazy(() => import("@pages/index"));
@@ -20,7 +21,9 @@ const LoginPage = lazy(() => import("@pages/user/LoginPage"));
 const SignupPage = lazy(() => import("@pages/user/SignupPage"));
 const SearchBestPage = lazy(() => import("@pages/market/SearchBestPage"));
 const SearchNewPage = lazy(() => import("@pages/market/SearchNewPage"));
-const SearchSeasonalPage = lazy(() => import("@pages/market/SearchSeasonalPage"));
+const SearchSeasonalPage = lazy(() =>
+  import("@pages/market/SearchSeasonalPage")
+);
 const Layout = lazy(() => import("@components/layout"));
 
 const router = createBrowserRouter(
@@ -46,6 +49,7 @@ const router = createBrowserRouter(
           ],
         },
         { path: "/cart", element: <CartPage /> },
+        { path: "/payment", element: <PaymentPage /> },
         {
           path: "/search",
           children: [
