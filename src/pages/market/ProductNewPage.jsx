@@ -1,6 +1,6 @@
 import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function ProductNewPage() {
@@ -14,9 +14,19 @@ export default function ProductNewPage() {
     });
   }, []);
 
-  const [price, setPrice] = useState(0);
+  // div 내에 입력한 input & select 태그의 value 변경을 위함
+  const [price, setPrice] = useState();
   const [tag, setTag] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+
+  // //select 태그를 참조
+  // const selectRef = useRef(null);
+
+  // // span 클릭 시 select의 클릭으로 처리
+  // const handleSpanClick = () => {
+  //   selectRef.current?.click(); // select 요소 클릭
+  // };
+  //문제가 발생하여 주석 처리
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -25,9 +35,18 @@ export default function ProductNewPage() {
   const handleBlur = () => {
     setIsOpen(false); // 드롭다운 닫을 때 상태 초기화
   };
+
+  const handlePriceChange = (e) => {
+    // 숫자만 남기기
+    setPrice(parseInt(e.target.value.replace(/[^0-9]/g, "")));
+  };
+
+  //price 값을 string값으로 변화
+  const priceToString = price ? Number(price).toLocaleString() : "";
   return (
     <form className="mx-5 py-5" action="#">
       <input
+        name="productName"
         type="text"
         className="bg-gray2/20 w-full h-[50px] px-4"
         placeholder="상품명을 입력해주세요."
@@ -36,6 +55,7 @@ export default function ProductNewPage() {
       <div className="relative w-full">
         <select
           type="text"
+          // ref={selectRef}
           value={tag}
           onChange={(e) => setTag(e.target.value)}
           onClick={toggleDropdown}
@@ -53,6 +73,7 @@ export default function ProductNewPage() {
           <option value="RiceCake">떡</option>
         </select>
         <span
+          // onClick={handleSpanClick}
           className={`absolute right-4 top-[42px] ${
             isOpen ? "rotate-90" : "-rotate-90"
           }`}
@@ -65,8 +86,7 @@ export default function ProductNewPage() {
         </span>
       </div>
       <textarea
-        name="contents"
-        id="contents"
+        name="productInfo"
         className="w-full my-[25px] h-[200px] p-3 border-gray3 border-[1px] bg-gray2/20"
         placeholder="본문 내용을 입력해주세요."
       ></textarea>
@@ -74,8 +94,8 @@ export default function ProductNewPage() {
       <div className="relative w-full">
         <input
           type="text"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          value={priceToString}
+          onChange={handlePriceChange}
           className="bg-gray2/20 w-full h-[50px] pr-12 px-4"
           placeholder="가격을 입력하세요"
         />
