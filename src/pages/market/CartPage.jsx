@@ -1,7 +1,8 @@
 import Button from "@components/Button";
 import CartItem from "@components/CartItem";
 import HeaderIcon from "@components/HeaderIcon";
-import { useEffect } from "react";
+import clsx from "clsx";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 const DUMMY_CARTS_ITEMS = {
@@ -83,14 +84,55 @@ const DUMMY_EMPTY_CARTS = {
 };
 
 export default function CartPage() {
+  // 결제 버튼 보이기 상태
+  const [showButton, setShowButton] = useState(false);
+  // targetRef가 보이면 결제버튼을 보이게 함
+  const targetRef = useRef(null);
+
+  // 헤더 상태 설정 함수
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
   useEffect(() => {
+    // 헤더 상태 설정
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "장바구니",
     });
+
+    // 스크롤에 따라 결제버튼 보이게 하기
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // 타겟이 보이면 버튼 표시 상태 변경
+            setShowButton(true);
+          } else {
+            setShowButton(false);
+          }
+        });
+      },
+      {
+        // 뷰포트를 기준으로 감지
+        root: null,
+        // 10%만 보이면 트리거
+        threshold: 0.1,
+      }
+    );
+
+    const targetElement = targetRef.current;
+
+    // 조건부 렌더링으로 targetRef가 사용하는 요소가 동적으로 생성되거나 사라질 경우에 에러를 발생시키지 않기 위해 조건문으로 검사 필요.
+    if (targetElement) {
+      observer.observe(targetElement);
+    }
+
+    // 컴포넌트 언마운트시 옵저버 해제 (메모리 누수 방지)
+    return () => {
+      if (targetElement) {
+        observer.unobserve(targetElement);
+      }
+    };
   }, []);
 
   const cartItems = DUMMY_CARTS_ITEMS.item.map((item) => (
@@ -135,7 +177,16 @@ export default function CartPage() {
               <span>{DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원</span>
             </div>
           </section>
-          <section className="px-5 py-8 bg-gray1 shadow-top fixed bottom-0 left-0 right-0">
+          <div
+            ref={targetRef}
+            style={{ height: "1px", background: "transparent" }}
+          ></div>
+          <section
+            className={clsx(
+              "max-w-[390px] mx-auto px-5 py-8 bg-gray1 shadow-top fixed left-0 right-0 transition-all duration-150 ease-in-out",
+              showButton ? "bottom-0 opacity-100" : "-bottom-24 opacity-0"
+            )}
+          >
             <button className="bg-btn-primary py-3 w-full text-white text-xl font-bold rounded-lg">
               {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 결제하기
             </button>
