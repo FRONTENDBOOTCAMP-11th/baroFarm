@@ -14,7 +14,7 @@ export default function ProductNewPage() {
   }, []);
 
   return (
-    <div className="mx-5 py-5">
+    <form className="mx-5 py-5">
       <input type="text" className="bg-gray2/20 w-full h-[42px]" />
       <br />
       <input type="text" className="bg-gray2/20 w-full h-[42px] mt-[25px]" />
@@ -38,6 +38,6 @@ export default function ProductNewPage() {
         name="attach"
       />
       <Button>등록</Button>
-    </div>
+    </form>
   );
 }

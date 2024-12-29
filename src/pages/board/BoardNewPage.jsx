@@ -20,7 +20,7 @@ export default function BoardNewPage() {
   }, []);
 
   return (
-    <div className="relative mx-5">
+    <form className="relative mx-5">
       <div className="flex flex-row mt-5 items-center">
         <img
           src="/images/ProfileImage_Sample.svg"
@@ -45,6 +45,6 @@ export default function BoardNewPage() {
         className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 mt-[10px]"
         name="attach"
       />
-    </div>
+    </form>
   );
 }
