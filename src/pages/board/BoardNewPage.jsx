@@ -1,3 +1,4 @@
+import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -10,12 +11,7 @@ export default function BoardNewPage() {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "새 글 작성",
-      rightChild: (
-        <>
-          {/* 등록시 게시판으로 이동 */}
-          <HeaderIcon name="register" onClick={() => navigate("/board")} />
-        </>
-      ),
+      rightChild: <Button>등록</Button>,
     });
   }, []);
 

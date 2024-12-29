@@ -24,9 +24,9 @@ export default function BoardDetailPage() {
       <div>
         <div className="flex flex-row mt-5">
           <img
-            src="/images/ProfileImage_Sample.svg"
+            src="/images/profile/Profile_sample_1.jpg"
             alt="ProfileImage"
-            className="w-6 h-6"
+            className="w-6 h-6 rounded-full"
           />
           <span className="mx-[5px] text-sm">온도감</span>
           <span className="text-[10px] mt-[6px] text-gray4">16분 전</span>
@@ -41,7 +41,7 @@ export default function BoardDetailPage() {
         </div>
         <img
           className="relative mt-10 w-[calc(100%+40px)] max-w-[390px] -translate-x-5 -z-50"
-          src="/images/BoardImage_Sample.svg"
+          src="/images/sample/food.svg"
         />
       </div>
       <div className="pt-5">
@@ -49,9 +49,9 @@ export default function BoardDetailPage() {
         <div className="px-[15px] ">
           <div className="flex flex-row mt-5">
             <img
-              src="/images/ProfileImage_Sample.svg"
+              src="/images/profile/Profile_sample_1.jpg"
               alt="ProfileImage"
-              className="w-6 h-6"
+              className="w-6 h-6 rounded-full"
             />
             <span className="mx-[5px] text-sm">떡보369</span>
             <span className="text-[10px] mt-[6px] ml-auto text-gray4">
@@ -70,9 +70,9 @@ export default function BoardDetailPage() {
         <div className="px-[15px] ">
           <div className="flex flex-row mt-5">
             <img
-              src="/images/ProfileImage_Sample.svg"
+              src="/images/profile/Profile_sample_2.jpg"
               alt="ProfileImage"
-              className="w-6 h-6"
+              className="w-6 h-6 rounded-full"
             />
             <span className="mx-[5px] text-sm">삼행시 빌런</span>
             <span className="text-[10px] mt-[6px] ml-auto text-gray4">

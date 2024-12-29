@@ -94,6 +94,7 @@ export default function ProductNewPage() {
       <div className="relative w-full">
         <input
           type="text"
+          name="price"
           value={priceToString}
           onChange={handlePriceChange}
           className="bg-gray2/20 w-full h-[50px] pr-12 px-4"
