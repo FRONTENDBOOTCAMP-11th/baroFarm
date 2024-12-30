@@ -3,6 +3,9 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 
 import HeaderIcon from "@components/HeaderIcon";
 
+import productImage from "/images/Sample1.svg";
+import PurchaseItem from "@components/PurchaseItem";
+
 export default function PurchasePage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
@@ -19,5 +22,26 @@ export default function PurchasePage() {
     });
   }, []);
 
-  return <></>;
+  return (
+    <>
+      <div className="p-5 pb-0">
+        <p className="font-bold text-lg pl-1">2024. 12. 30</p>
+        <PurchaseItem />
+        <PurchaseItem />
+        <PurchaseItem />
+      </div>
+      <div className="p-5 pb-0">
+        <p className="font-bold text-lg pl-1">2024. 12. 30</p>
+        <PurchaseItem />
+        <PurchaseItem />
+        <PurchaseItem />
+      </div>
+      <div className="p-5 pb-0">
+        <p className="font-bold text-lg pl-1">2024. 12. 30</p>
+        <PurchaseItem />
+        <PurchaseItem />
+        <PurchaseItem />
+      </div>
+    </>
+  );
 }
