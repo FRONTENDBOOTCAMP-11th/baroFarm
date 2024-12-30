@@ -3,7 +3,7 @@ import CartItem from "@components/CartItem";
 import HeaderIcon from "@components/HeaderIcon";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 const DUMMY_CARTS_ITEMS = {
   ok: 1,
@@ -187,9 +187,11 @@ export default function CartPage() {
               showButton ? "bottom-0 opacity-100" : "-bottom-24 opacity-0"
             )}
           >
-            <button className="bg-btn-primary py-3 w-full text-white text-xl font-bold rounded-lg">
-              {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 결제하기
-            </button>
+            <Link to="/payment">
+              <button className="bg-btn-primary py-3 w-full text-white text-xl font-bold rounded-lg">
+                {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 구매하기
+              </button>
+            </Link>
           </section>
         </>
       ) : (

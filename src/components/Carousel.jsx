@@ -23,7 +23,7 @@ export default function Carousel({ width = 390, height, data }) {
         }}
       />
       {/* 상품 정보를 나타내는 자막 */}
-      <div className="absolute flex bottom-7 left-3 bg-white/60 rounded-lg px-2 py-1 items-center gap-2">
+      <div className="absolute flex bottom-7 left-3 bg-white/80 rounded-lg px-2 py-1 items-center gap-2">
         <span className="text-red1 font-semibold text-sm pr-1">
           {item.sale}
         </span>
