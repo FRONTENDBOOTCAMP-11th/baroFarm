@@ -29,9 +29,12 @@ export default function MyPage() {
     });
   }, []);
 
+  //로그아웃 시 데이터 삭제
   const logoutClick = () => {
     setData(null);
   };
+
+  //로그인 시 데이터 추가
   const loginClick = () => {
     setData({
       name: "김아무개",
@@ -136,7 +139,7 @@ export default function MyPage() {
           />
         </a>
       </div>
-
+      {/* 해당 영역은 로그아웃 상태일 시 사용을 필요로 하지 않음 */}
       {data && (
         <>
           <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
