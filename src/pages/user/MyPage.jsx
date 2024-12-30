@@ -171,8 +171,11 @@ export default function MyPage() {
                 alt="addProduct icon"
               />
             </Link>
-            <Link to={""} className="flex items-center text-[14px] my-[24px]">
-              개인 정보 수정
+            <Link
+              to={"/users/profile/edit"}
+              className="flex items-center text-[14px] my-[24px]"
+            >
+              개인정보 수정
               <img
                 src="/icons/icon_forward.svg"
                 className="h-[16px] ml-auto"

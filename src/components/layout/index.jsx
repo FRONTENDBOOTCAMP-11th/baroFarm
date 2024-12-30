@@ -12,7 +12,8 @@ export default function Layout() {
     !pathname.includes("product") &&
     !pathname.includes("cart") &&
     !pathname.includes("login") &&
-    !pathname.includes("signup");
+    !pathname.includes("signup") &&
+    !pathname.includes("payment");
 
   return (
     <div className="max-w-[390px] mx-auto">

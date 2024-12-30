@@ -9,10 +9,10 @@ export default function SignupPage() {
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="x_black" onClick={() => navigate("/")} />,
-      title: "회원가입",
+      leftChild: <HeaderIcon name="back" onClick={() => navigate("/")} />,
+      title: "개인정보 수정",
     });
   }, []);
 
-  return <UserForm buttonText="가입하기" />;
+  return <UserForm buttonText="수정하기" />;
 }
