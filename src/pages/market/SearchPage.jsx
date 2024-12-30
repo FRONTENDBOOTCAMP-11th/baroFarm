@@ -8,7 +8,7 @@ export default function SearchPage() {
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="back_thin" onClick={() => navigate("/")} />,
+      leftChild: <HeaderIcon name="back" onClick={() => navigate("/")} />,
       title: "검색",
     });
   }, []);
