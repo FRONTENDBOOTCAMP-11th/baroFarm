@@ -51,7 +51,7 @@ export default function MyPage() {
 
   return (
     <div className="pt-[18px] px-5 mb-[70px]">
-      <div className="h-[144px]">
+      <div className="h-auto pb-4">
         <div className="flex flex-row items-center">
           {data && (
             <>
@@ -65,7 +65,7 @@ export default function MyPage() {
                   {data.auth}
                 </p>
                 <h2 className="text-[16px] leading-[18px] mt-[4px]">
-                  {data ? data.extra.userName : "게스트"}님! 어서오세요
+                  {data.extra.userName}님! 어서오세요
                 </h2>
               </div>
               <button
@@ -107,7 +107,7 @@ export default function MyPage() {
             </>
           )}
         </div>
-        <div className="flex items-center border-t-[1px] border-gray2 h-[58px] mt-[16px]">
+        {/* <div className="flex items-center border-t-[1px] border-gray2 h-[58px] mt-[16px]">
           <button className="flex-1 text-center h-[50px] border-r-[1px] border-gray2">
             구매 내역
           </button>
@@ -117,27 +117,30 @@ export default function MyPage() {
           <button className="flex-1 text-center h-[50px]">
             작성한 글 <span className="text-btn-primary">3건</span>
           </button>
-        </div>
+        </div> */}
       </div>
       <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
       <div className="h-[152px] pt-[18px]">
         <h2 className="text-base leading-[19px]">구매 정보</h2>
-        <a className="flex items-center text-[14px] mt-[27px]">
+        <Link className="flex items-center text-[14px] mt-[27px]">
           최근 본 상품
           <img
             src="/icons/icon_forward.svg"
             className="h-[16px] ml-auto"
             alt="recentProduct icon"
           />
-        </a>
-        <a className="flex items-center text-[14px] mt-[24px]">
+        </Link>
+        <Link
+          to={"/users/bookmarks"}
+          className="flex items-center text-[14px] mt-[24px]"
+        >
           찜한 상품
           <img
             src="/icons/icon_forward.svg"
             className="h-[16px] ml-auto"
             alt="likedProduct icon"
           />
-        </a>
+        </Link>
       </div>
       {/* 해당 영역은 로그아웃 상태일 시 사용을 필요로 하지 않음 */}
       {data && (
