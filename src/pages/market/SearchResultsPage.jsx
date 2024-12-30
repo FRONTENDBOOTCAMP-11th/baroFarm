@@ -68,20 +68,23 @@ export default function SearchResultsPage() {
     <div>
       <div className="p-5 flex items-center font-semibold">
         <h2 className="text-base">총 4개</h2>
-        <select
-          className="ml-auto text-sm bg-gray2 rounded-xl p-1 ps-2 pr-4 text-center appearance-none bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[right_4px_center] focus:outline-none focus:ring-2 focus:ring-green1 "
-          // 기능 구현이 된다면 최신순으로 수정할 것
-          defaultValue="maxPrice"
-          aria-label="정렬 기준 선택"
-          name="sort"
-        >
-          <option value="maxPrice">높은 가격순</option>
-          <option value="minPrice">낮은 가격순</option>
-          <option value="rating">평점순</option>
-          <option value="replies">후기 개수순</option>
-          <option value="createdAt">최신순</option>
-          <option value="buyQuantity">판매 수량순</option>
-        </select>
+        <div className="ml-auto flex bg-gray2 text-sm rounded-lg gap-1">
+          <select
+            className="text-center bg-gray2 rounded-lg py-1 ps-3 appearance-none focus:outline-none cursor-pointer"
+            // 기능 구현이 된다면 최신순으로 수정할 것
+            defaultValue="maxPrice"
+            aria-label="정렬 기준 선택"
+            name="sort"
+          >
+            <option value="maxPrice">높은 가격순</option>
+            <option value="minPrice">낮은 가격순</option>
+            <option value="rating">평점순</option>
+            <option value="replies">후기 개수순</option>
+            <option value="createdAt">최신순</option>
+            <option value="buyQuantity">판매 수량순</option>
+          </select>
+          <img className="pr-2" src="/icons/icon_dropdown.svg" alt="" />
+        </div>
       </div>
       {/* 검색 결과 없을 때와 있을 때의 조건부 렌더링 */}
       {productsData.length === 0 ? (
