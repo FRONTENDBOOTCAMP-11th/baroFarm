@@ -53,15 +53,26 @@ const productsData = [
 ];
 
 const images = [
-  "/images/menu/Fruit_full.svg",
-  "/images/menu/Kimchi_full.svg",
-  "/images/menu/Livestock_full.svg",
-  "/images/menu/Rice_full.svg",
-  "/images/menu/Ricecake_full.svg",
-  "/images/menu/Seafood_full.svg",
-  "/images/menu/Simple_full.svg",
-  "/images/menu/Vegetable_full.svg",
+  "/images/menu/Fruit.svg",
+  "/images/menu/Kimchi.svg",
+  "/images/menu/Livestock.svg",
+  "/images/menu/Rice.svg",
+  "/images/menu/Ricecake.svg",
+  "/images/menu/Seafood.svg",
+  "/images/menu/Simple.svg",
+  "/images/menu/Vegetable.svg",
   "/images/sample/food.svg",
+];
+
+const categories = [
+  { title: "제철 과일", image: "/images/menu/Fruit.svg" },
+  { title: "채소", image: "/images/menu/Vegetable.svg" },
+  { title: "김치", image: "/images/menu/Kimchi.svg" },
+  { title: "축산물", image: "/images/menu/Livestock.svg" },
+  { title: "수산물", image: "/images/menu/Seafood.svg" },
+  { title: "간편식품", image: "/images/menu/Simple.svg" },
+  { title: "떡", image: "/images/menu/Ricecake.svg" },
+  { title: "쌀/잡곡", image: "/images/menu/Rice.svg" },
 ];
 
 export default function MainPage() {
@@ -82,6 +93,13 @@ export default function MainPage() {
     });
   }, []);
 
+  const categoryIcons = categories.map((item, index) => (
+    <div key={index}>
+      <img src={item.image} alt={`${item.title} 카테고리`} />
+      <span>{item.title}</span>
+    </div>
+  ));
+
   // 임시 이미지. 나중에 게시글에서 가져올 예정.
   const storyImages = images.map((item, index) => (
     <img key={index} src={item} />
@@ -95,38 +113,7 @@ export default function MainPage() {
           관심있는 <span className="font-bold">카테고리</span> 선택하기
         </h2>
         <div className="category-div grid grid-cols-4 gap-y-[6px] gap-x-[14px] text-[14px] *:flex *:flex-col *:text-center">
-          <div>
-            <img src="/images/menu/Fruit_full.svg" alt="제철 과일 카테고리" />
-            <span>제철 과일</span>
-          </div>
-          <div>
-            <img src="/images/menu/Vegetable_full.svg" alt="채소 카테고리" />
-            <span>채소</span>
-          </div>
-          <div>
-            <img src="/images/menu/Kimchi_full.svg" alt="김치 카테고리" />
-            <span>김치</span>
-          </div>
-          <div>
-            <img src="/images/menu/Livestock_full.svg" alt="축산물 카테고리" />
-            <span>축산물</span>
-          </div>
-          <div>
-            <img src="/images/menu/Seafood_full.svg" alt="수산물 카테고리" />
-            <span>수산물</span>
-          </div>
-          <div>
-            <img src="/images/menu/Simple_full.svg" alt="간편식품 카테고리" />
-            <span>간편식품</span>
-          </div>
-          <div>
-            <img src="/images/menu/Ricecake_full.svg" alt="떡 카테고리" />
-            <span>떡</span>
-          </div>
-          <div>
-            <img src="/images/menu/Rice_full.svg" alt="쌀/잡곡 카테고리" />
-            <span>쌀/잡곡</span>
-          </div>
+          {categoryIcons}
         </div>
       </section>
       <section className="px-5 mb-4">
