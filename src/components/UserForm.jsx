@@ -2,9 +2,12 @@ import PropTypes from "prop-types";
 
 UserForm.propTypes = {
   buttonText: PropTypes.string.isRequired,
+  // 수정기능 구현시 기존의 계정 정보를 입력받아올 props - userInfo
+  // 회원가입 시에도 쓰이기에 userInfo는 isRequired가 아님
+  userInfo: PropTypes.shape(),
 };
 
-export default function UserForm({ buttonText }) {
+export default function UserForm({ userInfo, buttonText }) {
   return (
     <form className="p-5">
       {/* 이메일 */}
@@ -120,7 +123,9 @@ export default function UserForm({ buttonText }) {
           placeholder="주소를 입력해주세요"
           required
         />
-        <span className="text-xs ml-1">배송지에 따라 상품 정보가 달라질 수 있습니다.</span>
+        <span className="text-xs ml-1">
+          배송지에 따라 상품 정보가 달라질 수 있습니다.
+        </span>
       </div>
       {/* 닉네임 */}
       <div className="mb-5 text-sm">
