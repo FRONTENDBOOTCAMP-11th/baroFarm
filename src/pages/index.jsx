@@ -82,7 +82,6 @@ export default function MainPage() {
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: <img src="/images/BaroFarmLogo.svg" alt="홈 버튼" />,
       rightChild: (
         <>
@@ -117,7 +116,7 @@ export default function MainPage() {
         </div>
       </section>
       <section className="px-5 mb-4">
-        <div className="flex justify-between">
+        <div className="flex justify-between mb-3">
           <h2 className="text-xl">
             지금 최고 <span className="font-bold">인기 상품! 🔥</span>
           </h2>
@@ -132,14 +131,14 @@ export default function MainPage() {
             </button>
           </Link>
         </div>
-        <div className="flex flex-wrap justify-between">
+        <div className="flex flex-wrap justify-between gap-3">
           {productsData.map((product) => (
             <Product key={product.id} {...product} />
           ))}
         </div>
       </section>
       <section className="px-5 mb-4">
-        <div className="flex justify-between">
+        <div className="flex justify-between mb-3">
           <h2 className="text-xl">
             따끈따끈한 <span className="font-bold">신상품! ⏰</span>
           </h2>
@@ -154,7 +153,7 @@ export default function MainPage() {
             </button>
           </Link>
         </div>
-        <div className="flex flex-wrap justify-between">
+        <div className="flex flex-wrap justify-between gap-3">
           {productsData.map((product) => (
             <Product key={product.id} {...product} />
           ))}
@@ -179,7 +178,7 @@ export default function MainPage() {
             </button>
           </Link>
         </div>
-        <div className="flex overflow-scroll gap-3">
+        <div className="flex overflow-x-auto gap-3">
           {productsData.map((product) => (
             <ProductBig key={product.id} {...product} />
           ))}
