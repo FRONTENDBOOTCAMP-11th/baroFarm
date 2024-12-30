@@ -6,8 +6,9 @@ Button.propTypes = {
   type: PropTypes.string,
   onClick: PropTypes.func,
   color: PropTypes.string,
-  width: PropTypes.number,
-  height: PropTypes.number,
+  width: PropTypes.string,
+  height: PropTypes.string,
+  fontSize: PropTypes.number,
 };
 
 export default function Button({
@@ -15,18 +16,20 @@ export default function Button({
   type = "button",
   onClick: clickHandler,
   color = "#72BF78",
-  width = 40,
-  height = 25,
+  width = "auto",
+  height = "auto",
+  fontSize = 12,
 }) {
   // 동적인 클래스는 style 객체 활용
   const style = {
-    width: `${width}px`,
-    height: `${height}px`,
+    width,
+    height,
     backgroundColor: color,
+    fontSize: fontSize,
   };
 
   // 정적인 클래스만 사용
-  const buttonClass = `rounded-full shrink-0`;
+  const buttonClass = "rounded-md shrink-0 text-white font-semibold";
 
   return (
     <button

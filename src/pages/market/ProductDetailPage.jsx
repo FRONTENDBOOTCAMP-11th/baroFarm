@@ -190,7 +190,10 @@ export default function ProductDetailPage() {
           >
             장바구니
           </button>
-          <button className="flex-1 text-lg text-white bg-btn-primary p-3 rounded-[10px]">
+          <button
+            className="flex-1 text-lg text-white bg-btn-primary p-3 rounded-[10px]"
+            onClick={() => navigate("/payment")}
+          >
             구매하기
           </button>
         </div>

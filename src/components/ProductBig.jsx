@@ -1,4 +1,10 @@
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
+const likeIcon = {
+  default: "/icons/icon_likeHeart_no.svg",
+  active: "/icons/icon_likeHeart_yes.svg",
+};
 
 export default function ProductBig({
   id,
@@ -15,16 +21,34 @@ export default function ProductBig({
   const goDetailPage = () => {
     navigate(`/product/${id}`);
   };
+
+  const [isLiked, setIsLiked] = useState(false);
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+  };
+
   return (
     <section
       className="flex flex-col shrink-0 py-5 w-[201px]"
       onClick={goDetailPage}
     >
-      <img
-        className="h-[279px] rounded-lg object-cover"
-        alt={title}
-        src={image}
-      />
+      <div className="relative">
+        <img
+          className="h-[279px] rounded-lg object-cover"
+          alt={title}
+          src={image}
+        />
+        <button
+          className="absolute bottom-3 right-3 bg-white p-2 rounded-full shadow-bottom"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleLike();
+          }}
+        >
+          <img src={isLiked ? likeIcon.active : likeIcon.default} />
+        </button>
+      </div>
       <div className="pl-[5px] pt-[10px]">
         <span className="font-semibold pt-[10px] text-sm">{title}</span>
         <p className="text-xs line-clamp-1">{content}</p>
