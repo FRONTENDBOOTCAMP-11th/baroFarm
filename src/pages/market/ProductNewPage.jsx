@@ -1,32 +1,42 @@
 import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function ProductNewPage() {
+  const { register, handleSubmit } = useForm();
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "상품 등록",
-      rightChild: <Button>등록</Button>,
+      rightChild: (
+        <Button
+          onClick={() =>
+            formRef.current?.dispatchEvent(
+              new Event("submit", { cancelable: true, bubbles: true })
+            )
+          }
+        >
+          등록
+        </Button>
+      ),
     });
   }, []);
+
+  const check = (item) => {
+    console.log(item);
+  };
 
   // div 내에 입력한 input & select 태그의 value 변경을 위함
   const [price, setPrice] = useState();
   const [tag, setTag] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  // //select 태그를 참조
-  // const selectRef = useRef(null);
-
-  // // span 클릭 시 select의 클릭으로 처리
-  // const handleSpanClick = () => {
-  //   selectRef.current?.click(); // select 요소 클릭
-  // };
-  //문제가 발생하여 주석 처리
+  // form 태그를 참조
+  const formRef = useRef(null);
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -44,23 +54,29 @@ export default function ProductNewPage() {
   //price 값을 string값으로 변화
   const priceToString = price ? Number(price).toLocaleString() : "";
   return (
-    <form className="mx-5 py-5" action="#">
+    <form className="mx-5 py-5" ref={formRef} onSubmit={handleSubmit(check)}>
       <input
-        name="productName"
+        name="option"
+        id="option"
         type="text"
         className="bg-gray2/20 w-full h-[50px] px-4"
         placeholder="상품명을 입력해주세요."
+        {...register("option", {
+          required: "상품명을 입력해주세요",
+        })}
       />
       <br />
       <div className="relative w-full">
         <select
           type="text"
-          // ref={selectRef}
           value={tag}
-          onChange={(e) => setTag(e.target.value)}
           onClick={toggleDropdown}
           onBlur={handleBlur}
           className={`bg-gray2/20 w-full h-[50px] mt-[25px] px-4 appearance-none`}
+          {...register("category", {
+            required: "상품명 종류를 선택해주세요",
+            onChange: (e) => setTag(e.target.value),
+          })}
         >
           <option value="select">카테고리</option>
           <option value="fruit">과일</option>
@@ -89,6 +105,9 @@ export default function ProductNewPage() {
         name="productInfo"
         className="w-full my-[25px] h-[200px] p-3 border-gray3 border-[1px] bg-gray2/20"
         placeholder="본문 내용을 입력해주세요."
+        {...register("productContent", {
+          required: "상품 소개문을 입력해주세요",
+        })}
       ></textarea>
       <label className="font-bold">판매 희망 가격</label>
       <div className="relative w-full">
@@ -96,9 +115,12 @@ export default function ProductNewPage() {
           type="text"
           name="price"
           value={priceToString}
-          onChange={handlePriceChange}
           className="bg-gray2/20 w-full h-[50px] pr-12 px-4"
           placeholder="가격을 입력하세요"
+          {...register("price", {
+            required: "필수 입력 정보입니다",
+            onChange: handlePriceChange,
+          })}
         />
         <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600">
           원
@@ -110,6 +132,9 @@ export default function ProductNewPage() {
         type="text"
         className="bg-gray2/20 w-full h-[50px] mb-[25px] px-4"
         placeholder="판매 개수를 입력하세요"
+        {...register("quantity", {
+          required: "필수 입력 정보입니다",
+        })}
       />
       <br />
       <label className="font-bold">이미지 첨부</label>
@@ -120,6 +145,7 @@ export default function ProductNewPage() {
         placeholder="이미지를 선택하세요"
         className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 mt-[10px]"
         name="attach"
+        {...register("image")}
       />
     </form>
   );
