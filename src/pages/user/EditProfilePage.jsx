@@ -9,7 +9,7 @@ export default function SignupPage() {
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate("/")} />,
+      leftChild: <HeaderIcon name="back" onClick={() => navigate("/users/mypage")} />,
       title: "개인정보 수정",
     });
   }, []);
