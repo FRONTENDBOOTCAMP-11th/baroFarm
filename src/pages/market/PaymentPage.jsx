@@ -155,13 +155,17 @@ export default function PaymentPage() {
   return (
     <>
       <Modal ref={modalRef}>
-        <p className="text-center text-lg font-">
-          <span>{DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원</span> <br />
-          <strong className="font-semibold">결제</strong>가 완료되었어요!
-        </p>
         <img src="/images/Star.png" className="w-[66px]" />
+        <p className="text-center text-lg">
+          <span className="font-semibold">
+            총 {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원
+          </span>{" "}
+          <br />
+          <br />
+          <strong className="font-semibold">결제</strong>가 완료되었어요
+        </p>
       </Modal>
-      <section className="px-5 py-[14px] mb-10">
+      <section className="px-5 py-[14px]">
         <div>
           <h3 className="mb-3 text-sm font-bold">주문자 정보</h3>
           <button
@@ -180,9 +184,7 @@ export default function PaymentPage() {
                 <div className="flex flex-col gap-[6px]">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-bold">김호나우지뉴(집)</p>
-                    <Button width={30} height={20}>
-                      변경
-                    </Button>
+                    <Button width={"50px"}>변경</Button>
                   </div>
                   <p className="text-xs text-gray4 font-medium">
                     010-0000-0000
@@ -251,7 +253,7 @@ export default function PaymentPage() {
                       <input
                         type="text"
                         id="phone"
-                        className="ring-1 ring-gray3 w-[263px] h-[34px] rounded-[5px] bg-white px-2 text-sm placeholder:text-gray2 focus:outline-none focus:ring-1 focus:ring-btn-primary disabled:bg-gray2 disabled:placeholder:text-gray4"
+                        className="grow ring-1 ring-gray3 w-[263px] h-[34px] rounded-[5px] bg-white px-2 text-sm placeholder:text-gray2 focus:outline-none focus:ring-1 focus:ring-btn-primary disabled:bg-gray2 disabled:placeholder:text-gray4"
                         disabled
                         placeholder="주소를 입력하세요."
                       />
