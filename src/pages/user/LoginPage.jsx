@@ -1,6 +1,6 @@
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function LoginPage() {
   const { setHeaderContents } = useOutletContext();
@@ -46,9 +46,12 @@ export default function LoginPage() {
         </button>
       </div>
       <div className="mb-5 w-[18.75rem] h-[3.25rem] m-auto">
-        <button className="w-[18.75rem] h-[3.25rem] text-center text-xl rounded-2xl bg-green1 font-semibold">
+        <Link
+          to="/users/signup"
+          className="block w-full h-full text-center text-xl rounded-2xl bg-green1 font-semibold leading-[3.25rem]"
+        >
           회원가입
-        </button>
+        </Link>
       </div>
     </div>
   );
