@@ -1,9 +1,10 @@
 import Button from "@components/Button";
 import CartItemPayment from "@components/CartItemPayment";
 import HeaderIcon from "@components/HeaderIcon";
+import Modal from "@components/Modal";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 const DUMMY_CARTS_ITEMS = {
   ok: 1,
@@ -82,15 +83,19 @@ export default function PaymentPage() {
   // 헤더 상태 설정 함수
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-
   // 기본 배송지 상태 임시 토글 기능
   const [isDefaultAddress, setIsDefaultAddress] = useState(false);
-  console.log(isDefaultAddress);
-
   // 결제 버튼 보이기 상태
   const [showButton, setShowButton] = useState(false);
+
   // targetRef가 보이면 결제버튼을 보이게 함
   const targetRef = useRef(null);
+  // 모달 창 선택
+  const modalRef = useRef();
+
+  const openModal = () => {
+    modalRef.current.open();
+  };
 
   const paymentItems = DUMMY_CARTS_ITEMS.item.map((item) => (
     <CartItemPayment key={item._id} {...item.product} />
@@ -149,6 +154,13 @@ export default function PaymentPage() {
 
   return (
     <>
+      <Modal ref={modalRef}>
+        <p className="text-center text-lg font-">
+          <span>{DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원</span> <br />
+          <strong className="font-semibold">결제</strong>가 완료되었어요!
+        </p>
+        <img src="/images/Star.png" className="w-[66px]" />
+      </Modal>
       <section className="px-5 py-[14px] mb-10">
         <div>
           <h3 className="mb-3 text-sm font-bold">주문자 정보</h3>
@@ -338,7 +350,10 @@ export default function PaymentPage() {
           showButton ? "bottom-0 opacity-100" : "-bottom-24 opacity-0"
         )}
       >
-        <button className="bg-btn-primary py-3 w-full text-white text-xl font-bold rounded-lg">
+        <button
+          className="bg-btn-primary py-3 w-full text-white text-xl font-bold rounded-lg"
+          onClick={openModal}
+        >
           {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 결제하기
         </button>
       </section>
