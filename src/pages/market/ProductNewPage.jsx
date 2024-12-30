@@ -59,7 +59,7 @@ export default function ProductNewPage() {
         name="option"
         id="option"
         type="text"
-        className="bg-gray2/20 w-full h-[50px] px-4"
+        className="bg-gray2/20 w-full h-[50px] px-4 focus:outline-btn-primary rounded-md"
         placeholder="상품명을 입력해주세요."
         {...register("option", {
           required: "상품명을 입력해주세요",
@@ -72,7 +72,7 @@ export default function ProductNewPage() {
           value={tag}
           onClick={toggleDropdown}
           onBlur={handleBlur}
-          className={`bg-gray2/20 w-full h-[50px] mt-[25px] px-4 appearance-none`}
+          className={`bg-gray2/20 w-full h-[50px] mt-[25px] px-4 appearance-none focus:outline-btn-primary rounded-md`}
           {...register("category", {
             required: "상품명 종류를 선택해주세요",
             onChange: (e) => setTag(e.target.value),

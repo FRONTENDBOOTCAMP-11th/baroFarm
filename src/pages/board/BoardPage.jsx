@@ -1,16 +1,17 @@
 import HeaderIcon from "@components/HeaderIcon";
 import BoardPageDetail from "@pages/board/BoardPageDetail";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function BoardPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  const [tag, setTag] = useState("자유");
 
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
-      title: `자유 게시판`,
+      title: `${tag} 게시판`,
       rightChild: (
         <>
           <HeaderIcon name="search" onClick={() => navigate("/search")} />
@@ -22,12 +23,12 @@ export default function BoardPage() {
   return (
     <div className="relative mx-5">
       <div className="flex flex-row h-[50px] mx-[-20px] max-w-[calc(100%+40px)] ">
-        <div className="flex w-full max-w-[120px] justify-center text-sm items-center border-r-[1px] border-gray3/50">
+        <button className="flex w-full justify-center text-sm items-center border-r-[1px] border-gray3/50">
           자유
-        </div>
-        <div className="flex w-full max-w-[120px] justify-center text-sm items-center border-r-[1px] border-gray3/50">
+        </button>
+        <button className="flex w-full justify-center text-sm items-center border-gray3/50">
           정보 공유
-        </div>
+        </button>
       </div>
       <BoardPageDetail />
       <BoardPageDetail />
