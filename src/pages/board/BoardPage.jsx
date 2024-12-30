@@ -1,7 +1,24 @@
+import HeaderIcon from "@components/HeaderIcon";
 import BoardPageDetail from "@pages/board/BoardPageDetail";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function BoardPage() {
+  const { setHeaderContents } = useOutletContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setHeaderContents({
+      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      title: `자유 게시판`,
+      rightChild: (
+        <>
+          <HeaderIcon name="search" onClick={() => navigate("/search")} />
+          <HeaderIcon name="cart_empty" onClick={() => navigate("/cart")} />
+        </>
+      ),
+    });
+  }, []);
   return (
     <div className="relative mx-5">
       <div className="flex flex-row h-[50px] mx-[-20px] max-w-[calc(100%+40px)] ">

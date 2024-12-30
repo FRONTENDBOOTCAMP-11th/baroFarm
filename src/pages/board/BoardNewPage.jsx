@@ -1,3 +1,4 @@
+import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -10,17 +11,12 @@ export default function BoardNewPage() {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "새 글 작성",
-      rightChild: (
-        <>
-          {/* 등록시 게시판으로 이동 */}
-          <HeaderIcon name="register" onClick={() => navigate("/board")} />
-        </>
-      ),
+      rightChild: <Button>등록</Button>,
     });
   }, []);
 
   return (
-    <div className="relative mx-5">
+    <form className="relative mx-5">
       <div className="flex flex-row mt-5 items-center">
         <img
           src="/images/ProfileImage_Sample.svg"
@@ -45,6 +41,6 @@ export default function BoardNewPage() {
         className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 mt-[10px]"
         name="attach"
       />
-    </div>
+    </form>
   );
 }
