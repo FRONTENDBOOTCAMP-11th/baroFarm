@@ -5,13 +5,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function ProductNewPage() {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setFocus,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   useEffect(() => {
@@ -75,7 +69,6 @@ export default function ProductNewPage() {
       <div className="relative w-full">
         <select
           type="text"
-          // ref={selectRef}
           value={tag}
           onClick={toggleDropdown}
           onBlur={handleBlur}
