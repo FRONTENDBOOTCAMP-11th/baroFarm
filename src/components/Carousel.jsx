@@ -22,11 +22,12 @@ export default function Carousel({ width = 390, height, data }) {
           objectFit: "cover",
         }}
       />
-      <div className="absolute flex bottom-3 left-3 bg-white/80 rounded-lg px-3 py-1 items-center gap-2">
-        <span className="text-red1 font-semibold text-lg pr-1">
+      {/* 상품 정보를 나타내는 자막 */}
+      <div className="absolute flex bottom-7 left-3 bg-white/60 rounded-lg px-2 py-1 items-center gap-2">
+        <span className="text-red1 font-semibold text-sm pr-1">
           {item.sale}
         </span>
-        <span className="text-[14px] line-clamp-1">
+        <span className="text-xs line-clamp-1">
           {item.content} ({item.rate})
         </span>
       </div>
@@ -47,10 +48,10 @@ export default function Carousel({ width = 390, height, data }) {
           clickable: true,
           bulletActiveClass: "swiper-pagination-bullet-active",
         }}
-        // autoplay={{
-        //   delay: 3000,
-        //   disableOnInteraction: false,
-        // }}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false,
+        }}
         loop={true}
       >
         {slides}
