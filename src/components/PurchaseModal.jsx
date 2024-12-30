@@ -8,12 +8,12 @@ const PurchaseModal = forwardRef(({ children }, ref) => {
 
   const open = () => {
     setIsVisible(true);
-    dialogRef.current.showModal();
+    dialogRef.current?.showModal();
   };
 
   const close = () => {
     setIsVisible(false);
-    dialogRef.current.close();
+    dialogRef.current?.close();
   };
 
   useImperativeHandle(ref, () => ({

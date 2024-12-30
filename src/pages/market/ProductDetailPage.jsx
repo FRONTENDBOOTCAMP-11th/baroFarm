@@ -2,9 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate, useOutletContext, Link } from "react-router-dom";
 
 import PurchaseModal from "@components/PurchaseModal";
+import Modal from "@components/Modal";
 
 import productImage1 from "/images/Sample1.svg";
 import forwardIcon from "/icons/icon_forward.svg";
+import cartIcon from "/icons/icon_cart_modal.svg";
 
 const likeIcon = {
   default: "/icons/icon_likeHeart_no.svg",
@@ -22,9 +24,15 @@ export default function ProductDetailPage() {
   const navigate = useNavigate();
 
   const purchaseModalRef = useRef();
+  const modalRef = useRef();
+
+  const openPurchaseModal = () => {
+    purchaseModalRef.current.open();
+  };
 
   const openModal = () => {
-    purchaseModalRef.current.open();
+    modalRef.current.open();
+    purchaseModalRef.current.close();
   };
 
   const [isLiked, setIsLiked] = useState(false);
@@ -137,7 +145,7 @@ export default function ProductDetailPage() {
           <span className="text-sm font-medium">찜</span>
         </button>
         <button
-          onClick={openModal}
+          onClick={openPurchaseModal}
           className="w-[280px] text-lg text-white bg-btn-primary p-4 rounded-[10px]"
         >
           구매하기
@@ -176,7 +184,10 @@ export default function ProductDetailPage() {
           </p>
         </div>
         <div className="flex justify-between gap-3">
-          <button className="flex-1 text-lg text-btn-primary p-3 rounded-[10px] border border-btn-primary">
+          <button
+            className="flex-1 text-lg text-btn-primary p-3 rounded-[10px] border border-btn-primary"
+            onClick={openModal}
+          >
             장바구니
           </button>
           <button className="flex-1 text-lg text-white bg-btn-primary p-3 rounded-[10px]">
@@ -184,6 +195,16 @@ export default function ProductDetailPage() {
           </button>
         </div>
       </PurchaseModal>
+      <Modal ref={modalRef}>
+        <p className="text-center text-lg font-">
+          <strong className="font-semibold">장바구니</strong>에 <br /> 상품을
+          담았어요
+        </p>
+        <img src={cartIcon} className="w-[66px]" />
+        <Link to="/cart">
+          <span className="font-light border-b border-b-black">바로가기</span>
+        </Link>
+      </Modal>
     </>
   );
 }

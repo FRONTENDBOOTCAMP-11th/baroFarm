@@ -13,11 +13,12 @@ const Modal = forwardRef(({ children }, ref) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      dialogRef.current.close();
-    }, 2000);
+      dialogRef.current?.close();
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, []);
+
   return createPortal(
     <dialog
       ref={dialogRef}
