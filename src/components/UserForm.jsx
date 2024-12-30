@@ -2,9 +2,10 @@ import PropTypes from "prop-types";
 
 UserForm.propTypes = {
   buttonText: PropTypes.string.isRequired,
+  userInfo: PropTypes.shape(),
 };
 
-export default function UserForm({ buttonText }) {
+export default function UserForm({ userInfo, buttonText }) {
   return (
     <form className="p-5">
       {/* 이메일 */}
@@ -120,7 +121,9 @@ export default function UserForm({ buttonText }) {
           placeholder="주소를 입력해주세요"
           required
         />
-        <span className="text-xs ml-1">배송지에 따라 상품 정보가 달라질 수 있습니다.</span>
+        <span className="text-xs ml-1">
+          배송지에 따라 상품 정보가 달라질 수 있습니다.
+        </span>
       </div>
       {/* 닉네임 */}
       <div className="mb-5 text-sm">
