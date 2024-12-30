@@ -53,7 +53,7 @@ export default function MyPage() {
                   to={"/users/profile"}
                   className="flex ml-auto h-fit items-center text-[14px]"
                 >
-                  프로필 보기
+                  로그아웃
                   <img
                     src="/icons/icon_forward.svg"
                     className="h-4 ml-2"
@@ -97,13 +97,47 @@ export default function MyPage() {
         </a>
       </div>
       <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
-      <div className="h-[152px] pt-[18px] ">
+      <div className="h-[109px] pt-[18px] ">
         <h2 className="text-base leading-[19px]">판매 정보</h2>
         <Link
           to={"/product/new"}
           className="flex items-center text-[14px] mt-[27px] mb-[24px]"
         >
           상품 등록
+          <img
+            src="/icons/icon_forward.svg"
+            className="h-[16px] ml-auto"
+            alt="addProduct icon"
+          />
+        </Link>
+      </div>
+      <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
+      <div className="h-[109px] pt-[18px] ">
+        <h2 className="text-base leading-[19px]">계정 관리</h2>
+        <Link
+          to={"/product/new"}
+          className="flex items-center text-[14px] mt-[27px] mb-[24px]"
+        >
+          내 정보 보기
+          <img
+            src="/icons/icon_forward.svg"
+            className="h-[16px] ml-auto"
+            alt="addProduct icon"
+          />
+        </Link>
+        <Link to={""} className="flex items-center text-[14px] my-[24px]">
+          개인 정보 수정
+          <img
+            src="/icons/icon_forward.svg"
+            className="h-[16px] ml-auto"
+            alt="addProduct icon"
+          />
+        </Link>
+        <Link
+          to={"/product/new"}
+          className="flex items-center text-[14px] my-[24px]"
+        >
+          탈퇴하기
           <img
             src="/icons/icon_forward.svg"
             className="h-[16px] ml-auto"
