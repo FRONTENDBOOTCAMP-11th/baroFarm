@@ -19,7 +19,7 @@ export default function BoardNewPage() {
     <form className="relative mx-5">
       <div className="flex flex-row mt-5 items-center">
         <img
-          src="/images/ProfileImage_Sample.svg"
+          src="/images/profile/Profile_sample_1.jpg"
           alt="ProfileImage"
           className="w-6 h-6"
         />

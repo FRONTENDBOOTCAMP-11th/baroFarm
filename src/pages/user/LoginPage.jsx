@@ -30,7 +30,7 @@ export default function LoginPage() {
         </div>
         <label className="mb-8 flex items-center gap-1 cursor-pointer font-medium">
           <input className="w-5 h-5 mr-1 rounded-full appearance-none bg-gray2 checked:bg-green1" type="checkbox" />
-          <span>로그인 저장 정보</span>
+          <span>로그인 상태 유지</span>
         </label>
       </form>
 
