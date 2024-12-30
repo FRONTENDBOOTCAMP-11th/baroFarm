@@ -103,19 +103,19 @@ export default function ProductNewPage() {
       </div>
       <textarea
         name="productInfo"
-        className="w-full my-[25px] h-[200px] p-3 border-gray3 border-[1px] bg-gray2/20"
+        className="w-full mt-[25px] mb-[15px] h-[200px] p-3 border-gray3 border-[1px] bg-gray2/20"
         placeholder="본문 내용을 입력해주세요."
         {...register("productContent", {
           required: "상품 소개문을 입력해주세요",
         })}
       ></textarea>
       <label className="font-bold">판매 희망 가격</label>
-      <div className="relative w-full">
+      <div className="relative w-full mt-[10px]">
         <input
           type="text"
           name="price"
           value={priceToString}
-          className="bg-gray2/20 w-full h-[50px] pr-12 px-4"
+          className="bg-gray2/20 w-full h-[50px] pr-12 px-4 focus:text-right placeholder:text-left"
           placeholder="가격을 입력하세요"
           {...register("price", {
             required: "필수 입력 정보입니다",
@@ -130,7 +130,7 @@ export default function ProductNewPage() {
       <label className="font-bold">판매 희망 개수</label>
       <input
         type="text"
-        className="bg-gray2/20 w-full h-[50px] mb-[25px] px-4"
+        className="bg-gray2/20 w-full h-[50px] mb-[25px] px-4 mt-[10px]"
         placeholder="판매 개수를 입력하세요"
         {...register("quantity", {
           required: "필수 입력 정보입니다",
