@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 
 UserForm.propTypes = {
   buttonText: PropTypes.string.isRequired,
+  // 수정기능 구현시 기존의 계정 정보를 입력받아올 props - userInfo
+  // 회원가입 시에도 쓰이기에 userInfo는 isRequired가 아님
   userInfo: PropTypes.shape(),
 };
 
