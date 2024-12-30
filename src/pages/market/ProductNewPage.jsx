@@ -4,6 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function ProductNewPage() {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setFocus,
+    formState: { errors },
+  } = useForm();
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   useEffect(() => {
