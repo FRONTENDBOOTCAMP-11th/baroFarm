@@ -21,28 +21,28 @@ export default function BoardDetailPage() {
 
   return (
     <div className="mx-5">
-      <div>
-        <div className="flex flex-row mt-5">
-          <img
-            src="/images/profile/Profile_sample_1.jpg"
-            alt="ProfileImage"
-            className="w-6 h-6 rounded-full border border-btn-primary"
-          />
-          <span className="mx-[5px] text-sm">온도감</span>
-          <span className="text-[10px] mt-[1px] text-gray4">16분 전</span>
-          <span className="ml-auto text-xs">
-            <button>수정</button> | <button>삭제</button>
-          </span>
-        </div>
-        <div className="mx-[5px] mt-[30px]">
-          요즘 토마토가 또 철이네요~ 우리 집에서 기른 토마토로 만든 소스로
-          스파게티를 해보니 정말 일품이네요! 모두와 함께 공유하고 싶어 이렇게
-          글을 올립니다~
-        </div>
+      <div className="flex flex-row mt-5 items-center">
         <img
-          className="relative mt-10 mb-5 rounded-md"
-          src="/images/sample/food.svg"
+          src="/images/profile/Profile_sample_1.jpg"
+          alt="ProfileImage"
+          className="w-6 h-6 rounded-full border border-btn-primary"
         />
+        <span className="mx-[5px] text-sm">온도감</span>
+        <span className="text-[10px] ml-auto self-start text-gray4">
+          16분 전
+        </span>
+      </div>
+      <div className="mx-[5px] mt-[30px]">
+        요즘 토마토가 또 철이네요~ 우리 집에서 기른 토마토로 만든 소스로
+        스파게티를 해보니 정말 일품이네요! 모두와 함께 공유하고 싶어 이렇게 글을
+        올립니다~
+      </div>
+      <img
+        className="relative mt-10 mb-1 rounded-md"
+        src="/images/sample/food.svg"
+      />
+      <div className="text-right text-xs">
+        <button>수정</button> | <button>삭제</button>
       </div>
       <div className="pt-5">
         <span className="font-semibold">댓글 (2)</span>
