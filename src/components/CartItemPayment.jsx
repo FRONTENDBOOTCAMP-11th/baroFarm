@@ -23,7 +23,7 @@ export default function CartItemPayment({
 }) {
   return (
     <div className="mb-3 [&:not(:last-child)]:pb-5 [&:not(:last-child)]:border-b border-gray2">
-      <div className="text-xs font-bold">{extra.seller_name}</div>
+      <div className="text-sm font-bold">{extra.seller_name}</div>
       <div className="pt-2 flex gap-3">
         <img
           src={image.url}
@@ -31,9 +31,9 @@ export default function CartItemPayment({
           className="size-[72px] object-cover"
         />
         <div className="flex flex-col">
-          <p className="text-[10px] mb-1">{name}</p>
-          <p className="text-[10px] text-gray3 mb-1">{extra.option}</p>
-          <span className="text-[14px] font-extrabold mt-auto">
+          <p className="text-xs mb-1">{name}</p>
+          <p className="text-xs text-gray3 mb-1">{extra.option}</p>
+          <span className="text-[16px] font-extrabold mt-auto">
             {price.toLocaleString()}원
           </span>
         </div>

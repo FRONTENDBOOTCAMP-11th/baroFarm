@@ -257,7 +257,7 @@ export default function PaymentPage() {
                         disabled
                         placeholder="주소를 입력하세요."
                       />
-                      <Button width={78} height={34}>
+                      <Button width="78px" height="34">
                         주소 검색
                       </Button>
                     </div>
