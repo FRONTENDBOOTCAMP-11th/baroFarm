@@ -29,7 +29,8 @@ export default function Button({
   };
 
   // 정적인 클래스만 사용
-  const buttonClass = "rounded-md shrink-0 text-white font-semibold";
+  const buttonClass =
+    "flex justify-center items-center rounded-md shrink-0 text-white font-semibold";
 
   return (
     <button

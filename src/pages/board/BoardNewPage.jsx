@@ -18,6 +18,8 @@ export default function BoardNewPage() {
       title: "새 글 작성",
       rightChild: (
         <Button
+          width="45px"
+          height="20px"
           onClick={() =>
             formRef.current?.dispatchEvent(
               new Event("submit", { cancelable: true, bubbles: true })
