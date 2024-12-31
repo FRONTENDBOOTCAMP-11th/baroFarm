@@ -1,6 +1,6 @@
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function ProfilePage() {
   const { setHeaderContents } = useOutletContext();
@@ -47,6 +47,16 @@ export default function ProfilePage() {
           {data.phone}
         </section>
       </div>
+      <Link
+        to={"/users/profile/edit"}
+        className="flex items-center text-[14px] my-[24px]"
+      >
+        <img
+          src="/icons/icon_profileEdit_full.svg"
+          className="h-10 ml-auto"
+          alt="addProduct icon"
+        />
+      </Link>
     </div>
   );
 }
