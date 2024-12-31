@@ -49,8 +49,7 @@ export default function BoardNewPage() {
       </div>
       <NewPost
         formRef={formRef}
-        handleSubmit={handleSubmit}
-        check={check}
+        handleSubmit={handleSubmit(check)}
         register={register}
       ></NewPost>
     </div>

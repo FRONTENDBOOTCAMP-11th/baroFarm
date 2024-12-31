@@ -1,17 +1,17 @@
 import PropTypes from "prop-types";
 
 NewPost.propTypes = {
-  formRef: PropTypes.shape(),
+  formRef: PropTypes.shape().isRequired,
   handleSubmit: PropTypes.func,
-  check: PropTypes.func,
-  register: PropTypes.func,
+  submit: PropTypes.func,
+  register: PropTypes.func.isRequired,
 };
 
-export default function NewPost({ formRef, handleSubmit, check, register }) {
+export default function NewPost({ formRef, handleSubmit, register }) {
   //사용시 use-hook-form의 register를 props로 보내야함
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit(check)}>
+    <form ref={formRef} onSubmit={handleSubmit}>
       <textarea
         name="content"
         id="content"
