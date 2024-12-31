@@ -53,7 +53,7 @@ export default function BoardNewPage() {
       <textarea
         name="content"
         id="content"
-        className="w-full mt-[10px] mb-[25px] h-[200px] p-3 border-gray3 border-[1px] bg-gray2/20"
+        className="w-full mt-[10px] mb-[25px] h-[200px] p-3 border-gray3 border-[1px] bg-gray2/20 focus:outline-btn-primary rounded-md"
         placeholder="본문 내용을 입력해주세요."
         {...register("content", {
           required: "본문 내용을 입력해주세요",
