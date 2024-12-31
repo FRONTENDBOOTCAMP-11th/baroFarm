@@ -16,7 +16,7 @@ export default function PurchaseItem() {
         <span className="font-semibold">4,280 원</span>
         <span className="ml-4">1개</span>
         <Link
-          to={isReviewed ? "/product/1/reviews" : "/product/1/reviews/new"}
+          to={isReviewed ? "/product/1/reviews" : "/product/1/reviewed"}
           className="text-xs absolute bottom-4 right-0 border-b border-gray5 text-gray5 hover:text-btn-primary hover:border-b-btn-primary"
         >
           {isReviewed ? "후기 보기" : "후기 작성"}
