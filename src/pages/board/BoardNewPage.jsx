@@ -9,6 +9,7 @@ export default function BoardNewPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  const isBoard = true;
 
   // form 태그를 참조
   const formRef = useRef(null);
@@ -43,11 +44,12 @@ export default function BoardNewPage() {
         <img
           src="/images/profile/Profile_sample_1.jpg"
           alt="ProfileImage"
-          className="w-6 h-6"
+          className="w-6 h-6 rounded-full border border-btn-primary"
         />
         <span className="mx-[5px] text-sm">온도감</span>
       </div>
       <NewPost
+        isBoard={isBoard}
         formRef={formRef}
         handleSubmit={handleSubmit(check)}
         register={register}

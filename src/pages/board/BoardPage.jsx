@@ -6,12 +6,11 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 export default function BoardPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  const [tag, setTag] = useState("자유");
 
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
-      title: `${tag} 게시판`,
+      title: "바로파밍",
       rightChild: (
         <>
           <HeaderIcon name="search" onClick={() => navigate("/search")} />
@@ -22,19 +21,17 @@ export default function BoardPage() {
   }, []);
   return (
     <div className="relative mx-5">
-      <div className="flex flex-row h-[50px] mx-[-20px] max-w-[calc(100%+40px)] ">
-        <button className="flex w-full justify-center text-sm items-center border-r-[1px] border-gray3/50">
-          자유
-        </button>
-        <button className="flex w-full justify-center text-sm items-center border-gray3/50">
-          정보 공유
-        </button>
+      <div>
+        <p>
+          바로파밍은 모든 이용자들을 위한 소통의 공간입니다. 매너를 지키는
+          바로팜 人이 됩시다!
+        </p>
       </div>
       <BoardPageDetail />
       <BoardPageDetail />
       <Link
         to="new"
-        className="fixed right-[calc(50%-195px+20px)] bottom-[120px] w-[50px] h-[50px] rounded-full bg-btn-primary"
+        className="fixed right-[calc(50%-195px+20px)] bottom-[120px] w-[40px] h-[40px] rounded-full bg-btn-primary"
       >
         <img src="/icons/icon_plus_2.svg" className="w-full h-full" />
       </Link>

@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 
 NewPost.propTypes = {
-  formRef: PropTypes.shape().isRequired,
+  isBoard: PropTypes.bool,
+  formRef: PropTypes.shape(),
   handleSubmit: PropTypes.func,
-  submit: PropTypes.func,
   register: PropTypes.func.isRequired,
 };
 
-export default function NewPost({ formRef, handleSubmit, register }) {
+export default function NewPost({ isBoard, formRef, handleSubmit, register }) {
   //사용시 use-hook-form의 register를 props로 보내야함
 
   return (
@@ -22,6 +22,20 @@ export default function NewPost({ formRef, handleSubmit, register }) {
         })}
       ></textarea>
       <br />
+      {!isBoard && (
+        <div>
+          <p className="font-semibold">구매하신 상품은 만족하시나요?</p>
+          <div className="flex flex-wrap justify-start my-3">
+            <button className="border rounded-[10px] px-2 ">⭐️</button>
+            <button className="border rounded-[10px] px-2">⭐️⭐️</button>
+            <button className="border rounded-[10px] px-2">⭐️⭐️⭐️</button>
+            <button className="border rounded-[10px] px-2">⭐️⭐️⭐️⭐️</button>
+            <button className="border rounded-[10px] px-2">
+              ⭐️⭐️⭐️⭐️⭐️
+            </button>
+          </div>
+        </div>
+      )}
       <label className="font-bold">이미지 첨부</label>
       <input
         type="file"
