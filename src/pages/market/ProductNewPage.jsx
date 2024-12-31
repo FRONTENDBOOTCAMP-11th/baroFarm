@@ -14,6 +14,8 @@ export default function ProductNewPage() {
       title: "상품 등록",
       rightChild: (
         <Button
+          width="45px"
+          height="20px"
           onClick={() =>
             formRef.current?.dispatchEvent(
               new Event("submit", { cancelable: true, bubbles: true })
@@ -101,10 +103,33 @@ export default function ProductNewPage() {
           />
         </span>
       </div>
+      {tag === "fruit" && (
+        <>
+          <label className="font-bold block mt-[25px] mb-2">
+            제철 지정 (선택)
+          </label>
+          <input
+            className="border-2 border-gray3 rounded-md w-40% p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-green1"
+            type="date"
+            id="seasonStart"
+            name="seasonStart"
+            required
+          />
+          <span className="mx-[0.1rem]">~</span>
+
+          <input
+            className="border-2 border-gray3 rounded-md w-40% p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-green1"
+            type="date"
+            id="seasonEnd"
+            name="seasonEnd"
+            required
+          />
+        </>
+      )}
       <textarea
         name="productInfo"
-        className="w-full mt-[25px] mb-[15px] h-[200px] p-3 border-gray3 border-[1px] bg-gray2/20"
-        placeholder="본문 내용을 입력해주세요."
+        className="w-full mt-[25px] mb-[15px] h-[200px] p-3 border-gray3 border-[1px] bg-gray2/20 focus:outline-btn-primary rounded-md"
+        placeholder="상품 소개문을 입력해주세요."
         {...register("productContent", {
           required: "상품 소개문을 입력해주세요",
         })}
@@ -115,7 +140,7 @@ export default function ProductNewPage() {
           type="text"
           name="price"
           value={priceToString}
-          className="bg-gray2/20 w-full h-[50px] pr-12 px-4 focus:text-right placeholder:text-left"
+          className="bg-gray2/20 w-full h-[50px] pr-12 px-4 focus:text-right placeholder:text-left focus:outline-btn-primary rounded-md"
           placeholder="가격을 입력하세요"
           {...register("price", {
             required: "필수 입력 정보입니다",
@@ -130,7 +155,7 @@ export default function ProductNewPage() {
       <label className="font-bold">판매 희망 개수</label>
       <input
         type="text"
-        className="bg-gray2/20 w-full h-[50px] mb-[25px] px-4 mt-[10px]"
+        className="bg-gray2/20 w-full h-[50px] mb-[25px] px-4 mt-[10px] focus:outline-btn-primary rounded-md"
         placeholder="판매 개수를 입력하세요"
         {...register("quantity", {
           required: "필수 입력 정보입니다",
@@ -143,7 +168,7 @@ export default function ProductNewPage() {
         id="attach"
         accept="image/*"
         placeholder="이미지를 선택하세요"
-        className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 mt-[10px]"
+        className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 mt-[10px] focus:outline-btn-primary rounded-md"
         name="attach"
         {...register("image")}
       />
