@@ -57,7 +57,7 @@ export default function MyPage() {
             <>
               <img
                 src="/images/profile/Profile_sample_1.jpg"
-                className="mr-5 w-[49px] h-[50px] rounded-full"
+                className="mr-5 w-[49px] h-[50px] rounded-full border border-btn-primary"
                 loading="lazy"
               />
               <div>

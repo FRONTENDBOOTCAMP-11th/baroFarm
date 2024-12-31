@@ -51,7 +51,7 @@ export default function BoardDetailPage() {
             <img
               src="/images/profile/Profile_sample_1.jpg"
               alt="ProfileImage"
-              className="w-6 h-6 rounded-full"
+              className="w-6 h-6 rounded-full border border-btn-primary"
             />
             <span className="mx-[5px] text-sm">떡보369</span>
             <span className="text-[10px] mt-[6px] ml-auto text-gray4">
@@ -72,7 +72,7 @@ export default function BoardDetailPage() {
             <img
               src="/images/profile/Profile_sample_2.jpg"
               alt="ProfileImage"
-              className="w-6 h-6 rounded-full"
+              className="w-6 h-6 rounded-full border border-btn-primary"
             />
             <span className="mx-[5px] text-sm">삼행시 빌런</span>
             <span className="text-[10px] mt-[6px] ml-auto text-gray4">
