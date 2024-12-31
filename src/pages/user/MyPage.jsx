@@ -131,7 +131,10 @@ export default function MyPage() {
       <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
       <div className="h-[152px] pt-[18px]">
         <h2 className="text-base leading-[19px]">구매 정보</h2>
-        <Link className="flex items-center text-[14px] mt-[27px]">
+        <Link
+          to={"/users/recent"}
+          className="flex items-center text-[14px] mt-[27px]"
+        >
           최근 본 상품
           <img
             src="/icons/icon_forward.svg"
