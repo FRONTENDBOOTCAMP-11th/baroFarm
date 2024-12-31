@@ -40,8 +40,8 @@ export default function ProfilePage() {
             className="h-10 ml-auto"
             alt="addProduct icon"
           />
-          <div className="absolute translate-y-8 translate-x-4 bg-black bg-opacity-50 text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <p className="font-bold">수정</p>
+          <div className="absolute w-auto box-border text-nowrap translate-y-8 translate-x-4 px-1 bg-btn-primary text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <p className="">프로필 수정</p>
           </div>
         </Link>
         <div className="mt-[25px] mb-[30px] text-2xl font-bold">
@@ -51,8 +51,7 @@ export default function ProfilePage() {
       <div className="flex flex-row gap-5 bg-gray5/20 mx-5 px-4 py-[5px] font-medium">
         <section>
           이름 <br />
-          성별
-          <br />
+          성별 <br />
           이메일 <br />
           전화번호
         </section>

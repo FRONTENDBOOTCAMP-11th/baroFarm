@@ -9,9 +9,7 @@ export default function EditProfilePage() {
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: (
-        <HeaderIcon name="back" onClick={() => navigate("/users/mypage")} />
-      ),
+      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "개인정보 수정",
     });
   }, []);

@@ -12,19 +12,6 @@ export default function ProductNewPage() {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "상품 등록",
-      rightChild: (
-        <Button
-          width="45px"
-          height="20px"
-          onClick={() =>
-            formRef.current?.dispatchEvent(
-              new Event("submit", { cancelable: true, bubbles: true })
-            )
-          }
-        >
-          등록
-        </Button>
-      ),
     });
   }, []);
 
@@ -68,67 +55,78 @@ export default function ProductNewPage() {
         })}
       />
       <br />
-      <div className="relative w-full">
-        <select
-          type="text"
-          value={tag}
-          onClick={toggleDropdown}
-          onBlur={handleBlur}
-          className={`bg-gray2/20 w-full h-[50px] mt-[25px] px-4 appearance-none focus:outline-btn-primary rounded-md`}
-          {...register("category", {
-            required: "상품명 종류를 선택해주세요",
-            onChange: (e) => setTag(e.target.value),
-          })}
-        >
-          <option value="select">카테고리</option>
-          <option value="fruit">과일</option>
-          <option value="vegetable">채소</option>
-          <option value="kimchi">김치</option>
-          <option value="livestock">축산물</option>
-          <option value="seafood">수산물</option>
-          <option value="ReadyToEat">간편식</option>
-          <option value="Rice">쌀</option>
-          <option value="RiceCake">떡</option>
-        </select>
-        <span
-          // onClick={handleSpanClick}
-          className={`absolute right-4 top-[42px] ${
-            isOpen ? "rotate-90" : "-rotate-90"
-          }`}
-        >
-          <img
-            src="/icons/icon_back_thin.svg"
-            alt="dropdown arrow"
-            className="w-4 h-4"
-          />
-        </span>
-      </div>
+
+      <select
+        type="text"
+        value={tag}
+        className={`border-2 border-white bg-gray2/20 w-full h-[50px] mt-[25px] px-4 outline-none focus:border-btn-primary rounded-md`}
+        {...register("category", {
+          required: "상품명 종류를 선택해주세요",
+          onChange: (e) => setTag(e.target.value),
+        })}
+      >
+        <option value="select">카테고리</option>
+        <option value="fruit">과일</option>
+        <option value="vegetable">채소</option>
+        <option value="kimchi">김치</option>
+        <option value="livestock">축산물</option>
+        <option value="seafood">수산물</option>
+        <option value="ReadyToEat">간편식</option>
+        <option value="Rice">쌀</option>
+        <option value="RiceCake">떡</option>
+      </select>
+
       {tag === "fruit" && (
         <>
           <label className="font-bold block mt-[25px] mb-2">
             제철 지정 (선택)
           </label>
-          <input
-            className="border-2 border-gray3 rounded-md w-40% p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-green1"
-            type="date"
+          <select
+            className="border-2 border-white bg-gray2/20 rounded-md p-2 outline-none focus:border-btn-primary w-[30%]"
+            type="month"
             id="seasonStart"
             name="seasonStart"
             required
-          />
+          >
+            <option value="1">1월</option>
+            <option value="2">2월</option>
+            <option value="3">3월</option>
+            <option value="4">4월</option>
+            <option value="5">5월</option>
+            <option value="6">6월</option>
+            <option value="7">7월</option>
+            <option value="8">8월</option>
+            <option value="9">9월</option>
+            <option value="10">10월</option>
+            <option value="11">11월</option>
+            <option value="12">12월</option>
+          </select>
           <span className="mx-[0.5rem]">~</span>
-
-          <input
-            className="border-2 border-gray3 rounded-md w-40% p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-green1"
-            type="date"
+          <select
+            className="border-2 border-white bg-gray2/20 rounded-md p-2 outline-none focus:border-btn-primary w-[30%]"
+            type="month"
             id="seasonEnd"
             name="seasonEnd"
             required
-          />
+          >
+            <option value="1">1월</option>
+            <option value="2">2월</option>
+            <option value="3">3월</option>
+            <option value="4">4월</option>
+            <option value="5">5월</option>
+            <option value="6">6월</option>
+            <option value="7">7월</option>
+            <option value="8">8월</option>
+            <option value="9">9월</option>
+            <option value="10">10월</option>
+            <option value="11">11월</option>
+            <option value="12">12월</option>
+          </select>
         </>
       )}
       <textarea
         name="productInfo"
-        className="w-full mt-[25px] mb-[15px] h-[200px] p-3 border-gray3 border-[1px] bg-gray2/20 focus:outline-btn-primary rounded-md"
+        className="border-2 border-white w-full mt-[25px] mb-[15px] h-[200px] p-3 bg-gray2/20 outline-none focus:border-btn-primary rounded-md"
         placeholder="상품 소개문을 입력해주세요."
         {...register("productContent", {
           required: "상품 소개문을 입력해주세요",
@@ -168,10 +166,13 @@ export default function ProductNewPage() {
         id="attach"
         accept="image/*"
         placeholder="이미지를 선택하세요"
-        className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 mt-[10px] focus:outline-btn-primary"
+        className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 mt-[10px] focus:outline-btn-primary mb-[25px]"
         name="attach"
         {...register("image")}
       />
+      <Button width="100%" height="45px" fontSize={24} type="submit">
+        등록
+      </Button>
     </form>
   );
 }
