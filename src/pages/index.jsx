@@ -206,7 +206,7 @@ export default function MainPage() {
           {storyImages}
         </div>
       </section>
-      <section className="flex flex-col gap-1 px-5 bg-bg-primary3 text-white text-sm py-5">
+      <section className="flex flex-col gap-1 px-5 bg-gray1 text-black text-sm py-5">
         <p className="font-semibold">(주) 농담 사업자 정보</p>
         <p>
           (주)농담 | 대표자 : 넝담~ <br />
