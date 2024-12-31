@@ -8,7 +8,6 @@ export default function ProfilePage() {
   const data = {
     name: "김아무개",
     gender: "남",
-    age: 42,
     email: "kimamuge@gmail.com",
     phone: "000-1111-2222",
     auth: "판매자",
@@ -40,14 +39,12 @@ export default function ProfilePage() {
         <section>
           이름 <br />
           성별 <br />
-          나이 <br />
           이메일 <br />
           전화번호
         </section>
         <section className="text-gray5">
           {data.name} <br />
           {data.gender} <br />
-          {data.age} <br />
           {data.email} <br />
           {data.phone}
         </section>

@@ -29,7 +29,7 @@ export default function BoardDetailPage() {
             className="w-6 h-6 rounded-full"
           />
           <span className="mx-[5px] text-sm">온도감</span>
-          <span className="text-[10px] mt-[6px] text-gray4">16분 전</span>
+          <span className="text-[10px] mt-[1px] text-gray4">16분 전</span>
           <span className="ml-auto text-xs">
             <button>수정</button> | <button>삭제</button>
           </span>
@@ -40,7 +40,7 @@ export default function BoardDetailPage() {
           글을 올립니다~
         </div>
         <img
-          className="relative mt-10 w-[calc(100%+40px)] max-w-[390px] -translate-x-5 -z-50"
+          className="relative mt-10 mb-5 rounded-md"
           src="/images/sample/food.svg"
         />
       </div>
@@ -98,7 +98,7 @@ export default function BoardDetailPage() {
         <input
           type="text"
           name="comment"
-          className="max-w-[285px] h-[35px] rounded-full px-[15px] mr-5 bg-gray1 flex-grow"
+          className="max-w-[285px] h-[35px] rounded-full px-[15px] mr-5 bg-gray1 flex-grow focus:outline-btn-primary"
         />
         <Button width={45} height={35} onClick={() => navigate("/board")}>
           등록

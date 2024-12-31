@@ -12,14 +12,14 @@ export default function BoardPageDetail() {
             className="w-6 h-6 rounded-full"
           />
           <span className="mx-[5px] text-sm">온도감</span>
-          <span className="text-[10px] mt-[6px] text-gray4">16분 전</span>
+          <span className="text-[10px] mt-[1px] text-gray4">16분 전</span>
           <span className="ml-auto text-xs">댓글 1개</span>
         </div>
         <div className="mx-[5px] mt-[30px]">
           요즘 토마토가 또 철이네요~ 우리 집에서 기른 토마토로 만든...
         </div>
         <img
-          className="relative mt-10 w-[calc(100%+40px)] max-w-[390px] -translate-x-5"
+          className="relative mt-10 mb-5 rounded-md"
           src="/images/sample/food.svg"
         />
       </Link>
