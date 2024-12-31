@@ -115,7 +115,7 @@ export default function ProductNewPage() {
             name="seasonStart"
             required
           />
-          <span className="mx-[0.1rem]">~</span>
+          <span className="mx-[0.5rem]">~</span>
 
           <input
             className="border-2 border-gray3 rounded-md w-40% p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-green1"
@@ -168,7 +168,7 @@ export default function ProductNewPage() {
         id="attach"
         accept="image/*"
         placeholder="이미지를 선택하세요"
-        className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 mt-[10px] focus:outline-btn-primary rounded-md"
+        className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 mt-[10px] focus:outline-btn-primary"
         name="attach"
         {...register("image")}
       />
