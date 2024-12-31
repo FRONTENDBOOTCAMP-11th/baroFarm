@@ -29,7 +29,10 @@ export default function LoginPage() {
           <input type="password" placeholder="비밀번호" className="placeholder:text-gray4 w-full outline-none" />
         </div>
         <label className="mb-8 flex items-center gap-1 cursor-pointer font-normal">
-          <input className="w-5 h-5 mr-1 rounded-full appearance-none bg-gray2 checked:bg-bg-primary" type="checkbox" />
+          <input
+            className="w-5 h-5 mr-1 rounded-full appearance-none bg-gray2 checked:bg-btn-primary"
+            type="checkbox"
+          />
           <span>로그인 상태 유지</span>
         </label>
       </form>
