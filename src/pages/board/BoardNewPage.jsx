@@ -18,19 +18,6 @@ export default function BoardNewPage() {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "새 글 작성",
-      rightChild: (
-        <Button
-          width="45px"
-          height="20px"
-          onClick={() =>
-            formRef.current?.dispatchEvent(
-              new Event("submit", { cancelable: true, bubbles: true })
-            )
-          }
-        >
-          등록
-        </Button>
-      ),
     });
   }, []);
 
@@ -40,14 +27,6 @@ export default function BoardNewPage() {
 
   return (
     <div className="relative mx-5">
-      <div className="flex flex-row mt-5 items-center">
-        <img
-          src="/images/profile/Profile_sample_1.jpg"
-          alt="ProfileImage"
-          className="w-6 h-6 rounded-full border border-btn-primary"
-        />
-        <span className="mx-[5px] text-sm">온도감</span>
-      </div>
       <NewPost
         isBoard={isBoard}
         formRef={formRef}
