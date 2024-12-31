@@ -66,8 +66,22 @@ export default function UserForm({ userInfo, buttonText }) {
           required
         />
       </div>
+      {/* 닉네임 */}
+      <div className="mb-2.5 text-sm">
+        <label className="block mb-2.5 font-semibold" htmlFor="name">
+          닉네임
+        </label>
+        <input
+          className="border-2 border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-green1"
+          type="text"
+          id="name"
+          name="name"
+          placeholder="닉네임을 입력해주세요"
+          required
+        />
+      </div>
       {/* 휴대폰 */}
-      <div className="mb-5 text-sm">
+      <div className="mb-2.5 text-sm">
         <label className="block mb-2.5 font-semibold" htmlFor="phone">
           휴대폰
         </label>
@@ -121,23 +135,6 @@ export default function UserForm({ userInfo, buttonText }) {
           id="address"
           name="address"
           placeholder="주소를 입력해주세요"
-          required
-        />
-        <span className="text-xs ml-1">
-          배송지에 따라 상품 정보가 달라질 수 있습니다.
-        </span>
-      </div>
-      {/* 닉네임 */}
-      <div className="mb-5 text-sm">
-        <label className="block mb-2.5 font-semibold" htmlFor="name">
-          닉네임
-        </label>
-        <input
-          className="border-2 border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-0.5 outline-none focus:border-green1"
-          type="text"
-          id="name"
-          name="name"
-          placeholder="닉네임을 입력해주세요"
           required
         />
       </div>
