@@ -184,7 +184,9 @@ export default function PaymentPage() {
                 <div className="flex flex-col gap-[6px]">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-bold">김호나우지뉴(집)</p>
-                    <Button width={"50px"}>변경</Button>
+                    <Button width={"50px"} height="25px">
+                      변경
+                    </Button>
                   </div>
                   <p className="text-xs text-gray4 font-medium">
                     010-0000-0000
@@ -327,17 +329,17 @@ export default function PaymentPage() {
         <div className="border-b border-gray2 mb-3">
           <h3 className="mb-3 text-sm font-bold">결제 정보</h3>
           <div className="px-6 py-5 bg-white border-2 border-bg-primary2/50 rounded-[10px] shadow-md mb-6">
-            <div className="text-xs flex justify-between mb-3">
+            <div className="text-sm flex justify-between mb-3">
               <span className="text-gray4">총 상품 금액</span>
               <span>{DUMMY_CARTS_ITEMS.cost.products.toLocaleString()}원</span>
             </div>
-            <div className="text-xs flex justify-between">
+            <div className="text-sm flex justify-between">
               <span className="text-gray4">배송비</span>
               <span>{totalShippingFees}</span>
             </div>
           </div>
         </div>
-        <div className="flex justify-between mb-3 py-3 text-[16px] font-bold">
+        <div className="flex justify-between mb-3 py-3 text-lg font-bold">
           <span>총 결제 금액</span>
           <span>{DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원</span>
         </div>
