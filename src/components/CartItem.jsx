@@ -29,16 +29,16 @@ export default function CartItem({ name, price, quantity, extra, image }) {
         />
         <div>
           <p className="text-xs mb-1">{name}</p>
-          <p className="text-[10px] text-gray3 mb-1">{extra.option}</p>
+          <p className="text-xs text-gray3 mb-1">{extra.option}</p>
           <div className="flex items-center mb-2">
-            <span className="text-[12px] font-semibold text-red1 mr-1">{`${
+            <span className="text-xs font-semibold text-red1 mr-1">{`${
               extra.discount * 100
             }%`}</span>
-            <span className="text-[14px] font-extrabold">
+            <span className="text-[16px] font-extrabold">
               {price.toLocaleString()}원
             </span>
           </div>
-          <div className="ring-1 ring-gray2 w-fit flex *:size-4 *:text-[10px] text-center items-center rounded-sm">
+          <div className="ring-1 ring-gray2 w-fit flex text-center items-center rounded-sm *:flex *:items-center *:justify-center *:size-6 *:text-sm">
             <button>-</button>
             <div>{quantity}</div>
             <button>+</button>
