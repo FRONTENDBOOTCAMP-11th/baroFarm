@@ -70,14 +70,14 @@ const productsData = [
   },
 ];
 
-export default function BookmarkPage() {
+export default function RecentPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
-      title: "찜한 상품",
+      title: "최근 본 상품",
       rightChild: (
         <>
           <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
