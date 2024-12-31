@@ -1,4 +1,5 @@
 import HeaderIcon from "@components/HeaderIcon";
+import RecentKeywordItem from "@components/RecentKeywordItem";
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
@@ -8,7 +9,7 @@ export default function SearchPage() {
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate("/")} />,
+      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "검색",
     });
   }, []);
@@ -47,21 +48,7 @@ export default function SearchPage() {
       </div>
 
       <ul className="mt-2.5 flex items-center flex-wrap gap-2.5 text-sm">
-        <li className="bg-gray2 px-3 rounded-xl">
-          <a className="hover:font-semibold" href="#">
-            귤
-          </a>
-        </li>
-        <li className="bg-gray2 px-3 rounded-xl">
-          <a className="hover:font-semibold" href="#">
-            갈치
-          </a>
-        </li>
-        <li className="bg-gray2 px-3 rounded-xl">
-          <a className="hover:font-semibold" href="#">
-            고랭지배추
-          </a>
-        </li>
+        <RecentKeywordItem />
       </ul>
     </div>
   );
