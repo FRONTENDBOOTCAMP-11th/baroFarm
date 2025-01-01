@@ -4,12 +4,7 @@ import HeaderIcon from "@components/HeaderIcon";
 import Modal from "@components/Modal";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useOutletContext,
-} from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
 const DUMMY_CARTS_ITEMS = {
   ok: 1,
@@ -192,9 +187,7 @@ export default function PaymentPage() {
                 <div className="flex flex-col gap-[6px]">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-bold">김호나우지뉴(집)</p>
-                    <Button width={"50px"} height="25px">
-                      변경
-                    </Button>
+                    <Button>변경</Button>
                   </div>
                   <p className="text-xs text-gray4 font-medium">
                     010-0000-0000
@@ -267,9 +260,7 @@ export default function PaymentPage() {
                         disabled
                         placeholder="주소를 입력하세요."
                       />
-                      <Button width="78px" height="34">
-                        주소 검색
-                      </Button>
+                      <Button>주소 검색</Button>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">

@@ -4,8 +4,7 @@ import Checkbox from "@components/Checkbox";
 import HeaderIcon from "@components/HeaderIcon";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 const DUMMY_CARTS_ITEMS = {
   ok: 1,
@@ -97,9 +96,10 @@ export default function CartPage() {
   // 헤더 상태 설정 함수
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  1;
 
+  // 헤더 상태 설정
   useEffect(() => {
-    // 헤더 상태 설정
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "장바구니",
@@ -158,7 +158,7 @@ export default function CartPage() {
     <div>
       {cartItems.length > 0 ? (
         <>
-          <section className="py-[14px] px-5 flex gap-[6px] items-center border-b border-gray2">
+          <section className="py-[14px] px-5 flex gap-[6px] items-center border-b border-gray2 bg-red-100">
             <label
               className="flex items-center cursor-pointer relative gap-2 grow"
               htmlFor="checkAll"
@@ -166,9 +166,7 @@ export default function CartPage() {
               <input type="checkbox" id="checkAll" />
               전체 선택 (1/2)
             </label>
-            <Button width="44px" height="25px">
-              삭제
-            </Button>
+            <Button>삭제</Button>
           </section>
           <section className="px-5 pb-4 border-b-4 border-gray2">
             {cartItems}

@@ -16,25 +16,17 @@ export default function Button({
   type = "button",
   onClick: clickHandler,
   color = "#72BF78",
-  width = "auto",
-  height = "auto",
   fontSize = 12,
 }) {
   // 동적인 클래스는 style 객체 활용
   const style = {
-    width,
-    height,
     backgroundColor: color,
     fontSize: fontSize,
   };
 
-  // 정적인 클래스만 사용
-  const buttonClass =
-    "flex justify-center items-center rounded-md shrink-0 text-white font-semibold";
-
   return (
     <button
-      className={buttonClass}
+      className="flex text-center items-center rounded-md shrink-0 text-white font-semibold px-3 py-1"
       style={style}
       type={type}
       onClick={clickHandler}
