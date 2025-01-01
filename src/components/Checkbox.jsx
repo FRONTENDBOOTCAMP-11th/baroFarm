@@ -1,15 +1,20 @@
-export default function Checkbox({ id, name, register, onClick }) {
+import PropTypes from "prop-types";
+
+Checkbox.propTypes = {
+  onClick: PropTypes.func,
+  id: PropTypes.string,
+};
+
+export default function Checkbox({ onClick, id }) {
   return (
-    <>
+    <div className="relative flex">
       <input
+        id={id}
         type="checkbox"
         className="peer size-4 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-btn-primary checked:border-btn-primary"
-        id={id}
-        name={name}
-        {...register}
         onClick={onClick}
       />
-      <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-[8px] transform -translate-x-1/2 -translate-y-1/2">
+      <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-[1px] left-[8px] transform -translate-x-1/2 pointer-events-none">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-3.5 w-3.5"
@@ -25,6 +30,6 @@ export default function Checkbox({ id, name, register, onClick }) {
           ></path>
         </svg>
       </span>
-    </>
+    </div>
   );
 }

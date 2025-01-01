@@ -158,12 +158,12 @@ export default function CartPage() {
     <div>
       {cartItems.length > 0 ? (
         <>
-          <section className="py-[14px] px-5 flex gap-[6px] items-center border-b border-gray2 bg-red-100">
+          <section className="py-[14px] px-5 flex gap-[6px] items-center border-b border-gray2">
             <label
               className="flex items-center cursor-pointer relative gap-2 grow"
               htmlFor="checkAll"
             >
-              <input type="checkbox" id="checkAll" />
+              <Checkbox id="checkAll" />
               전체 선택 (1/2)
             </label>
             <Button>삭제</Button>
