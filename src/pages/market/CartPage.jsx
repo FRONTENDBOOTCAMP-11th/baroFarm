@@ -1,8 +1,10 @@
 import Button from "@components/Button";
 import CartItem from "@components/CartItem";
+import Checkbox from "@components/Checkbox";
 import HeaderIcon from "@components/HeaderIcon";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 const DUMMY_CARTS_ITEMS = {
@@ -44,8 +46,8 @@ const DUMMY_CARTS_ITEMS = {
       createdAt: "2024.04.01 08:36:39",
       updatedAt: "2024.04.01 08:36:39",
       product: {
-        _id: 1,
-        name: "[소스증정] 반값!! 고니알탕 (겨울 기획상품)",
+        _id: 2,
+        name: "[소스증정] 반값!! 고니알탕 (겨울 기획상품) 2",
         price: 14900,
         seller_id: 2,
         quantity: 1,
@@ -86,6 +88,9 @@ const DUMMY_EMPTY_CARTS = {
 export default function CartPage() {
   // 결제 버튼 보이기 상태
   const [showButton, setShowButton] = useState(false);
+  // 장바구니 상품 상태 관리
+  const [cartItemsId, setCartItemsId] = useState([]);
+
   // targetRef가 보이면 결제버튼을 보이게 함
   const targetRef = useRef(null);
 
@@ -135,23 +140,30 @@ export default function CartPage() {
     };
   }, []);
 
-  const cartItems = DUMMY_CARTS_ITEMS.item.map((item) => (
-    <CartItem key={item._id} {...item.product} />
-  ));
-
   const totalShippingFees =
     DUMMY_CARTS_ITEMS.cost.shippingFees ===
     DUMMY_CARTS_ITEMS.cost.discount.shippingFees
       ? "무료"
       : DUMMY_CARTS_ITEMS.cost.shippingFees;
 
+  const cartItems = DUMMY_CARTS_ITEMS.item.map((item) => (
+    <CartItem
+      key={item._id}
+      setCartItemsId={setCartItemsId}
+      {...item.product}
+    />
+  ));
+
   return (
-    <div className="">
+    <div>
       {cartItems.length > 0 ? (
         <>
           <section className="py-[14px] px-5 flex gap-[6px] items-center border-b border-gray2">
-            <input type="checkbox" id="checkAll" />
-            <label htmlFor="checkAll" className="grow">
+            <label
+              className="flex items-center cursor-pointer relative gap-2 grow"
+              htmlFor="checkAll"
+            >
+              <input type="checkbox" id="checkAll" />
               전체 선택 (1/2)
             </label>
             <Button width="44px" height="25px">
@@ -189,11 +201,13 @@ export default function CartPage() {
               showButton ? "bottom-0 opacity-100" : "-bottom-24 opacity-0"
             )}
           >
-            <Link to="/payment">
-              <button className="bg-btn-primary py-3 w-full text-white text-xl font-bold rounded-lg">
-                {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 구매하기
-              </button>
-            </Link>
+            <button
+              className="bg-btn-primary py-3 w-full text-white text-xl font-bold rounded-lg"
+              type="submit"
+              onClick={() => navigate("/payment", { state: { cartItemsId } })}
+            >
+              {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 구매하기
+            </button>
           </section>
         </>
       ) : (

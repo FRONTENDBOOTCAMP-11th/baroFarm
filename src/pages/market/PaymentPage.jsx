@@ -4,7 +4,12 @@ import HeaderIcon from "@components/HeaderIcon";
 import Modal from "@components/Modal";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useOutletContext,
+} from "react-router-dom";
 
 const DUMMY_CARTS_ITEMS = {
   ok: 1,
@@ -83,6 +88,7 @@ export default function PaymentPage() {
   // 헤더 상태 설정 함수
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  const location = useLocation();
   // 기본 배송지 상태 임시 토글 기능
   const [isDefaultAddress, setIsDefaultAddress] = useState(false);
   // 결제 버튼 보이기 상태
@@ -151,6 +157,8 @@ export default function PaymentPage() {
       }
     };
   }, []);
+
+  console.log(location.state);
 
   return (
     <>

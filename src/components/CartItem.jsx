@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useForm } from "react-hook-form";
 
 CartItem.propTypes = {
   name: PropTypes.string.isRequired,
@@ -12,16 +13,30 @@ CartItem.propTypes = {
   image: PropTypes.shape({
     url: PropTypes.string.isRequired,
   }),
+  _id: PropTypes.number.isRequired,
+  setCartItemsId: PropTypes.func.isRequired,
 };
 
-export default function CartItem({ name, price, quantity, extra, image }) {
+export default function CartItem({
+  name,
+  price,
+  quantity,
+  extra,
+  image,
+  _id,
+  setCartItemsId,
+}) {
   return (
     <div className="mb-3">
       <div className="py-[10px] border-b border-gray2 text-[14px]">
         {extra.seller_name}
       </div>
       <div className="pt-[10px] flex gap-3">
-        <input type="checkbox" className="self-start" />
+        <input
+          type="checkbox"
+          className="self-start"
+          onClick={() => setCartItemsId((prevState) => [...prevState, _id])}
+        />
         <img
           src={image.url}
           alt="상품 이미지"
