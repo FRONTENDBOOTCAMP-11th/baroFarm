@@ -37,7 +37,7 @@ export default function BoardPage() {
       <BoardPageDetail />
       <Link
         to="new"
-        className="fixed right-[calc(50%-195px+20px)] bottom-[120px] w-[40px] h-[40px] rounded-full bg-btn-primary shadow-bottom  "
+        className="fixed right-[calc(50%-155px)] bottom-[130px] w-[40px] h-[40px] rounded-full bg-btn-primary shadow-bottom  "
       >
         <img src="/icons/icon_plus_2.svg" className="w-full h-full" />
       </Link>
