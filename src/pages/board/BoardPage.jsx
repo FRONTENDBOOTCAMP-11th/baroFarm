@@ -6,11 +6,12 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 export default function BoardPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  const [tag, setTag] = useState("자유");
 
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
-      title: "바로파밍",
+      title: `${tag} 게시판`,
       rightChild: (
         <>
           <HeaderIcon name="search" onClick={() => navigate("/search")} />

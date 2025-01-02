@@ -1,7 +1,7 @@
 import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
 import NewPost from "@components/NewPost";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
@@ -29,7 +29,6 @@ export default function BoardNewPage() {
     <div className="relative mx-5">
       <NewPost
         isBoard={isBoard}
-        formRef={formRef}
         handleSubmit={handleSubmit(check)}
         register={register}
       ></NewPost>
