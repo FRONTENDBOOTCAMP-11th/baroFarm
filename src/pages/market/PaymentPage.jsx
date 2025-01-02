@@ -256,7 +256,7 @@ export default function PaymentPage() {
                       <input
                         type="text"
                         id="phone"
-                        className="grow ring-1 ring-gray3 w-[263px] h-[34px] rounded-[5px] bg-white px-2 text-sm placeholder:text-gray2 focus:outline-none focus:ring-1 focus:ring-btn-primary disabled:bg-gray2 disabled:placeholder:text-gray4"
+                        className="grow ring-1 ring-gray3 h-[34px] rounded-[5px] bg-white px-2 text-sm placeholder:text-gray2 focus:outline-none focus:ring-1 focus:ring-btn-primary disabled:bg-gray2 disabled:placeholder:text-gray4"
                         disabled
                         placeholder="주소를 입력하세요."
                       />
