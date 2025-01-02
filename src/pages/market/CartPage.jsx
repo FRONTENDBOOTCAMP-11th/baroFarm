@@ -4,6 +4,7 @@ import Checkbox from "@components/Checkbox";
 import HeaderIcon from "@components/HeaderIcon";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 const DUMMY_CARTS_ITEMS = {
@@ -85,10 +86,12 @@ const DUMMY_EMPTY_CARTS = {
 };
 
 export default function CartPage() {
+  // 구매할 물품 폼 제출
+  const { register, handleSubmit } = useForm();
   // 결제 버튼 보이기 상태
   const [showButton, setShowButton] = useState(false);
   // 장바구니 상품 상태 관리
-  const [cartItemsId, setCartItemsId] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   // targetRef가 보이면 결제버튼을 보이게 함
   const targetRef = useRef(null);
@@ -96,7 +99,6 @@ export default function CartPage() {
   // 헤더 상태 설정 함수
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  1;
 
   // 헤더 상태 설정
   useEffect(() => {
@@ -147,12 +149,16 @@ export default function CartPage() {
       : DUMMY_CARTS_ITEMS.cost.shippingFees;
 
   const cartItems = DUMMY_CARTS_ITEMS.item.map((item) => (
-    <CartItem
-      key={item._id}
-      setCartItemsId={setCartItemsId}
-      {...item.product}
-    />
+    <CartItem key={item._id} {...item.product} register={register} />
   ));
+
+  // 선택된 아이템의 아이디를 배열에 담음
+  const selectItem = (formData) => {
+    const newState = Object.keys(formData).filter((key) => formData[key]);
+    setSelectedItems(newState);
+    // 선택된 아이템의 아이디가 담긴 배열을 구매 페이지로 전송
+    navigate("/payment", { state: { newState } });
+  };
 
   return (
     <div>
@@ -163,50 +169,51 @@ export default function CartPage() {
               className="flex items-center cursor-pointer relative gap-2 grow"
               htmlFor="checkAll"
             >
-              <Checkbox id="checkAll" />
+              <Checkbox id="checkAll" name="checkAll" />
               전체 선택 (1/2)
             </label>
             <Button>삭제</Button>
           </section>
-          <section className="px-5 pb-4 border-b-4 border-gray2">
-            {cartItems}
-          </section>
-          <section className="px-5 py-3">
-            <div className="border-b border-gray2">
-              <div className="text-xs flex justify-between mb-3">
-                <span className="text-gray4">총 상품 금액</span>
-                <span>
-                  {DUMMY_CARTS_ITEMS.cost.products.toLocaleString()}원
-                </span>
+          <form onSubmit={handleSubmit(selectItem)}>
+            <section className="px-5 pb-4 border-b-4 border-gray2">
+              {cartItems}
+            </section>
+            <section className="px-5 py-3">
+              <div className="border-b border-gray2">
+                <div className="text-xs flex justify-between mb-3">
+                  <span className="text-gray4">총 상품 금액</span>
+                  <span>
+                    {DUMMY_CARTS_ITEMS.cost.products.toLocaleString()}원
+                  </span>
+                </div>
+                <div className="text-xs flex justify-between mb-3">
+                  <span className="text-gray4">배송비</span>
+                  <span>{totalShippingFees}</span>
+                </div>
               </div>
-              <div className="text-xs flex justify-between mb-3">
-                <span className="text-gray4">배송비</span>
-                <span>{totalShippingFees}</span>
+              <div className="flex justify-between mb-3 py-3 text-[16px] font-bold">
+                <span>총 결제 금액</span>
+                <span>{DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원</span>
               </div>
-            </div>
-            <div className="flex justify-between mb-3 py-3 text-[16px] font-bold">
-              <span>총 결제 금액</span>
-              <span>{DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원</span>
-            </div>
-          </section>
-          <div
-            ref={targetRef}
-            style={{ height: "1px", background: "transparent" }}
-          ></div>
-          <section
-            className={clsx(
-              "max-w-[390px] mx-auto px-5 py-8 bg-gray1 shadow-top fixed left-0 right-0 transition-all duration-150 ease-in-out",
-              showButton ? "bottom-0 opacity-100" : "-bottom-24 opacity-0"
-            )}
-          >
-            <button
-              className="bg-btn-primary py-3 w-full text-white text-xl font-bold rounded-lg"
-              type="submit"
-              onClick={() => navigate("/payment", { state: { cartItemsId } })}
+            </section>
+            <div
+              ref={targetRef}
+              style={{ height: "1px", background: "transparent" }}
+            ></div>
+            <section
+              className={clsx(
+                "max-w-[390px] mx-auto px-5 py-8 bg-gray1 shadow-top fixed left-0 right-0 transition-all duration-150 ease-in-out",
+                showButton ? "bottom-0 opacity-100" : "-bottom-24 opacity-0"
+              )}
             >
-              {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 구매하기
-            </button>
-          </section>
+              <button
+                className="bg-btn-primary py-3 w-full text-white text-xl font-bold rounded-lg"
+                type="submit"
+              >
+                {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 구매하기
+              </button>
+            </section>
+          </form>
         </>
       ) : (
         <>

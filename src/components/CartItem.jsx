@@ -1,6 +1,5 @@
 import Checkbox from "@components/Checkbox";
 import PropTypes from "prop-types";
-import { useForm } from "react-hook-form";
 
 CartItem.propTypes = {
   name: PropTypes.string.isRequired,
@@ -15,7 +14,7 @@ CartItem.propTypes = {
     url: PropTypes.string.isRequired,
   }),
   _id: PropTypes.number.isRequired,
-  setCartItemsId: PropTypes.func.isRequired,
+  register: PropTypes.func,
 };
 
 export default function CartItem({
@@ -25,28 +24,15 @@ export default function CartItem({
   extra,
   image,
   _id,
-  setCartItemsId,
+  register,
 }) {
-  // 체크 박스 선택시 아이템을 구매 페이지로 넘길것인지에 대한 로직
-  const findItem = () => {
-    setCartItemsId((prevState) => {
-      const hasItem = prevState.includes(_id);
-      console.log(prevState);
-      if (!hasItem) {
-        return [...prevState, _id];
-      } else {
-        return prevState.filter((item) => item !== _id);
-      }
-    });
-  };
-
   return (
     <div className="mb-3">
       <div className="py-[10px] border-b border-gray2 text-[14px]">
         {extra.seller_name}
       </div>
       <div className="pt-[10px] flex gap-3">
-        <Checkbox onClick={findItem} />
+        <Checkbox name={`${_id}`} register={register(`${_id}`)} />
         <img
           src={image.url}
           alt="상품 이미지"

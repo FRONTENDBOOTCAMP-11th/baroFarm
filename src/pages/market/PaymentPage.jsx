@@ -83,6 +83,7 @@ export default function PaymentPage() {
   // 헤더 상태 설정 함수
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  // 이전 페이지에서 넘어온 정보
   const location = useLocation();
   // 기본 배송지 상태 임시 토글 기능
   const [isDefaultAddress, setIsDefaultAddress] = useState(false);

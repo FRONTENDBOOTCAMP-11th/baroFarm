@@ -1,18 +1,24 @@
 import PropTypes from "prop-types";
+import { useEffect, useRef } from "react";
 
 Checkbox.propTypes = {
-  onClick: PropTypes.func,
   id: PropTypes.string,
+  name: PropTypes.string,
+  onClick: PropTypes.func,
+  register: PropTypes.object,
+  checkAll: PropTypes.bool,
 };
 
-export default function Checkbox({ onClick, id }) {
+export default function Checkbox({ id, name, register, onClick }) {
   return (
     <div className="relative flex">
       <input
         id={id}
+        name={name}
+        onClick={onClick}
         type="checkbox"
         className="peer size-4 cursor-pointer transition-all appearance-none rounded shadow hover:shadow-md border border-slate-300 checked:bg-btn-primary checked:border-btn-primary"
-        onClick={onClick}
+        {...register}
       />
       <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-[1px] left-[8px] transform -translate-x-1/2 pointer-events-none">
         <svg
