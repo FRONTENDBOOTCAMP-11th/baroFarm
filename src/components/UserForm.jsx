@@ -79,7 +79,7 @@ export default function UserForm({ userInfo, buttonText }) {
           닉네임
         </label>
         <input
-          className="border-2 border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-green1"
+          className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
           type="text"
           id="name"
           name="name"
@@ -93,7 +93,7 @@ export default function UserForm({ userInfo, buttonText }) {
           휴대폰
         </label>
         <input
-          className="border-2 border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-2.5 outline-none focus:border-green1"
+          className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-2.5 outline-none focus:border-btn-primary"
           type="tel"
           pattern="[0-9]*"
           id="phone"
@@ -141,7 +141,7 @@ export default function UserForm({ userInfo, buttonText }) {
           주소
         </label>
         <input
-          className="border-2 border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-0.5 outline-none focus:border-green1"
+          className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-0.5 outline-none focus:border-btn-primary"
           type="text"
           id="address"
           name="address"
@@ -196,7 +196,7 @@ export default function UserForm({ userInfo, buttonText }) {
       )}
       {/* 가입하기 버튼 */}
       <button
-        className="w-[18.75rem] h-[3.25rem] text-center text-xl rounded-2xl bg-green1 font-semibold block m-auto mb-1"
+        className="w-full h-[3.25rem] text-center text-xl rounded-full border border-btn-primary font-medium block m-auto mb-1 text-btn-primary"
         type="submit"
       >
         {buttonText}
