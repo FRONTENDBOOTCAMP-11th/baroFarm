@@ -198,7 +198,7 @@ export default function PaymentPage() {
                   </p>
                   <select
                     id="memo"
-                    className="ring-1 ring-gray3 h-[34px] rounded-[5px] bg-white px-2 text-sm focus:outline-none focus:ring-1 focus:ring-btn-primary"
+                    className="text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
                   >
                     <option value="null">배송메모를 선택하세요.</option>
                     <option value="문 앞에 놓아주세요">
@@ -282,7 +282,7 @@ export default function PaymentPage() {
                     <div className="text-xs text-gray4 font-medium shrink-0"></div>
                     <select
                       id="memo"
-                      className="ring-1 ring-gray3 w-[253px] h-[34px] rounded-[5px] bg-white px-2 text-sm focus:outline-none focus:ring-1 focus:ring-btn-primary"
+                      className="text-center w-[253px] bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
                     >
                       <option value="null">배송메모를 선택하세요.</option>
                       <option value="문 앞에 놓아주세요">
