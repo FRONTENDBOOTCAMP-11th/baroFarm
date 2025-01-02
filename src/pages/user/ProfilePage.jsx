@@ -1,20 +1,28 @@
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useOutletContext,
+} from "react-router-dom";
 
 export default function ProfilePage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  const data = {
-    name: "김아무개",
-    gender: "남",
-    email: "kimamuge@gmail.com",
-    phone: "000-1111-2222",
-    auth: "판매자",
-    extra: {
-      userName: "온도감",
-    },
-  };
+  // const data = {
+  //   name: "김아무개",
+  //   gender: "남",
+  //   email: "kimamuge@gmail.com",
+  //   phone: "000-1111-2222",
+  //   auth: "판매자",
+  //   extra: {
+  //     userName: "온도감",
+  //   },
+  // };
+
+  const location = useLocation();
+  const data = location.state.user;
 
   useEffect(() => {
     setHeaderContents({
@@ -34,6 +42,7 @@ export default function ProfilePage() {
         <Link
           to={"/users/profile/edit"}
           className="flex items-center text-[14px] my-[24px] absolute right-0 top-[25%] group"
+          state={{ user: data }}
         >
           <img
             src="/icons/icon_profileEdit_full.svg"

@@ -178,6 +178,7 @@ export default function MyPage() {
             <Link
               to={`/users/profile`}
               className="flex items-center text-[14px] mt-[27px] mb-[24px]"
+              state={{ user: data }}
             >
               내 정보 보기
               <img

@@ -1,11 +1,13 @@
 import HeaderIcon from "@components/HeaderIcon";
 import UserForm from "@components/UserForm";
 import { useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function EditProfilePage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  const location = useLocation();
+  const data = location.state.user;
 
   useEffect(() => {
     setHeaderContents({
@@ -14,5 +16,5 @@ export default function EditProfilePage() {
     });
   }, []);
 
-  return <UserForm buttonText="수정하기" userInfo={"hello"} />;
+  return <UserForm buttonText="수정하기" userInfo={data} />;
 }
