@@ -46,7 +46,7 @@ export default function Footer() {
         label="홈"
       />
       <NavItem
-        to="/users/mypage"
+        to="/users"
         defaultIcon={icons.profile.default}
         activeIcon={icons.profile.active}
         label="프로필"

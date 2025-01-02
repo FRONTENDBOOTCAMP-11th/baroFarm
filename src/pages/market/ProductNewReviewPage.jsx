@@ -19,7 +19,6 @@ export default function ProductNewReviewPage() {
       rightChild: (
         <>
           <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
-          <HeaderIcon name="cart_empty" onClick={() => navigate("/cart")} />
         </>
       ),
     });

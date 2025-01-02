@@ -36,7 +36,7 @@ export default function ReviewPage() {
       id: 1,
       name: "떡보 369",
       rate: "⭐️⭐️⭐️⭐️⭐️",
-      date: "202412.18",
+      date: "2024.12.18",
       option: "오리지널 카스테라 530g",
       content:
         "대만 카스테라를 좋아하던 1인으로서 이 카스테라 정말 맛있네요 카스테라가 빛의 속도로 없어지는게 아쉬워요 ㅠㅠ",
@@ -45,7 +45,7 @@ export default function ReviewPage() {
       id: 2,
       name: "떡보 369",
       rate: "⭐️⭐️⭐️⭐️⭐️",
-      date: "202412.18",
+      date: "2024.12.18",
       option: "오리지널 카스테라 530g",
       content:
         "대만 카스테라를 좋아하던 1인으로서 이 카스테라 정말 맛있네요 카스테라가 빛의 속도로 없어지는게 아쉬워요 ㅠㅠ",
@@ -54,7 +54,7 @@ export default function ReviewPage() {
       id: 3,
       name: "떡보 369",
       rate: "⭐️⭐️⭐️⭐️⭐️",
-      date: "202412.18",
+      date: "2024.12.18",
       option: "오리지널 카스테라 530g",
       content:
         "대만 카스테라를 좋아하던 1인으로서 이 카스테라 정말 맛있네요 카스테라가 빛의 속도로 없어지는게 아쉬워요 ㅠㅠ",

@@ -8,18 +8,17 @@ export default function ProductMyReviewPage() {
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
-      title: "내가 작성한 리뷰",
+      title: "리뷰 작성",
       rightChild: (
         <>
           <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
-          <HeaderIcon name="cart_empty" onClick={() => navigate("/cart")} />
         </>
       ),
     });
   }, []);
   return (
-    <>
+    <div className="p-5">
       <h1>MyReviewPage</h1>
-    </>
+    </div>
   );
 }
