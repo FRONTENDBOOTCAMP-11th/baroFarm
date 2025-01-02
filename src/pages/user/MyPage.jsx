@@ -57,7 +57,7 @@ export default function MyPage() {
             <>
               <img
                 src="/images/profile/Profile_sample_1.jpg"
-                className="mr-5 w-[49px] h-[50px] rounded-full"
+                className="mr-5 w-[49px] h-[50px] rounded-full border border-btn-primary"
                 loading="lazy"
               />
               <div>
@@ -107,22 +107,34 @@ export default function MyPage() {
             </>
           )}
         </div>
-        {/* <div className="flex items-center border-t-[1px] border-gray2 h-[58px] mt-[16px]">
-          <button className="flex-1 text-center h-[50px] border-r-[1px] border-gray2">
+        <div className="flex border-t-[1px] border-gray2 h-[58px] mt-[16px]">
+          <Link
+            to={"/users/purchase"}
+            className="flex justify-center items-center flex-1 text-center h-[50px] border-r-[1px] border-gray2"
+          >
             구매 내역
-          </button>
-          <button className="flex-1 text-center h-[50px] border-r-[1px] border-gray2">
+          </Link>
+          <Link
+            to={"/users/sale"}
+            className="flex justify-center items-center flex-1 text-center h-[50px] border-r-[1px] border-gray2"
+          >
             판매 내역
-          </button>
-          <button className="flex-1 text-center h-[50px]">
-            작성한 글 <span className="text-btn-primary">3건</span>
-          </button>
-        </div> */}
+          </Link>
+          <Link
+            to={""}
+            className="flex justify-center items-center flex-1 text-center h-[50px]"
+          >
+            작성한 글 <span className="text-btn-primary ml-1">3건</span>
+          </Link>
+        </div>
       </div>
       <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
       <div className="h-[152px] pt-[18px]">
         <h2 className="text-base leading-[19px]">구매 정보</h2>
-        <Link className="flex items-center text-[14px] mt-[27px]">
+        <Link
+          to={"/users/recent"}
+          className="flex items-center text-[14px] mt-[27px]"
+        >
           최근 본 상품
           <img
             src="/icons/icon_forward.svg"
@@ -166,19 +178,9 @@ export default function MyPage() {
             <Link
               to={`/users/profile`}
               className="flex items-center text-[14px] mt-[27px] mb-[24px]"
+              state={{ user: data }}
             >
               내 정보 보기
-              <img
-                src="/icons/icon_forward.svg"
-                className="h-[16px] ml-auto"
-                alt="addProduct icon"
-              />
-            </Link>
-            <Link
-              to={"/users/profile/edit"}
-              className="flex items-center text-[14px] my-[24px]"
-            >
-              개인정보 수정
               <img
                 src="/icons/icon_forward.svg"
                 className="h-[16px] ml-auto"
