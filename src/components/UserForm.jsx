@@ -84,6 +84,7 @@ export default function UserForm({ userInfo, buttonText }) {
           id="name"
           name="name"
           placeholder="닉네임을 입력해주세요"
+          defaultValue={userInfo ? userInfo.extra.userName : ""}
           required
         />
       </div>
@@ -99,6 +100,7 @@ export default function UserForm({ userInfo, buttonText }) {
           id="phone"
           name="phone"
           placeholder="숫자만 입력해주세요"
+          defaultValue={userInfo ? userInfo.phone : ""}
           required
         />
       </div>
@@ -146,6 +148,7 @@ export default function UserForm({ userInfo, buttonText }) {
           id="address"
           name="address"
           placeholder="주소를 입력해주세요"
+          defaultValue={userInfo ? userInfo.address : ""}
           required
         />
       </div>

@@ -12,6 +12,7 @@ export default function MyPage() {
     email: "kimamuge@gmail.com",
     phone: "000-1111-2222",
     auth: "판매자",
+    address: "대한민국 어딘가",
     extra: {
       userName: "온도감",
     },
@@ -43,6 +44,7 @@ export default function MyPage() {
       email: "kimamuge@gmail.com",
       phone: "000-1111-2222",
       auth: "판매자",
+      address: "대한민국 어딘가",
       extra: {
         userName: "온도감",
       },
