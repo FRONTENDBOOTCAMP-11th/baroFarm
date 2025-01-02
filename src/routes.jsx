@@ -8,6 +8,12 @@ const CategoryPage = lazy(() => import("@pages/market/CategoryPage"));
 const ProductDetailPage = lazy(() => import("@pages/market/ProductDetailPage"));
 const ProductNewPage = lazy(() => import("@pages/market/ProductNewPage"));
 const ProductReviewPage = lazy(() => import("@pages/market/ProductReviewPage"));
+const ProductMyReviewPage = lazy(
+  () => import("@pages/market/ProductMyReviewPage")
+);
+const ProductNewReviewPage = lazy(
+  () => import("@pages/market/ProductNewReviewPage")
+);
 const BookmarkPage = lazy(() => import("@pages/user/BookmarkPage"));
 const MyPage = lazy(() => import("@pages/user/MyPage"));
 const ProfilePage = lazy(() => import("@pages/user/ProfilePage"));
@@ -28,6 +34,7 @@ const SearchNewPage = lazy(() => import("@pages/market/SearchNewPage"));
 const SearchSeasonalPage = lazy(
   () => import("@pages/market/SearchSeasonalPage")
 );
+
 const Layout = lazy(() => import("@components/layout"));
 
 const router = createBrowserRouter(
@@ -49,6 +56,8 @@ const router = createBrowserRouter(
           children: [
             { path: ":_id", element: <ProductDetailPage /> },
             { path: ":_id/reviews", element: <ProductReviewPage /> },
+            { path: ":_id/reviewed", element: <ProductMyReviewPage /> },
+            { path: ":_id/reviews/new", element: <ProductNewReviewPage /> },
             { path: "new", element: <ProductNewPage /> },
           ],
         },

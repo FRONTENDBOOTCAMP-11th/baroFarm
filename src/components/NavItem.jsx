@@ -15,8 +15,8 @@ export default function NavItem({ to, defaultIcon, activeIcon, label }) {
         <>
           <img
             src={isActive ? activeIcon : defaultIcon}
-            className="w-[52px]"
-            alt={`${label} icon`}
+            className="w-10"
+            alt={`${label}icon`}
           />
           <span>{label}</span>
         </>
