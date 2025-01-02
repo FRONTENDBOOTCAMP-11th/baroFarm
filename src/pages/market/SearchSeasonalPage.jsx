@@ -1,10 +1,10 @@
-import Product from "@components/Product";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 import productImage1 from "/images/Sample1.svg";
 import productImage2 from "/images/Sample2.svg";
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect } from "react";
+import Products from "@components/Products";
 
 const productsData = [
   {
@@ -80,11 +80,5 @@ export default function SearchSeasonalPage() {
     });
   }, []);
 
-  return (
-    <div className="flex flex-wrap justify-between px-5">
-      {productsData.map((product) => (
-        <Product key={product.id} {...product} />
-      ))}
-    </div>
-  );
+  return <Products productsData={productsData} />;
 }

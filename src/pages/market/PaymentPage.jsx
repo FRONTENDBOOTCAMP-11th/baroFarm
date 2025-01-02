@@ -4,7 +4,7 @@ import HeaderIcon from "@components/HeaderIcon";
 import Modal from "@components/Modal";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
 const DUMMY_CARTS_ITEMS = {
   ok: 1,
@@ -83,6 +83,8 @@ export default function PaymentPage() {
   // 헤더 상태 설정 함수
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  // 이전 페이지에서 넘어온 정보
+  const location = useLocation();
   // 기본 배송지 상태 임시 토글 기능
   const [isDefaultAddress, setIsDefaultAddress] = useState(false);
   // 결제 버튼 보이기 상태
@@ -152,6 +154,8 @@ export default function PaymentPage() {
     };
   }, []);
 
+  console.log(location.state);
+
   return (
     <>
       <Modal ref={modalRef}>
@@ -184,9 +188,7 @@ export default function PaymentPage() {
                 <div className="flex flex-col gap-[6px]">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-bold">김호나우지뉴(집)</p>
-                    <Button width={"50px"} height="25px">
-                      변경
-                    </Button>
+                    <Button>변경</Button>
                   </div>
                   <p className="text-xs text-gray4 font-medium">
                     010-0000-0000
@@ -196,7 +198,7 @@ export default function PaymentPage() {
                   </p>
                   <select
                     id="memo"
-                    className="ring-1 ring-gray3 h-[34px] rounded-[5px] bg-white px-2 text-sm focus:outline-none focus:ring-1 focus:ring-btn-primary"
+                    className="text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
                   >
                     <option value="null">배송메모를 선택하세요.</option>
                     <option value="문 앞에 놓아주세요">
@@ -255,13 +257,11 @@ export default function PaymentPage() {
                       <input
                         type="text"
                         id="phone"
-                        className="grow ring-1 ring-gray3 w-[263px] h-[34px] rounded-[5px] bg-white px-2 text-sm placeholder:text-gray2 focus:outline-none focus:ring-1 focus:ring-btn-primary disabled:bg-gray2 disabled:placeholder:text-gray4"
+                        className="grow ring-1 ring-gray3 h-[34px] rounded-[5px] bg-white px-2 text-sm placeholder:text-gray2 focus:outline-none focus:ring-1 focus:ring-btn-primary disabled:bg-gray2 disabled:placeholder:text-gray4"
                         disabled
                         placeholder="주소를 입력하세요."
                       />
-                      <Button width="78px" height="34">
-                        주소 검색
-                      </Button>
+                      <Button>주소 검색</Button>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
@@ -282,7 +282,7 @@ export default function PaymentPage() {
                     <div className="text-xs text-gray4 font-medium shrink-0"></div>
                     <select
                       id="memo"
-                      className="ring-1 ring-gray3 w-[253px] h-[34px] rounded-[5px] bg-white px-2 text-sm focus:outline-none focus:ring-1 focus:ring-btn-primary"
+                      className="text-center w-[253px] bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
                     >
                       <option value="null">배송메모를 선택하세요.</option>
                       <option value="문 앞에 놓아주세요">
