@@ -1,3 +1,4 @@
+import Checkbox from "@components/Checkbox";
 import PropTypes from "prop-types";
 
 CartItem.propTypes = {
@@ -12,16 +13,26 @@ CartItem.propTypes = {
   image: PropTypes.shape({
     url: PropTypes.string.isRequired,
   }),
+  _id: PropTypes.number.isRequired,
+  register: PropTypes.func,
 };
 
-export default function CartItem({ name, price, quantity, extra, image }) {
+export default function CartItem({
+  name,
+  price,
+  quantity,
+  extra,
+  image,
+  _id,
+  register,
+}) {
   return (
     <div className="mb-3">
       <div className="py-[10px] border-b border-gray2 text-[14px]">
         {extra.seller_name}
       </div>
       <div className="pt-[10px] flex gap-3">
-        <input type="checkbox" className="self-start" />
+        <Checkbox name={`${_id}`} register={register(`${_id}`)} />
         <img
           src={image.url}
           alt="상품 이미지"
@@ -38,10 +49,10 @@ export default function CartItem({ name, price, quantity, extra, image }) {
               {price.toLocaleString()}원
             </span>
           </div>
-          <div className="ring-1 ring-gray2 w-fit flex text-center items-center rounded-sm *:flex *:items-center *:justify-center *:size-6 *:text-sm">
-            <button>-</button>
-            <div>{quantity}</div>
-            <button>+</button>
+          <div className="ring-1 ring-gray2 w-fit flex text-center items-center rounded-sm *:flex *:items-center *:justify-center *:text-sm">
+            <button className="size-6 border-r border-gray2">-</button>
+            <div className="px-2">673333</div>
+            <button className="size-6 border-l border-gray2">+</button>
           </div>
         </div>
         <button className="self-start">

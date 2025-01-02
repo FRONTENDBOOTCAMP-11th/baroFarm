@@ -1,19 +1,19 @@
 export default function RecentKeywordItem() {
   return (
     <>
-      <li className="bg-gray2 px-3 rounded-xl">
-        <a className="hover:font-semibold" href="#">
+      <li className="bg-bg-primary px-4 rounded-xl text-white">
+        <a className="hover:font-bold" href="#">
           귤
         </a>
       </li>
-      <li className="bg-gray2 px-3 rounded-xl">
-        <a className="hover:font-semibold" href="#">
+      <li className="bg-bg-primary px-4 rounded-xl text-white">
+        <a className="hover:font-bold" href="#">
           갈치
         </a>
       </li>
-      <li className="bg-gray2 px-3 rounded-xl">
-        <a className="hover:font-semibold" href="#">
-          고랭지배추
+      <li className="bg-bg-primary px-4 rounded-xl text-white">
+        <a className="hover:font-bold" href="#">
+          고랭지 배추
         </a>
       </li>
     </>

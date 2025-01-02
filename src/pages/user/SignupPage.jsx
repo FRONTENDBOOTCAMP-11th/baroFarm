@@ -9,7 +9,7 @@ export default function SignupPage() {
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="x_black" onClick={() => navigate("/users/login")} />,
+      leftChild: <HeaderIcon name="x_thin" onClick={() => navigate("/users/login")} />,
       title: "회원가입",
     });
   }, []);

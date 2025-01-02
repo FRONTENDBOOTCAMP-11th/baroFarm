@@ -7,7 +7,14 @@ const BoardPage = lazy(() => import("@pages/board/BoardPage"));
 const CategoryPage = lazy(() => import("@pages/market/CategoryPage"));
 const ProductDetailPage = lazy(() => import("@pages/market/ProductDetailPage"));
 const ProductNewPage = lazy(() => import("@pages/market/ProductNewPage"));
-const ProductReviewPage = lazy(() => import("@pages/market/ProductReviewPage"));
+const ReviewPage = lazy(() => import("@pages/market/ReviewPage"));
+const PhotoReviewPage = lazy(() => import("@pages/market/PhotoReviewPage"));
+const ProductMyReviewPage = lazy(
+  () => import("@pages/market/ProductMyReviewPage")
+);
+const ProductNewReviewPage = lazy(
+  () => import("@pages/market/ProductNewReviewPage")
+);
 const BookmarkPage = lazy(() => import("@pages/user/BookmarkPage"));
 const MyPage = lazy(() => import("@pages/user/MyPage"));
 const ProfilePage = lazy(() => import("@pages/user/ProfilePage"));
@@ -28,6 +35,7 @@ const SearchNewPage = lazy(() => import("@pages/market/SearchNewPage"));
 const SearchSeasonalPage = lazy(
   () => import("@pages/market/SearchSeasonalPage")
 );
+
 const Layout = lazy(() => import("@components/layout"));
 
 const router = createBrowserRouter(
@@ -48,7 +56,10 @@ const router = createBrowserRouter(
           path: "/product",
           children: [
             { path: ":_id", element: <ProductDetailPage /> },
-            { path: ":_id/reviews", element: <ProductReviewPage /> },
+            { path: ":_id/reviews", element: <ReviewPage /> },
+            { path: ":_id/reviews/photo", element: <PhotoReviewPage /> },
+            { path: ":_id/reviewed", element: <ProductMyReviewPage /> },
+            { path: ":_id/reviews/new", element: <ProductNewReviewPage /> },
             { path: "new", element: <ProductNewPage /> },
           ],
         },

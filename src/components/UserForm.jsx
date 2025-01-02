@@ -199,7 +199,7 @@ export default function UserForm({ userInfo, buttonText }) {
       )}
       {/* 가입하기 버튼 */}
       <button
-        className="w-[18.75rem] h-[3.25rem] text-center text-xl rounded-2xl bg-btn-primary font-semibold block m-auto mb-1"
+        className="w-full h-[3.25rem] text-center text-xl rounded-full border border-btn-primary font-medium block m-auto mb-1 text-btn-primary"
         type="submit"
       >
         {buttonText}

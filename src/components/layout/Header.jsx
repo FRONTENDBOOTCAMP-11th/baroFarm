@@ -13,7 +13,7 @@ export default function Header({ leftChild, title, rightChild }) {
       <div className="justify-center grow w-[50%] text-[18px] font-semibold *:h-[70px]">
         {title}
       </div>
-      <div className="shrink-0 w-[25%] gap-[10px] justify-end *:size-[34px] *:flex">
+      <div className="shrink-0 w-[25%] gap-[10px] justify-end *:flex relative">
         {rightChild}
       </div>
     </header>

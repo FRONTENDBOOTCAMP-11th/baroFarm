@@ -12,7 +12,7 @@ import forwardIcon from "/icons/icon_forward.svg";
 import PhotoReviewItem from "@components/PhotoReviewItem";
 import ReviewItem from "@components/ReviewItem";
 
-export default function ProductReviewPage() {
+export default function ReviewPage() {
   const { setHeaderContents } = useOutletContext();
 
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ export default function ProductReviewPage() {
       id: 1,
       name: "떡보 369",
       rate: "⭐️⭐️⭐️⭐️⭐️",
-      date: "202412.18",
+      date: "2024.12.18",
       option: "오리지널 카스테라 530g",
       content:
         "대만 카스테라를 좋아하던 1인으로서 이 카스테라 정말 맛있네요 카스테라가 빛의 속도로 없어지는게 아쉬워요 ㅠㅠ",
@@ -45,7 +45,7 @@ export default function ProductReviewPage() {
       id: 2,
       name: "떡보 369",
       rate: "⭐️⭐️⭐️⭐️⭐️",
-      date: "202412.18",
+      date: "2024.12.18",
       option: "오리지널 카스테라 530g",
       content:
         "대만 카스테라를 좋아하던 1인으로서 이 카스테라 정말 맛있네요 카스테라가 빛의 속도로 없어지는게 아쉬워요 ㅠㅠ",
@@ -54,7 +54,7 @@ export default function ProductReviewPage() {
       id: 3,
       name: "떡보 369",
       rate: "⭐️⭐️⭐️⭐️⭐️",
-      date: "202412.18",
+      date: "2024.12.18",
       option: "오리지널 카스테라 530g",
       content:
         "대만 카스테라를 좋아하던 1인으로서 이 카스테라 정말 맛있네요 카스테라가 빛의 속도로 없어지는게 아쉬워요 ㅠㅠ",
@@ -73,7 +73,7 @@ export default function ProductReviewPage() {
         <div className="flex items-center justify-between">
           <span className="font-bold">사진 후기</span>
           <Link
-            to={`/product/1/reviews`}
+            to={`/product/1/reviews/photo`}
             className="font-medium text-sm text-gray5 flex items-center"
           >
             더보기
@@ -91,14 +91,14 @@ export default function ProductReviewPage() {
       </section>
 
       <section className="py-5">
-        <p className="font-bold pl-5">후기 2,210개</p>
+        <p className="font-bold pl-5 pb-1">후기 2,210개</p>
         <button
           className={`pl-5 text-sm font-semibold ${
             sortOrder === "best" ? "text-bg-primary" : "text-gray4"
           }`}
           onClick={() => handleSort("best")}
         >
-          베스트순
+          평점순
         </button>
         <button
           className={`pl-2 text-sm font-semibold ${
