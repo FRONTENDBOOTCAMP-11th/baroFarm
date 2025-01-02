@@ -12,6 +12,7 @@ export default function MyPage() {
     email: "kimamuge@gmail.com",
     phone: "000-1111-2222",
     auth: "판매자",
+    address: "대한민국 어딘가",
     extra: {
       userName: "온도감",
     },
@@ -43,6 +44,7 @@ export default function MyPage() {
       email: "kimamuge@gmail.com",
       phone: "000-1111-2222",
       auth: "판매자",
+      address: "대한민국 어딘가",
       extra: {
         userName: "온도감",
       },
@@ -107,26 +109,28 @@ export default function MyPage() {
             </>
           )}
         </div>
-        <div className="flex border-t-[1px] border-gray2 h-[58px] mt-[16px]">
-          <Link
-            to={"/users/purchase"}
-            className="flex justify-center items-center flex-1 text-center h-[50px] border-r-[1px] border-gray2"
-          >
-            구매 내역
-          </Link>
-          <Link
-            to={"/users/sale"}
-            className="flex justify-center items-center flex-1 text-center h-[50px] border-r-[1px] border-gray2"
-          >
-            판매 내역
-          </Link>
-          <Link
-            to={""}
-            className="flex justify-center items-center flex-1 text-center h-[50px]"
-          >
-            작성한 글 <span className="text-btn-primary ml-1">3건</span>
-          </Link>
-        </div>
+        {data && (
+          <div className="flex border-t-[1px] border-gray2 h-[58px] mt-[16px]">
+            <Link
+              to={"/users/purchase"}
+              className="flex justify-center items-center flex-1 text-center h-[50px] border-r-[1px] border-gray2"
+            >
+              구매 내역
+            </Link>
+            <Link
+              to={"/users/sale"}
+              className="flex justify-center items-center flex-1 text-center h-[50px] border-r-[1px] border-gray2"
+            >
+              판매 내역
+            </Link>
+            <Link
+              to={"/users/myboard"}
+              className="flex justify-center items-center flex-1 text-center h-[50px]"
+            >
+              작성한 글 <span className="text-btn-primary ml-1">3건</span>
+            </Link>
+          </div>
+        )}
       </div>
       <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
       <div className="h-[152px] pt-[18px]">

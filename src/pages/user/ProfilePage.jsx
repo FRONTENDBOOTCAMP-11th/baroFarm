@@ -32,7 +32,7 @@ export default function ProfilePage() {
   }, []);
 
   return (
-    <div className="pt-[18px] mb-[70px]">
+    <div className="pt-[60px] mb-[70px]">
       <div className="w-fit mx-auto text-center relative">
         <img
           src="/images/profile/Profile_sample_1.jpg"
@@ -57,18 +57,20 @@ export default function ProfilePage() {
           {data.extra.userName}
         </div>
       </div>
-      <div className="flex flex-row gap-5 bg-gray5/20 mx-5 px-4 py-[5px] font-medium">
+      <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md">
         <section>
           이름 <br />
           성별 <br />
           이메일 <br />
-          전화번호
+          전화번호 <br />
+          주소
         </section>
         <section className="text-gray5">
           {data.name} <br />
           {data.gender} <br />
           {data.email} <br />
-          {data.phone}
+          {data.phone} <br />
+          {data.address}
         </section>
       </div>
     </div>

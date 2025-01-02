@@ -36,7 +36,7 @@ export default function Footer() {
         to="/board"
         defaultIcon={icons.community.default}
         activeIcon={icons.community.active}
-        label="커뮤니티"
+        label="바로파밍"
       />
       <NavItem
         to="/"
