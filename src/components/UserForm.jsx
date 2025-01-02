@@ -167,7 +167,7 @@ export default function UserForm({ userInfo, buttonText }) {
         </div>
       </div>
       {/* 생년월일 */}
-      <div className="mb-6 text-sm">
+      <div className="mb-10 text-sm">
         <label className="block mb-2.5 font-semibold" htmlFor="birth">
           생년월일
         </label>
@@ -181,7 +181,7 @@ export default function UserForm({ userInfo, buttonText }) {
       </div>
       {/* 가입하기 버튼 */}
       <button
-        className="w-[18.75rem] h-[3.25rem] text-center text-xl rounded-2xl bg-green1 font-semibold block m-auto mb-1"
+        className="w-full h-[3.25rem] text-center text-xl rounded-full bg-green1 font-semibold block m-auto mb-1"
         type="submit"
       >
         {buttonText}

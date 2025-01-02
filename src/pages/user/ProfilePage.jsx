@@ -38,13 +38,11 @@ export default function ProfilePage() {
       <div className="flex flex-row gap-5 bg-gray5/20 mx-5 px-4 py-[5px] font-medium">
         <section>
           이름 <br />
-          성별 <br />
           이메일 <br />
           전화번호
         </section>
         <section className="text-gray5">
           {data.name} <br />
-          {data.gender} <br />
           {data.email} <br />
           {data.phone}
         </section>
