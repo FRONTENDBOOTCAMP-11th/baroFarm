@@ -40,13 +40,16 @@ export default function Product({
           src={image}
         />
         <button
-          className="absolute bottom-3 right-3 bg-white p-2 rounded-full shadow-bottom"
+          className="absolute bottom-3 right-3 bg-white p-1.5 rounded-full shadow-bottom"
           onClick={(e) => {
             e.stopPropagation();
             handleLike();
           }}
         >
-          <img src={isLiked ? likeIcon.active : likeIcon.default} />
+          <img
+            className="w-5"
+            src={isLiked ? likeIcon.active : likeIcon.default}
+          />
         </button>
       </div>
       <div className="pl-[5px] pt-[10px]">

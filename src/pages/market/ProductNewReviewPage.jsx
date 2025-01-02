@@ -1,19 +1,26 @@
 import HeaderIcon from "@components/HeaderIcon";
 import NewPost from "@components/NewPost";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
-export default function BoardNewPage() {
+export default function ProductNewReviewPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const isBoard = true;
+  const isBoard = false;
+
+  const formRef = useRef(null);
 
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
-      title: "새 글 작성",
+      title: "후기 작성",
+      rightChild: (
+        <>
+          <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
+        </>
+      ),
     });
   }, []);
 
@@ -22,12 +29,13 @@ export default function BoardNewPage() {
   };
 
   return (
-    <div className="relative mx-5">
+    <>
       <NewPost
         isBoard={isBoard}
+        formRef={formRef}
         handleSubmit={handleSubmit(check)}
         register={register}
       ></NewPost>
-    </div>
+    </>
   );
 }

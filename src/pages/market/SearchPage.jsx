@@ -21,14 +21,14 @@ export default function SearchPage() {
         <label htmlFor="search" className="text-sm font-semibold block mb-2">
           찾으시는 상품이 있으신가요?
         </label>
-        <div className="flex items-center gap-1 w-full rounded-md p-1 border-2 border-gray3 focus-within:border-green1">
+        <div className="flex items-center gap-1 w-full rounded-md p-1 border border-gray3 focus-within:border-btn-primary">
           <button type="submit" aria-label="검색하기">
             <img src="/icons/icon_search.svg" alt="" />
           </button>
           <input
             className="flex-grow border-none outline-none
               [&::-webkit-search-cancel-button]:appearance-none
-              [&::-webkit-search-cancel-button]:bg-[url('/icons/icon_x_black.svg')]
+              [&::-webkit-search-cancel-button]:bg-[url('/icons/icon_x_thin.svg')]
               [&::-webkit-search-cancel-button]:bg-center
               [&::-webkit-search-cancel-button]:h-4
               [&::-webkit-search-cancel-button]:w-4"
