@@ -63,10 +63,10 @@ export default function CartItem({
               {price.toLocaleString()}원
             </span>
           </div>
-          <div className="ring-1 ring-gray2 w-fit flex text-center items-center rounded-sm *:flex *:items-center *:justify-center *:size-6 *:text-sm">
-            <button>-</button>
-            <div>{quantity}</div>
-            <button>+</button>
+          <div className="ring-1 ring-gray2 w-fit flex text-center items-center rounded-sm *:flex *:items-center *:justify-center *:text-sm">
+            <button className="size-6 border-r border-gray2">-</button>
+            <div className="px-2">673333</div>
+            <button className="size-6 border-l border-gray2">+</button>
           </div>
         </div>
         <button className="self-start">
