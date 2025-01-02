@@ -67,11 +67,11 @@ export default function SearchResultsPage() {
   return (
     <div>
       <div className="p-5 flex items-center font-semibold">
-        <h2 className="text-base">총 4개</h2>
-        <div className="ml-auto flex bg-gray2 text-sm rounded-lg gap-1">
+        <h2>총 4개</h2>
+        <div className="ml-auto text-sm">
           <select
-            className="text-center bg-gray2 rounded-lg py-1 ps-3 appearance-none focus:outline-none cursor-pointer"
-            // 기능 구현이 된다면 최신순으로 수정할 것
+            className=" text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer
+    bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
             defaultValue="maxPrice"
             aria-label="정렬 기준 선택"
             name="sort"
@@ -83,7 +83,6 @@ export default function SearchResultsPage() {
             <option value="createdAt">최신순</option>
             <option value="buyQuantity">판매 수량순</option>
           </select>
-          <img className="pr-2" src="/icons/icon_dropdown.svg" alt="" />
         </div>
       </div>
       {/* 검색 결과 없을 때와 있을 때의 조건부 렌더링 */}
