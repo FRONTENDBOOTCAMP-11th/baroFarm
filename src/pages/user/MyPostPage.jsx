@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 import HeaderIcon from "@components/HeaderIcon";
+import BoardPageDetail from "@pages/board/BoardPageDetail";
 
 export default function MyPost() {
   const { setHeaderContents } = useOutletContext();
@@ -23,21 +24,13 @@ export default function MyPost() {
     <>
       <div className="p-5 pb-0">
         <p className="font-bold text-lg pl-1">2024. 12. 30</p>
-        <SoldItem />
-        <SoldItem />
-        <SoldItem />
+        <BoardPageDetail />
       </div>
+
       <div className="p-5 pb-0">
         <p className="font-bold text-lg pl-1">2024. 12. 29</p>
-        <SoldItem />
-        <SoldItem />
-        <SoldItem />
-      </div>
-      <div className="p-5 pb-0">
-        <p className="font-bold text-lg pl-1">2024. 12. 28</p>
-        <SoldItem />
-        <SoldItem />
-        <SoldItem />
+        <BoardPageDetail />
+        <BoardPageDetail />
       </div>
     </>
   );

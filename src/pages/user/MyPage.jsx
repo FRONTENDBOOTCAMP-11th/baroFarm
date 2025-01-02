@@ -124,7 +124,7 @@ export default function MyPage() {
               판매 내역
             </Link>
             <Link
-              to={""}
+              to={"/users/myboard"}
               className="flex justify-center items-center flex-1 text-center h-[50px]"
             >
               작성한 글 <span className="text-btn-primary ml-1">3건</span>

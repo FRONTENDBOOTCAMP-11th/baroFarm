@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 export default function BoardPageDetail() {
   return (
     <div className="relative">
-      <div className="h-[7px] bg-gray1 -mx-5"></div>
       <Link to={"1"}>
         <div className="flex flex-row mt-5 items-center">
           <img
@@ -26,6 +25,7 @@ export default function BoardPageDetail() {
           16분 전
         </div>
       </Link>
+      <div className="h-[7px] bg-gray1 -mx-5"></div>
     </div>
   );
 }

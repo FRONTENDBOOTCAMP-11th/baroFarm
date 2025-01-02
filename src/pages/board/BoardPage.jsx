@@ -11,7 +11,7 @@ export default function BoardPage() {
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
-      title: `${tag} 게시판`,
+      title: `바로파밍`,
       rightChild: (
         <>
           <HeaderIcon name="search" onClick={() => navigate("/search")} />
@@ -34,6 +34,7 @@ export default function BoardPage() {
           <br /> 매너를 지키는 바로팜인이 됩시다!
         </p>
       </div>
+      <div className="h-[7px] bg-gray1 -mx-5"></div>
       <BoardPageDetail />
       <BoardPageDetail />
       <Link
