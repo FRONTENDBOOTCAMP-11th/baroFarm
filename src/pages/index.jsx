@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import HeaderIcon from "@components/HeaderIcon";
 import Product from "@components/Product";
@@ -8,6 +8,8 @@ import Carousel from "@components/Carousel";
 // image
 import productImage1 from "/images/Sample1.svg";
 import productImage2 from "/images/Sample2.svg";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 const productsData = [
   {
@@ -75,11 +77,21 @@ const categories = [
   { title: "쌀/잡곡", image: "/images/menu/Rice.svg" },
 ];
 
+const getMonthlyData = (data) => {
+  // 30일 전을 시작 시간으로 잡는다.
+  const beginTime = new Date().getTime() - 2592000 * 1000;
+
+  // 시작 시간보다 뒤에 생성된 아이템만 필터링
+  return data.filter((item) => beginTime <= new Date(item.createdAt).getTime());
+};
+
 export default function MainPage() {
+  const [newData, setNewData] = useState(null);
   // Outlet 컴포넌트로 전달받은 props.setHeaderContents 접근
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
+  // 헤더 아이콘 설정
   useEffect(() => {
     setHeaderContents({
       title: <img src="/images/BaroFarmLogo.svg" alt="홈 버튼" />,
@@ -103,6 +115,42 @@ export default function MainPage() {
   const storyImages = images.map((item, index) => (
     <img key={index} src={item} />
   ));
+
+  // const { data } = useQuery({
+  //   queryKey: ["products"],
+  //   queryFn: () =>
+  //     axios.get("https://11.fesp.shop/products", {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         accept: "application/json",
+  //         "client-id": "final04",
+  //       },
+  //     }),
+  //   select: (res) => res.data,
+  //   staleTime: 1000 * 10,
+  // });
+
+  const fetchNewData = async () => {
+    // 전체 데이터 가져오기
+    const { data } = await axios.get("https://11.fesp.shop/products", {
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        "client-id": "final04",
+      },
+    });
+
+    // 최신 (이번 달에 생성된) 데이터만 필터링하기
+    const filteredData = getMonthlyData(data.item);
+    console.log(filteredData);
+
+    setNewData(filteredData); // 상태 업데이트
+  };
+
+  // 컴포넌트 렌더링 후 data fetching
+  useEffect(() => {
+    fetchNewData();
+  }, []);
 
   return (
     <div>
@@ -132,9 +180,12 @@ export default function MainPage() {
           </Link>
         </div>
         <div className="flex flex-wrap justify-between gap-3">
-          {productsData.map((product) => (
-            <Product key={product.id} {...product} />
-          ))}
+          {newData &&
+            newData.map((product, index) => {
+              if (index < 4) {
+                return <Product key={product._id} {...product} />;
+              }
+            })}
         </div>
       </section>
       <section className="px-5 mb-4">
