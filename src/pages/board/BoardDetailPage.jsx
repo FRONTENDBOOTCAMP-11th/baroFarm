@@ -26,7 +26,7 @@ export default function BoardDetailPage() {
           <img
             src="/images/profile/Profile_sample_1.jpg"
             alt="ProfileImage"
-            className="w-6 h-6 rounded-full border border-btn-primary"
+            className="w-6 h-6 rounded-full"
           />
           <span className="mx-[5px] text-sm">온도감</span>
           <span className="text-[10px] mt-[1px] text-gray4">16분 전</span>
@@ -100,7 +100,7 @@ export default function BoardDetailPage() {
           name="comment"
           className="max-w-[285px] h-[35px] rounded-full px-[15px] mr-5 bg-gray1 flex-grow focus:outline-btn-primary"
         />
-        <Button width="45px" height="35px" onClick={() => navigate("/board")}>
+        <Button width={45} height={35} onClick={() => navigate("/board")}>
           등록
         </Button>
       </div>
