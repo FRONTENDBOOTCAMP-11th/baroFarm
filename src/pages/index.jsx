@@ -116,41 +116,42 @@ export default function MainPage() {
     <img key={index} src={item} />
   ));
 
-  // const { data } = useQuery({
-  //   queryKey: ["products"],
-  //   queryFn: () =>
-  //     axios.get("https://11.fesp.shop/products", {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         accept: "application/json",
-  //         "client-id": "final04",
-  //       },
-  //     }),
-  //   select: (res) => res.data,
-  //   staleTime: 1000 * 10,
-  // });
+  // 상품 목록 데이터 fetching
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["products"],
+    queryFn: () =>
+      axios.get("https://11.fesp.shop/products", {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+          "client-id": "final04",
+        },
+      }),
+    select: (res) => res.data.item,
+    staleTime: 1000 * 10,
+  });
 
-  const fetchNewData = async () => {
-    // 전체 데이터 가져오기
-    const { data } = await axios.get("https://11.fesp.shop/products", {
-      headers: {
-        "Content-Type": "application/json",
-        accept: "application/json",
-        "client-id": "final04",
-      },
-    });
+  if (isLoading) {
+    return (
+      <div className="mt-0 mx-auto text-center">
+        로딩중... <br />
+        잠시만 기다려주세요
+      </div>
+    );
+  }
 
-    // 최신 (이번 달에 생성된) 데이터만 필터링하기
-    const filteredData = getMonthlyData(data.item);
-    console.log(filteredData);
+  // 데이터 없을시 null 반환하여 에러 방지
+  if (!data) return null;
 
-    setNewData(filteredData); // 상태 업데이트
-  };
+  console.log(data);
 
-  // 컴포넌트 렌더링 후 data fetching
-  useEffect(() => {
-    fetchNewData();
-  }, []);
+  // 새상품 렌더링
+  const filteredNewData = getMonthlyData(data);
+  const newProducts = filteredNewData.map((product, index) => {
+    if (index < 4) {
+      return <Product key={product._id} {...product} />;
+    }
+  });
 
   return (
     <div>
@@ -180,12 +181,9 @@ export default function MainPage() {
           </Link>
         </div>
         <div className="flex flex-wrap justify-between gap-3">
-          {newData &&
-            newData.map((product, index) => {
-              if (index < 4) {
-                return <Product key={product._id} {...product} />;
-              }
-            })}
+          {productsData.map((product) => (
+            <Product key={product.id} {...product} />
+          ))}
         </div>
       </section>
       <section className="px-5 mb-4">
@@ -205,9 +203,7 @@ export default function MainPage() {
           </Link>
         </div>
         <div className="flex flex-wrap justify-between gap-3">
-          {productsData.map((product) => (
-            <Product key={product.id} {...product} />
-          ))}
+          {newProducts}
         </div>
       </section>
       <section className="px-5 mb-4">
