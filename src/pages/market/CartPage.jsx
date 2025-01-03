@@ -2,7 +2,7 @@ import Button from "@components/Button";
 import CartItem from "@components/CartItem";
 import Checkbox from "@components/Checkbox";
 import HeaderIcon from "@components/HeaderIcon";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
@@ -86,6 +86,30 @@ export default function CartPage() {
     staleTime: 1000 * 10,
   });
 
+  // 장바구니 상품 삭제
+  const queryClient = useQueryClient();
+  const deleteItem = useMutation({
+    mutationFn: (_id) => {
+      const ok = confirm("상품을 삭제하시겠습니까?");
+      if (ok)
+        axios.delete(`https://11.fesp.shop/carts/${_id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+            // 임시로 액세스 토큰 사용
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        });
+    },
+    onSuccess: () => {
+      alert("상품이 삭제되었습니다.");
+      // 캐시된 데이터 삭제 후 리렌더링
+      queryClient.invalidateQueries({ queryKey: ["carts"] });
+    },
+    onError: (err) => console.error(err),
+  });
+
   if (isLoading) {
     return (
       <div className="mt-0 mx-auto text-center">
@@ -106,7 +130,12 @@ export default function CartPage() {
       : data.cost.shippingFees - data.cost.discount.shippingFees;
 
   const itemList = data.item.map((item) => (
-    <CartItem key={item._id} {...item} register={register} />
+    <CartItem
+      key={item._id}
+      {...item}
+      register={register}
+      deleteItem={deleteItem}
+    />
   ));
 
   // 선택된 아이템의 아이디를 배열에 담음

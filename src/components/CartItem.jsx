@@ -21,9 +21,16 @@ CartItem.propTypes = {
       sale: PropTypes.number,
     }),
   }).isRequired,
+  deleteItem: PropTypes.object.isRequired,
 };
 
-export default function CartItem({ _id, quantity, product, register }) {
+export default function CartItem({
+  _id,
+  quantity,
+  product,
+  register,
+  deleteItem,
+}) {
   // 판매자 이름 상태관리
   const [seller, setSeller] = useState("");
 
@@ -67,12 +74,20 @@ export default function CartItem({ _id, quantity, product, register }) {
             </span>
           </div>
           <div className="ring-1 ring-gray2 w-fit flex text-center items-center rounded-sm *:flex *:items-center *:justify-center *:text-sm">
-            <button className="size-6 border-r border-gray2">-</button>
+            <button className="size-6 border-r border-gray2" type="button">
+              -
+            </button>
             <div className="px-2">{quantity}</div>
-            <button className="size-6 border-l border-gray2">+</button>
+            <button className="size-6 border-l border-gray2" type="button">
+              +
+            </button>
           </div>
         </div>
-        <button className="self-start">
+        <button
+          className="self-start"
+          type="button"
+          onClick={() => deleteItem.mutate(_id)}
+        >
           <img src="/icons/icon_x.svg" alt="닫기 버튼" />
         </button>
       </div>
