@@ -37,27 +37,13 @@ export default function ProfilePage() {
         <img
           src="/images/profile/Profile_sample_1.jpg"
           alt="프로필 이미지"
-          className="w-[100px] h-[100px] rounded-full border border-btn-primary"
+          className="w-[100px] h-[100px] rounded-full"
         />
-        <Link
-          to={"/users/profile/edit"}
-          className="flex items-center text-[14px] my-[24px] absolute right-0 top-[25%] group"
-          state={{ user: data }}
-        >
-          <img
-            src="/icons/icon_profileEdit_full.svg"
-            className="h-10 ml-auto"
-            alt="addProduct icon"
-          />
-          <div className="absolute w-auto box-border text-nowrap translate-y-8 translate-x-4 px-1 bg-btn-primary text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <p className="">프로필 수정</p>
-          </div>
-        </Link>
         <div className="mt-[25px] mb-[30px] text-2xl font-bold">
           {data.extra.userName}
         </div>
       </div>
-      <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md">
+      <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
         <section>
           이름 <br />
           성별 <br />
@@ -72,6 +58,20 @@ export default function ProfilePage() {
           {data.phone} <br />
           {data.address}
         </section>
+        <Link
+          to={"/users/profile/edit"}
+          className="flex w-7 h-7 items-center text-[14px] absolute right-2 top-2 group"
+          state={{ user: data }}
+        >
+          <img
+            src="/icons/icon_profileEdit_full.svg"
+            className="h-10 ml-auto"
+            alt="addProduct icon"
+          />
+          <div className="absolute w-auto box-border text-nowrap translate-y-6 px-1 bg-btn-primary text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <p className="">수정</p>
+          </div>
+        </Link>
       </div>
     </div>
   );
