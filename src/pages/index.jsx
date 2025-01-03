@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import HeaderIcon from "@components/HeaderIcon";
 import Product from "@components/Product";
@@ -8,6 +8,8 @@ import Carousel from "@components/Carousel";
 // image
 import productImage1 from "/images/Sample1.svg";
 import productImage2 from "/images/Sample2.svg";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 const productsData = [
   {
@@ -75,11 +77,21 @@ const categories = [
   { title: "쌀/잡곡", image: "/images/menu/Rice.svg" },
 ];
 
+const getMonthlyData = (data) => {
+  // 30일 전을 시작 시간으로 잡는다.
+  const beginTime = new Date().getTime() - 2592000 * 1000;
+
+  // 시작 시간보다 뒤에 생성된 아이템만 필터링
+  return data.filter((item) => beginTime <= new Date(item.createdAt).getTime());
+};
+
 export default function MainPage() {
+  const [newData, setNewData] = useState(null);
   // Outlet 컴포넌트로 전달받은 props.setHeaderContents 접근
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
+  // 헤더 아이콘 설정
   useEffect(() => {
     setHeaderContents({
       title: <img src="/images/BaroFarmLogo.svg" alt="홈 버튼" />,
@@ -103,6 +115,43 @@ export default function MainPage() {
   const storyImages = images.map((item, index) => (
     <img key={index} src={item} />
   ));
+
+  // 상품 목록 데이터 fetching
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["products"],
+    queryFn: () =>
+      axios.get("https://11.fesp.shop/products", {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+          "client-id": "final04",
+        },
+      }),
+    select: (res) => res.data.item,
+    staleTime: 1000 * 10,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="mt-0 mx-auto text-center">
+        로딩중... <br />
+        잠시만 기다려주세요
+      </div>
+    );
+  }
+
+  // 데이터 없을시 null 반환하여 에러 방지
+  if (!data) return null;
+
+  console.log(data);
+
+  // 새상품 렌더링
+  const filteredNewData = getMonthlyData(data);
+  const newProducts = filteredNewData.map((product, index) => {
+    if (index < 4) {
+      return <Product key={product._id} {...product} />;
+    }
+  });
 
   return (
     <div>
@@ -154,9 +203,7 @@ export default function MainPage() {
           </Link>
         </div>
         <div className="flex flex-wrap justify-between gap-3">
-          {productsData.map((product) => (
-            <Product key={product.id} {...product} />
-          ))}
+          {newProducts}
         </div>
       </section>
       <section className="px-5 mb-4">
