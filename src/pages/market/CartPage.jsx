@@ -13,7 +13,7 @@ const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInR5cGUiOiJ1c2VyIiwibmFtZSI6IuygnOydtOyngCIsImVtYWlsIjoidTFAbWFya2V0LmNvbSIsImltYWdlIjoiL2ZpbGVzL2ZpbmFsMDQvdXNlci1qYXlnLndlYnAiLCJsb2dpblR5cGUiOiJlbWFpbCIsImlhdCI6MTczNTg3NzI2OCwiZXhwIjoxNzM1OTYzNjY4LCJpc3MiOiJGRVNQIn0.h7gzgUydFaOpaWqYsMwPC2BvztrzsgUiHPPyuBjaSVs";
 
 export default function CartPage() {
-  // 구매할 물품 폼 제출
+  // 구매할 물품 선택을 위한 폼
   const { register, handleSubmit } = useForm();
   // 결제 버튼 보이기 상태
   const [showButton, setShowButton] = useState(false);
@@ -97,7 +97,6 @@ export default function CartPage() {
 
   // 데이터 없을시 null 반환하여 에러 방지
   if (!data) return null;
-
   console.log(data);
 
   // 최종 배송비 계산
@@ -106,7 +105,7 @@ export default function CartPage() {
       ? "무료"
       : data.cost.shippingFees - data.cost.discount.shippingFees;
 
-  const cartItems = data.item.map((item) => (
+  const itemList = data.item.map((item) => (
     <CartItem key={item._id} {...item} register={register} />
   ));
 
@@ -119,7 +118,7 @@ export default function CartPage() {
 
   return (
     <div>
-      {cartItems.length > 0 ? (
+      {itemList.length > 0 ? (
         <>
           <section className="py-[14px] px-5 flex gap-[6px] items-center border-b border-gray2">
             <label
@@ -133,7 +132,7 @@ export default function CartPage() {
           </section>
           <form onSubmit={handleSubmit(selectItem)}>
             <section className="px-5 pb-4 border-b-4 border-gray2">
-              {cartItems}
+              {itemList}
             </section>
             <section className="px-5 py-3">
               <div className="border-b border-gray2">

@@ -37,18 +37,14 @@ export default function CartItem({ _id, quantity, product, register }) {
           accept: "application/json",
           "client-id": "final04",
         },
-        params: {
-          delay: 500,
-        },
       }),
     select: (res) => res.data.item.name,
-    staleTime: 1000 * 10,
   });
 
-  // 판매자 이름 상태 업데이트
+  // 판매자 이름 상태 업데이트 (data가 업데이트 될 때 다시 화면 렌더링 필요)
   useEffect(() => {
     setSeller(data);
-  }, []);
+  }, [data]);
 
   return (
     <div className="mb-3">
