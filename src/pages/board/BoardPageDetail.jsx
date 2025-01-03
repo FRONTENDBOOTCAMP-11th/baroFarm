@@ -6,7 +6,23 @@ BoardPageDetail.propTypes = {
 };
 
 export default function BoardPageDetail({ item }) {
-  console.log(item.user.image);
+  const createdTime = (createdDate) => {
+    const formatRelativeTime = (inputDate) => {
+      const now = new Date();
+      const pastDate = new Date(inputDate);
+      // 밀리초를 분 단위로 변환
+      const minDiff = Math.floor((now - pastDate) / (1000 * 60));
+      console.log(minDiff);
+
+      if (minDiff < 1) return "방금 전";
+      if (minDiff <= 30) return `${minDiff}분 전`;
+
+      // 30분 이상인 경우에는 그냥 시간을 표시
+      return pastDate.toLocaleString(); // 예: "2025.01.03 15:28:45"
+    };
+
+    return formatRelativeTime(createdDate);
+  };
   return (
     <div className="relative">
       <Link to={"1"}>
@@ -28,7 +44,7 @@ export default function BoardPageDetail({ item }) {
           src={`https://11.fesp.shop${item.image}`}
         />
         <div className="text-[10px] text-gray4 text-right mb-5 mt-1">
-          {item.updatedAt}
+          {createdTime(item.createdAt)}
         </div>
       </Link>
       <div className="h-[7px] bg-gray1 -mx-5"></div>
