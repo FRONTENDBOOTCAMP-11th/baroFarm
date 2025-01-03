@@ -9,84 +9,6 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
-const DUMMY_CARTS_ITEMS = {
-  ok: 1,
-  item: [
-    {
-      _id: 1,
-      product_id: 1,
-      quantity: 2,
-      createdAt: "2024.04.01 08:36:39",
-      updatedAt: "2024.04.01 08:36:39",
-      product: {
-        _id: 1,
-        name: "[소스증정] 반값!! 고니알탕 (겨울 기획상품)",
-        price: 14900,
-        seller_id: 2,
-        quantity: 1,
-        buyQuantity: 310,
-        image: {
-          url: "/images/sample/food.svg",
-          fileName: "sample-dog.jpg",
-          orgName: "스턴트 독.jpg",
-        },
-        extra: {
-          isNew: true,
-          isBest: true,
-          category: ["PC03", "PC0301"],
-          sort: 5,
-          seller_name: "팔도다옴",
-          option: "고니알탕 500g * 4팩",
-          discount: 0.09,
-        },
-      },
-    },
-    {
-      _id: 2,
-      product_id: 1,
-      quantity: 2,
-      createdAt: "2024.04.01 08:36:39",
-      updatedAt: "2024.04.01 08:36:39",
-      product: {
-        _id: 2,
-        name: "[소스증정] 반값!! 고니알탕 (겨울 기획상품) 2",
-        price: 14900,
-        seller_id: 2,
-        quantity: 1,
-        buyQuantity: 310,
-        image: {
-          url: "/images/sample/food.svg",
-          fileName: "sample-dog.jpg",
-          orgName: "스턴트 독.jpg",
-        },
-        extra: {
-          isNew: true,
-          isBest: true,
-          category: ["PC03", "PC0301"],
-          sort: 5,
-          seller_name: "팔도다옴",
-          option: "고니알탕 500g * 4팩",
-          discount: 0.09,
-        },
-      },
-    },
-  ],
-  cost: {
-    products: 29800,
-    shippingFees: 2500,
-    discount: {
-      products: 0,
-      shippingFees: 2500,
-    },
-    total: 29800,
-  },
-};
-
-const DUMMY_EMPTY_CARTS = {
-  ok: 1,
-  item: [],
-};
-
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInR5cGUiOiJ1c2VyIiwibmFtZSI6IuygnOydtOyngCIsImVtYWlsIjoidTFAbWFya2V0LmNvbSIsImltYWdlIjoiL2ZpbGVzL2ZpbmFsMDQvdXNlci1qYXlnLndlYnAiLCJsb2dpblR5cGUiOiJlbWFpbCIsImlhdCI6MTczNTg3NzI2OCwiZXhwIjoxNzM1OTYzNjY4LCJpc3MiOiJGRVNQIn0.h7gzgUydFaOpaWqYsMwPC2BvztrzsgUiHPPyuBjaSVs";
 
@@ -145,12 +67,6 @@ export default function CartPage() {
     };
   }, []);
 
-  const totalShippingFees =
-    DUMMY_CARTS_ITEMS.cost.shippingFees ===
-    DUMMY_CARTS_ITEMS.cost.discount.shippingFees
-      ? "무료"
-      : DUMMY_CARTS_ITEMS.cost.shippingFees;
-
   const { data, isLoading, isError } = useQuery({
     queryKey: ["carts"],
     queryFn: () =>
@@ -166,9 +82,7 @@ export default function CartPage() {
           delay: 500,
         },
       }),
-    onSuccess: (data) => console.log(data),
-    onError: (res) => console.log(res),
-    select: (res) => res.data.item,
+    select: (res) => res.data,
     staleTime: 1000 * 10,
   });
 
@@ -186,7 +100,13 @@ export default function CartPage() {
 
   console.log(data);
 
-  const cartItems = data.map((item) => (
+  // 최종 배송비 계산
+  const totalShippingFees =
+    data.cost.shippingFees - data.cost.discount.shippingFees === 0
+      ? "무료"
+      : data.cost.shippingFees - data.cost.discount.shippingFees;
+
+  const cartItems = data.item.map((item) => (
     <CartItem key={item._id} {...item} register={register} />
   ));
 
@@ -219,8 +139,12 @@ export default function CartPage() {
               <div className="border-b border-gray2">
                 <div className="text-xs flex justify-between mb-3">
                   <span className="text-gray4">총 상품 금액</span>
-                  <span>
-                    {DUMMY_CARTS_ITEMS.cost.products.toLocaleString()}원
+                  <span>{data.cost.products.toLocaleString()}원</span>
+                </div>
+                <div className="text-xs flex justify-between mb-3">
+                  <span className="text-gray4">할인 금액</span>
+                  <span className="text-red1">
+                    {data.cost.discount.products.toLocaleString()}원
                   </span>
                 </div>
                 <div className="text-xs flex justify-between mb-3">
@@ -230,7 +154,7 @@ export default function CartPage() {
               </div>
               <div className="flex justify-between mb-3 py-3 text-[16px] font-bold">
                 <span>총 결제 금액</span>
-                <span>{DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원</span>
+                <span>{data.cost.total.toLocaleString()}원</span>
               </div>
             </section>
             <div
@@ -244,7 +168,7 @@ export default function CartPage() {
               )}
             >
               <Button isBig={true} type="submit">
-                {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 구매하기
+                {data.cost.total.toLocaleString()}원 구매하기
               </Button>
             </section>
           </form>

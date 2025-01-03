@@ -27,7 +27,7 @@ export default function CartItem({ _id, quantity, product, register }) {
   // 판매자 이름 상태관리
   const [seller, setSeller] = useState("");
 
-  // 판매자 이름 fetching
+  // 판매자 id로 이름 fetching
   const { data } = useQuery({
     queryKey: ["users", `${product.seller_id}`, "name"],
     queryFn: () =>
