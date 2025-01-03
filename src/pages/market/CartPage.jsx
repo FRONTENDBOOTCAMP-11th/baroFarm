@@ -206,12 +206,9 @@ export default function CartPage() {
                 showButton ? "bottom-0 opacity-100" : "-bottom-24 opacity-0"
               )}
             >
-              <button
-                className="bg-btn-primary py-3 w-full text-white text-xl font-bold rounded-lg"
-                type="submit"
-              >
+              <Button isBig={true} type="submit">
                 {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 구매하기
-              </button>
+              </Button>
             </section>
           </form>
         </>
