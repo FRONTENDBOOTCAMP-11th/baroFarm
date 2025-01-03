@@ -2,6 +2,8 @@ import Button from "@components/Button";
 import CartItem from "@components/CartItem";
 import Checkbox from "@components/Checkbox";
 import HeaderIcon from "@components/HeaderIcon";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -85,13 +87,14 @@ const DUMMY_EMPTY_CARTS = {
   item: [],
 };
 
+const ACCESS_TOKEN =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInR5cGUiOiJ1c2VyIiwibmFtZSI6IuygnOydtOyngCIsImVtYWlsIjoidTFAbWFya2V0LmNvbSIsImltYWdlIjoiL2ZpbGVzL2ZpbmFsMDQvdXNlci1qYXlnLndlYnAiLCJsb2dpblR5cGUiOiJlbWFpbCIsImlhdCI6MTczNTg3NzI2OCwiZXhwIjoxNzM1OTYzNjY4LCJpc3MiOiJGRVNQIn0.h7gzgUydFaOpaWqYsMwPC2BvztrzsgUiHPPyuBjaSVs";
+
 export default function CartPage() {
   // 구매할 물품 폼 제출
   const { register, handleSubmit } = useForm();
   // 결제 버튼 보이기 상태
   const [showButton, setShowButton] = useState(false);
-  // 장바구니 상품 상태 관리
-  const [selectedItems, setSelectedItems] = useState([]);
 
   // targetRef가 보이면 결제버튼을 보이게 함
   const targetRef = useRef(null);
@@ -148,16 +151,50 @@ export default function CartPage() {
       ? "무료"
       : DUMMY_CARTS_ITEMS.cost.shippingFees;
 
-  const cartItems = DUMMY_CARTS_ITEMS.item.map((item) => (
-    <CartItem key={item._id} {...item.product} register={register} />
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["carts"],
+    queryFn: () =>
+      axios.get("https://11.fesp.shop/carts", {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+          "client-id": "final04",
+          // 임시로 액세스 토큰 사용
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+        params: {
+          delay: 500,
+        },
+      }),
+    onSuccess: (data) => console.log(data),
+    onError: (res) => console.log(res),
+    select: (res) => res.data.item,
+    staleTime: 1000 * 10,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="mt-0 mx-auto text-center">
+        로딩중... <br />
+        잠시만 기다려주세요
+      </div>
+    );
+  }
+
+  // 데이터 없을시 null 반환하여 에러 방지
+  if (!data) return null;
+
+  console.log(data);
+
+  const cartItems = data.map((item) => (
+    <CartItem key={item._id} {...item} register={register} />
   ));
 
   // 선택된 아이템의 아이디를 배열에 담음
   const selectItem = (formData) => {
-    const newState = Object.keys(formData).filter((key) => formData[key]);
-    setSelectedItems(newState);
+    const selectedItems = Object.keys(formData).filter((key) => formData[key]);
     // 선택된 아이템의 아이디가 담긴 배열을 구매 페이지로 전송
-    navigate("/payment", { state: { newState } });
+    navigate("/payment", { state: { selectedItems } });
   };
 
   return (
