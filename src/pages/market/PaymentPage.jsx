@@ -354,12 +354,9 @@ export default function PaymentPage() {
           showButton ? "bottom-0 opacity-100" : "-bottom-24 opacity-0"
         )}
       >
-        <button
-          className="bg-btn-primary py-3 w-full text-white text-xl font-bold rounded-lg"
-          onClick={openModal}
-        >
+        <Button isBig={true} onClick={openModal}>
           {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 결제하기
-        </button>
+        </Button>
       </section>
     </>
   );
