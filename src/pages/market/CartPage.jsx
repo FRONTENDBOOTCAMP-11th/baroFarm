@@ -7,7 +7,7 @@ import axios from "axios";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 const ACCESS_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInR5cGUiOiJ1c2VyIiwibmFtZSI6IuygnOydtOyngCIsImVtYWlsIjoidTFAbWFya2V0LmNvbSIsImltYWdlIjoiL2ZpbGVzL2ZpbmFsMDQvdXNlci1qYXlnLndlYnAiLCJsb2dpblR5cGUiOiJlbWFpbCIsImlhdCI6MTczNTg3NzI2OCwiZXhwIjoxNzM1OTYzNjY4LCJpc3MiOiJGRVNQIn0.h7gzgUydFaOpaWqYsMwPC2BvztrzsgUiHPPyuBjaSVs";
@@ -176,7 +176,9 @@ export default function CartPage() {
         <>
           <section className="pt-[100px] flex flex-col gap-[10px] items-center text-[14px]">
             <span className="text-gray4">담은 상품이 없습니다.</span>
-            <span className="text-bg-primary underline">쇼핑하러 가기</span>
+            <Link to="/" className="text-bg-primary underline">
+              쇼핑하러 가기
+            </Link>
           </section>
         </>
       )}
