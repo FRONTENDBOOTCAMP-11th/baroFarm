@@ -10,15 +10,14 @@ export default function BoardPageDetail({ item }) {
     const formatRelativeTime = (inputDate) => {
       const now = new Date();
       const pastDate = new Date(inputDate);
-      // 밀리초를 분 단위로 변환
       const minDiff = Math.floor((now - pastDate) / (1000 * 60));
-      console.log(minDiff);
-
       if (minDiff < 1) return "방금 전";
-      if (minDiff <= 30) return `${minDiff}분 전`;
+      if (minDiff <= 60) return `${minDiff}분 전`;
+      if (minDiff <= 1440) return `${minDiff / 60}시간 전`;
+      if (minDiff <= 2880) return `${minDiff / 1440}일 전`;
 
-      // 30분 이상인 경우에는 그냥 시간을 표시
-      return pastDate.toLocaleString(); // 예: "2025.01.03 15:28:45"
+      // 이틀 이상인 경우에는 날짜를 표시
+      return pastDate.toLocaleString();
     };
 
     return formatRelativeTime(createdDate);
@@ -43,7 +42,7 @@ export default function BoardPageDetail({ item }) {
           className="relative mt-10 rounded-md"
           src={`https://11.fesp.shop${item.image}`}
         />
-        <div className="text-[10px] text-gray4 text-right mb-5 mt-1">
+        <div className="text-[10px] text-gray4 text-left mb-5 mt-1">
           {createdTime(item.createdAt)}
         </div>
       </Link>
