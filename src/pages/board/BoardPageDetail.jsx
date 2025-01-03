@@ -8,7 +8,7 @@ export default function BoardPageDetail() {
           <img
             src="/images/profile/Profile_sample_1.jpg"
             alt="ProfileImage"
-            className="w-6 h-6 rounded-full border border-btn-primary"
+            className="w-6 h-6 rounded-full"
           />
           <span className="mx-[5px] text-sm">온도감</span>
 

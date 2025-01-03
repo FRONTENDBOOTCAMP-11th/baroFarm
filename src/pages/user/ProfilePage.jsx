@@ -37,7 +37,7 @@ export default function ProfilePage() {
         <img
           src="/images/profile/Profile_sample_1.jpg"
           alt="프로필 이미지"
-          className="w-[100px] h-[100px] rounded-full border border-btn-primary"
+          className="w-[100px] h-[100px] rounded-full"
         />
         <Link
           to={"/users/profile/edit"}
