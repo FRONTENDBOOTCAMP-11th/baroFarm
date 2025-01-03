@@ -8,7 +8,6 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 export default function BoardPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  const [tag, setTag] = useState("자유");
 
   useEffect(() => {
     setHeaderContents({
