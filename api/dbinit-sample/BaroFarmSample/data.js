@@ -601,7 +601,7 @@ export const initData = async (clientId, nextSeq) => {
         ],
         content: `
           <div align="center"><p>푸쉬팝게임기 팝잇 푸시팝 게임기 두더지게임 핑거 뽁뽁이 애니멀을 구매하시는 모든 분께 사은품(무작위)으로 하나 더 드립니다.</p></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-shime.png"></div>
+          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-shine.png"></div>
           <div align="center"><br></div>
           <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-grape.png"></div>
           <div align="center"><br></div>
