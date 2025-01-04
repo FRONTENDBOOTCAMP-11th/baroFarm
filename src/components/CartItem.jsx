@@ -22,6 +22,7 @@ CartItem.propTypes = {
     }),
   }).isRequired,
   deleteItem: PropTypes.object.isRequired,
+  updateItem: PropTypes.object.isRequired,
 };
 
 export default function CartItem({
@@ -30,6 +31,7 @@ export default function CartItem({
   product,
   register,
   deleteItem,
+  updateItem,
 }) {
   // 판매자 이름 상태관리
   const [seller, setSeller] = useState("");
@@ -74,11 +76,23 @@ export default function CartItem({
             </span>
           </div>
           <div className="ring-1 ring-gray2 w-fit flex text-center items-center rounded-sm *:flex *:items-center *:justify-center *:text-sm">
-            <button className="size-6 border-r border-gray2" type="button">
+            <button
+              className="size-6 border-r border-gray2"
+              type="button"
+              onClick={() => {
+                updateItem.mutate({ _id, quantity: quantity - 1 });
+              }}
+            >
               -
             </button>
             <div className="px-2">{quantity}</div>
-            <button className="size-6 border-l border-gray2" type="button">
+            <button
+              className="size-6 border-l border-gray2"
+              type="button"
+              onClick={() => {
+                updateItem.mutate({ _id, quantity: quantity + 1 });
+              }}
+            >
               +
             </button>
           </div>

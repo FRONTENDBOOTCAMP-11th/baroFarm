@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 const ACCESS_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInR5cGUiOiJ1c2VyIiwibmFtZSI6IuygnOydtOyngCIsImVtYWlsIjoidTFAbWFya2V0LmNvbSIsImltYWdlIjoiL2ZpbGVzL2ZpbmFsMDQvdXNlci1qYXlnLndlYnAiLCJsb2dpblR5cGUiOiJlbWFpbCIsImlhdCI6MTczNTg3NzI2OCwiZXhwIjoxNzM1OTYzNjY4LCJpc3MiOiJGRVNQIn0.h7gzgUydFaOpaWqYsMwPC2BvztrzsgUiHPPyuBjaSVs";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInR5cGUiOiJ1c2VyIiwibmFtZSI6IuygnOydtOyngCIsImVtYWlsIjoidTFAbWFya2V0LmNvbSIsImltYWdlIjoiL2ZpbGVzL2ZpbmFsMDQvdXNlci1qYXlnLndlYnAiLCJsb2dpblR5cGUiOiJlbWFpbCIsImlhdCI6MTczNTk3Mjg2MiwiZXhwIjoxNzM2MDU5MjYyLCJpc3MiOiJGRVNQIn0.mlkWKohJcJM-E7v-ZaC9Jxy6KzWCYj8vxoMqEjbRODs";
 
 export default function CartPage() {
   // 구매할 물품 선택을 위한 폼
@@ -75,7 +75,7 @@ export default function CartPage() {
           "Content-Type": "application/json",
           accept: "application/json",
           "client-id": "final04",
-          // 임시로 액세스 토큰 사용
+          // 임시로 하드 코딩한 액세스 토큰 사용
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
         params: {
@@ -97,13 +97,40 @@ export default function CartPage() {
             "Content-Type": "application/json",
             accept: "application/json",
             "client-id": "final04",
-            // 임시로 액세스 토큰 사용
+            // 임시로 하드 코딩한 액세스 토큰 사용
             Authorization: `Bearer ${ACCESS_TOKEN}`,
           },
         });
     },
     onSuccess: () => {
       alert("상품이 삭제되었습니다.");
+      // 캐시된 데이터 삭제 후 리렌더링
+      queryClient.invalidateQueries({ queryKey: ["carts"] });
+    },
+    onError: (err) => console.error(err),
+  });
+
+  // 장바구니 수량 변경
+  const updateItem = useMutation({
+    mutationFn: ({ _id, quantity }) =>
+      axios.patch(
+        `https://11.fesp.shop/carts/${_id}`,
+        {
+          // 보낼 데이터
+          quantity: quantity,
+        },
+        {
+          // request config
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+            // 임시로 하드 코딩한 액세스 토큰 사용
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        }
+      ),
+    onSuccess: () => {
       // 캐시된 데이터 삭제 후 리렌더링
       queryClient.invalidateQueries({ queryKey: ["carts"] });
     },
@@ -135,6 +162,7 @@ export default function CartPage() {
       {...item}
       register={register}
       deleteItem={deleteItem}
+      updateItem={updateItem}
     />
   ));
 
