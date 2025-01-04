@@ -8,9 +8,7 @@ import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
-
-const ACCESS_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInR5cGUiOiJ1c2VyIiwibmFtZSI6IuygnOydtOyngCIsImVtYWlsIjoidTFAbWFya2V0LmNvbSIsImltYWdlIjoiL2ZpbGVzL2ZpbmFsMDQvdXNlci1qYXlnLndlYnAiLCJsb2dpblR5cGUiOiJlbWFpbCIsImlhdCI6MTczNTk3Mjg2MiwiZXhwIjoxNzM2MDU5MjYyLCJpc3MiOiJGRVNQIn0.mlkWKohJcJM-E7v-ZaC9Jxy6KzWCYj8vxoMqEjbRODs";
+import { ACCESS_TOKEN } from "@/tokens";
 
 export default function CartPage() {
   // 구매할 물품 선택을 위한 폼
@@ -67,6 +65,7 @@ export default function CartPage() {
     };
   }, []);
 
+  // 장바구니 목록 조회
   const { data, isLoading, isError } = useQuery({
     queryKey: ["carts"],
     queryFn: () =>
@@ -142,6 +141,15 @@ export default function CartPage() {
       <div className="mt-0 mx-auto text-center">
         로딩중... <br />
         잠시만 기다려주세요
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="mt-0 mx-auto text-center">
+        에러가 발생했습니다. <br />
+        잠시 후 다시 시도해주세요.
       </div>
     );
   }
