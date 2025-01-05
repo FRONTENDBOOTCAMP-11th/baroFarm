@@ -10,16 +10,6 @@ import {
 export default function ProfilePage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  // const data = {
-  //   name: "김아무개",
-  //   gender: "남",
-  //   email: "kimamuge@gmail.com",
-  //   phone: "000-1111-2222",
-  //   auth: "판매자",
-  //   extra: {
-  //     userName: "온도감",
-  //   },
-  // };
 
   const location = useLocation();
   const data = location.state.user;
@@ -39,6 +29,13 @@ export default function ProfilePage() {
           alt="프로필 이미지"
           className="w-[100px] h-[100px] rounded-full"
         />
+        <button className="absolute right-0 bottom-[50px]">
+          <img
+            src="/icons/icon_camera.svg"
+            alt="이미지 수정 아이콘"
+            className="w-7 h-7"
+          />
+        </button>
         <div className="mt-[25px] mb-[30px] text-2xl font-bold">
           {data.extra.userName}
         </div>
