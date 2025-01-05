@@ -25,17 +25,33 @@ export default function ProfilePage() {
     <div className="pt-[60px] mb-[70px]">
       <div className="w-fit mx-auto text-center relative">
         <img
+          id="profileImg"
           src="/images/profile/Profile_sample_1.jpg"
           alt="프로필 이미지"
           className="w-[100px] h-[100px] rounded-full"
         />
-        <button className="absolute right-0 bottom-[50px]">
+        <button
+          className="absolute right-0 bottom-[50px]"
+          onClick={() => {
+            if (confirm("프로필 이미지를 변경하시겠습니까?"))
+              document.getElementById("profileImgChange").click();
+          }}
+        >
           <img
             src="/icons/icon_camera.svg"
             alt="이미지 수정 아이콘"
             className="w-7 h-7"
           />
         </button>
+        <input
+          id="profileImgChange"
+          type="file"
+          className="hidden"
+          onChange={() => {
+            //이미지가 입력되었으면 프로필로 변경하는 코드
+            console.log(document.getElementById("profileImgChange").files[0]);
+          }}
+        />
         <div className="mt-[25px] mb-[30px] text-2xl font-bold">
           {data.extra.userName}
         </div>
