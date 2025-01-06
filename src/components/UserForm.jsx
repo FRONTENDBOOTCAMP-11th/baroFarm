@@ -5,7 +5,14 @@ import { useForm } from "react-hook-form";
 UserForm.propTypes = {
   // 수정기능 구현시 기존의 계정 정보를 입력받아올 props - userInfo
   // 회원가입 시에도 쓰이기에 userInfo는 isRequired가 아님
-  userInfo: PropTypes.shape(),
+  userInfo: PropTypes.shape({
+    // 프로필 수정 시 사용되는 필드들
+    extra: PropTypes.shape({
+      name: PropTypes.string, // 닉네임
+    }),
+    phone: PropTypes.string,
+    address: PropTypes.string,
+  }),
   buttonText: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
@@ -21,11 +28,12 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
   } = useForm({
     defaultValues: {
       // input의 defaultValue 속성 대신 useForm의 defaultValues 옵션으로 초기값 설정
-      // 예시) <input defaultValue={userInfo?.phone || ""} {...register("phone")} />
       name: userInfo?.extra.name || "",
       phone: userInfo?.phone || "",
       address: userInfo?.address || "",
+      memberType: "seller",
     },
+    mode: "onBlur", // 유효성 검사가 실행되는 시점을 onBlur로 설정
   });
 
   // 코드 가독성을 위해 유효성 검사 규칙을 분리하여 관리
@@ -35,9 +43,9 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
       required: "이메일은 필수입니다.",
       pattern: {
         value: /\S+@\S+\.\S+/,
-        message: "이메일 형식이 올바르지 않습니다.",
+        message: "이메일 형식으로 입력해 주세요.",
       },
-      // input 필드에서 포커스가 빠져나갈때(이메일 중복 체크)
+      // onBlur: input 필드에서 포커스가 빠져나갈때(이메일 중복 체크)
       onBlur: async (e) => {
         console.log("onBlur 실행됨");
         const email = e.target.value;
@@ -56,26 +64,22 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
               },
             });
 
-            console.log("서버 응답:", data);
-
-            // ok 0이면 중복 이메일
-            if (data.ok === 0) {
-              // 수동으로 오류 메시지를 설정, type: "manual"은 개발자가 수동으로 설정한 오류 유형를 가리킴
-              setError(
-                "email",
-                {
-                  type: "manual",
-                  message: "이미 등록된 이메일입니다.",
-                }, // 오류가 발생한 필드로 포커스 자동으로 이동
-                { shouldFocus: true }
-              );
-              return; // 중복 이메일인 경우, 이후 로직 실행을 중단
-            } else {
-              // ok 1이면 사용 가능(사용 가능한 이메일)
-              // 이전에 설정된 email 필드의 모든 에러 상태를 제거함 =>  setError로 설정된 에러를 초기화하여, 유효한 이메일 입력 시 오류 메시지를 숨김
+            // ok 1이면 사용 가능(사용 가능한 이메일)
+            if (data.ok === 1) {
+              console.log("서버 응답:", data);
+              // 이전에 설정된 email 필드의 모든 에러 상태를 제거함 =>  setError로 설정된 에러를 초기화하여, 유효한 이메일 입력 시 오류 메시지가 자동으로 사라짐
               clearErrors("email");
             }
           } catch (error) {
+            setError(
+              "email",
+              {
+                // type: "manual"은 개발자가 직접(setError) 수동으로 에러를 설정할 때 사용하는 예약된 값
+                type: "manual",
+                message: "이미 등록된 이메일입니다.",
+              }, // 오류가 발생한 필드로 포커스 자동으로 이동
+              { shouldFocus: true }
+            );
             console.error("에러 상세:", {
               message: error.message,
               status: error.response?.status,
@@ -105,25 +109,73 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
     },
     memberType: { required: "회원 유형을 선택해주세요." },
     gender: { required: "성별을 선택해주세요." },
-    birth: { required: "생년원일을 선택해주세요." },
+    birth: { required: "생년월일을 선택해주세요." },
 
     // 공통 필드(회원가입 및 프로필 수정 시 공통으로 사용)
     name: {
       required: "닉네임은 필수입니다.",
+      onBlur: async (e) => {
+        console.log("onBlur 실행됨");
+        const name = e.target.value;
+        console.log("입력된 닉네임:", name);
+
+        if (name) {
+          try {
+            console.log("axios 요청 직전");
+            const { data } = await axios.get("https://11.fesp.shop/users/name", {
+              params: { name },
+              headers: {
+                "client-id": "final04",
+                "Content-Type": "application/json",
+                accept: "application/json",
+              },
+            });
+
+            // ok 1이면 사용 가능(사용 가능한 닉네임)
+            if (data.ok === 1) {
+              console.log("서버 응답:", data);
+              clearErrors("name");
+            }
+          } catch (error) {
+            setError(
+              "name",
+              {
+                type: "manual",
+                message: "이미 등록된 닉네임입니다.",
+              },
+              { shouldFocus: true }
+            );
+            console.error("에러 상세:", {
+              message: error.message,
+              status: error.response?.status,
+              data: error.response?.data,
+            });
+          }
+        }
+      },
     },
     phone: {
       required: "전화번호는 필수입니다.",
       pattern: {
-        value: /^[0-9]+$/,
-        message: "숫자만 입력 가능합니다.",
+        value: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
+        message: "올바른 전화번호 형식이 아닙니다.",
       },
-      minLength: {
-        value: 11,
-        message: "11자리를 입력해주세요.",
-      },
-      maxLength: {
-        value: 11,
-        message: "11자리를 입력해주세요.",
+      onChange: (e) => {
+        // 숫자가 아닌 모든 문자 제거 (예: "010-1234-5678" → "01012345678")
+        const number = e.target.value.replace(/[^\d]/g, "");
+
+        // 하이픈 추가 로직
+        let formattedNumber = "";
+        if (number.length <= 3) {
+          formattedNumber = number;
+        } else if (number.length <= 7) {
+          formattedNumber = `${number.slice(0, 3)}-${number.slice(3)}`;
+        } else {
+          formattedNumber = `${number.slice(0, 3)}-${number.slice(3, 7)}-${number.slice(7, 11)}`;
+        }
+
+        // 입력 값 업데이트
+        e.target.value = formattedNumber;
       },
     },
     address: {
@@ -144,7 +196,7 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
               className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
               type="email"
               id="email"
-              placeholder="이메일을 입력해주세요"
+              placeholder="이메일을 입력해주세요 or barofarm@market.com"
               {...register("email", validationSchema.email)}
             />
             {errors.email && <p className="text-red1 text-xs mt-1 ps-1">{errors.email.message}</p>}
@@ -217,10 +269,9 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
         <input
           className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-2.5 outline-none focus:border-btn-primary"
           type="tel"
-          // pattern="[0-9]*"
           inputMode="numeric" // 모바일에서 숫자 키패드가 나타나도록 설정
           id="phone"
-          placeholder="숫자만 입력해주세요"
+          placeholder="숫자만 입력해주세요 or 예시: 010-1234-5678"
           // defaultValue={userInfo ? userInfo.phone : ""}
           {...register("phone", validationSchema.phone)}
         />
@@ -247,7 +298,6 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
                 type="radio"
                 id="memberType-seller"
                 value="seller"
-                checked
                 {...register("memberType", validationSchema.memberType)}
               />
               <label className="cursor-pointer" htmlFor="memberType-seller">
