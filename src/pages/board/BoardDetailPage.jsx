@@ -1,11 +1,23 @@
 import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
+import Comment from "@pages/board/Comment";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 
 export default function BoardDetailPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  const { _id } = useParams();
+  const location = useLocation();
+  const newDate = location.state?.newDate;
+  const repliesCount = location.state?.repliesCount;
 
   useEffect(() => {
     setHeaderContents({
@@ -19,34 +31,56 @@ export default function BoardDetailPage() {
     });
   }, []);
 
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["posts", _id],
+    queryFn: () =>
+      axios.get(`https://11.fesp.shop/posts/${_id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+          "client-id": "final04",
+        },
+      }),
+    select: (res) => res.data.item,
+    staleTime: 1000 * 10,
+  });
+
+  if (isLoading) {
+    return (
+      <div className="mt-0 mx-auto text-center">
+        로딩중... <br />
+        잠시만 기다려주세요
+      </div>
+    );
+  }
+
   return (
     <div className="mx-5">
       <div className="flex flex-row mt-5 items-center">
         <img
-          src="/images/profile/Profile_sample_1.jpg"
+          src={`https://11.fesp.shop${data.user.image}`}
           alt="ProfileImage"
           className="w-6 h-6 rounded-full"
         />
-        <span className="mx-[5px] text-sm">온도감</span>
+        <span className="mx-[5px] text-sm">{data.user.name}</span>
         <span className="text-[10px] ml-auto self-start text-gray4">
-          16분 전
+          {newDate}
         </span>
       </div>
-      <div className="mx-[5px] mt-[30px]">
-        요즘 토마토가 또 철이네요~ 우리 집에서 기른 토마토로 만든 소스로
-        스파게티를 해보니 정말 일품이네요! 모두와 함께 공유하고 싶어 이렇게 글을
-        올립니다~
-      </div>
+      <div className="mx-[5px] mt-[30px]">{data.content}</div>
       <img
         className="relative mt-10 mb-1 rounded-md"
-        src="/images/sample/food.svg"
+        src={`https://11.fesp.shop${data.image}`}
       />
       <div className="text-right text-xs">
         <button>수정</button> | <button>삭제</button>
       </div>
       <div className="pt-5">
-        <span className="font-semibold">댓글 (2)</span>
-        <div className="px-[15px] ">
+        <span className="font-semibold">댓글 ({repliesCount})</span>
+
+        <Comment />
+        <Comment />
+        {/* <div className="px-[15px] ">
           <div className="flex flex-row mt-5">
             <img
               src="/images/profile/Profile_sample_1.jpg"
@@ -91,7 +125,7 @@ export default function BoardDetailPage() {
               <button>수정</button> | <button>삭제</button>
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="h-[65px] flex items-center px-5 -mx-5">

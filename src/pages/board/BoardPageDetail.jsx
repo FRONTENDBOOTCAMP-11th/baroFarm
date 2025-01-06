@@ -36,9 +36,14 @@ export default function BoardPageDetail({ item }) {
 
     return formatRelativeTime(createdDate);
   };
+
+  const newDate = createdTime(item.createdAt);
   return (
     <div className="relative">
-      <Link to={"1"}>
+      <Link
+        to={`${item._id}`}
+        state={{ newDate, repliesCount: item.repliesCount }}
+      >
         <div
           ref={containerRef}
           className="max-h-[550px] overflow-hidden relative"
@@ -66,7 +71,7 @@ export default function BoardPageDetail({ item }) {
         </div>
 
         <div className="text-[10px] text-gray4 text-left mb-5 mt-1">
-          {createdTime(item.createdAt)}
+          {newDate}
         </div>
       </Link>
       <div className="h-[7px] bg-gray1 -mx-5"></div>
