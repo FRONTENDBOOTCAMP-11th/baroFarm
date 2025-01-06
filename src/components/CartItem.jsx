@@ -23,6 +23,7 @@ CartItem.propTypes = {
   }).isRequired,
   deleteItem: PropTypes.object.isRequired,
   updateItem: PropTypes.object.isRequired,
+  checkItem: PropTypes.func,
 };
 
 export default function CartItem({
@@ -32,6 +33,7 @@ export default function CartItem({
   register,
   deleteItem,
   updateItem,
+  checkItem,
 }) {
   // 판매자 이름 상태관리
   const [seller, setSeller] = useState("");
@@ -61,7 +63,11 @@ export default function CartItem({
         {seller}
       </div>
       <div className="pt-[10px] flex gap-3">
-        <Checkbox name={`${_id}`} register={register(`${_id}`)} />
+        <Checkbox
+          name={`${_id}`}
+          register={register(`${_id}`)}
+          onClick={() => checkItem(_id)}
+        />
         <img
           src={`https://11.fesp.shop${product.image.path}`}
           alt="상품 이미지"
