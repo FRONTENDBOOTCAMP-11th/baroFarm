@@ -22,7 +22,7 @@ export default function BoardPage() {
     });
   }, []);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["posts"],
     queryFn: () =>
       axios.get("https://11.fesp.shop/posts?type=community", {
@@ -44,8 +44,6 @@ export default function BoardPage() {
       </div>
     );
   }
-
-  console.log(data);
 
   const boards = data.map((item) => (
     <BoardPageDetail key={item._id} item={item} />

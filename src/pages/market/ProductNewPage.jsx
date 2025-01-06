@@ -22,18 +22,11 @@ export default function ProductNewPage() {
   // div 내에 입력한 input & select 태그의 value 변경을 위함
   const [price, setPrice] = useState();
   const [tag, setTag] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [discount, setDiscount] = useState();
+  const [checkDiscount, setCheckDiscount] = useState(false);
 
   // form 태그를 참조
   const formRef = useRef(null);
-
-  const toggleDropdown = () => {
-    setIsOpen((prev) => !prev);
-  };
-
-  const handleBlur = () => {
-    setIsOpen(false); // 드롭다운 닫을 때 상태 초기화
-  };
 
   const handlePriceChange = (e) => {
     // 숫자만 남기기
@@ -59,7 +52,8 @@ export default function ProductNewPage() {
       <select
         type="text"
         value={tag}
-        className={`border-2 border-white bg-gray2/20 w-full h-[50px] mt-[25px] px-4 outline-none focus:border-btn-primary rounded-md`}
+        className={`mt-[25px] text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer
+    bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]`}
         {...register("category", {
           required: "상품명 종류를 선택해주세요",
           onChange: (e) => setTag(e.target.value),
@@ -82,7 +76,8 @@ export default function ProductNewPage() {
             제철 지정 (선택)
           </label>
           <select
-            className="border-2 border-white bg-gray2/20 rounded-md p-2 outline-none focus:border-btn-primary w-[30%]"
+            className="text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer
+    bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
             type="month"
             id="seasonStart"
             name="seasonStart"
@@ -101,9 +96,10 @@ export default function ProductNewPage() {
             <option value="11">11월</option>
             <option value="12">12월</option>
           </select>
-          <span className="mx-[0.5rem]">~</span>
+          {/* <span className="mx-[0.5rem]">~</span>
           <select
-            className="border-2 border-white bg-gray2/20 rounded-md p-2 outline-none focus:border-btn-primary w-[30%]"
+            className=" text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer
+    bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
             type="month"
             id="seasonEnd"
             name="seasonEnd"
@@ -121,7 +117,7 @@ export default function ProductNewPage() {
             <option value="10">10월</option>
             <option value="11">11월</option>
             <option value="12">12월</option>
-          </select>
+          </select> */}
         </>
       )}
       <textarea
@@ -159,7 +155,54 @@ export default function ProductNewPage() {
           required: "필수 입력 정보입니다",
         })}
       />
-      <br />
+      <div className="flex gap-1 items-center mb-[25px]">
+        <p className="font-bold">할인을 적용하시겠습니까?</p>
+        <input
+          type="radio"
+          className="w-3.5 h-3.5 rounded-full appearance-none bg-gray2 checked:bg-btn-primary cursor-pointer"
+          name="discount"
+          id="discount-true"
+          value="true"
+          required
+          onChange={() => {
+            setCheckDiscount(true);
+          }}
+        />
+        <label className="cursor-pointer" htmlFor="discount-true">
+          예
+        </label>
+        <input
+          type="radio"
+          className="w-3.5 h-3.5 rounded-full appearance-none bg-gray2 checked:bg-btn-primary cursor-pointer"
+          name="discount"
+          id="discount-false"
+          value="false"
+          defaultChecked
+          required
+          onChange={() => {
+            setCheckDiscount(false);
+          }}
+        />
+        <label className="cursor-pointer" htmlFor="discount-false">
+          아니오
+        </label>
+      </div>
+      {checkDiscount && (
+        <div className="relative w-full">
+          <label className="font-bold block">할인률 %</label>
+          <input
+            type="text"
+            className="bg-gray2/20 w-full h-[50px] pr-12  focus:text-right mb-[25px] px-4 mt-[10px] focus:outline-btn-primary rounded-md"
+            placeholder="10 ~ 90 까지의 할인률을 입력하세요"
+            {...register("discount", {
+              required: "필수 입력 정보입니다",
+            })}
+          />
+          <span className="absolute right-4 top-1/2 transform -translate-y-1/3 text-gray-600">
+            %
+          </span>
+        </div>
+      )}
       <label className="font-bold">이미지 첨부</label>
       <input
         type="file"
