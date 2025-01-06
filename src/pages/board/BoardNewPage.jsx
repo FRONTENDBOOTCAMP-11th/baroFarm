@@ -57,7 +57,7 @@ export default function BoardNewPage() {
               },
             }
           );
-          imageUrl = uploadImg.data.url; // 서버에서 반환된 이미지 URL
+          imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
         } catch (error) {
           console.error(
             "Image upload failed:",
@@ -67,7 +67,6 @@ export default function BoardNewPage() {
         }
       }
       const body = {
-        title: item.title,
         content: item.content,
         type: "community",
         image: imageUrl,
