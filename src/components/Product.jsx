@@ -85,7 +85,9 @@ export default function Product({ productId }) {
           <span className="text-red1 font-semibold text-base pr-1">
             {product.extra.sale}%
           </span>
-          <span className="font-extrabold text-lg">{product.price}</span>
+          <span className="font-extrabold text-lg">
+            {Intl.NumberFormat().format(product.price)}원
+          </span>
         </div>
         <span className="font-semibold text-xs pr-2">
           ⭐️ {product.extra.rating}
