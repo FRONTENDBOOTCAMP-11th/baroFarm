@@ -1,7 +1,10 @@
 import moment from "moment";
 
 function getTime(day = 0, second = 0) {
-  return moment().add(day, "days").add(second, "seconds").format("YYYY.MM.DD HH:mm:ss");
+  return moment()
+    .add(day, "days")
+    .add(second, "seconds")
+    .format("YYYY.MM.DD HH:mm:ss");
 }
 
 export const initData = async (clientId, nextSeq) => {
@@ -11,7 +14,8 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "admin@market.com",
-        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password:
+          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "무지",
         phone: "01011112222",
         address: "서울시 강남구 역삼동 123",
@@ -40,7 +44,8 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "s1@market.com",
-        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password:
+          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "네오",
         phone: "01022223333",
         address: "서울시 강남구 삼성동 456",
@@ -69,7 +74,8 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "s2@market.com",
-        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password:
+          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "어피치",
         phone: "01033334444",
         address: "서울시 강남구 도곡동 789",
@@ -99,7 +105,8 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "u1@market.com",
-        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password:
+          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "제이지",
         phone: "01044445555",
         address: "서울시 강남구 논현동 222",
@@ -821,7 +828,8 @@ export const initData = async (clientId, nextSeq) => {
           custom_data: null,
           status: "paid",
           paid_at: 1702540626,
-          receipt_url: "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
+          receipt_url:
+            "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
           card_name: "국민KB카드",
           bank_name: null,
           card_quota: 0,
@@ -918,11 +926,69 @@ export const initData = async (clientId, nextSeq) => {
         order_id: 2,
         product_id: 3,
         rating: 1,
-        content: "하루만에 고장났어요.",
+        content: "상해서 도착했어요",
         extra: {
           title: "추천하지 않습니다.",
         },
         createdAt: getTime(-2, -60 * 60 * 10),
+      },
+      {
+        _id: await nextSeq("review"),
+        user_id: 4,
+        user: {
+          _id: 4,
+          name: "제이지",
+          image: "user-jayg.webp",
+        },
+        order_id: 5,
+        product_id: 2,
+        rating: 5,
+        content:
+          "너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다!",
+        createdAt: getTime(-4, -60 * 60 * 12),
+      },
+      {
+        _id: await nextSeq("review"),
+        user_id: 3,
+        user: {
+          _id: 3,
+          name: "어피치",
+          image: "user-apeach.webp",
+        },
+        order_id: 6,
+        product_id: 2,
+        rating: 1,
+        content:
+          "너무 너무 별로에요 사지마세요 ㅠㅠ 너무 너무 별로에요 사지마세요 ㅠㅠ 너무 너무 별로에요 사지마세요 ㅠㅠ",
+        createdAt: getTime(-4, -60 * 60 * 12),
+      },
+      {
+        _id: await nextSeq("review"),
+        user_id: 3,
+        user: {
+          _id: 3,
+          name: "어피치",
+          image: "user-apeach.webp",
+        },
+        order_id: 7,
+        product_id: 2,
+        rating: 3,
+        content: "나쁘지 않아요~",
+        createdAt: getTime(-4, -60 * 60 * 12),
+      },
+      {
+        _id: await nextSeq("review"),
+        user_id: 3,
+        user: {
+          _id: 3,
+          name: "어피치",
+          image: "user-apeach.webp",
+        },
+        order_id: 8,
+        product_id: 2,
+        rating: 2,
+        content: "별로 ㅋ",
+        createdAt: getTime(-4, -60 * 60 * 12),
       },
     ],
     // 장바구니
@@ -1129,7 +1195,8 @@ export const initData = async (clientId, nextSeq) => {
           image: "user-muzi.webp",
         },
         title: "배송지연 안내",
-        content: "크리스마스 물류 증가로 인해 평소보다 2~3일 지연될 예정입니다.",
+        content:
+          "크리스마스 물류 증가로 인해 평소보다 2~3일 지연될 예정입니다.",
         createdAt: getTime(-4, -60 * 60 * 2),
         updatedAt: getTime(-2, -60 * 60 * 13),
       },
@@ -1143,7 +1210,8 @@ export const initData = async (clientId, nextSeq) => {
           image: "user-muzi.webp",
         },
         title: "배송비 인상 안내",
-        content: "택배사 배송비 인상으로 인해 기존 3,000원에서 3,500원으로 인상됩니다.",
+        content:
+          "택배사 배송비 인상으로 인해 기존 3,000원에서 3,500원으로 인상됩니다.",
         createdAt: getTime(-6, -60 * 60 * 20),
         updatedAt: getTime(-4, -60 * 60 * 13),
       },
