@@ -1,7 +1,10 @@
 import moment from "moment";
 
 function getTime(day = 0, second = 0) {
-  return moment().add(day, "days").add(second, "seconds").format("YYYY.MM.DD HH:mm:ss");
+  return moment()
+    .add(day, "days")
+    .add(second, "seconds")
+    .format("YYYY.MM.DD HH:mm:ss");
 }
 
 export const initData = async (clientId, nextSeq) => {
@@ -11,7 +14,8 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "admin@market.com",
-        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password:
+          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "무지",
         phone: "01011112222",
         address: "서울시 강남구 역삼동 123",
@@ -40,7 +44,8 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "s1@market.com",
-        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password:
+          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "네오",
         phone: "01022223333",
         address: "서울시 강남구 삼성동 456",
@@ -69,7 +74,8 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "s2@market.com",
-        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password:
+          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "어피치",
         phone: "01033334444",
         address: "서울시 강남구 도곡동 789",
@@ -99,7 +105,8 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "u1@market.com",
-        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password:
+          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "제이지",
         phone: "01044445555",
         address: "서울시 강남구 논현동 222",
@@ -131,7 +138,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("product"),
         seller_id: 2,
-        price: 18300,
+        price: 20000,
         shippingFees: 3500,
         show: true,
         active: true,
@@ -158,13 +165,14 @@ export const initData = async (clientId, nextSeq) => {
           sort: 5,
           rating: 4.2,
           sale: 22,
+          saledPrice: 15600,
           bestMonth: [7, 8, 9],
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 2,
-        price: 27900,
+        price: 30000,
         shippingFees: 2500,
         show: true,
         active: true,
@@ -191,13 +199,14 @@ export const initData = async (clientId, nextSeq) => {
           sort: 4,
           rating: 4.1,
           sale: 28,
+          saledPrice: 21600,
           bestMonth: [1],
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 1,
-        price: 10900,
+        price: 13000,
         shippingFees: 0,
         show: true,
         active: true,
@@ -224,13 +233,14 @@ export const initData = async (clientId, nextSeq) => {
           sort: 3,
           rating: 3.5,
           sale: 28,
+          saledPrice: 9360,
           bestMonth: [1],
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 23900,
+        price: 25000,
         shippingFees: 0,
         show: true,
         active: true,
@@ -257,13 +267,14 @@ export const initData = async (clientId, nextSeq) => {
           sort: 1,
           rating: 4.8,
           sale: 30,
+          saledPrice: 17500,
           bestMonth: [1],
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 2,
-        price: 29800,
+        price: 30000,
         shippingFees: 0,
         show: true,
         active: true,
@@ -291,14 +302,15 @@ export const initData = async (clientId, nextSeq) => {
           sort: 2,
           rating: 5,
           sale: 25,
+          saledPrice: 22500,
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 15900,
+        price: 18000,
         shippingFees: 4000,
-        show: false,
+        show: true,
         active: true,
         name: "기름 한방울 없이 바삭한 닭다리 치킨 450g*2팩",
         quantity: 100,
@@ -323,12 +335,13 @@ export const initData = async (clientId, nextSeq) => {
           sort: 1,
           rating: 2,
           sale: 11,
+          saledPrice: 16020,
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 19900,
+        price: 24000,
         shippingFees: 3500,
         show: true,
         active: true,
@@ -355,13 +368,14 @@ export const initData = async (clientId, nextSeq) => {
           sort: 3,
           rating: 2.5,
           sale: 18,
+          saledPrice: 24000,
           bestMonth: [1, 2],
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 2,
-        price: 11400,
+        price: 12500,
         shippingFees: 2000,
         show: true,
         active: true,
@@ -388,12 +402,13 @@ export const initData = async (clientId, nextSeq) => {
           sort: 8,
           rating: 3.5,
           sale: 16,
+          saledPrice: 10500,
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 8900,
+        price: 9000,
         shippingFees: 1800,
         show: true,
         active: true,
@@ -421,6 +436,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 2,
           rating: 4.5,
           sale: 19,
+          saledPrice: 7290,
         },
       },
       {
@@ -453,6 +469,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 4,
           rating: 3.7,
           sale: 12,
+          saledPrice: 23672,
           bestMonth: [1],
         },
       },
@@ -497,12 +514,13 @@ export const initData = async (clientId, nextSeq) => {
           sort: 6,
           rating: 2.76,
           sale: 29,
+          saledPrice: 14910,
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 2,
-        price: 42700,
+        price: 43000,
         shippingFees: 3500,
         show: true,
         active: true,
@@ -529,10 +547,11 @@ export const initData = async (clientId, nextSeq) => {
         extra: {
           isNew: true,
           isBest: true,
-          category: "rice", // 어린이 > 레고
+          category: "rice",
           sort: 7,
           rating: 3.8,
           sale: 38,
+          saledPrice: 26660,
           bestMonth: [9, 10],
         },
       },
@@ -540,7 +559,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 16110,
+        price: 17000,
         shippingFees: 5500,
         show: true,
         active: true,
@@ -565,10 +584,11 @@ export const initData = async (clientId, nextSeq) => {
         extra: {
           isNew: true,
           isBest: false,
-          category: "fruit", // 어린이 > 레고
+          category: "fruit",
           sort: 6,
           rating: 2.7,
           sale: 27,
+          saledPrice: 12410,
           bestMonth: [7, 8],
         },
       },
@@ -576,7 +596,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 84550,
+        price: 90000,
         shippingFees: 0,
         show: true,
         active: true,
@@ -601,7 +621,7 @@ export const initData = async (clientId, nextSeq) => {
           },
         ],
         content: `
-          <div align="center"><p>푸쉬팝게임기 팝잇 푸시팝 게임기 두더지게임 핑거 뽁뽁이 애니멀을 구매하시는 모든 분께 사은품(무작위)으로 하나 더 드립니다.</p></div>
+          <div align="center"><p>과일 세트를 구매하시는 모든 분께 사은품(무작위)으로 하나 더 드립니다.</p></div>
           <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-shine.png"></div>
           <div align="center"><br></div>
           <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-grape.png"></div>
@@ -616,6 +636,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 5,
           rating: 4.5,
           sale: 21,
+          saledPrice: 15600,
         },
       },
       // 15번 상품. 옵션이 있는 경우 메인 상품 정보
@@ -646,6 +667,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 5,
           rating: 4.5,
           sale: 28,
+          saledPrice: 7128,
           bestMonth: [1],
         },
       },
@@ -653,7 +675,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 16900,
+        price: 16000,
         shippingFees: 1500,
         name: "달콤 촉촉 호풍미(당근) 고구마 특상 3kg",
         quantity: 5,
@@ -677,6 +699,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 9,
           rating: 2.5,
           sale: 18,
+          saledPrice: 13120,
           bestMonth: [1],
         },
       },
@@ -821,7 +844,8 @@ export const initData = async (clientId, nextSeq) => {
           custom_data: null,
           status: "paid",
           paid_at: 1702540626,
-          receipt_url: "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
+          receipt_url:
+            "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
           card_name: "국민KB카드",
           bank_name: null,
           card_quota: 0,
@@ -1129,7 +1153,8 @@ export const initData = async (clientId, nextSeq) => {
           image: "user-muzi.webp",
         },
         title: "배송지연 안내",
-        content: "크리스마스 물류 증가로 인해 평소보다 2~3일 지연될 예정입니다.",
+        content:
+          "크리스마스 물류 증가로 인해 평소보다 2~3일 지연될 예정입니다.",
         createdAt: getTime(-4, -60 * 60 * 2),
         updatedAt: getTime(-2, -60 * 60 * 13),
       },
@@ -1143,7 +1168,8 @@ export const initData = async (clientId, nextSeq) => {
           image: "user-muzi.webp",
         },
         title: "배송비 인상 안내",
-        content: "택배사 배송비 인상으로 인해 기존 3,000원에서 3,500원으로 인상됩니다.",
+        content:
+          "택배사 배송비 인상으로 인해 기존 3,000원에서 3,500원으로 인상됩니다.",
         createdAt: getTime(-6, -60 * 60 * 20),
         updatedAt: getTime(-4, -60 * 60 * 13),
       },

@@ -76,7 +76,7 @@ export default function Product(product) {
             {product.extra.sale}%
           </span>
           <span className="font-extrabold text-lg">
-            {Intl.NumberFormat().format(product.price)}원
+            {Intl.NumberFormat().format(product.extra.saledPrice)}원
           </span>
         </div>
         <span className="font-semibold text-xs pr-2">
