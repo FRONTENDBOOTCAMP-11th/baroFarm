@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 BoardPageDetail.propTypes = {
@@ -6,6 +7,19 @@ BoardPageDetail.propTypes = {
 };
 
 export default function BoardPageDetail({ item }) {
+  const containerRef = useRef(null);
+  const [isOverflow, setIsOverflow] = useState(false);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (containerRef.current) {
+        const { scrollHeight, clientHeight } = containerRef.current;
+        setIsOverflow(scrollHeight > clientHeight); // 높이 비교
+      }
+    };
+    checkOverflow();
+  }, []);
+
   const createdTime = (createdDate) => {
     const formatRelativeTime = (inputDate) => {
       const now = new Date();
@@ -25,23 +39,32 @@ export default function BoardPageDetail({ item }) {
   return (
     <div className="relative">
       <Link to={"1"}>
-        <div className="flex flex-row mt-5 items-center">
-          <img
-            src={`https://11.fesp.shop${item.user.image}`}
-            alt="ProfileImage"
-            className="w-6 h-6 rounded-full"
-          />
-          <span className="mx-[5px] text-sm">{item.user.name}</span>
+        <div
+          ref={containerRef}
+          className="max-h-[550px] overflow-hidden relative"
+        >
+          <div className="flex flex-row mt-5 items-center">
+            <img
+              src={`https://11.fesp.shop${item.user.image}`}
+              alt="ProfileImage"
+              className="w-6 h-6 rounded-full"
+            />
+            <span className="mx-[5px] text-sm">{item.user.name}</span>
 
-          <span className="ml-auto text-xs self-start">
-            댓글 {item.repliesCount}개
-          </span>
+            <span className="ml-auto text-xs self-start">
+              댓글 {item.repliesCount}개
+            </span>
+          </div>
+          <div className="mx-[5px] mt-[30px]">{item.content}</div>
+          <img
+            className="relative mt-10 rounded-md"
+            src={`https://11.fesp.shop${item.image}`}
+          />
+          {isOverflow && (
+            <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
+          )}
         </div>
-        <div className="mx-[5px] mt-[30px]">{item.content}</div>
-        <img
-          className="relative mt-10 rounded-md"
-          src={`https://11.fesp.shop${item.image}`}
-        />
+
         <div className="text-[10px] text-gray4 text-left mb-5 mt-1">
           {createdTime(item.createdAt)}
         </div>

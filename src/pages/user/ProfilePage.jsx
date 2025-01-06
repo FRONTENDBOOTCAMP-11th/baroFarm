@@ -10,16 +10,6 @@ import {
 export default function ProfilePage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  // const data = {
-  //   name: "김아무개",
-  //   gender: "남",
-  //   email: "kimamuge@gmail.com",
-  //   phone: "000-1111-2222",
-  //   auth: "판매자",
-  //   extra: {
-  //     userName: "온도감",
-  //   },
-  // };
 
   const location = useLocation();
   const data = location.state.user;
@@ -35,9 +25,32 @@ export default function ProfilePage() {
     <div className="pt-[60px] mb-[70px]">
       <div className="w-fit mx-auto text-center relative">
         <img
+          id="profileImg"
           src="/images/profile/Profile_sample_1.jpg"
           alt="프로필 이미지"
           className="w-[100px] h-[100px] rounded-full"
+        />
+        <button
+          className="absolute right-0 bottom-[50px]"
+          onClick={() => {
+            if (confirm("프로필 이미지를 변경하시겠습니까?"))
+              document.getElementById("profileImgChange").click();
+          }}
+        >
+          <img
+            src="/icons/icon_camera.svg"
+            alt="이미지 수정 아이콘"
+            className="w-7 h-7"
+          />
+        </button>
+        <input
+          id="profileImgChange"
+          type="file"
+          className="hidden"
+          onChange={() => {
+            //이미지가 입력되었으면 프로필로 변경하는 코드
+            console.log(document.getElementById("profileImgChange").files[0]);
+          }}
         />
         <div className="mt-[25px] mb-[30px] text-2xl font-bold">
           {data.extra.userName}
