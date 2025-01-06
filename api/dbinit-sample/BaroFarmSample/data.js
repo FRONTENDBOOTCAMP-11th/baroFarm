@@ -1,10 +1,7 @@
 import moment from "moment";
 
 function getTime(day = 0, second = 0) {
-  return moment()
-    .add(day, "days")
-    .add(second, "seconds")
-    .format("YYYY.MM.DD HH:mm:ss");
+  return moment().add(day, "days").add(second, "seconds").format("YYYY.MM.DD HH:mm:ss");
 }
 
 export const initData = async (clientId, nextSeq) => {
@@ -14,8 +11,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "admin@market.com",
-        password:
-          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "무지",
         phone: "01011112222",
         address: "서울시 강남구 역삼동 123",
@@ -44,8 +40,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "s1@market.com",
-        password:
-          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "네오",
         phone: "01022223333",
         address: "서울시 강남구 삼성동 456",
@@ -74,8 +69,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "s2@market.com",
-        password:
-          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "어피치",
         phone: "01033334444",
         address: "서울시 강남구 도곡동 789",
@@ -105,8 +99,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "u1@market.com",
-        password:
-          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "제이지",
         phone: "01044445555",
         address: "서울시 강남구 논현동 222",
@@ -138,143 +131,155 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("product"),
         seller_id: 2,
-        price: 22800,
-        shippingFees: 0,
+        price: 18300,
+        shippingFees: 3500,
         show: true,
         active: true,
-        name: "캥거루 스턴트 독 로봇완구",
+        name: "[1+1] 저탄소 GAP 샤인머스캣 포도 1kg+1kg",
         quantity: 320,
         buyQuantity: 310,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-dog.jpg`,
-            name: "sample-dog.jpg",
-            originalname: "스턴트 독.jpg",
+            path: `/files/${clientId}/sample-shine.png`,
+            name: "sample-shine.png",
+            originalname: "샤인 머스캣.png",
           },
         ],
         content: `
           <div class="product-detail">
-            <p>캥거루 스턴트 독 로봇완구 상세 설명</p>
+            <p>안녕하세요 3대째 포도 및 복숭아를 재배하고 있는 박수병입니다. 대표 여름 과일들은 모두 취급하고 있어요. 오랜 기간 동안 어렵다는 여름 과일들을 재배하면서 얻은 노하우로 높은 당도와 고품질의 샤인 머스캣을 보내드릴 수 있도록 하겠습니다. 탐스러운 샤인머스캣 한번 드셔보세요^^</p>
           </div>`,
         createdAt: getTime(-41, -60 * 60 * 2),
         updatedAt: getTime(-40, -60 * 15),
         extra: {
           isNew: true,
           isBest: true,
-          category: ["PC03", "PC0301"],
+          category: "fruit",
           sort: 5,
+          rating: 4.2,
+          sale: 22,
+          bestMonth: [7, 8, 9],
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 2,
-        price: 17260,
+        price: 27900,
         shippingFees: 2500,
         show: true,
         active: true,
-        name: "헬로카봇 스톰다이버",
+        name: "새콤달콤 써니돌체 국산 적포도 1.4kg 내외 (2송이)",
         quantity: 200,
         buyQuantity: 198,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-diver.jpg`,
-            name: "sample-diver.jpg",
-            originalname: "헬로카봇.jpg",
+            path: `/files/${clientId}/sample-grape.png`,
+            name: "sample-grape.png",
+            originalname: "적포도.png",
           },
         ],
         content: `
           <div class="product-detail">
-            <p>헬로카봇 스톰다이버 상세 설명</p>
+            <p>새콤달콤한 맛을 느껴보세요 짧은 기간동안 맛보실 수 있는 새콤달콤 적포도입니다.</p>
           </div>`,
         createdAt: getTime(-38, -60 * 60 * 6),
         updatedAt: getTime(-33, -60 * 55),
         extra: {
           isNew: false,
           isBest: true,
-          category: ["PC01", "PC0103"],
+          category: "fruit",
           sort: 4,
+          rating: 4.1,
+          sale: 28,
+          bestMonth: [1],
         },
       },
       {
         _id: await nextSeq("product"),
-        seller_id: 2,
-        price: 48870,
+        seller_id: 1,
+        price: 10900,
         shippingFees: 0,
         show: true,
         active: true,
-        name: "레고 클래식 라지 조립 박스 10698",
+        name: "아삭 달큰한 제주 구좌 흙 당근 (중/특상) 3kg",
         quantity: 100,
         buyQuantity: 99,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-classic.jpg`,
-            name: "sample-classic.jpg",
-            originalname: "레고 클래식.jpg",
+            path: `/files/${clientId}/sample-carrot.png`,
+            name: "sample-carrot.png",
+            originalname: "당근.png",
           },
         ],
         content: `
           <div class="product-detail">
-            <p>레고 클래식 라지 조립 박스 10698 상세 설명</p>
+            <p>당근 상세 설명</p>
           </div>`,
         createdAt: getTime(-35, -60 * 60 * 6),
         updatedAt: getTime(-10, -60 * 19),
         extra: {
           isNew: true,
           isBest: true,
-          category: ["PC01", "PC0103"],
+          category: "vegetable",
           sort: 3,
+          rating: 3.5,
+          sale: 28,
+          bestMonth: [1],
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 45000,
-        shippingFees: 3500,
+        price: 23900,
+        shippingFees: 0,
         show: true,
         active: true,
-        name: "레고 테크닉 42151 부가티 볼리드",
+        name: "54년 전통 얼갈이 김치 1kg",
         quantity: 100,
         buyQuantity: 89,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-bugatti.png`,
-            name: "sample-bugatti.png",
-            originalname: "부가티.png",
+            path: `/files/${clientId}/sample-kimchi.png`,
+            name: "sample-kimchi.png",
+            originalname: "김치.png",
           },
         ],
         content: `
           <div class="product-detail">
-            <p>레고 테크닉 42151 부가티 볼리드 상세 설명</p>
+            <p>얼갈이 김치 상세 설명</p>
           </div>`,
         createdAt: getTime(-33, -60 * 60 * 7),
         updatedAt: getTime(-22, -60 * 60 * 3),
         extra: {
           isNew: false,
           isBest: true,
-          category: ["PC03", "PC0303"],
+          category: "kimchi",
           sort: 1,
+          rating: 4.8,
+          sale: 30,
+          bestMonth: [1],
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 2,
-        price: 45000,
-        shippingFees: 3500,
+        price: 29800,
+        shippingFees: 0,
         show: true,
         active: true,
-        name: "레고 마인크래프트 21246 깊고 어두운 전장",
+        name: "[대용량 특가] 자연치즈로 만든 진한 화덕 피자 2판(페페로니, 베이컨 체다치즈)",
         quantity: 100,
         buyQuantity: 98,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-minecraft.png`,
-            name: "sample-minecraft.png",
-            originalname: "마인크래프트.png",
+            path: `/files/${clientId}/sample-pizza.png`,
+            name: "sample-pizza.png",
+            originalname: "피자.png",
           },
         ],
         content: `
           <div class="product-detail">
-            <p>레고 마인크래프트 21246 깊고 어두운 전장 상세 설명</p>
+            <p>진짜 진짜 짱 맛있는 피자 상세 설명 진짜 진짜 짱 맛있는 피자 상세 설명 진짜 진짜 짱 맛있는 피자 상세 설명 진짜 진짜 짱 맛있는 피자 상세 설명 진짜 진짜 짱 맛있는 피자 상세 설명 진짜 진짜 짱 맛있는 피자 상세 설명 진짜 진짜 짱 맛있는 피자 상세 설명 진짜 진짜 짱 맛있는 피자 상세 설명</p>
           </div>`,
         createdAt: getTime(-30, -60 * 60 * 10),
         updatedAt: getTime(-10, -60 * 56),
@@ -282,120 +287,129 @@ export const initData = async (clientId, nextSeq) => {
           isNew: true,
           isBest: false,
           today: true,
-          category: ["PC03", "PC0303"],
+          category: "simple",
           sort: 2,
+          rating: 5,
+          sale: 25,
         },
       },
       {
         _id: await nextSeq("product"),
-        seller_id: 2,
-        price: 54790,
+        seller_id: 3,
+        price: 15900,
         shippingFees: 4000,
         show: false,
         active: true,
-        name: "레고 마블 76247 헐크버스터: 와칸다의 전투",
+        name: "기름 한방울 없이 바삭한 닭다리 치킨 450g*2팩",
         quantity: 100,
         buyQuantity: 99,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-hulk.png`,
-            name: "sample-hulk.png",
-            originalname: "헐크.png",
+            path: `/files/${clientId}/sample-chicken.png`,
+            name: "sample-chicken.png",
+            originalname: "치킨.png",
           },
         ],
         content: `
           <div class="product-detail">
-            <p>레고 마블 76247 헐크버스터: 와칸다의 전투 상세 설명</p>
+            <p>맛있어 죽겠는 치킨~~</p>
           </div>`,
         createdAt: getTime(-30, -60 * 60 * 21),
         updatedAt: getTime(-20, -60 * 10),
         extra: {
           isNew: false,
           isBest: false,
-          category: ["PC03", "PC0303"],
+          category: "simple",
           sort: 1,
+          rating: 2,
+          sale: 11,
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 13000,
+        price: 19900,
         shippingFees: 3500,
         show: true,
         active: true,
-        name: "할리갈리 보드게임",
+        name: "달큼한 제철 햇밤이 콕콕 박힌 현미밤설기 900g*1팩 / 알밤설기",
         quantity: 100,
         buyQuantity: 98,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-halligalli.jpg`,
-            name: "sample-halligalli.jpg",
-            originalname: "할리갈리.jpg",
+            path: `/files/${clientId}/sample-rice.png`,
+            name: "sample-rice.png",
+            originalname: "설기.png",
           },
         ],
         content: `
           <div class="product-detail">
-            <p>할리갈리 보드게임 상세 설명</p>
+            <p>알밤설기 상세 설명</p>
           </div>`,
         createdAt: getTime(-25, -60 * 60 * 12),
         updatedAt: getTime(-24, -60 * 23),
         extra: {
           isNew: false,
           isBest: true,
-          category: ["PC01", "PC0102", "PC010201"],
+          category: "riceCake",
           sort: 3,
+          rating: 2.5,
+          sale: 18,
+          bestMonth: [1, 2],
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 2,
-        price: 26000,
-        shippingFees: 3000,
+        price: 11400,
+        shippingFees: 2000,
         show: true,
         active: true,
-        name: "루미큐브 클래식",
+        name: "철저한 관리를 받고 자란 한돈 찜용 갈비 600g (2인분)",
         quantity: 100,
         buyQuantity: 97,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-rummikub.png`,
-            name: "sample-rummikub.png",
-            originalname: "루미큐브.png",
+            path: `/files/${clientId}/sample-pork.png`,
+            name: "sample-pork.png",
+            originalname: "돼지고기.png",
           },
         ],
         content: `
           <div class="product-detail">
-            <p>루미큐브 클래식 상세 설명</p>
+            <p>돼지고기 상세 설명</p>
           </div>`,
         createdAt: getTime(-22, -60 * 60 * 22),
         updatedAt: getTime(-20, -60 * 33),
         extra: {
           isNew: true,
           isBest: true,
-          category: ["PC01", "PC0102", "PC010202"],
+          category: "liveStock",
           sort: 8,
+          rating: 3.5,
+          sale: 16,
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 12000,
-        shippingFees: 3000,
+        price: 8900,
+        shippingFees: 1800,
         show: true,
         active: true,
-        name: "짱구는 못말려 숲속 산책 직소퍼즐",
+        name: "야들야들 국산 냉동 오리 대패 삼겹살 300g*1봉",
         quantity: 100,
         buyQuantity: 96,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-jjangu.jpg`,
-            name: "sample-jjangu.jpg",
-            originalname: "짱구.jpg",
+            path: `/files/${clientId}/sample-duck.png`,
+            name: "sample-duck.png",
+            originalname: "오리고기.png",
           },
         ],
         content: `
           <div class="product-detail">
-            <p>짱구는 못말려 숲속 산책 직소퍼즐 상세 설명</p>
+            <p>야들 야들 국산 냉동 오리 대패삼겹살 300g*1봉 상세 설명</p>
           </div>`,
         createdAt: getTime(-21, -60 * 60 * 4),
         updatedAt: getTime(-16, -60 * 15),
@@ -403,69 +417,74 @@ export const initData = async (clientId, nextSeq) => {
           isNew: true,
           isBest: false,
           today: true,
-          category: ["PC03", "PC0302"],
+          category: "liveStock",
           sort: 2,
+          rating: 4.5,
+          sale: 19,
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 24000,
+        price: 26900,
         shippingFees: 0,
         show: true,
         active: true,
-        name: "라푼젤 그녀의 꿈 직소퍼즐 KD-1000-001 + 그림 엽서(랜덤) + 품질보증서",
+        name: "엄청난 크기의 킹타이거 새우 2마리",
         quantity: 100,
         buyQuantity: 95,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-rapunzel.jpg`,
-            name: "sample-rapunzel.jpg",
-            originalname: "라푼젤.jpg",
+            path: `/files/${clientId}/sample-shrimp.png`,
+            name: "sample-shrimp.png",
+            originalname: "킹타이거새우.png",
           },
         ],
         content: `
           <div class="product-detail">
-            <p>라푼젤 그녀의 꿈 직소퍼즐 KD-1000-001 + 그림 엽서(랜덤) + 품질보증서 상세 설명</p>
+            <p>엄청난 크기의 킹타이거 새우 2마리 상세 설명</p>
           </div>`,
         createdAt: getTime(-18, -60 * 60 * 7),
         updatedAt: getTime(-12, -60 * 33),
         extra: {
           isNew: false,
           isBest: true,
-          category: ["PC01", "PC0101"],
+          category: "seafood",
           sort: 4,
+          rating: 3.7,
+          sale: 12,
+          bestMonth: [1],
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 2,
-        price: 14400,
-        shippingFees: 3000,
+        price: 21000,
+        shippingFees: 1000,
         show: true,
         active: true,
-        name: "KC인증 스키비디 토일렛 피규어 블럭 8종 중국 호환 레고 블록 장난감 어린이 선물",
+        name: "전통 지주식으로 양식한 무안산 곱창김 50장",
         quantity: 100,
         buyQuantity: 94,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-skibidi01.jpg`,
-            name: "sample-skibidi01.jpg",
-            originalname: "피규어1.jpg",
+            path: `/files/${clientId}/sample-seaweed.png`,
+            name: "sample-seaweed.png",
+            originalname: "김.jpg",
           },
           {
-            path: `/files/${clientId}/sample-skibidi02.jpg`,
-            name: "sample-skibidi02.jpg",
-            originalname: "피규어2.jpg",
+            path: `/files/${clientId}/sample-seaweed2.png`,
+            name: "sample-seaweed02.png",
+            originalname: "김2.png",
           },
         ],
         content: `
           <div align="center"><p>*크리스마스 배송 안내</p></div>
           <div align="center"><p>택배사 물량 증가로 평소보다 2~3일 더 걸립니다.</p></div>
           <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi03.jpg"></div>
+          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-seaweed.png"></div>
           <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi04.jpg"></div>
+          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-seaweed2.png"></div>
           <div align="center"><br></div>
           <div align="center"><p>*반품 안내</p></div>`,
         createdAt: getTime(-16, -60 * 60 * 3),
@@ -474,171 +493,191 @@ export const initData = async (clientId, nextSeq) => {
           isNew: false,
           isBest: false,
           today: true,
-          category: ["PC01", "PC0103"], // 어린이 > 레고
+          category: "seafood", // 어린이 > 레고
           sort: 6,
+          rating: 2.76,
+          sale: 29,
         },
       },
       {
         _id: await nextSeq("product"),
         seller_id: 2,
-        price: 9000,
-        shippingFees: 3000,
+        price: 42700,
+        shippingFees: 3500,
         show: true,
         active: true,
-        name: "스키비디 토일렛 봉제 인형 (25cm-30cm) 시리즈 크리스마스 선물",
+        name: "24년 햅쌀 / 찰지고 윤기나는 백진주 쌀 10kg",
         quantity: 999,
         buyQuantity: 800,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-skibidi11.jpg`,
-            name: "sample-skibidi11.jpg",
-            originalname: "토일렛.jpg",
+            path: `/files/${clientId}/sample-rice.png`,
+            name: "sample-rice.png",
+            originalname: "쌀.png",
           },
         ],
         content: `
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi12.jpg"></div>
+          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-rice.png"></div>
           <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi13.jpg"></div>
+          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-seaweed.png"></div>
           <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi14.jpg"></div>
+          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-seaweed2.png"></div>
           <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi15.jpg"></div>`,
+          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-ricecake.png"></div>`,
         createdAt: getTime(-11, -60 * 60 * 12),
         updatedAt: getTime(-5, -60 * 60 * 6),
         extra: {
           isNew: true,
           isBest: true,
-          category: ["PC01", "PC0103"], // 어린이 > 레고
+          category: "rice", // 어린이 > 레고
           sort: 7,
+          rating: 3.8,
+          sale: 38,
+          bestMonth: [9, 10],
         },
       },
       // 13번 상품
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 21600,
+        price: 16110,
         shippingFees: 5500,
         show: true,
         active: true,
-        name: "KC인증 스키비디 토일렛 피규어 블럭 4종 중국 호환 레고 블록 장난감 어린이 선물",
+        name: "달콤한 과즙 가득 고령 설향 딸기 500g 1팩 (개당 16~20g)",
         quantity: 99,
         buyQuantity: 94,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-skibidi21.jpg`,
-            name: "sample-skibidi21.jpg",
-            originalname: "스키비디.jpg",
+            path: `/files/${clientId}/sample-strawberry.png`,
+            name: "sample-strawberry.png",
+            originalname: "딸기.png",
           },
         ],
         content: `
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi22.jpg"></div>
+          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-strawberry.png"></div>
           <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi23.jpg"></div>
+          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-grape.png"></div>
           <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-skibidi24.jpg"></div>`,
+          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-shine.png"></div>`,
         createdAt: getTime(-10, -60 * 60 * 12),
         updatedAt: getTime(-5, -60 * 60 * 6),
         extra: {
           isNew: true,
           isBest: false,
-          category: ["PC01", "PC0103"], // 어린이 > 레고
+          category: "fruit", // 어린이 > 레고
           sort: 6,
+          rating: 2.7,
+          sale: 27,
+          bestMonth: [7, 8],
         },
       },
       // 14번 상품. shippingFees가 없을 경우 config.shippingFees 사용
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 12900,
-        // shippingFees: 3500,
+        price: 84550,
+        shippingFees: 0,
         show: true,
         active: true,
-        name: "푸쉬팝게임기 팝잇 푸시팝 게임기 두더지게임 핑거 뽁뽁이 애니멀 1+1",
+        name: "[지정일 배송] 명품 프리미엄 혼합 과일 선물세트 1호",
         quantity: 300,
         buyQuantity: 298,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-pushpop01.jpg`,
-            name: "sample-pushpop01.jpg",
-            originalname: "푸쉬팝1.jpg",
+            path: `/files/${clientId}/sample-fruitset.png`,
+            name: "sample-fruitset.png",
+            originalname: "과일세트.png",
           },
           {
-            path: `/files/${clientId}/sample-pushpop02.jpg`,
-            name: "sample-pushpop02.jpg",
-            originalname: "푸쉬팝2.jpg",
+            path: `/files/${clientId}/sample-grape.png`,
+            name: "sample-grape.png",
+            originalname: "포도.png",
           },
           {
-            path: `/files/${clientId}/sample-pushpop03.jpg`,
-            name: "sample-pushpop03.jpg",
-            originalname: "푸쉬팝3.jpg",
+            path: `/files/${clientId}/sample-shine.png`,
+            name: "sample-shine.png",
+            originalname: "샤인머스캣.png",
           },
         ],
         content: `
           <div align="center"><p>푸쉬팝게임기 팝잇 푸시팝 게임기 두더지게임 핑거 뽁뽁이 애니멀을 구매하시는 모든 분께 사은품(무작위)으로 하나 더 드립니다.</p></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-pushpop04.gif"></div>
+          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-shine.png"></div>
           <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-pushpop05.jpg"></div>
+          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-grape.png"></div>
           <div align="center"><br></div>
-          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-pushpop06.jpg"></div>`,
+          <div align="center"><img src="${process.env.API_HOST}/files/${clientId}/sample-fruitset.png"></div>`,
         createdAt: getTime(-3, -60 * 60 * 12),
         updatedAt: getTime(-3, -60 * 60 * 12),
         extra: {
           isNew: false,
           isBest: true,
-          category: ["PC01", "PC0102"], // 어린이 > 보드게임
+          category: "fruit",
           sort: 5,
+          rating: 4.5,
+          sale: 21,
         },
       },
       // 15번 상품. 옵션이 있는 경우 메인 상품 정보
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 12900,
+        price: 9900,
         shippingFees: 3500,
         show: true,
         active: true,
-        name: "샤넬 NO.5",
+        name: "씹을수록 달콤한 수미 감자 . 대사이즈(80g~120g) 3kg",
         quantity: 999999,
         buyQuantity: 0,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-pushpop01.jpg`,
-            name: "sample-pushpop01.jpg",
-            originalname: "샤넬.jpg",
+            path: `/files/${clientId}/sample-potato.png`,
+            name: "sample-potato.png",
+            originalname: "감자.png",
           },
         ],
-        content: `샤넬 향수`,
+        content: `짱 맛있는 감자`,
         createdAt: getTime(-3, -60 * 60 * 12),
         updatedAt: getTime(-3, -60 * 60 * 12),
         extra: {
-          depth: 1,
+          isNew: false,
+          isBest: true,
+          category: "vegetable",
+          sort: 5,
+          rating: 4.5,
+          sale: 28,
+          bestMonth: [1],
         },
       },
       // 16번 상품. 옵션이 있는 경우 옵션 상품 정보. 15번 상품의 하위 상품(옵션)
       {
         _id: await nextSeq("product"),
         seller_id: 3,
-        price: 6900,
-        shippingFees: 3500,
-        name: "샤넬 NO.5",
-        quantity: 1,
+        price: 16900,
+        shippingFees: 1500,
+        name: "달콤 촉촉 호풍미(당근) 고구마 특상 3kg",
+        quantity: 5,
         buyQuantity: 0,
         show: true,
         active: true,
         mainImages: [
           {
-            path: `/files/${clientId}/sample-pushpop03.jpg`,
-            name: "sample-pushpop03.jpg",
-            originalname: "샤넬.jpg",
+            path: `/files/${clientId}/sample-sweetpotato.png`,
+            name: "sample-sweetpotato.png",
+            originalname: "고구마.png",
           },
         ],
-        content: `3달 쓴 향수입니다.`,
+        content: `고구마 입니당.`,
         createdAt: getTime(-3, -60 * 60 * 12),
         updatedAt: getTime(-3, -60 * 60 * 12),
         extra: {
-          depth: 2,
-          parent: 15,
-          size: "200mm",
+          isNew: false,
+          isBest: true,
+          category: "vegetable",
+          sort: 9,
+          rating: 2.5,
+          sale: 18,
+          bestMonth: [1],
         },
       },
     ],
@@ -782,8 +821,7 @@ export const initData = async (clientId, nextSeq) => {
           custom_data: null,
           status: "paid",
           paid_at: 1702540626,
-          receipt_url:
-            "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
+          receipt_url: "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
           card_name: "국민KB카드",
           bank_name: null,
           card_quota: 0,
@@ -1091,8 +1129,7 @@ export const initData = async (clientId, nextSeq) => {
           image: "user-muzi.webp",
         },
         title: "배송지연 안내",
-        content:
-          "크리스마스 물류 증가로 인해 평소보다 2~3일 지연될 예정입니다.",
+        content: "크리스마스 물류 증가로 인해 평소보다 2~3일 지연될 예정입니다.",
         createdAt: getTime(-4, -60 * 60 * 2),
         updatedAt: getTime(-2, -60 * 60 * 13),
       },
@@ -1106,8 +1143,7 @@ export const initData = async (clientId, nextSeq) => {
           image: "user-muzi.webp",
         },
         title: "배송비 인상 안내",
-        content:
-          "택배사 배송비 인상으로 인해 기존 3,000원에서 3,500원으로 인상됩니다.",
+        content: "택배사 배송비 인상으로 인해 기존 3,000원에서 3,500원으로 인상됩니다.",
         createdAt: getTime(-6, -60 * 60 * 20),
         updatedAt: getTime(-4, -60 * 60 * 13),
       },
@@ -1120,49 +1156,49 @@ export const initData = async (clientId, nextSeq) => {
         codes: [
           {
             sort: 1,
-            code: "PC01",
+            code: "fruit",
             value: "제철과일",
             depth: 1,
           },
           {
             sort: 2,
-            code: "PC02",
+            code: "vegetable",
             value: "채소",
             depth: 1,
           },
           {
             sort: 3,
-            code: "PC03",
+            code: "kimchi",
             value: "김치",
             depth: 1,
           },
           {
             sort: 4,
-            code: "PC04",
+            code: "liveStock",
             value: "축산물",
             depth: 1,
           },
           {
             sort: 5,
-            code: "PC05",
+            code: "seafood",
             value: "수산물",
             depth: 1,
           },
           {
             sort: 6,
-            code: "PC06",
+            code: "simple",
             value: "간편식",
             depth: 1,
           },
           {
             sort: 7,
-            code: "PC07",
+            code: "rice",
             value: "떡",
             depth: 1,
           },
           {
             sort: 8,
-            code: "PC08",
+            code: "riceCake",
             value: "쌀 / 잡곡",
             depth: 1,
           },
@@ -1274,12 +1310,12 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: "shippingFees",
         title: "배송비",
-        value: 3500,
+        value: 2500,
       },
       {
         _id: "freeShippingFees",
         title: "배송비 무료 금액",
-        value: 50000,
+        value: 30000,
       },
     ],
   };

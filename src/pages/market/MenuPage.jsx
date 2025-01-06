@@ -37,8 +37,8 @@ export default function MenuPage() {
       <MenuItem to="/menu/liveStock" image={liveStockImage} title="축산물" />
       <MenuItem to="/menu/seafood" image={seafoodImage} title="수산물" />
       <MenuItem to="/menu/simple" image={simpleImage} title="간편식" />
-      <MenuItem to="/menu/rice" image={riceImage} title="떡" />
-      <MenuItem to="/menu/riceCake" image={riceCakeImage} title="쌀 / 잡곡" />
+      <MenuItem to="/menu/riceCake" image={riceImage} title="떡" />
+      <MenuItem to="/menu/rice" image={riceCakeImage} title="쌀 / 잡곡" />
     </>
   );
 }

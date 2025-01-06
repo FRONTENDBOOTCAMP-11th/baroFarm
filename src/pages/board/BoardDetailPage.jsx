@@ -25,7 +25,7 @@ export default function BoardDetailPage() {
         <img
           src="/images/profile/Profile_sample_1.jpg"
           alt="ProfileImage"
-          className="w-6 h-6 rounded-full border border-btn-primary"
+          className="w-6 h-6 rounded-full"
         />
         <span className="mx-[5px] text-sm">온도감</span>
         <span className="text-[10px] ml-auto self-start text-gray4">
@@ -51,7 +51,7 @@ export default function BoardDetailPage() {
             <img
               src="/images/profile/Profile_sample_1.jpg"
               alt="ProfileImage"
-              className="w-6 h-6 rounded-full border border-btn-primary"
+              className="w-6 h-6 rounded-full border"
             />
             <span className="mx-[5px] text-sm">떡보369</span>
             <span className="text-[10px] mt-[6px] ml-auto text-gray4">
@@ -72,7 +72,7 @@ export default function BoardDetailPage() {
             <img
               src="/images/profile/Profile_sample_2.jpg"
               alt="ProfileImage"
-              className="w-6 h-6 rounded-full border border-btn-primary"
+              className="w-6 h-6 rounded-full border"
             />
             <span className="mx-[5px] text-sm">삼행시 빌런</span>
             <span className="text-[10px] mt-[6px] ml-auto text-gray4">

@@ -5,16 +5,6 @@ import { Link, useLocation, useNavigate, useOutletContext } from "react-router-d
 export default function ProfilePage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  // const data = {
-  //   name: "김아무개",
-  //   gender: "남",
-  //   email: "kimamuge@gmail.com",
-  //   phone: "000-1111-2222",
-  //   auth: "판매자",
-  //   extra: {
-  //     userName: "온도감",
-  //   },
-  // };
 
   const location = useLocation();
   const data = location.state.user;
@@ -30,23 +20,38 @@ export default function ProfilePage() {
     <div className="pt-[60px] mb-[70px]">
       <div className="w-fit mx-auto text-center relative">
         <img
+          id="profileImg"
           src="/images/profile/Profile_sample_1.jpg"
           alt="프로필 이미지"
-          className="w-[100px] h-[100px] rounded-full border border-btn-primary"
+          className="w-[100px] h-[100px] rounded-full"
         />
-        <Link
-          to={"/users/profile/edit"}
-          className="flex items-center text-[14px] my-[24px] absolute right-0 top-[25%] group"
-          state={{ user: data }}
+        <button
+          className="absolute right-0 bottom-[50px]"
+          onClick={() => {
+            if (confirm("프로필 이미지를 변경하시겠습니까?"))
+              document.getElementById("profileImgChange").click();
+          }}
         >
-          <img src="/icons/icon_profileEdit_full.svg" className="h-10 ml-auto" alt="addProduct icon" />
-          <div className="absolute w-auto box-border text-nowrap translate-y-8 translate-x-4 px-1 bg-btn-primary text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <p className="">프로필 수정</p>
-          </div>
-        </Link>
-        <div className="mt-[25px] mb-[30px] text-2xl font-bold">{data.extra.userName}</div>
+          <img
+            src="/icons/icon_camera.svg"
+            alt="이미지 수정 아이콘"
+            className="w-7 h-7"
+          />
+        </button>
+        <input
+          id="profileImgChange"
+          type="file"
+          className="hidden"
+          onChange={() => {
+            //이미지가 입력되었으면 프로필로 변경하는 코드
+            console.log(document.getElementById("profileImgChange").files[0]);
+          }}
+        />
+        <div className="mt-[25px] mb-[30px] text-2xl font-bold">
+          {data.extra.userName}
+        </div>
       </div>
-      <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md">
+      <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
         <section>
           이름 <br />
           성별 <br />
@@ -61,6 +66,20 @@ export default function ProfilePage() {
           {data.phone} <br />
           {data.address}
         </section>
+        <Link
+          to={"/users/profile/edit"}
+          className="flex w-7 h-7 items-center text-[14px] absolute right-2 top-2 group"
+          state={{ user: data }}
+        >
+          <img
+            src="/icons/icon_profileEdit_full.svg"
+            className="h-10 ml-auto"
+            alt="addProduct icon"
+          />
+          <div className="absolute w-auto box-border text-nowrap translate-y-6 px-1 bg-btn-primary text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <p className="">수정</p>
+          </div>
+        </Link>
       </div>
     </div>
   );

@@ -1,5 +1,12 @@
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import forwardIcon from "/icons/icon_forward_thin.svg";
+
+MenuItem.propTypes = {
+  to: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+};
 
 export default function MenuItem({ to, image, title }) {
   return (

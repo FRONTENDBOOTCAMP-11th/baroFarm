@@ -86,7 +86,6 @@ const getMonthlyData = (data) => {
 };
 
 export default function MainPage() {
-  const [newData, setNewData] = useState(null);
   // Outlet 컴포넌트로 전달받은 props.setHeaderContents 접근
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();

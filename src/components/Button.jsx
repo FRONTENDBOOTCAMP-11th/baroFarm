@@ -6,9 +6,7 @@ Button.propTypes = {
   type: PropTypes.string,
   onClick: PropTypes.func,
   color: PropTypes.string,
-  width: PropTypes.string,
-  height: PropTypes.string,
-  fontSize: PropTypes.number,
+  isBig: PropTypes.bool,
 };
 
 export default function Button({
@@ -16,17 +14,24 @@ export default function Button({
   type = "button",
   onClick: clickHandler,
   color = "#72BF78",
-  fontSize = 12,
+  isBig = false,
 }) {
   // 동적인 클래스는 style 객체 활용
   const style = {
     backgroundColor: color,
-    fontSize: fontSize,
   };
+
+  const baseClasses =
+    "flex items-center justify-center rounded-md shrink-0 text-white";
+  const sizeClasses = isBig
+    ? "w-full py-3 text-xl font-bold"
+    : "py-1 px-3 text-sm font-semibold";
+
+  const classes = clsx(baseClasses, sizeClasses);
 
   return (
     <button
-      className="flex text-center items-center rounded-md shrink-0 text-white font-semibold px-3 py-1"
+      className={classes}
       style={style}
       type={type}
       onClick={clickHandler}
