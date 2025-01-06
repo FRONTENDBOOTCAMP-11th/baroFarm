@@ -6,7 +6,7 @@ import axios from "axios";
 import HeaderIcon from "@components/HeaderIcon";
 import Products from "@components/Products";
 
-export default function CategoryPage({ title }) {
+export default function CategoryPage() {
   const { category } = useParams();
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();

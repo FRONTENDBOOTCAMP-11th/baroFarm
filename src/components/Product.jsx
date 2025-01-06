@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 const likeIcon = {
   default: "/icons/icon_likeHeart_no.svg",
   active: "/icons/icon_likeHeart_yes.svg",
+};
+
+Product.propTypes = {
+  productId: PropTypes.number.isRequired,
 };
 
 export default function Product({ productId }) {

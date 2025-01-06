@@ -1,4 +1,13 @@
 import Product from "@components/Product";
+import PropTypes from "prop-types";
+
+Products.propTypes = {
+  productsData: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.number.isRequired,
+    })
+  ).isRequired,
+};
 
 export default function Products({ productsData }) {
   // console.log(productsData);
