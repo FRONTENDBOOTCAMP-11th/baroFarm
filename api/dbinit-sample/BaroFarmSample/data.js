@@ -1,10 +1,7 @@
 import moment from "moment";
 
 function getTime(day = 0, second = 0) {
-  return moment()
-    .add(day, "days")
-    .add(second, "seconds")
-    .format("YYYY.MM.DD HH:mm:ss");
+  return moment().add(day, "days").add(second, "seconds").format("YYYY.MM.DD HH:mm:ss");
 }
 
 export const initData = async (clientId, nextSeq) => {
@@ -14,8 +11,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "admin@market.com",
-        password:
-          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "무지",
         phone: "01011112222",
         address: "서울시 강남구 역삼동 123",
@@ -44,8 +40,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "s1@market.com",
-        password:
-          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "네오",
         phone: "01022223333",
         address: "서울시 강남구 삼성동 456",
@@ -74,8 +69,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "s2@market.com",
-        password:
-          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "어피치",
         phone: "01033334444",
         address: "서울시 강남구 도곡동 789",
@@ -105,8 +99,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "u1@market.com",
-        password:
-          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "제이지",
         phone: "01044445555",
         address: "서울시 강남구 논현동 222",
@@ -165,6 +158,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 5,
           rating: 4.2,
           sale: 22,
+          bestMonth: [7, 8, 9],
         },
       },
       {
@@ -197,6 +191,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 4,
           rating: 4.1,
           sale: 28,
+          bestMonth: [1],
         },
       },
       {
@@ -229,6 +224,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 3,
           rating: 3.5,
           sale: 28,
+          bestMonth: [1],
         },
       },
       {
@@ -261,6 +257,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 1,
           rating: 4.8,
           sale: 30,
+          bestMonth: [1],
         },
       },
       {
@@ -358,6 +355,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 3,
           rating: 2.5,
           sale: 18,
+          bestMonth: [1, 2],
         },
       },
       {
@@ -455,6 +453,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 4,
           rating: 3.7,
           sale: 12,
+          bestMonth: [1],
         },
       },
       {
@@ -534,6 +533,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 7,
           rating: 3.8,
           sale: 38,
+          bestMonth: [9, 10],
         },
       },
       // 13번 상품
@@ -569,6 +569,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 6,
           rating: 2.7,
           sale: 27,
+          bestMonth: [7, 8],
         },
       },
       // 14번 상품. shippingFees가 없을 경우 config.shippingFees 사용
@@ -645,6 +646,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 5,
           rating: 4.5,
           sale: 28,
+          bestMonth: [1],
         },
       },
       // 16번 상품. 옵션이 있는 경우 옵션 상품 정보. 15번 상품의 하위 상품(옵션)
@@ -675,6 +677,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 9,
           rating: 2.5,
           sale: 18,
+          bestMonth: [1],
         },
       },
     ],
@@ -818,8 +821,7 @@ export const initData = async (clientId, nextSeq) => {
           custom_data: null,
           status: "paid",
           paid_at: 1702540626,
-          receipt_url:
-            "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
+          receipt_url: "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
           card_name: "국민KB카드",
           bank_name: null,
           card_quota: 0,
@@ -1127,8 +1129,7 @@ export const initData = async (clientId, nextSeq) => {
           image: "user-muzi.webp",
         },
         title: "배송지연 안내",
-        content:
-          "크리스마스 물류 증가로 인해 평소보다 2~3일 지연될 예정입니다.",
+        content: "크리스마스 물류 증가로 인해 평소보다 2~3일 지연될 예정입니다.",
         createdAt: getTime(-4, -60 * 60 * 2),
         updatedAt: getTime(-2, -60 * 60 * 13),
       },
@@ -1142,8 +1143,7 @@ export const initData = async (clientId, nextSeq) => {
           image: "user-muzi.webp",
         },
         title: "배송비 인상 안내",
-        content:
-          "택배사 배송비 인상으로 인해 기존 3,000원에서 3,500원으로 인상됩니다.",
+        content: "택배사 배송비 인상으로 인해 기존 3,000원에서 3,500원으로 인상됩니다.",
         createdAt: getTime(-6, -60 * 60 * 20),
         updatedAt: getTime(-4, -60 * 60 * 13),
       },
