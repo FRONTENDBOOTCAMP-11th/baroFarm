@@ -18,6 +18,7 @@ export default function CartPage() {
   const [showButton, setShowButton] = useState(false);
   // 최종 상품 금액을 따로 상태로 관리
   const [totalFees, setTotalFees] = useState(0);
+  const [discount, setDiscount] = useState(0);
   // 체크된 상품의 아이디를 담은 배열 상태 관리
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -172,6 +173,9 @@ export default function CartPage() {
     // 선택한 상품을 장바구니 데이터에서 찾음
     const selectedItem = data.item.find((item) => item._id === targetId);
     const price = selectedItem.quantity * selectedItem.product.price;
+    const salePrice =
+      selectedItem.quantity * selectedItem.product.extra.saledPrice;
+    const discount = price - salePrice;
     // 선택한 상품의 아이디가 담긴 배열을 상태로 관리
     // 이미 추가되었다면, 삭제
     if (selectedItems.includes(selectedItem.product_id)) {
@@ -179,16 +183,16 @@ export default function CartPage() {
         prevState.filter((item) => item !== selectedItem.product_id)
       );
       if (totalFees > 0) {
-        setTotalFees((prevState) => prevState - price);
+        setTotalFees((prevState) => prevState - salePrice);
+        setDiscount((prevState) => prevState - discount);
       }
     } else {
       // 추가되지 않았다면 추가
       setSelectedItems([...selectedItems, selectedItem.product_id]);
-      setTotalFees((prevState) => prevState + price);
+      setTotalFees((prevState) => prevState + salePrice);
+      setDiscount((prevState) => prevState + discount);
     }
   };
-
-  console.log(totalFees);
 
   const itemList = data.item.map((item) => (
     <CartItem
@@ -234,7 +238,7 @@ export default function CartPage() {
                 <div className="text-xs flex justify-between mb-3">
                   <span className="text-gray4">할인 금액</span>
                   <span className="text-red1">
-                    {data.cost.discount.products.toLocaleString()}원
+                    {discount.toLocaleString()}원
                   </span>
                 </div>
                 <div className="text-xs flex justify-between mb-3">
@@ -246,7 +250,9 @@ export default function CartPage() {
               </div>
               <div className="flex justify-between mb-3 py-3 text-[16px] font-bold">
                 <span>총 결제 금액</span>
-                <span>{totalFees + totalShippingFees}원</span>
+                <span>
+                  {(totalFees + totalShippingFees).toLocaleString()}원
+                </span>
               </div>
             </section>
             <div
@@ -260,7 +266,7 @@ export default function CartPage() {
               )}
             >
               <Button isBig={true} type="submit">
-                {data.cost.total.toLocaleString()}원 구매하기
+                {totalFees.toLocaleString()}원 구매하기
               </Button>
             </section>
           </form>

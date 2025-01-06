@@ -19,6 +19,7 @@ CartItem.propTypes = {
     }).isRequired,
     extra: PropTypes.shape({
       sale: PropTypes.number,
+      saledPrice: PropTypes.number,
     }),
   }).isRequired,
   deleteItem: PropTypes.object.isRequired,
@@ -78,7 +79,7 @@ export default function CartItem({
           <div className="flex items-center mb-2">
             <span className="text-xs font-semibold text-red1 mr-1">{`${product.extra.sale}%`}</span>
             <span className="text-[16px] font-extrabold">
-              {product.price.toLocaleString()}원
+              {product.extra.saledPrice.toLocaleString()}원
             </span>
           </div>
           <div className="ring-1 ring-gray2 w-fit flex text-center items-center rounded-sm *:flex *:items-center *:justify-center *:text-sm">
