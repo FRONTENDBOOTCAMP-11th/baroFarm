@@ -6,12 +6,35 @@ import axios from "axios";
 import HeaderIcon from "@components/HeaderIcon";
 import Products from "@components/Products";
 
-export default function CategoryPage() {
-  const { category } = useParams(); // URL에서 카테고리 추출
+export default function CategoryPage({ title }) {
+  const { category } = useParams();
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
-  // React Query를 활용한 데이터 패칭
+  const categoryTitle = [
+    { key: "fruit", label: "제철과일" },
+    { key: "vegetable", label: "채소" },
+    { key: "kimchi", label: "김치" },
+    { key: "liveStock", label: "축산물" },
+    { key: "seafood", label: "수산물" },
+    { key: "simple", label: "간편식" },
+    { key: "riceCake", label: "떡" },
+    { key: "rice", label: "쌀 / 잡곡" },
+  ];
+
+  const categoryLabel =
+    categoryTitle.find((item) => item.key === category)?.label || "카테고리";
+
+  useEffect(() => {
+    setHeaderContents({
+      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      title: categoryLabel,
+      rightChild: (
+        <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
+      ),
+    });
+  }, [category]);
+
   const {
     data: productsData,
     isLoading,
@@ -29,20 +52,9 @@ export default function CategoryPage() {
           "client-id": "final04",
         },
       });
-      console.log("API Response:", response.data); // 응답 데이터 로그
       return response.data.item;
     },
   });
-
-  useEffect(() => {
-    setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
-      title: `${category}`,
-      rightChild: (
-        <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
-      ),
-    });
-  }, [category]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading products</div>;
