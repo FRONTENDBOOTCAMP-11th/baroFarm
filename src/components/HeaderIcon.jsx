@@ -1,13 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { ACCESS_TOKEN } from "@/tokens";
 import { useEffect, useState } from "react";
 
 HeaderIcon.propTypes = {
   name: PropTypes.string.isRequired,
   onClick: PropTypes.func,
 };
+
+const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 
 export default function HeaderIcon({ name, onClick }) {
   // 장바구니가 차 있는지 아닌지 확인하는 상태관리 변수
