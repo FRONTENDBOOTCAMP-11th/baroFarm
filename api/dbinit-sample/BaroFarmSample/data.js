@@ -636,7 +636,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 5,
           rating: 4.5,
           sale: 21,
-          saledPrice: 15600,
+          saledPrice: 71100,
         },
       },
       // 15번 상품. 옵션이 있는 경우 메인 상품 정보

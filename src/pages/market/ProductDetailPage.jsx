@@ -86,7 +86,7 @@ export default function ProductDetailPage() {
   if (isLoading) return <div>Loading...</div>;
   if (isError || !product) return <div>Error loading product</div>;
 
-  const formattedPrice = Intl.NumberFormat().format(product.price);
+  const formattedPrice = Intl.NumberFormat().format(product.extra.saledPrice);
 
   return (
     <>
@@ -113,10 +113,15 @@ export default function ProductDetailPage() {
         <span className="text-xs">{product.replies.length}개 후기</span>
 
         <div className="pt-1">
-          <span className="text-red1 font-semibold text-base pr-1">
-            {product.sale}
+          <span className="text-gray4 font-semibold pr-1">
+            {product.extra.sale}%
           </span>
-          <span className="font-extrabold text-lg">{formattedPrice}원</span>
+          <span className="font-semibold text-gray3 line-through">
+            {Intl.NumberFormat().format(product.price)}원
+          </span>
+          <p className="font-extrabold text-xl text-btn-primary">
+            {formattedPrice}원
+          </p>
         </div>
       </section>
 
@@ -184,14 +189,15 @@ export default function ProductDetailPage() {
               +
             </button>
             <span className="ml-auto text-base font-semibold">
-              {Intl.NumberFormat().format(product.price * count)}원
+              {Intl.NumberFormat().format(product.extra.saledPrice * count)}원
             </span>
           </div>
         </div>
         <div className="bg-gray1 border-y border-gray3 border-t py-3 flex justify-center">
           <p className="">
-            상품 금액 {Intl.NumberFormat().format(product.price * count)} 원 +
-            배송비 {product.shoppingFees} 원
+            상품 금액
+            {Intl.NumberFormat().format(product.extra.saledPrice * count)} 원 +
+            배송비 {product.shippingFees} 원
           </p>
         </div>
         <div className="flex justify-between gap-3">
