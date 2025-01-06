@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+
 import PropTypes from "prop-types";
 
 const likeIcon = {
@@ -10,16 +9,31 @@ const likeIcon = {
 };
 
 Product.propTypes = {
-  productId: PropTypes.number.isRequired,
+  _id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  seller: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+  mainImages: PropTypes.arrayOf(
+    PropTypes.shape({
+      path: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  extra: PropTypes.shape({
+    sale: PropTypes.number.isRequired,
+    rating: PropTypes.number.isRequired,
+  }).isRequired,
+  price: PropTypes.number.isRequired,
+  replies: PropTypes.number.isRequired, // 댓글 배열
 };
 
-export default function Product({ productId }) {
-  // console.log(productId);
+export default function Product(product) {
+  // console.log(product);
 
   const navigate = useNavigate();
 
   const goDetailPage = () => {
-    navigate(`/product/${productId}`);
+    navigate(`/product/${product._id}`);
   };
 
   const [isLiked, setIsLiked] = useState(false);
@@ -27,30 +41,6 @@ export default function Product({ productId }) {
   const handleLike = () => {
     setIsLiked(!isLiked);
   };
-
-  const {
-    data: product,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["product", productId],
-    queryFn: async () => {
-      const response = await axios.get(
-        `https://11.fesp.shop/products/${productId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-            "client-id": "final04",
-          },
-        }
-      );
-      return response.data.item;
-    },
-  });
-
-  if (isLoading) return <div>Loading...</div>;
-  if (isError || !product) return <div>Error loading product</div>;
 
   return (
     <section
@@ -93,7 +83,7 @@ export default function Product({ productId }) {
           ⭐️ {product.extra.rating}
         </span>
         <span className="text-gray4 font-regular text-xs ">
-          ({product.replies.length})
+          ({product.replies})
         </span>
       </div>
     </section>
