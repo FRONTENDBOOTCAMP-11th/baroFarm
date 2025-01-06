@@ -52,14 +52,14 @@ export default function ProductNewPage() {
       <select
         type="text"
         value={tag}
-        className={`mt-[25px] text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer
-    bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]`}
+        className={`mt-[25px] text-center bg-gray2 rounded-lg py-1  pe-6 appearance-none focus:outline-none cursor-pointer
+    bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem] w-1/2`}
         {...register("category", {
           required: "상품명 종류를 선택해주세요",
           onChange: (e) => setTag(e.target.value),
         })}
       >
-        <option value="select">카테고리</option>
+        <option value="null">카테고리</option>
         <option value="fruit">과일</option>
         <option value="vegetable">채소</option>
         <option value="kimchi">김치</option>
@@ -76,8 +76,8 @@ export default function ProductNewPage() {
             제철 지정 (선택)
           </label>
           <select
-            className="text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer
-    bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
+            className="text-center bg-gray2 rounded-lg py-1 pe-6 appearance-none focus:outline-none cursor-pointer
+    bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem] w-1/3"
             type="month"
             id="seasonStart"
             name="seasonStart"
@@ -96,10 +96,10 @@ export default function ProductNewPage() {
             <option value="11">11월</option>
             <option value="12">12월</option>
           </select>
-          {/* <span className="mx-[0.5rem]">~</span>
+          <span className="mx-[0.5rem]">~</span>
           <select
-            className=" text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer
-    bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
+            className=" text-center bg-gray2 rounded-lg py-1 pe-6 appearance-none focus:outline-none cursor-pointer
+    bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem] w-1/3"
             type="month"
             id="seasonEnd"
             name="seasonEnd"
@@ -117,7 +117,7 @@ export default function ProductNewPage() {
             <option value="10">10월</option>
             <option value="11">11월</option>
             <option value="12">12월</option>
-          </select> */}
+          </select>
         </>
       )}
       <textarea
@@ -193,7 +193,7 @@ export default function ProductNewPage() {
           <input
             type="text"
             className="bg-gray2/20 w-full h-[50px] pr-12  focus:text-right mb-[25px] px-4 mt-[10px] focus:outline-btn-primary rounded-md"
-            placeholder="10 ~ 90 까지의 할인률을 입력하세요"
+            placeholder="5 ~ 99 까지의 할인률을 입력하세요"
             {...register("discount", {
               required: "필수 입력 정보입니다",
             })}
