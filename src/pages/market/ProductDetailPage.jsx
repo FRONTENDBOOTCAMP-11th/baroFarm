@@ -191,6 +191,13 @@ export default function ProductDetailPage() {
             <span className="ml-auto text-base font-semibold">
               {Intl.NumberFormat().format(product.extra.saledPrice * count)}원
             </span>
+            <span className="text-[12px] text-red1 mt-[3px]">
+              (-
+              {Intl.NumberFormat().format(
+                (product.price - product.extra.saledPrice) * count
+              )}
+              원 할인)
+            </span>
           </div>
         </div>
         <div className="bg-gray1 border-y border-gray3 border-t py-3 flex justify-center">
