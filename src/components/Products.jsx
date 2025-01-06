@@ -14,7 +14,7 @@ export default function Products({ productsData }) {
   return (
     <div className="flex flex-wrap justify-between p-5 gap-5">
       {productsData.map((product) => (
-        <Product key={product._id} productId={product._id} />
+        <Product key={product._id} {...product} />
       ))}
     </div>
   );
