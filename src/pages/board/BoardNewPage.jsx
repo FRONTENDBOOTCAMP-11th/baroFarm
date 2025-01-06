@@ -22,16 +22,55 @@ export default function BoardNewPage() {
     });
   }, []);
 
-  const check = (item) => {
+  const check = async (item) => {
     console.log(item);
+    let imageUrl = null;
+    if (item.image && item.image[0]) {
+      const formData = new FormData();
+      formData.append("attach", item.image[0]);
+      const uploadImg = await axios.post(
+        `https://11.fesp.shop/files`,
+        formData,
+        {
+          headers: {
+            "client-id": "final04",
+          },
+        }
+      );
+      imageUrl = uploadImg.data.url;
+    }
   };
 
   const addItem = useMutation({
-    mutationFn: (item) => {
+    mutationFn: async (item) => {
+      let imageUrl = null;
+      if (item.image && item.image[0]) {
+        const formData = new FormData();
+        formData.append("attach", item.image[0]);
+        try {
+          const uploadImg = await axios.post(
+            `https://11.fesp.shop/files`,
+            formData,
+            {
+              headers: {
+                "client-id": "final04",
+              },
+            }
+          );
+          imageUrl = uploadImg.data.url; // 서버에서 반환된 이미지 URL
+        } catch (error) {
+          console.error(
+            "Image upload failed:",
+            error.response?.data || error.message
+          );
+          throw new Error("Image upload failed.");
+        }
+      }
       const body = {
         title: item.title,
         content: item.content,
         type: "community",
+        image: imageUrl,
       };
       return axios.post(`https://11.fesp.shop/posts`, body, {
         headers: {
