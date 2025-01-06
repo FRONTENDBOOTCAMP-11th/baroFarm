@@ -7,9 +7,7 @@ UserForm.propTypes = {
   // 회원가입 시에도 쓰이기에 userInfo는 isRequired가 아님
   userInfo: PropTypes.shape({
     // 프로필 수정 시 사용되는 필드들
-    extra: PropTypes.shape({
-      name: PropTypes.string, // 닉네임
-    }),
+    name: PropTypes.string, // 닉네임
     phone: PropTypes.string,
     address: PropTypes.string,
   }),
@@ -28,10 +26,10 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
   } = useForm({
     defaultValues: {
       // input의 defaultValue 속성 대신 useForm의 defaultValues 옵션으로 초기값 설정
-      name: userInfo?.extra.name || "",
+      name: userInfo?.name || "",
       phone: userInfo?.phone || "",
       address: userInfo?.address || "",
-      memberType: "seller",
+      type: "seller",
     },
     mode: "onBlur", // 유효성 검사가 실행되는 시점을 onBlur로 설정
   });
@@ -100,17 +98,18 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
         matchPassword: (value) => value === watch("password") || "비밀번호가 일치하지 않습니다.",
       },
     },
-    userName: {
-      required: "이름은 필수입니다.",
-      pattern: {
-        value: /^[A-Za-z가-힣]+$/,
-        message: "한글 또는 영문만 입력 가능합니다",
+    type: { required: "회원 유형을 선택해주세요." },
+    extra: {
+      userName: {
+        required: "이름은 필수입니다.",
+        pattern: {
+          value: /^[A-Za-z가-힣]+$/,
+          message: "한글 또는 영문만 입력 가능합니다",
+        },
       },
+      gender: { required: "성별을 선택해주세요." },
+      birth: { required: "생년월일을 선택해주세요." },
     },
-    memberType: { required: "회원 유형을 선택해주세요." },
-    gender: { required: "성별을 선택해주세요." },
-    birth: { required: "생년월일을 선택해주세요." },
-
     // 공통 필드(회원가입 및 프로필 수정 시 공통으로 사용)
     name: {
       required: "닉네임은 필수입니다.",
@@ -183,8 +182,16 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
     },
   };
 
+  // FormData에서 confirmPassword는 비밀번호 확인용으로만 사용되고 서버에는 보낼 필요가 없어서 제외시키는 작업
+  // handleSubmit이 수집한 데이터를 handleFormSubmit함수의 첫번째 인자로 전달
+  const handleFormSubmit = (formData) => {
+    // ...submitData는 confirmPassword를 제외한 나머지 모든 속성
+    const { confirmPassword, ...submitData } = formData;
+    onSubmit(submitData);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="p-5">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="p-5">
       {!userInfo && (
         <>
           {/* 이메일 */}
@@ -239,9 +246,9 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
               type="text"
               id="userName"
               placeholder="이름을 입력해주세요"
-              {...register("userName", validationSchema.userName)}
+              {...register("extra.userName", validationSchema.extra.userName)}
             />
-            {errors.userName && <p className="text-red1 text-xs mt-1 ps-1">{errors.userName.message}</p>}
+            {errors.extra?.userName && <p className="text-red1 text-xs mt-1 ps-1">{errors.extra.userName.message}</p>}
           </div>
         </>
       )}
@@ -286,27 +293,27 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
               <input
                 className="w-3.5 h-3.5 rounded-full appearance-none bg-gray2 checked:bg-btn-primary cursor-pointer"
                 type="radio"
-                id="memberType-user"
+                id="type-user"
                 value="user"
-                {...register("memberType", validationSchema.memberType)}
+                {...register("type", validationSchema.type)}
               />
-              <label className="cursor-pointer" htmlFor="memberType-user">
+              <label className="cursor-pointer" htmlFor="type-user">
                 구매회원
               </label>
               <input
                 className="w-3.5 h-3.5 rounded-full appearance-none bg-gray2 checked:bg-btn-primary cursor-pointer ml-2.5"
                 type="radio"
-                id="memberType-seller"
+                id="type-seller"
                 value="seller"
-                {...register("memberType", validationSchema.memberType)}
+                {...register("type", validationSchema.type)}
               />
-              <label className="cursor-pointer" htmlFor="memberType-seller">
+              <label className="cursor-pointer" htmlFor="type-seller">
                 판매회원
               </label>
             </div>
-            {errors.memberType && (
+            {errors.type && (
               <div className="w-full">
-                <p className=" text-red1 text-xs ps-0.5 -mt-3">{errors.memberType.message}</p>
+                <p className=" text-red1 text-xs ps-0.5 -mt-3">{errors.type.message}</p>
               </div>
             )}
           </div>
@@ -338,7 +345,7 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
                 type="radio"
                 id="gender-male"
                 value="male"
-                {...register("gender", validationSchema.gender)}
+                {...register("extra.gender", validationSchema.extra.gender)}
               />
               <label className="cursor-pointer" htmlFor="gender-male">
                 남자
@@ -348,15 +355,15 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
                 type="radio"
                 id="gender-female"
                 value="female"
-                {...register("gender", validationSchema.gender)}
+                {...register("extra.gender", validationSchema.extra.gender)}
               />
               <label className="cursor-pointer" htmlFor="gender-female">
                 여자
               </label>
             </div>
-            {errors.gender && (
+            {errors.extra?.gender && (
               <div className="w-full">
-                <p className=" text-red1 text-xs ps-0.5 -mt-3">{errors.gender.message}</p>
+                <p className=" text-red1 text-xs ps-0.5 -mt-3">{errors.extra.gender.message}</p>
               </div>
             )}
           </div>
@@ -369,9 +376,9 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
               className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
               type="date"
               id="birth"
-              {...register("birth", validationSchema.birth)}
+              {...register("extra.birth", validationSchema.extra.birth)}
             />
-            {errors.birth && <p className="text-red1 text-xs mt-1 ps-1">{errors.birth.message}</p>}
+            {errors.extra?.birth && <p className="text-red1 text-xs mt-1 ps-1">{errors.extra.birth.message}</p>}
           </div>
         </>
       )}
