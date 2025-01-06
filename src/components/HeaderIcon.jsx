@@ -9,9 +9,6 @@ HeaderIcon.propTypes = {
   onClick: PropTypes.func,
 };
 
-// 장바구니에 임의로 아이템을 넣어 놓음.
-const DUMMY_cart = ["item", "item"];
-
 export default function HeaderIcon({ name, onClick }) {
   // 장바구니가 차 있는지 아닌지 확인하는 상태관리 변수
   const [isFullCart, setIsFullCart] = useState(false);
@@ -37,11 +34,10 @@ export default function HeaderIcon({ name, onClick }) {
 
   // 장바구니 아이콘이고, 장바구니가 차 있으면 상태를 변경
   useEffect(() => {
-    console.log(data);
-    if (name.startsWith("cart") && data.item.length > 0) {
+    if (data && name.startsWith("cart") && data.item.length > 0) {
       setIsFullCart(true);
     }
-  }, []);
+  }, [data]);
 
   return (
     <button onClick={onClick} className="relative">
