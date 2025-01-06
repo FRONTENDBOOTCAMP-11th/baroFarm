@@ -6,16 +6,14 @@ export default function MyPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   const [data, setData] = useState({
-    name: "김아무개",
+    name: "온도감",
     gender: "남",
     age: 42,
     email: "kimamuge@gmail.com",
     phone: "000-1111-2222",
     auth: "판매자",
     address: "대한민국 어딘가",
-    extra: {
-      userName: "온도감",
-    },
+    userName: "김아무개",
   });
 
   useEffect(() => {
@@ -38,16 +36,14 @@ export default function MyPage() {
   //로그인 시 데이터 추가
   const loginClick = () => {
     setData({
-      name: "김아무개",
+      name: "온도감",
       gender: "남",
       age: 42,
       email: "kimamuge@gmail.com",
       phone: "000-1111-2222",
       auth: "판매자",
       address: "대한민국 어딘가",
-      extra: {
-        userName: "온도감",
-      },
+      userName: "김아무개",
     });
   };
 
@@ -67,7 +63,7 @@ export default function MyPage() {
                   {data.auth}
                 </p>
                 <h2 className="text-[16px] leading-[18px] mt-[4px]">
-                  {data.extra.userName}님! 어서오세요
+                  {data.name}님! 어서오세요
                 </h2>
               </div>
               <button

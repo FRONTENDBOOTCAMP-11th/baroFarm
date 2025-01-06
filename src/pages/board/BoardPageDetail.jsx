@@ -38,6 +38,7 @@ export default function BoardPageDetail({ item }) {
   };
 
   const newDate = createdTime(item.createdAt);
+  console.log(item);
   return (
     <div className="relative">
       <Link
