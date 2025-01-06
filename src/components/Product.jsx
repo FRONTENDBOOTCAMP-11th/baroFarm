@@ -80,7 +80,7 @@ export default function Product(product) {
           </span>
         </div>
         <span className="font-semibold text-xs pr-2">
-          ⭐️ {product.extra.rating}
+          ⭐️ {product.rating ? product.rating.toFixed(1) : 0}
         </span>
         <span className="text-gray4 font-regular text-xs ">
           ({product.replies})

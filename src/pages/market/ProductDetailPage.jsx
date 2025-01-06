@@ -20,7 +20,7 @@ const likeIcon = {
 };
 
 import HeaderIcon from "@components/HeaderIcon";
-import ReviewItem from "@components/ReviewBox";
+import ReviewBox from "@components/ReviewBox";
 
 export default function ProductDetailPage() {
   const { _id } = useParams();
@@ -108,7 +108,7 @@ export default function ProductDetailPage() {
         <p>{product.name}</p>
 
         <span className="font-semibold text-xs pr-2">
-          ⭐️ {product.extra.rating}
+          ⭐️ {product.rating ? product.rating.toFixed(1) : 0}
         </span>
         <span className="text-xs">{product.replies.length}개 후기</span>
 
@@ -123,23 +123,29 @@ export default function ProductDetailPage() {
       <section className="p-5 border-b-8 border-b-gray1">
         <div className="flex items-center justify-between">
           <span className="font-bold">후기 {product.replies.length}개</span>
-          <Link
-            to={`/product/${product._id}/reviews`}
-            className="font-medium text-sm text-gray5 flex items-center"
-          >
-            전체보기
-            <img src={forwardIcon} className="w-3" />
-          </Link>
+          {product.replies.length > 0 ? (
+            <Link
+              to={`/product/${product._id}/reviews`}
+              className="font-medium text-sm text-gray5 flex items-center"
+            >
+              전체보기
+              <img src={forwardIcon} className="w-3" />
+            </Link>
+          ) : undefined}
         </div>
         <div className="flex overflow-x-auto gap-3 scrollbar-hide">
-          <ReviewItem option={product.name} content={product.content} />
-          <ReviewItem option={product.name} content={product.content} />
-          <ReviewItem option={product.name} content={product.content} />
+          {product.replies.map((reply) => (
+            <ReviewBox
+              key={reply._id}
+              option={product.name}
+              content={reply.content}
+            />
+          ))}
         </div>
       </section>
 
       <section className="p-5 border-b-8 border-b-gray1">
-        <div dangerouslySetInnerHTML={{ __html: product.productContent }} />
+        <div dangerouslySetInnerHTML={{ __html: product.content }} />
       </section>
       <footer className="h-[100px] p-5 border-t border-gray1 flex items-center justify-between fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto bg-white">
         <button onClick={handleLike} className="pl-2">
