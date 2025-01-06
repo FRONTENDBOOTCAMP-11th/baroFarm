@@ -2,15 +2,13 @@ import Button from "@components/Button";
 import CartItem from "@components/CartItem";
 import Checkbox from "@components/Checkbox";
 import HeaderIcon from "@components/HeaderIcon";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
-
-const ACCESS_TOKEN =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjQsInR5cGUiOiJ1c2VyIiwibmFtZSI6IuygnOydtOyngCIsImVtYWlsIjoidTFAbWFya2V0LmNvbSIsImltYWdlIjoiL2ZpbGVzL2ZpbmFsMDQvdXNlci1qYXlnLndlYnAiLCJsb2dpblR5cGUiOiJlbWFpbCIsImlhdCI6MTczNTg3NzI2OCwiZXhwIjoxNzM1OTYzNjY4LCJpc3MiOiJGRVNQIn0.h7gzgUydFaOpaWqYsMwPC2BvztrzsgUiHPPyuBjaSVs";
+import { ACCESS_TOKEN } from "@/tokens";
 
 export default function CartPage() {
   // 구매할 물품 선택을 위한 폼
@@ -67,6 +65,7 @@ export default function CartPage() {
     };
   }, []);
 
+  // 장바구니 목록 조회
   const { data, isLoading, isError } = useQuery({
     queryKey: ["carts"],
     queryFn: () =>
@@ -75,7 +74,7 @@ export default function CartPage() {
           "Content-Type": "application/json",
           accept: "application/json",
           "client-id": "final04",
-          // 임시로 액세스 토큰 사용
+          // 임시로 하드 코딩한 액세스 토큰 사용
           Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
         params: {
@@ -86,11 +85,71 @@ export default function CartPage() {
     staleTime: 1000 * 10,
   });
 
+  // 장바구니 상품 삭제
+  const queryClient = useQueryClient();
+  const deleteItem = useMutation({
+    mutationFn: (_id) => {
+      const ok = confirm("상품을 삭제하시겠습니까?");
+      if (ok)
+        axios.delete(`https://11.fesp.shop/carts/${_id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+            // 임시로 하드 코딩한 액세스 토큰 사용
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        });
+    },
+    onSuccess: () => {
+      alert("상품이 삭제되었습니다.");
+      // 캐시된 데이터 삭제 후 리렌더링
+      queryClient.invalidateQueries({ queryKey: ["carts"] });
+    },
+    onError: (err) => console.error(err),
+  });
+
+  // 장바구니 수량 변경
+  const updateItem = useMutation({
+    mutationFn: ({ _id, quantity }) =>
+      axios.patch(
+        `https://11.fesp.shop/carts/${_id}`,
+        {
+          // 보낼 데이터
+          quantity: quantity,
+        },
+        {
+          // request config
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+            // 임시로 하드 코딩한 액세스 토큰 사용
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        }
+      ),
+    onSuccess: () => {
+      // 캐시된 데이터 삭제 후 리렌더링
+      queryClient.invalidateQueries({ queryKey: ["carts"] });
+    },
+    onError: (err) => console.error(err),
+  });
+
   if (isLoading) {
     return (
       <div className="mt-0 mx-auto text-center">
         로딩중... <br />
         잠시만 기다려주세요
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="mt-0 mx-auto text-center">
+        에러가 발생했습니다. <br />
+        잠시 후 다시 시도해주세요.
       </div>
     );
   }
@@ -106,7 +165,13 @@ export default function CartPage() {
       : data.cost.shippingFees - data.cost.discount.shippingFees;
 
   const itemList = data.item.map((item) => (
-    <CartItem key={item._id} {...item} register={register} />
+    <CartItem
+      key={item._id}
+      {...item}
+      register={register}
+      deleteItem={deleteItem}
+      updateItem={updateItem}
+    />
   ));
 
   // 선택된 아이템의 아이디를 배열에 담음
