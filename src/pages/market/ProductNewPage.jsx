@@ -170,7 +170,7 @@ export default function ProductNewPage() {
         name="attach"
         {...register("image")}
       />
-      <Button width="100%" height="45px" fontSize={24} type="submit">
+      <Button height="45px" fontSize={24} type="submit" isBig={true}>
         등록
       </Button>
     </form>
