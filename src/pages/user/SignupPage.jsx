@@ -1,6 +1,7 @@
 import HeaderIcon from "@components/HeaderIcon";
 import UserForm from "@components/UserForm";
-import axios from "axios";
+import useAxiosInstance from "@hooks/useAxiosInstance";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
@@ -8,25 +9,20 @@ export default function SignupPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
-  // 회원가입 처리 함수
-  const handleSignup = async (formData) => {
-    try {
-      const { data } = await axios.post("https://11.fesp.shop/users", formData, {
-        headers: {
-          "client-id": "final04",
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-      });
-      console.log("회원가입 데이터:", data);
+  const axios = useAxiosInstance();
+  const handleSignup = useMutation({
+    mutationFn: (formData) => axios.post("/users", formData),
+    onSuccess: (res) => {
+      console.log("회원가입 성공 데이터:", res.data);
       alert("회원가입이 완료되었습니다.");
       navigate("/users/login");
-    } catch (error) {
-      console.error("회원가입 실패:", error);
+    },
+    onError: (err) => {
+      console.error("회원가입 실패:", err);
       alert("회원가입에 실패했습니다.");
       navigate("/users/signup");
-    }
-  };
+    },
+  });
 
   useEffect(() => {
     setHeaderContents({
@@ -35,5 +31,5 @@ export default function SignupPage() {
     });
   }, []);
 
-  return <UserForm buttonText="가입하기" onSubmitUser={handleSignup} />;
+  return <UserForm buttonText="가입하기" onSubmitUser={handleSignup.mutate} />;
 }
