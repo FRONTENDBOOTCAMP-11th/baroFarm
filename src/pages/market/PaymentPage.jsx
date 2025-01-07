@@ -1,8 +1,7 @@
 import Button from "@components/Button";
-import CartItemPayment from "@components/CartItemPayment";
+import ProductToBuy from "@components/ProductToBuy";
 import HeaderIcon from "@components/HeaderIcon";
 import Modal from "@components/Modal";
-import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
@@ -81,11 +80,11 @@ const DUMMY_CARTS_ITEMS = {
 };
 
 export default function PaymentPage() {
+  // 구매할 상품 목록 상태 관리
+  const [paymentItems, setPaymentItems] = useState([]);
   // 헤더 상태 설정 함수
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  // 이전 페이지에서 넘어온 정보
-  const location = useLocation();
   // 기본 배송지 상태 임시 토글 기능
   const [isDefaultAddress, setIsDefaultAddress] = useState(false);
   // 결제 버튼 보이기 상태
@@ -99,15 +98,18 @@ export default function PaymentPage() {
     modalRef.current.open();
   };
 
-  console.log(location.state);
-
+  // 이전 페이지에서 넘어온 정보
+  const location = useLocation();
   // 이전 페이지에서 넘어온 구매할 상품
   const selectedItems = location.state.selectedItems;
   console.log(selectedItems);
 
-  const paymentItems = DUMMY_CARTS_ITEMS.item.map((item) => (
-    <CartItemPayment key={item._id} {...item.product} />
-  ));
+  useEffect(() => {
+    const itemsToBuy = selectedItems?.map((item) => (
+      <ProductToBuy key={item.product_id} {...item} />
+    ));
+    setPaymentItems(itemsToBuy);
+  }, []);
 
   // 배송비 계산
   const totalShippingFees =
