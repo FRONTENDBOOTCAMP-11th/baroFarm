@@ -5,6 +5,8 @@ import {
   useOutletContext,
   Link,
 } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 import HeaderIcon from "@components/HeaderIcon";
 import forwardIcon from "/icons/icon_forward.svg";
@@ -31,49 +33,42 @@ export default function ReviewPage() {
     });
   }, []);
 
-  const replies = [
-    {
-      id: 1,
-      name: "떡보 369",
-      rate: "⭐️⭐️⭐️⭐️⭐️",
-      date: "2024.12.18",
-      option: "오리지널 카스테라 530g",
-      content:
-        "대만 카스테라를 좋아하던 1인으로서 이 카스테라 정말 맛있네요 카스테라가 빛의 속도로 없어지는게 아쉬워요 ㅠㅠ",
+  const {
+    data: product,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["product", _id, "reviews"],
+    queryFn: async () => {
+      const response = await axios.get(`https://11.fesp.shop/products/${_id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+          "client-id": "final04",
+        },
+      });
+      return response.data.item;
     },
-    {
-      id: 2,
-      name: "떡보 369",
-      rate: "⭐️⭐️⭐️⭐️⭐️",
-      date: "2024.12.18",
-      option: "오리지널 카스테라 530g",
-      content:
-        "대만 카스테라를 좋아하던 1인으로서 이 카스테라 정말 맛있네요 카스테라가 빛의 속도로 없어지는게 아쉬워요 ㅠㅠ",
-    },
-    {
-      id: 3,
-      name: "떡보 369",
-      rate: "⭐️⭐️⭐️⭐️⭐️",
-      date: "2024.12.18",
-      option: "오리지널 카스테라 530g",
-      content:
-        "대만 카스테라를 좋아하던 1인으로서 이 카스테라 정말 맛있네요 카스테라가 빛의 속도로 없어지는게 아쉬워요 ㅠㅠ",
-    },
-  ];
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError || !product) return <div>Error loading product</div>;
 
   return (
     <>
       <section className="p-5 border-b-[1px] border-b-gray2">
         <p className="font-medium pb-2">전체 구매자 평점</p>
-        <span className="font-semibold pr-2">⭐️⭐️⭐️⭐️⭐️</span>
-        <span className="font-extrabold">4.8</span>
+        <span className="font-semibold pr-2">
+          {Array(Math.floor(product.rating)).fill("⭐️")}
+        </span>
+        <span className="font-extrabold">{product.rating.toFixed(1)}</span>
       </section>
 
       <section className="p-5 border-b-8 border-b-gray1">
         <div className="flex items-center justify-between">
           <span className="font-bold">사진 후기</span>
           <Link
-            to={`/product/1/reviews/photo`}
+            to={`/product/${_id}/reviews/photo`}
             className="font-medium text-sm text-gray5 flex items-center"
           >
             더보기
@@ -86,12 +81,11 @@ export default function ReviewPage() {
           <PhotoReviewItem />
           <PhotoReviewItem />
           <PhotoReviewItem />
-          <PhotoReviewItem />
         </div>
       </section>
 
       <section className="py-5">
-        <p className="font-bold pl-5 pb-1">후기 2,210개</p>
+        <p className="font-bold pl-5 pb-1">후기 {product.replies.length}개</p>
         <button
           className={`pl-5 text-sm font-semibold ${
             sortOrder === "best" ? "text-bg-primary" : "text-gray4"
@@ -108,8 +102,12 @@ export default function ReviewPage() {
         >
           최신순
         </button>
-        {replies.map((reply) => (
-          <ReviewItem key={reply.id} reply={reply} />
+        {product.replies.map((reply) => (
+          <ReviewItem
+            key={reply._id}
+            reply={reply}
+            productName={product.name}
+          />
         ))}
       </section>
     </>

@@ -1,6 +1,7 @@
 import HeaderIcon from "@components/HeaderIcon";
 import BoardPageDetail from "@pages/board/BoardPageDetail";
 import { useQuery } from "@tanstack/react-query";
+import useUserStore from "@zustand/useUserStore";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
@@ -8,6 +9,8 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 export default function BoardPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  const { user } = useUserStore();
+  const [isLogin, setIsLogin] = useState(true);
 
   useEffect(() => {
     setHeaderContents({
@@ -45,6 +48,20 @@ export default function BoardPage() {
     );
   }
 
+  if (user) {
+    setIsLogin(true);
+  }
+  // 로그인 기능이 개발된 후 활성화 예정
+  // const handleClick = (event) => {
+  //   if (
+  //     !confirm(
+  //       "게스트 상태로 게시글 작성을 이용하실 수 없습니다.\n로그인 하시겠습니까?"
+  //     )
+  //   ) {
+  //     event.preventDefault();
+  //   }
+  // };
+
   const boards = data.map((item) => (
     <BoardPageDetail key={item._id} item={item} />
   ));
@@ -66,7 +83,8 @@ export default function BoardPage() {
       <div className="h-[7px] bg-gray1 -mx-5"></div>
       {boards}
       <Link
-        to="new"
+        to={isLogin ? "new" : "/users/login"}
+        // onClick={(event) => handleClick(event)}
         className="fixed right-[calc(50%-155px)] bottom-[130px] w-[40px] h-[40px] rounded-full shadow-bottom"
       >
         <img src="/icons/icon_newpost.svg" className="w-full h-full" />
