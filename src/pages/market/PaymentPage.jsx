@@ -2,6 +2,7 @@ import Button from "@components/Button";
 import CartItemPayment from "@components/CartItemPayment";
 import HeaderIcon from "@components/HeaderIcon";
 import Modal from "@components/Modal";
+import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
@@ -94,10 +95,15 @@ export default function PaymentPage() {
   const targetRef = useRef(null);
   // 모달 창 선택
   const modalRef = useRef();
-
   const openModal = () => {
     modalRef.current.open();
   };
+
+  console.log(location.state);
+
+  // 이전 페이지에서 넘어온 구매할 상품
+  const selectedItems = location.state.selectedItems;
+  console.log(selectedItems);
 
   const paymentItems = DUMMY_CARTS_ITEMS.item.map((item) => (
     <CartItemPayment key={item._id} {...item.product} />
@@ -153,8 +159,6 @@ export default function PaymentPage() {
       }
     };
   }, []);
-
-  console.log(location.state);
 
   return (
     <>

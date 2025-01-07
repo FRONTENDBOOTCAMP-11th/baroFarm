@@ -142,6 +142,33 @@ export default function CartPage() {
     onError: (err) => console.error(err),
   });
 
+  // 선택한 아이템, 데이터가 변경될 때 상품 금액 다시 계산
+  useEffect(() => {
+    // 장바구니에 아이템이 없다면 코드 실행 중단
+    if (!data?.item) return;
+
+    // selectedItems 배열을 사용해 총 상품 비용 계산
+    // selectedItem은 위 배열 중 하나의 아이템을 의미
+    const total = selectedItems.reduce((sum, selectedItem) => {
+      // 장바구니에 있는 상품 중 방금 selectedItems 배열에 추가된 상품이 무엇인지 찾기
+      const currentItem = data.item.find(
+        (item) => item.product_id === selectedItem.product_id
+      );
+
+      // 방금 추가된 상품이 있다면 합계를 계산
+      if (currentItem) {
+        return (
+          sum + currentItem.quantity * currentItem.product.extra.saledPrice
+        );
+      }
+      // 추가된 상품이 없다면 원래 합계를 반환
+      return sum;
+    }, 0);
+
+    // 반환된 합계로 최종 금액을 업데이트
+    setTotalFees(total);
+  }, [selectedItems, data?.item]);
+
   if (isLoading) {
     return (
       <div className="mt-0 mx-auto text-center">
@@ -150,7 +177,6 @@ export default function CartPage() {
       </div>
     );
   }
-
   if (isError) {
     return (
       <div className="mt-0 mx-auto text-center">
@@ -159,7 +185,6 @@ export default function CartPage() {
       </div>
     );
   }
-
   // 데이터 없을시 null 반환하여 에러 방지
   if (!data) return null;
   console.log(data);
@@ -172,27 +197,31 @@ export default function CartPage() {
   const checkItem = (targetId) => {
     // 선택한 상품을 장바구니 데이터에서 찾음
     const selectedItem = data.item.find((item) => item._id === targetId);
-    const price = selectedItem.quantity * selectedItem.product.price;
-    const salePrice =
-      selectedItem.quantity * selectedItem.product.extra.saledPrice;
-    const discount = price - salePrice;
-    // 선택한 상품의 아이디가 담긴 배열을 상태로 관리
-    // 이미 추가되었다면, 삭제
-    if (selectedItems.includes(selectedItem.product_id)) {
+
+    // 해당 상품이 이미 체크된 상품인지 확인
+    const hasItem = selectedItems.some(
+      (item) => item.product_id === selectedItem.product_id
+    );
+
+    // 이미 체크된 상품이라면
+    if (hasItem) {
+      // 구매할 목록에서 삭제
       setSelectedItems((prevState) =>
-        prevState.filter((item) => item !== selectedItem.product_id)
+        prevState.filter((item) => item.product_id !== selectedItem.product_id)
       );
-      if (totalFees > 0) {
-        setTotalFees((prevState) => prevState - salePrice);
-        setDiscount((prevState) => prevState - discount);
-      }
     } else {
-      // 추가되지 않았다면 추가
-      setSelectedItems([...selectedItems, selectedItem.product_id]);
-      setTotalFees((prevState) => prevState + salePrice);
-      setDiscount((prevState) => prevState + discount);
+      // 체크된 상품이 아니라면 구매할 목록에 추가
+      setSelectedItems((prevState) => [
+        ...prevState,
+        {
+          product_id: selectedItem.product_id,
+          quantity: selectedItem.quantity,
+          product: selectedItem.product,
+        },
+      ]);
     }
   };
+  console.log(selectedItems);
 
   const itemList = data.item.map((item) => (
     <CartItem
