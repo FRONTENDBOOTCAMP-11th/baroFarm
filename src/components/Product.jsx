@@ -41,7 +41,7 @@ export default function Product(product) {
 
   const [isLiked, setIsLiked] = useState(product.bookmarks || false);
 
-  const { mutate: addLike } = useMutation({
+  const { mutate: addLike, data: likeItem } = useMutation({
     mutationFn: async () => {
       const response = await axios.post(
         `https://11.fesp.shop/bookmarks/product`,
@@ -57,7 +57,7 @@ export default function Product(product) {
           },
         }
       );
-      return response.data;
+      return response.data.item;
     },
 
     onSuccess: () => {
@@ -68,6 +68,7 @@ export default function Product(product) {
     },
   });
 
+  console.log(likeItem?._id);
   const { mutate: removeLike } = useMutation({
     mutationFn: async () => {
       const response = await axios.delete(
