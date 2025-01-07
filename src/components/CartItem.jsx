@@ -19,10 +19,12 @@ CartItem.propTypes = {
     }).isRequired,
     extra: PropTypes.shape({
       sale: PropTypes.number,
+      saledPrice: PropTypes.number,
     }),
   }).isRequired,
   deleteItem: PropTypes.object.isRequired,
   updateItem: PropTypes.object.isRequired,
+  checkItem: PropTypes.func,
 };
 
 export default function CartItem({
@@ -32,6 +34,7 @@ export default function CartItem({
   register,
   deleteItem,
   updateItem,
+  checkItem,
 }) {
   // 판매자 이름 상태관리
   const [seller, setSeller] = useState("");
@@ -61,7 +64,11 @@ export default function CartItem({
         {seller}
       </div>
       <div className="pt-[10px] flex gap-3">
-        <Checkbox name={`${_id}`} register={register(`${_id}`)} />
+        <Checkbox
+          name={`${_id}`}
+          register={register(`${_id}`)}
+          onClick={() => checkItem(_id)}
+        />
         <img
           src={`https://11.fesp.shop${product.image.path}`}
           alt="상품 이미지"
@@ -72,7 +79,7 @@ export default function CartItem({
           <div className="flex items-center mb-2">
             <span className="text-xs font-semibold text-red1 mr-1">{`${product.extra.sale}%`}</span>
             <span className="text-[16px] font-extrabold">
-              {product.price.toLocaleString()}원
+              {product.extra.saledPrice.toLocaleString()}원
             </span>
           </div>
           <div className="ring-1 ring-gray2 w-fit flex text-center items-center rounded-sm *:flex *:items-center *:justify-center *:text-sm">
@@ -98,7 +105,7 @@ export default function CartItem({
           </div>
         </div>
         <button
-          className="self-start"
+          className="self-start ml-auto shrink-0"
           type="button"
           onClick={() => deleteItem.mutate(_id)}
         >

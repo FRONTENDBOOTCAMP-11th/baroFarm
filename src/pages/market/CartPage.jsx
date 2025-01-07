@@ -8,13 +8,20 @@ import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
-import { ACCESS_TOKEN } from "@/tokens";
+
+const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 
 export default function CartPage() {
   // 구매할 물품 선택을 위한 폼
   const { register, handleSubmit } = useForm();
   // 결제 버튼 보이기 상태
   const [showButton, setShowButton] = useState(false);
+  // 최종 상품 금액을 따로 상태로 관리
+  const [totalFees, setTotalFees] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [totalPayFees, setTotalPayFees] = useState(0);
+  // 체크된 상품의 아이디를 담은 배열 상태 관리
+  const [selectedItems, setSelectedItems] = useState([]);
 
   // targetRef가 보이면 결제버튼을 보이게 함
   const targetRef = useRef(null);
@@ -29,8 +36,30 @@ export default function CartPage() {
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "장바구니",
     });
+  }, []);
 
-    // 스크롤에 따라 결제버튼 보이게 하기
+  // 장바구니 목록 조회
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["carts"],
+    queryFn: () =>
+      axios.get("https://11.fesp.shop/carts", {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+          "client-id": "final04",
+          // 임시로 하드 코딩한 액세스 토큰 사용
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+        params: {
+          delay: 500,
+        },
+      }),
+    select: (res) => res.data,
+    staleTime: 1000 * 10,
+  });
+
+  // 스크롤에 따라 결제버튼 보이게 하기
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -63,27 +92,7 @@ export default function CartPage() {
         observer.unobserve(targetElement);
       }
     };
-  }, []);
-
-  // 장바구니 목록 조회
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["carts"],
-    queryFn: () =>
-      axios.get("https://11.fesp.shop/carts", {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-          // 임시로 하드 코딩한 액세스 토큰 사용
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
-        params: {
-          delay: 500,
-        },
-      }),
-    select: (res) => res.data,
-    staleTime: 1000 * 10,
-  });
+  }, [data]);
 
   // 장바구니 상품 삭제
   const queryClient = useQueryClient();
@@ -136,6 +145,29 @@ export default function CartPage() {
     onError: (err) => console.error(err),
   });
 
+  // 선택한 아이템, 데이터가 변경될 때 상품 금액 다시 계산
+  useEffect(() => {
+    // selectedItems 배열을 사용해 총 상품 비용 계산
+    // selectedItem은 위 배열 중 하나의 아이템을 의미
+    const total = selectedItems.reduce((sum, selectedItem) => {
+      // 장바구니에 있는 상품 중 방금 selectedItems 배열에 추가된 상품이 무엇인지 찾기
+      const currentItem = data.item.find(
+        (item) => item.product_id === selectedItem.product_id
+      );
+
+      // 원래 합계와 방금 추가된 상품의 금액을 합침
+      return sum + currentItem.quantity * currentItem.product.price;
+    }, 0);
+
+    // 반환된 합계로 최종 상품 금액을 업데이트
+    setTotalFees(total);
+  }, [selectedItems, data?.item]);
+
+  // 총 결제금액 업데이트
+  useEffect(() => {
+    setTotalPayFees(totalFees - discount);
+  }, [totalFees]);
+
   if (isLoading) {
     return (
       <div className="mt-0 mx-auto text-center">
@@ -144,7 +176,6 @@ export default function CartPage() {
       </div>
     );
   }
-
   if (isError) {
     return (
       <div className="mt-0 mx-auto text-center">
@@ -153,16 +184,41 @@ export default function CartPage() {
       </div>
     );
   }
-
   // 데이터 없을시 null 반환하여 에러 방지
   if (!data) return null;
   console.log(data);
 
   // 최종 배송비 계산
   const totalShippingFees =
-    data.cost.shippingFees - data.cost.discount.shippingFees === 0
-      ? "무료"
-      : data.cost.shippingFees - data.cost.discount.shippingFees;
+    data.cost.shippingFees - data.cost.discount.shippingFees;
+
+  // 장바구니 아이템 체크하기
+  const checkItem = (targetId) => {
+    // 선택한 상품을 장바구니 데이터에서 찾음
+    const selectedItem = data.item.find((item) => item._id === targetId);
+    const discount =
+      selectedItem.product.price - selectedItem.product.extra.saledPrice;
+
+    // 해당 상품이 이미 체크된 상품인지 확인
+    const hasItem = selectedItems.some(
+      (item) => item.product_id === selectedItem.product_id
+    );
+
+    // 이미 체크된 상품이라면
+    if (hasItem) {
+      // 구매할 목록에서 삭제
+      setSelectedItems((prevState) =>
+        prevState.filter((item) => item.product_id !== selectedItem.product_id)
+      );
+      setDiscount((prevState) => prevState - discount);
+    } else {
+      // 체크된 상품이 아니라면 구매할 목록에 추가
+      setSelectedItems((prevState) => [...prevState, selectedItem]);
+      setDiscount((prevState) => prevState + discount);
+    }
+  };
+
+  console.log(selectedItems);
 
   const itemList = data.item.map((item) => (
     <CartItem
@@ -171,14 +227,23 @@ export default function CartPage() {
       register={register}
       deleteItem={deleteItem}
       updateItem={updateItem}
+      checkItem={checkItem}
     />
   ));
 
   // 선택된 아이템의 아이디를 배열에 담음
-  const selectItem = (formData) => {
-    const selectedItems = Object.keys(formData).filter((key) => formData[key]);
-    // 선택된 아이템의 아이디가 담긴 배열을 구매 페이지로 전송
-    navigate("/payment", { state: { selectedItems } });
+  const selectItem = () => {
+    if (selectedItems.length > 0) {
+      // 선택된 아이템과 최종 금액이 담긴 데이터를 구매 페이지로 전송
+      navigate("/payment", {
+        // seletedItems : 구매할 아이템의 데이터가 딤긴 배열
+        // totalFees : 최종 상품 금액
+        // totalShippingFees : 최종 배송비
+        state: { selectedItems, totalFees: totalPayFees, totalShippingFees },
+      });
+    } else {
+      alert("구매할 물품을 선택하세요");
+    }
   };
 
   return (
@@ -203,22 +268,26 @@ export default function CartPage() {
               <div className="border-b border-gray2">
                 <div className="text-xs flex justify-between mb-3">
                   <span className="text-gray4">총 상품 금액</span>
-                  <span>{data.cost.products.toLocaleString()}원</span>
+                  <span>{totalFees.toLocaleString()}원</span>
                 </div>
                 <div className="text-xs flex justify-between mb-3">
                   <span className="text-gray4">할인 금액</span>
                   <span className="text-red1">
-                    {data.cost.discount.products.toLocaleString()}원
+                    {discount.toLocaleString()}원
                   </span>
                 </div>
                 <div className="text-xs flex justify-between mb-3">
                   <span className="text-gray4">배송비</span>
-                  <span>{totalShippingFees}</span>
+                  <span>
+                    {totalShippingFees === 0 ? "무료" : totalShippingFees}
+                  </span>
                 </div>
               </div>
               <div className="flex justify-between mb-3 py-3 text-[16px] font-bold">
                 <span>총 결제 금액</span>
-                <span>{data.cost.total.toLocaleString()}원</span>
+                <span>
+                  {(totalPayFees + totalShippingFees).toLocaleString()}원
+                </span>
               </div>
             </section>
             <div
@@ -232,7 +301,7 @@ export default function CartPage() {
               )}
             >
               <Button isBig={true} type="submit">
-                {data.cost.total.toLocaleString()}원 구매하기
+                {totalPayFees.toLocaleString()}원 구매하기
               </Button>
             </section>
           </form>
