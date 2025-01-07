@@ -1,6 +1,7 @@
 import HeaderIcon from "@components/HeaderIcon";
 import NewPost from "@components/NewPost";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useUserStore from "@zustand/useUserStore";
 import axios from "axios";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -12,6 +13,7 @@ export default function BoardNewPage() {
   const { register, handleSubmit } = useForm();
   const isBoard = true;
   const queryClient = useQueryClient();
+  const { user } = useUserStore();
 
   const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 
@@ -22,24 +24,25 @@ export default function BoardNewPage() {
     });
   }, []);
 
-  const check = async (item) => {
-    console.log(item);
-    let imageUrl = null;
-    if (item.image && item.image[0]) {
-      const formData = new FormData();
-      formData.append("attach", item.image[0]);
-      const uploadImg = await axios.post(
-        `https://11.fesp.shop/files`,
-        formData,
-        {
-          headers: {
-            "client-id": "final04",
-          },
-        }
-      );
-      imageUrl = uploadImg.data.url;
-    }
-  };
+  // 함수 작동 여부 확인용
+  // const check = async (item) => {
+  //   console.log(item);
+  //   let imageUrl = null;
+  //   if (item.image && item.image[0]) {
+  //     const formData = new FormData();
+  //     formData.append("attach", item.image[0]);
+  //     const uploadImg = await axios.post(
+  //       `https://11.fesp.shop/files`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           "client-id": "final04",
+  //         },
+  //       }
+  //     );
+  //     imageUrl = uploadImg.data.url;
+  //   }
+  // };
 
   const addItem = useMutation({
     mutationFn: async (item) => {
@@ -87,6 +90,8 @@ export default function BoardNewPage() {
     },
     onError: () => {},
   });
+
+  console.log(user);
 
   return (
     <div className="relative mx-5">
