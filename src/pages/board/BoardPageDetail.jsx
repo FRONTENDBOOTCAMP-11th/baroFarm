@@ -9,14 +9,13 @@ BoardPageDetail.propTypes = {
 export default function BoardPageDetail({ item }) {
   const containerRef = useRef(null);
   const [isOverflow, setIsOverflow] = useState(false);
-
+  const checkOverflow = () => {
+    if (containerRef.current) {
+      const { scrollHeight, clientHeight } = containerRef.current;
+      setIsOverflow(scrollHeight > clientHeight); // 높이 비교
+    }
+  };
   useEffect(() => {
-    const checkOverflow = () => {
-      if (containerRef.current) {
-        const { scrollHeight, clientHeight } = containerRef.current;
-        setIsOverflow(scrollHeight > clientHeight); // 높이 비교
-      }
-    };
     checkOverflow();
   }, []);
 
@@ -38,6 +37,7 @@ export default function BoardPageDetail({ item }) {
   };
 
   const newDate = createdTime(item.createdAt);
+  console.log(item);
   return (
     <div className="relative">
       <Link
@@ -61,10 +61,13 @@ export default function BoardPageDetail({ item }) {
             </span>
           </div>
           <div className="mx-[5px] mt-[30px]">{item.content}</div>
-          <img
-            className="relative mt-10 rounded-md"
-            src={`https://11.fesp.shop${item.image}`}
-          />
+          {item.image && (
+            <img
+              className="relative mt-10 rounded-md"
+              src={`https://11.fesp.shop${item.image}`}
+              onLoad={checkOverflow}
+            />
+          )}
           {isOverflow && (
             <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
           )}
