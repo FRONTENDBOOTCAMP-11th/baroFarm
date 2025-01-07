@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 import PropTypes from "prop-types";
 
+const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 const likeIcon = {
   default: "/icons/icon_likeHeart_no.svg",
   active: "/icons/icon_likeHeart_yes.svg",
@@ -36,10 +39,64 @@ export default function Product(product) {
     navigate(`/product/${product._id}`);
   };
 
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(product.bookmarks || false);
+
+  const { mutate: addLike } = useMutation({
+    mutationFn: async () => {
+      const response = await axios.post(
+        `https://11.fesp.shop/bookmarks/product`,
+        {
+          target_id: product._id,
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        }
+      );
+      return response.data;
+    },
+
+    onSuccess: () => {
+      setIsLiked(true);
+    },
+    onError: () => {
+      console.error("찜 추가 실패: ", error);
+    },
+  });
+
+  const { mutate: removeLike } = useMutation({
+    mutationFn: async () => {
+      const response = await axios.delete(
+        `https://11.fesp.shop/bookmarks/${product._id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        }
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      setIsLiked(false);
+    },
+    onError: () => {
+      console.error("좋아요 삭제 실패: ", error);
+    },
+  });
 
   const handleLike = () => {
-    setIsLiked(!isLiked);
+    if (isLiked) {
+      removeLike();
+    } else {
+      addLike();
+    }
   };
 
   return (
