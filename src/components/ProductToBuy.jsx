@@ -40,7 +40,6 @@ export default function ProductToBuy({ product, product_id, quantity }) {
 
   if (!data) return null;
 
-  console.log(data);
   return (
     <div className="mb-3 [&:not(:last-child)]:pb-5 [&:not(:last-child)]:border-b border-gray2">
       <div className="text-sm font-bold">{data.item.name}</div>
