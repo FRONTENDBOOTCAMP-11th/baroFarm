@@ -4,7 +4,12 @@ import HeaderIcon from "@components/HeaderIcon";
 import Modal from "@components/Modal";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useOutletContext,
+} from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -163,8 +168,6 @@ export default function PaymentPage() {
       ),
     onSuccess: () => {
       // 구매 성공시
-      // openModal(); // 모달창으로 안내
-      alert("구매가 완료되었어요.");
       // 장바구니에서 구매한 아이템 삭제
       let purchasedItems = [];
       // 구매 목록의 아이디를 배열에 담고
@@ -173,8 +176,7 @@ export default function PaymentPage() {
       deleteItem.mutate(purchasedItems);
       // 장바구니에 캐시된 데이터 삭제 하고
       queryClient.invalidateQueries({ queryKey: ["carts"] });
-      // 장바구니로 이동
-      navigate("/cart");
+      openModal(); // 모달창으로 안내
     },
     onError: (err) => console.error(err),
   });
@@ -193,11 +195,15 @@ export default function PaymentPage() {
         <p className="text-center text-lg">
           <span className="font-semibold">
             총 {totalFees.toLocaleString()}원
-          </span>{" "}
-          <br />
+          </span>
           <br />
           <strong className="font-semibold">결제</strong>가 완료되었어요
         </p>
+        <Link to="/cart">
+          <span className="font-light border-b border-b-black">
+            더 쇼핑하러 가기
+          </span>
+        </Link>
       </Modal>
       <section className="px-5 py-[14px]">
         <div>

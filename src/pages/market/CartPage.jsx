@@ -19,6 +19,7 @@ export default function CartPage() {
   // 최종 상품 금액을 따로 상태로 관리
   const [totalFees, setTotalFees] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [totalPayFees, setTotalPayFees] = useState(0);
   // 체크된 상품의 아이디를 담은 배열 상태 관리
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -155,12 +156,17 @@ export default function CartPage() {
       );
 
       // 원래 합계와 방금 추가된 상품의 금액을 합침
-      return sum + currentItem.quantity * currentItem.product.extra.saledPrice;
+      return sum + currentItem.quantity * currentItem.product.price;
     }, 0);
 
-    // 반환된 합계로 최종 금액을 업데이트
+    // 반환된 합계로 최종 상품 금액을 업데이트
     setTotalFees(total);
   }, [selectedItems, data?.item]);
+
+  // 총 결제금액 업데이트
+  useEffect(() => {
+    setTotalPayFees(totalFees - discount);
+  }, [totalFees]);
 
   if (isLoading) {
     return (
@@ -190,6 +196,8 @@ export default function CartPage() {
   const checkItem = (targetId) => {
     // 선택한 상품을 장바구니 데이터에서 찾음
     const selectedItem = data.item.find((item) => item._id === targetId);
+    const discount =
+      selectedItem.product.price - selectedItem.product.extra.saledPrice;
 
     // 해당 상품이 이미 체크된 상품인지 확인
     const hasItem = selectedItems.some(
@@ -202,11 +210,14 @@ export default function CartPage() {
       setSelectedItems((prevState) =>
         prevState.filter((item) => item.product_id !== selectedItem.product_id)
       );
+      setDiscount((prevState) => prevState - discount);
     } else {
       // 체크된 상품이 아니라면 구매할 목록에 추가
       setSelectedItems((prevState) => [...prevState, selectedItem]);
+      setDiscount((prevState) => prevState + discount);
     }
   };
+
   console.log(selectedItems);
 
   const itemList = data.item.map((item) => (
@@ -225,7 +236,10 @@ export default function CartPage() {
     if (selectedItems.length > 0) {
       // 선택된 아이템과 최종 금액이 담긴 데이터를 구매 페이지로 전송
       navigate("/payment", {
-        state: { selectedItems, totalFees, totalShippingFees },
+        // seletedItems : 구매할 아이템의 데이터가 딤긴 배열
+        // totalFees : 최종 상품 금액
+        // totalShippingFees : 최종 배송비
+        state: { selectedItems, totalFees: totalPayFees, totalShippingFees },
       });
     } else {
       alert("구매할 물품을 선택하세요");
@@ -272,7 +286,7 @@ export default function CartPage() {
               <div className="flex justify-between mb-3 py-3 text-[16px] font-bold">
                 <span>총 결제 금액</span>
                 <span>
-                  {(totalFees + totalShippingFees).toLocaleString()}원
+                  {(totalPayFees + totalShippingFees).toLocaleString()}원
                 </span>
               </div>
             </section>
@@ -287,7 +301,7 @@ export default function CartPage() {
               )}
             >
               <Button isBig={true} type="submit">
-                {totalFees.toLocaleString()}원 구매하기
+                {totalPayFees.toLocaleString()}원 구매하기
               </Button>
             </section>
           </form>
