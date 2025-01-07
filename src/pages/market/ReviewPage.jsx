@@ -77,6 +77,10 @@ export default function ReviewPage() {
         </div>
         <div className="flex overflow-x-auto gap-3 scrollbar-hide pt-5">
           <PhotoReviewItem />
+          <PhotoReviewItem />
+          <PhotoReviewItem />
+          <PhotoReviewItem />
+          <PhotoReviewItem />
         </div>
       </section>
 

@@ -5,22 +5,23 @@ import {
   Link,
   useParams,
 } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 import PurchaseModal from "@components/PurchaseModal";
 import Modal from "@components/Modal";
+import ReviewBox from "@components/ReviewBox";
 
 import forwardIcon from "/icons/icon_forward.svg";
 import cartIcon from "/icons/icon_cart_modal.svg";
+import HeaderIcon from "@components/HeaderIcon";
 
 const likeIcon = {
   default: "/icons/icon_likeHeart_no.svg",
   active: "/icons/icon_likeHeart_yes.svg",
 };
 
-import HeaderIcon from "@components/HeaderIcon";
-import ReviewBox from "@components/ReviewBox";
+const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 
 export default function ProductDetailPage() {
   const { _id } = useParams();
@@ -80,6 +81,33 @@ export default function ProductDetailPage() {
         },
       });
       return response.data.item;
+    },
+  });
+
+  const cartItem = useMutation({
+    mutationFn: async () => {
+      const response = await axios.post(
+        `https://11.fesp.shop/carts`,
+        {
+          product_id: _id,
+          quantity: count,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        }
+      );
+      return response.data.item;
+    },
+    onSuccess: () => {
+      openModal();
+    },
+    onError: (error) => {
+      console.error("Error adding to cart", error);
     },
   });
 
@@ -201,8 +229,8 @@ export default function ProductDetailPage() {
           </div>
         </div>
         <div className="bg-gray1 border-y border-gray3 border-t py-3 flex justify-center">
-          <p className="">
-            상품 금액
+          <p>
+            상품 금액{" "}
             {Intl.NumberFormat().format(product.extra.saledPrice * count)} 원 +
             배송비 {product.shippingFees} 원
           </p>
@@ -210,7 +238,7 @@ export default function ProductDetailPage() {
         <div className="flex justify-between gap-3">
           <button
             className="flex-1 text-lg text-btn-primary p-3 rounded-[10px] border border-btn-primary"
-            onClick={openModal}
+            onClick={() => cartItem.mutate()}
           >
             장바구니
           </button>
