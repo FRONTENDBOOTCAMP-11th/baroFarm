@@ -141,28 +141,29 @@ export default function MainPage() {
 
   // 데이터 없을시 null 반환하여 에러 방지
   if (!data) return null;
-
   console.log(data);
+
+  // 캐러셀을 위한 할인 상품 sorting
+  const sortedSaleData = data.toSorted((a, b) => b.extra.sale - a.extra.sale);
+  const saleProducts = sortedSaleData.filter((_, index) => index < 6);
 
   // 인기 상품 렌더링
   const sortedBestData = data.toSorted((a, b) => b.buyQuantity - a.buyQuantity);
-  const bestProducts = sortedBestData.map((product, index) => {
-    if (index < 4) {
-      return <Product key={product._id} {...product} />;
-    }
-  });
+  const bestProducts = sortedBestData
+    // 4개의 상품만 골라서 Product 컴포넌트로 보여준다.
+    .filter((_, index) => index < 4)
+    .map((product) => <Product key={product._id} {...product} />);
 
   // 새상품 렌더링
   const filteredNewData = getMonthlyData(data);
-  const newProducts = filteredNewData.map((product, index) => {
-    if (index < 4) {
-      return <Product key={product._id} {...product} />;
-    }
-  });
+  const newProducts = filteredNewData
+    // 4개의 상품만 골라서 Product 컴포넌트로 보여준다.
+    .filter((_, index) => index < 4)
+    .map((product) => <Product key={product._id} {...product} />);
 
   return (
     <div>
-      <Carousel height={225} data={productsData} />
+      <Carousel height={225} data={saleProducts} />
       <section className="px-5 mb-4">
         <h2 className="text-xl mb-3">
           관심있는 <span className="font-bold">카테고리</span> 선택하기
