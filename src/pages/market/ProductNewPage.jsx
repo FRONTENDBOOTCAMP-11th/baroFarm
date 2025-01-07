@@ -29,8 +29,9 @@ export default function ProductNewPage() {
       price: parseInt(data.price),
       quantity: parseInt(data.quantity),
       extra: {
-        bestSeason: [data.seasonStart, data.seasonEnd],
+        bestSeason: [parseInt(data.seasonStart), parseInt(data.seasonEnd)],
         category: data.category,
+        sale: data.sale ? parseInt(data.sale) : null,
       },
     };
     console.log("item", item);
@@ -39,7 +40,6 @@ export default function ProductNewPage() {
   // div 내에 입력한 input & select 태그의 value 변경을 위함
   const [price, setPrice] = useState();
   const [tag, setTag] = useState("");
-  const [discount, setDiscount] = useState();
   const [checkDiscount, setCheckDiscount] = useState(false);
 
   // form 태그를 참조
