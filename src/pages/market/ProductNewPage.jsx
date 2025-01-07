@@ -5,7 +5,11 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function ProductNewPage() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   useEffect(() => {
@@ -38,38 +42,44 @@ export default function ProductNewPage() {
   return (
     <form className="mx-5 py-5" ref={formRef} onSubmit={handleSubmit(check)}>
       <input
-        name="option"
-        id="option"
+        name="name"
+        id="name"
         type="text"
         className="bg-gray2/20 w-full h-[50px] px-4 focus:outline-btn-primary rounded-md"
         placeholder="상품명을 입력해주세요."
-        {...register("option", {
+        {...register("name", {
           required: "상품명을 입력해주세요",
         })}
       />
-      <br />
+      {errors.name && (
+        <p className="text-red1 text-xs mt-1 ps-1">{errors.name.message}</p>
+      )}
 
       <select
+        id="category"
+        name="category"
         type="text"
         value={tag}
         className={`mt-[25px] text-center bg-gray2 rounded-lg py-1  pe-6 appearance-none focus:outline-none cursor-pointer
     bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem] w-1/2`}
         {...register("category", {
-          required: "상품명 종류를 선택해주세요",
+          required: "카테고리를 선택해주세요",
           onChange: (e) => setTag(e.target.value),
         })}
       >
-        <option value="null">카테고리</option>
+        <option value="">카테고리</option>
         <option value="fruit">과일</option>
         <option value="vegetable">채소</option>
         <option value="kimchi">김치</option>
-        <option value="livestock">축산물</option>
+        <option value="liveStock">축산물</option>
         <option value="seafood">수산물</option>
-        <option value="ReadyToEat">간편식</option>
-        <option value="Rice">쌀</option>
-        <option value="RiceCake">떡</option>
+        <option value="simple">간편식</option>
+        <option value="rice">쌀</option>
+        <option value="riceCake">떡</option>
       </select>
-
+      {errors.category && (
+        <p className="text-red1 text-xs mt-1 ps-1">{errors.category.message}</p>
+      )}
       {tag === "fruit" && (
         <>
           <label className="font-bold block mt-[25px] mb-2">
@@ -81,6 +91,9 @@ export default function ProductNewPage() {
             type="month"
             id="seasonStart"
             name="seasonStart"
+            {...register("bestMonth", {
+              required: "제철 기간을 지정해주세요",
+            })}
             required
           >
             <option value="1">1월</option>
@@ -103,6 +116,9 @@ export default function ProductNewPage() {
             type="month"
             id="seasonEnd"
             name="seasonEnd"
+            {...register("bestMonth", {
+              required: "제철 기간을 지정해주세요",
+            })}
             required
           >
             <option value="1">1월</option>
@@ -124,7 +140,7 @@ export default function ProductNewPage() {
         name="productInfo"
         className="border-2 border-white w-full mt-[25px] mb-[15px] h-[200px] p-3 bg-gray2/20 outline-none focus:border-btn-primary rounded-md"
         placeholder="상품 소개문을 입력해주세요."
-        {...register("productContent", {
+        {...register("content", {
           required: "상품 소개문을 입력해주세요",
         })}
       ></textarea>
@@ -191,10 +207,12 @@ export default function ProductNewPage() {
         <div className="relative w-full">
           <label className="font-bold block">할인률 %</label>
           <input
+            id="sale"
+            name="sale"
             type="text"
             className="bg-gray2/20 w-full h-[50px] pr-12  focus:text-right mb-[25px] px-4 mt-[10px] focus:outline-btn-primary rounded-md"
             placeholder="1 ~ 99 까지의 할인률을 입력하세요"
-            {...register("discount", {
+            {...register("sale", {
               required: "필수 입력 정보입니다",
             })}
           />
