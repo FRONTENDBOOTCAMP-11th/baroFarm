@@ -227,8 +227,10 @@ export default function CartPage() {
 
   // 선택된 아이템의 아이디를 배열에 담음
   const selectItem = () => {
-    // 선택된 아이템의 아이디가 담긴 배열을 구매 페이지로 전송
-    navigate("/payment", { state: { selectedItems } });
+    // 선택된 아이템과 최종 금액이 담긴 데이터를 구매 페이지로 전송
+    navigate("/payment", {
+      state: { selectedItems, totalFees, totalShippingFees },
+    });
   };
 
   return (

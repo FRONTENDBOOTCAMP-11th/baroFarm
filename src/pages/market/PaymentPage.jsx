@@ -102,7 +102,10 @@ export default function PaymentPage() {
   const location = useLocation();
   // 이전 페이지에서 넘어온 구매할 상품
   const selectedItems = location.state.selectedItems;
-  console.log(selectedItems);
+  // 이전 페이지에서 넘어온 최종 금액
+  const totalFees = location.state.totalFees;
+  const totalShippingFees = location.state.totalShippingFees;
+  console.log(location);
 
   useEffect(() => {
     const itemsToBuy = selectedItems?.map((item) => (
@@ -110,13 +113,6 @@ export default function PaymentPage() {
     ));
     setPaymentItems(itemsToBuy);
   }, []);
-
-  // 배송비 계산
-  const totalShippingFees =
-    DUMMY_CARTS_ITEMS.cost.shippingFees ===
-    DUMMY_CARTS_ITEMS.cost.discount.shippingFees
-      ? "무료"
-      : DUMMY_CARTS_ITEMS.cost.shippingFees;
 
   // 헤더 상태 설정
   useEffect(() => {
@@ -337,17 +333,19 @@ export default function PaymentPage() {
           <div className="px-6 py-5 bg-white border-2 border-bg-primary2/50 rounded-[10px] shadow-md mb-6">
             <div className="text-sm flex justify-between mb-3">
               <span className="text-gray4">총 상품 금액</span>
-              <span>{DUMMY_CARTS_ITEMS.cost.products.toLocaleString()}원</span>
+              <span>{totalFees.toLocaleString()}원</span>
             </div>
             <div className="text-sm flex justify-between">
               <span className="text-gray4">배송비</span>
-              <span>{totalShippingFees}</span>
+              <span>
+                {totalShippingFees === 0 ? "무료" : totalShippingFees}
+              </span>
             </div>
           </div>
         </div>
         <div className="flex justify-between mb-3 py-3 text-lg font-bold">
           <span>총 결제 금액</span>
-          <span>{DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원</span>
+          <span>{totalFees.toLocaleString()}원</span>
         </div>
       </section>
       <div
@@ -361,7 +359,7 @@ export default function PaymentPage() {
         )}
       >
         <Button isBig={true} onClick={openModal}>
-          {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 결제하기
+          {totalFees.toLocaleString()}원 결제하기
         </Button>
       </section>
     </>
