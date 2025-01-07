@@ -9,14 +9,13 @@ BoardPageDetail.propTypes = {
 export default function BoardPageDetail({ item }) {
   const containerRef = useRef(null);
   const [isOverflow, setIsOverflow] = useState(false);
-
+  const checkOverflow = () => {
+    if (containerRef.current) {
+      const { scrollHeight, clientHeight } = containerRef.current;
+      setIsOverflow(scrollHeight > clientHeight); // 높이 비교
+    }
+  };
   useEffect(() => {
-    const checkOverflow = () => {
-      if (containerRef.current) {
-        const { scrollHeight, clientHeight } = containerRef.current;
-        setIsOverflow(scrollHeight > clientHeight); // 높이 비교
-      }
-    };
     checkOverflow();
   }, []);
 
@@ -66,6 +65,7 @@ export default function BoardPageDetail({ item }) {
             <img
               className="relative mt-10 rounded-md"
               src={`https://11.fesp.shop${item.image}`}
+              onLoad={checkOverflow}
             />
           )}
           {isOverflow && (

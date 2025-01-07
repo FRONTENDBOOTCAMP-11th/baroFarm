@@ -193,7 +193,7 @@ export default function ProductNewPage() {
           <input
             type="text"
             className="bg-gray2/20 w-full h-[50px] pr-12  focus:text-right mb-[25px] px-4 mt-[10px] focus:outline-btn-primary rounded-md"
-            placeholder="5 ~ 99 까지의 할인률을 입력하세요"
+            placeholder="1 ~ 99 까지의 할인률을 입력하세요"
             {...register("discount", {
               required: "필수 입력 정보입니다",
             })}
