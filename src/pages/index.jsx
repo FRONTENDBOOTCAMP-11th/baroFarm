@@ -144,6 +144,14 @@ export default function MainPage() {
 
   console.log(data);
 
+  // 인기 상품 렌더링
+  const sortedBestData = data.toSorted((a, b) => b.buyQuantity - a.buyQuantity);
+  const bestProducts = sortedBestData.map((product, index) => {
+    if (index < 4) {
+      return <Product key={product._id} {...product} />;
+    }
+  });
+
   // 새상품 렌더링
   const filteredNewData = getMonthlyData(data);
   const newProducts = filteredNewData.map((product, index) => {
@@ -180,9 +188,7 @@ export default function MainPage() {
           </Link>
         </div>
         <div className="flex flex-wrap justify-between gap-3">
-          {productsData.map((product) => (
-            <Product key={product.id} {...product} />
-          ))}
+          {bestProducts}
         </div>
       </section>
       <section className="px-5 mb-4">
