@@ -35,8 +35,30 @@ export default function CartPage() {
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "장바구니",
     });
+  }, []);
 
-    // 스크롤에 따라 결제버튼 보이게 하기
+  // 장바구니 목록 조회
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["carts"],
+    queryFn: () =>
+      axios.get("https://11.fesp.shop/carts", {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+          "client-id": "final04",
+          // 임시로 하드 코딩한 액세스 토큰 사용
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+        params: {
+          delay: 500,
+        },
+      }),
+    select: (res) => res.data,
+    staleTime: 1000 * 10,
+  });
+
+  // 스크롤에 따라 결제버튼 보이게 하기
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -69,27 +91,7 @@ export default function CartPage() {
         observer.unobserve(targetElement);
       }
     };
-  }, []);
-
-  // 장바구니 목록 조회
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["carts"],
-    queryFn: () =>
-      axios.get("https://11.fesp.shop/carts", {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-          // 임시로 하드 코딩한 액세스 토큰 사용
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
-        params: {
-          delay: 500,
-        },
-      }),
-    select: (res) => res.data,
-    staleTime: 1000 * 10,
-  });
+  }, [data]);
 
   // 장바구니 상품 삭제
   const queryClient = useQueryClient();
@@ -202,14 +204,7 @@ export default function CartPage() {
       );
     } else {
       // 체크된 상품이 아니라면 구매할 목록에 추가
-      setSelectedItems((prevState) => [
-        ...prevState,
-        {
-          product_id: selectedItem.product_id,
-          quantity: selectedItem.quantity,
-          product: selectedItem.product,
-        },
-      ]);
+      setSelectedItems((prevState) => [...prevState, selectedItem]);
     }
   };
   console.log(selectedItems);
@@ -227,10 +222,14 @@ export default function CartPage() {
 
   // 선택된 아이템의 아이디를 배열에 담음
   const selectItem = () => {
-    // 선택된 아이템과 최종 금액이 담긴 데이터를 구매 페이지로 전송
-    navigate("/payment", {
-      state: { selectedItems, totalFees, totalShippingFees },
-    });
+    if (selectedItems.length > 0) {
+      // 선택된 아이템과 최종 금액이 담긴 데이터를 구매 페이지로 전송
+      navigate("/payment", {
+        state: { selectedItems, totalFees, totalShippingFees },
+      });
+    } else {
+      alert("구매할 물품을 선택하세요");
+    }
   };
 
   return (

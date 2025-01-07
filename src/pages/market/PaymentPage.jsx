@@ -5,7 +5,7 @@ import Modal from "@components/Modal";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
@@ -36,6 +36,7 @@ export default function PaymentPage() {
   // 이전 페이지에서 넘어온 최종 금액
   const totalFees = location.state.totalFees;
   const totalShippingFees = location.state.totalShippingFees;
+  console.log(location);
 
   // 구매할 상품 컴포넌트 동적 렌더링
   useEffect(() => {
@@ -52,6 +53,29 @@ export default function PaymentPage() {
       title: "주문/결제",
     });
   }, []);
+
+  const user = {
+    _id: 4,
+  };
+  // 로그인한 사용자 정보 조회
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["users", `${user._id}`],
+    queryFn: () =>
+      axios.get(`https://11.fesp.shop/users/${user._id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+          "client-id": "final04",
+          // 임시로 하드 코딩한 액세스 토큰 사용
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+        params: {
+          delay: 500,
+        },
+      }),
+    select: (res) => res.data.item,
+    staleTime: 1000 * 10,
+  });
 
   // 스크롤에 따라 결제버튼 보이게 하기
   useEffect(() => {
@@ -87,30 +111,72 @@ export default function PaymentPage() {
         observer.unobserve(targetElement);
       }
     };
-  }, []);
+  }, [data]);
 
-  const user = {
-    _id: 4,
-  };
+  // 장바구니 아이템 삭제 함수
+  const deleteItem = useMutation({
+    mutationFn: (itemsId) =>
+      axios.delete(
+        `https://11.fesp.shop/carts`,
 
-  // 로그인한 사용자 정보 조회
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["users", `${user._id}`],
-    queryFn: () =>
-      axios.get(`https://11.fesp.shop/users/${user._id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-          // 임시로 하드 코딩한 액세스 토큰 사용
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+            // 임시로 하드 코딩한 액세스 토큰 사용
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+          // delete method에서 data는 config 객체 안에 담아서 보내야 함.
+          data: {
+            carts: itemsId,
+          },
+        }
+      ),
+    onError: (err) => console.error(err),
+  });
+
+  // 물품 구매하기
+  const queryClient = useQueryClient();
+  const purchaseItem = useMutation({
+    mutationFn: ({ _id, quantity }) =>
+      axios.post(
+        "https://11.fesp.shop/orders",
+        {
+          products: [
+            {
+              _id: _id,
+              quantity: quantity,
+            },
+          ],
         },
-        params: {
-          delay: 500,
-        },
-      }),
-    select: (res) => res.data.item,
-    staleTime: 1000 * 10,
+        {
+          // request config
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+            // 임시로 하드 코딩한 액세스 토큰 사용
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        }
+      ),
+    onSuccess: () => {
+      // 구매 성공시
+      // openModal(); // 모달창으로 안내
+      alert("구매가 완료되었어요.");
+      // 장바구니에서 구매한 아이템 삭제
+      let purchasedItems = [];
+      // 구매 목록의 아이디를 배열에 담고
+      selectedItems.forEach((item) => purchasedItems.push(item._id));
+      // 배열을 삭제 요청에 전달
+      deleteItem.mutate(purchasedItems);
+      // 장바구니에 캐시된 데이터 삭제 하고
+      queryClient.invalidateQueries({ queryKey: ["carts"] });
+      // 장바구니로 이동
+      navigate("/cart");
+    },
+    onError: (err) => console.error(err),
   });
 
   if (!data) return null;
@@ -318,7 +384,17 @@ export default function PaymentPage() {
           showButton ? "bottom-0 opacity-100" : "-bottom-24 opacity-0"
         )}
       >
-        <Button isBig={true} onClick={openModal}>
+        <Button
+          isBig={true}
+          onClick={() => {
+            selectedItems.forEach((item) =>
+              purchaseItem.mutate({
+                _id: item.product_id,
+                quantity: item.quantity,
+              })
+            );
+          }}
+        >
           {totalFees.toLocaleString()}원 결제하기
         </Button>
       </section>
