@@ -1,10 +1,7 @@
 import moment from "moment";
 
 function getTime(day = 0, second = 0) {
-  return moment()
-    .add(day, "days")
-    .add(second, "seconds")
-    .format("YYYY.MM.DD HH:mm:ss");
+  return moment().add(day, "days").add(second, "seconds").format("YYYY.MM.DD HH:mm:ss");
 }
 
 export const initData = async (clientId, nextSeq) => {
@@ -14,8 +11,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "admin@market.com",
-        password:
-          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "무지",
         phone: "01011112222",
         address: "서울시 강남구 역삼동 123",
@@ -44,8 +40,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "s1@market.com",
-        password:
-          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "네오",
         phone: "01022223333",
         address: "서울시 강남구 삼성동 456",
@@ -74,8 +69,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "s2@market.com",
-        password:
-          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "어피치",
         phone: "01033334444",
         address: "서울시 강남구 도곡동 789",
@@ -105,8 +99,7 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "u1@market.com",
-        password:
-          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "제이지",
         phone: "01044445555",
         address: "서울시 강남구 논현동 222",
@@ -143,8 +136,8 @@ export const initData = async (clientId, nextSeq) => {
         show: true,
         active: true,
         name: "[1+1] 저탄소 GAP 샤인머스캣 포도 1kg+1kg",
-        quantity: 320,
-        buyQuantity: 310,
+        quantity: 1000,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-shine.png`,
@@ -177,8 +170,8 @@ export const initData = async (clientId, nextSeq) => {
         show: true,
         active: true,
         name: "새콤달콤 써니돌체 국산 적포도 1.4kg 내외 (2송이)",
-        quantity: 200,
-        buyQuantity: 198,
+        quantity: 1000,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-grape.png`,
@@ -211,8 +204,8 @@ export const initData = async (clientId, nextSeq) => {
         show: true,
         active: true,
         name: "아삭 달큰한 제주 구좌 흙 당근 (중/특상) 3kg",
-        quantity: 100,
-        buyQuantity: 99,
+        quantity: 1000,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-carrot.png`,
@@ -245,8 +238,8 @@ export const initData = async (clientId, nextSeq) => {
         show: true,
         active: true,
         name: "54년 전통 얼갈이 김치 1kg",
-        quantity: 100,
-        buyQuantity: 89,
+        quantity: 1000,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-kimchi.png`,
@@ -279,8 +272,8 @@ export const initData = async (clientId, nextSeq) => {
         show: true,
         active: true,
         name: "[대용량 특가] 자연치즈로 만든 진한 화덕 피자 2판(페페로니, 베이컨 체다치즈)",
-        quantity: 100,
-        buyQuantity: 98,
+        quantity: 1000,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-pizza.png`,
@@ -313,8 +306,8 @@ export const initData = async (clientId, nextSeq) => {
         show: true,
         active: true,
         name: "기름 한방울 없이 바삭한 닭다리 치킨 450g*2팩",
-        quantity: 100,
-        buyQuantity: 99,
+        quantity: 1000,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-chicken.png`,
@@ -346,8 +339,8 @@ export const initData = async (clientId, nextSeq) => {
         show: true,
         active: true,
         name: "달큼한 제철 햇밤이 콕콕 박힌 현미밤설기 900g*1팩 / 알밤설기",
-        quantity: 100,
-        buyQuantity: 98,
+        quantity: 1000,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-rice.png`,
@@ -368,7 +361,7 @@ export const initData = async (clientId, nextSeq) => {
           sort: 3,
           rating: 2.5,
           sale: 18,
-          saledPrice: 24000,
+          saledPrice: 19680,
           bestMonth: [1, 2],
         },
       },
@@ -380,8 +373,8 @@ export const initData = async (clientId, nextSeq) => {
         show: true,
         active: true,
         name: "철저한 관리를 받고 자란 한돈 찜용 갈비 600g (2인분)",
-        quantity: 100,
-        buyQuantity: 97,
+        quantity: 1000,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-pork.png`,
@@ -413,8 +406,8 @@ export const initData = async (clientId, nextSeq) => {
         show: true,
         active: true,
         name: "야들야들 국산 냉동 오리 대패 삼겹살 300g*1봉",
-        quantity: 100,
-        buyQuantity: 96,
+        quantity: 1000,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-duck.png`,
@@ -447,8 +440,8 @@ export const initData = async (clientId, nextSeq) => {
         show: true,
         active: true,
         name: "엄청난 크기의 킹타이거 새우 2마리",
-        quantity: 100,
-        buyQuantity: 95,
+        quantity: 1000,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-shrimp.png`,
@@ -481,8 +474,8 @@ export const initData = async (clientId, nextSeq) => {
         show: true,
         active: true,
         name: "전통 지주식으로 양식한 무안산 곱창김 50장",
-        quantity: 100,
-        buyQuantity: 94,
+        quantity: 1000,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-seaweed.png`,
@@ -526,7 +519,7 @@ export const initData = async (clientId, nextSeq) => {
         active: true,
         name: "24년 햅쌀 / 찰지고 윤기나는 백진주 쌀 10kg",
         quantity: 999,
-        buyQuantity: 800,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-rice.png`,
@@ -564,8 +557,8 @@ export const initData = async (clientId, nextSeq) => {
         show: true,
         active: true,
         name: "달콤한 과즙 가득 고령 설향 딸기 500g 1팩 (개당 16~20g)",
-        quantity: 99,
-        buyQuantity: 94,
+        quantity: 990,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-strawberry.png`,
@@ -601,8 +594,8 @@ export const initData = async (clientId, nextSeq) => {
         show: true,
         active: true,
         name: "[지정일 배송] 명품 프리미엄 혼합 과일 선물세트 1호",
-        quantity: 300,
-        buyQuantity: 298,
+        quantity: 3000,
+        buyQuantity: 0,
         mainImages: [
           {
             path: `/files/${clientId}/sample-fruitset.png`,
@@ -657,7 +650,7 @@ export const initData = async (clientId, nextSeq) => {
             originalname: "감자.png",
           },
         ],
-        content: `짱 맛있는 감자`,
+        content: `<p>짱 맛있는 감자</p>`,
         createdAt: getTime(-3, -60 * 60 * 12),
         updatedAt: getTime(-3, -60 * 60 * 12),
         extra: {
@@ -678,7 +671,7 @@ export const initData = async (clientId, nextSeq) => {
         price: 16000,
         shippingFees: 1500,
         name: "달콤 촉촉 호풍미(당근) 고구마 특상 3kg",
-        quantity: 5,
+        quantity: 1000,
         buyQuantity: 0,
         show: true,
         active: true,
@@ -689,7 +682,7 @@ export const initData = async (clientId, nextSeq) => {
             originalname: "고구마.png",
           },
         ],
-        content: `고구마 입니당.`,
+        content: `<p>고구마 입니당.</p>`,
         createdAt: getTime(-3, -60 * 60 * 12),
         updatedAt: getTime(-3, -60 * 60 * 12),
         extra: {
@@ -844,8 +837,7 @@ export const initData = async (clientId, nextSeq) => {
           custom_data: null,
           status: "paid",
           paid_at: 1702540626,
-          receipt_url:
-            "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
+          receipt_url: "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
           card_name: "국민KB카드",
           bank_name: null,
           card_quota: 0,
@@ -959,8 +951,7 @@ export const initData = async (clientId, nextSeq) => {
         order_id: 5,
         product_id: 2,
         rating: 5,
-        content:
-          "너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다!",
+        content: "너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다!",
         createdAt: getTime(-4, -60 * 60 * 12),
       },
       {
@@ -974,8 +965,7 @@ export const initData = async (clientId, nextSeq) => {
         order_id: 6,
         product_id: 2,
         rating: 1,
-        content:
-          "너무 너무 별로에요 사지마세요 ㅠㅠ 너무 너무 별로에요 사지마세요 ㅠㅠ 너무 너무 별로에요 사지마세요 ㅠㅠ",
+        content: "너무 너무 별로에요 사지마세요 ㅠㅠ 너무 너무 별로에요 사지마세요 ㅠㅠ 너무 너무 별로에요 사지마세요 ㅠㅠ",
         createdAt: getTime(-4, -60 * 60 * 12),
       },
       {
@@ -1211,8 +1201,7 @@ export const initData = async (clientId, nextSeq) => {
           image: "user-muzi.webp",
         },
         title: "배송지연 안내",
-        content:
-          "크리스마스 물류 증가로 인해 평소보다 2~3일 지연될 예정입니다.",
+        content: "크리스마스 물류 증가로 인해 평소보다 2~3일 지연될 예정입니다.",
         createdAt: getTime(-4, -60 * 60 * 2),
         updatedAt: getTime(-2, -60 * 60 * 13),
       },
@@ -1226,8 +1215,7 @@ export const initData = async (clientId, nextSeq) => {
           image: "user-muzi.webp",
         },
         title: "배송비 인상 안내",
-        content:
-          "택배사 배송비 인상으로 인해 기존 3,000원에서 3,500원으로 인상됩니다.",
+        content: "택배사 배송비 인상으로 인해 기존 3,000원에서 3,500원으로 인상됩니다.",
         createdAt: getTime(-6, -60 * 60 * 20),
         updatedAt: getTime(-4, -60 * 60 * 13),
       },
