@@ -144,9 +144,6 @@ export default function CartPage() {
 
   // 선택한 아이템, 데이터가 변경될 때 상품 금액 다시 계산
   useEffect(() => {
-    // 장바구니에 아이템이 없다면 코드 실행 중단
-    if (!data?.item) return;
-
     // selectedItems 배열을 사용해 총 상품 비용 계산
     // selectedItem은 위 배열 중 하나의 아이템을 의미
     const total = selectedItems.reduce((sum, selectedItem) => {
@@ -155,14 +152,8 @@ export default function CartPage() {
         (item) => item.product_id === selectedItem.product_id
       );
 
-      // 방금 추가된 상품이 있다면 합계를 계산
-      if (currentItem) {
-        return (
-          sum + currentItem.quantity * currentItem.product.extra.saledPrice
-        );
-      }
-      // 추가된 상품이 없다면 원래 합계를 반환
-      return sum;
+      // 원래 합계와 방금 추가된 상품의 금액을 합침
+      return sum + currentItem.quantity * currentItem.product.extra.saledPrice;
     }, 0);
 
     // 반환된 합계로 최종 금액을 업데이트

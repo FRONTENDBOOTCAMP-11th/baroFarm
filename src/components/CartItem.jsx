@@ -105,7 +105,7 @@ export default function CartItem({
           </div>
         </div>
         <button
-          className="self-start"
+          className="self-start ml-auto shrink-0"
           type="button"
           onClick={() => deleteItem.mutate(_id)}
         >
