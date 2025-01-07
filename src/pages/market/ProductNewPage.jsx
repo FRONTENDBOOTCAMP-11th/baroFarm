@@ -19,8 +19,21 @@ export default function ProductNewPage() {
     });
   }, []);
 
-  const check = (item) => {
-    console.log(item);
+  const check = (data) => {
+    console.log(data);
+
+    const item = {
+      name: data.name,
+      mainImages: data.image,
+      content: data.content,
+      price: parseInt(data.price),
+      quantity: parseInt(data.quantity),
+      extra: {
+        bestSeason: [data.seasonStart, data.seasonEnd],
+        category: data.category,
+      },
+    };
+    console.log("item", item);
   };
 
   // div 내에 입력한 input & select 태그의 value 변경을 위함
@@ -91,7 +104,7 @@ export default function ProductNewPage() {
             type="month"
             id="seasonStart"
             name="seasonStart"
-            {...register("bestMonth", {
+            {...register("seasonStart", {
               required: "제철 기간을 지정해주세요",
             })}
             required
@@ -116,7 +129,7 @@ export default function ProductNewPage() {
             type="month"
             id="seasonEnd"
             name="seasonEnd"
-            {...register("bestMonth", {
+            {...register("seasonEnd", {
               required: "제철 기간을 지정해주세요",
             })}
             required
