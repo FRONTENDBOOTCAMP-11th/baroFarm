@@ -6,8 +6,6 @@ import ProductBig from "@components/ProductBig";
 import Carousel from "@components/Carousel";
 
 // image
-import productImage1 from "/images/Sample1.svg";
-import productImage2 from "/images/Sample2.svg";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
@@ -142,16 +140,19 @@ export default function MainPage() {
           <h2 className="text-xl">
             지금 최고 <span className="font-bold">인기 상품! 🔥</span>
           </h2>
-          <Link to="/search/best" className="text-xs flex gap-1 items-start ">
+          <button
+            className="text-xs flex gap-1 items-start cursor-pointer"
+            onClick={() =>
+              navigate("/search/best", { state: { sortedBestData } })
+            }
+          >
             더보기
-            <button>
-              <img
-                src="/icons/icon_move.svg"
-                alt="더보기 버튼"
-                className="size-4"
-              />
-            </button>
-          </Link>
+            <img
+              src="/icons/icon_move.svg"
+              alt="더보기 버튼"
+              className="size-4"
+            />
+          </button>
         </div>
         <div className="flex flex-wrap justify-between gap-3">
           {bestProducts}
@@ -162,16 +163,19 @@ export default function MainPage() {
           <h2 className="text-xl">
             따끈따끈한 <span className="font-bold">신상품! ⏰</span>
           </h2>
-          <Link to="/search/new" className="text-xs flex gap-1 items-start ">
+          <button
+            className="text-xs flex gap-1 items-start cursor-pointer"
+            onClick={() =>
+              navigate("/search/new", { state: { filteredNewData } })
+            }
+          >
             더보기
-            <button>
-              <img
-                src="/icons/icon_move.svg"
-                alt="더보기 버튼"
-                className="size-4"
-              />
-            </button>
-          </Link>
+            <img
+              src="/icons/icon_move.svg"
+              alt="더보기 버튼"
+              className="size-4"
+            />
+          </button>
         </div>
         <div className="flex flex-wrap justify-between gap-3">
           {newProducts}
@@ -182,19 +186,19 @@ export default function MainPage() {
           <h2 className="text-xl">
             이 맛이야! <span className="font-bold">제철 음식 🍂</span>
           </h2>
-          <Link
-            to="/search/seasonal"
-            className="text-xs flex gap-1 items-start "
+          <button
+            className="text-xs flex gap-1 items-start cursor-pointer"
+            onClick={() =>
+              navigate("/search/seasonal", { state: { filteredOnMonthData } })
+            }
           >
             더보기
-            <button>
-              <img
-                src="/icons/icon_move.svg"
-                alt="더보기 버튼"
-                className="size-4"
-              />
-            </button>
-          </Link>
+            <img
+              src="/icons/icon_move.svg"
+              alt="더보기 버튼"
+              className="size-4"
+            />
+          </button>
         </div>
         <div className="flex overflow-x-auto gap-3">{onMonthProducts}</div>
       </section>
