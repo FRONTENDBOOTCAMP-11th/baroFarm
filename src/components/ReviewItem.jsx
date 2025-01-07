@@ -1,3 +1,17 @@
+import PropTypes from "prop-types";
+
+ReviewItem.propTypes = {
+  reply: PropTypes.shape({
+    createdAt: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    }).isRequired,
+    rating: PropTypes.number.isRequired,
+    content: PropTypes.string.isRequired,
+  }).isRequired,
+  productName: PropTypes.string.isRequired,
+};
+
 export default function ReviewItem({ reply, productName }) {
   const dateOnly = reply.createdAt.split(" ")[0];
 
