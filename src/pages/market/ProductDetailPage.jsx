@@ -5,22 +5,23 @@ import {
   Link,
   useParams,
 } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 import PurchaseModal from "@components/PurchaseModal";
 import Modal from "@components/Modal";
+import ReviewBox from "@components/ReviewBox";
 
 import forwardIcon from "/icons/icon_forward.svg";
 import cartIcon from "/icons/icon_cart_modal.svg";
+import HeaderIcon from "@components/HeaderIcon";
 
 const likeIcon = {
   default: "/icons/icon_likeHeart_no.svg",
   active: "/icons/icon_likeHeart_yes.svg",
 };
 
-import HeaderIcon from "@components/HeaderIcon";
-import ReviewItem from "@components/ReviewBox";
+const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 
 export default function ProductDetailPage() {
   const { _id } = useParams();
@@ -83,10 +84,37 @@ export default function ProductDetailPage() {
     },
   });
 
+  const cartItem = useMutation({
+    mutationFn: async () => {
+      const response = await axios.post(
+        `https://11.fesp.shop/carts`,
+        {
+          product_id: _id,
+          quantity: count,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        }
+      );
+      return response.data.item;
+    },
+    onSuccess: () => {
+      openModal();
+    },
+    onError: (error) => {
+      console.error("Error adding to cart", error);
+    },
+  });
+
   if (isLoading) return <div>Loading...</div>;
   if (isError || !product) return <div>Error loading product</div>;
 
-  const formattedPrice = Intl.NumberFormat().format(product.price);
+  const formattedPrice = product.extra.saledPrice.toLocaleString();
 
   return (
     <>
@@ -108,38 +136,49 @@ export default function ProductDetailPage() {
         <p>{product.name}</p>
 
         <span className="font-semibold text-xs pr-2">
-          ⭐️ {product.extra.rating}
+          ⭐️ {product.rating ? product.rating.toFixed(1) : 0}
         </span>
         <span className="text-xs">{product.replies.length}개 후기</span>
 
         <div className="pt-1">
-          <span className="text-red1 font-semibold text-base pr-1">
-            {product.sale}
+          <span className="text-gray4 font-semibold pr-1">
+            {product.extra.sale}%
           </span>
-          <span className="font-extrabold text-lg">{formattedPrice}원</span>
+          <span className="font-semibold text-gray3 line-through">
+            {product.price.toLocaleString()}원
+          </span>
+          <p className="font-extrabold text-xl text-btn-primary">
+            {formattedPrice}원
+          </p>
         </div>
       </section>
 
       <section className="p-5 border-b-8 border-b-gray1">
         <div className="flex items-center justify-between">
           <span className="font-bold">후기 {product.replies.length}개</span>
-          <Link
-            to={`/product/${product._id}/reviews`}
-            className="font-medium text-sm text-gray5 flex items-center"
-          >
-            전체보기
-            <img src={forwardIcon} className="w-3" />
-          </Link>
+          {product.replies.length > 0 ? (
+            <Link
+              to={`/product/${product._id}/reviews`}
+              className="font-medium text-sm text-gray5 flex items-center"
+            >
+              전체보기
+              <img src={forwardIcon} className="w-3" />
+            </Link>
+          ) : undefined}
         </div>
         <div className="flex overflow-x-auto gap-3 scrollbar-hide">
-          <ReviewItem option={product.name} content={product.content} />
-          <ReviewItem option={product.name} content={product.content} />
-          <ReviewItem option={product.name} content={product.content} />
+          {product.replies.map((reply) => (
+            <ReviewBox
+              key={reply._id}
+              option={product.name}
+              content={reply.content}
+            />
+          ))}
         </div>
       </section>
 
       <section className="p-5 border-b-8 border-b-gray1">
-        <div dangerouslySetInnerHTML={{ __html: product.productContent }} />
+        <div dangerouslySetInnerHTML={{ __html: product.content }} />
       </section>
       <footer className="h-[100px] p-5 border-t border-gray1 flex items-center justify-between fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto bg-white">
         <button onClick={handleLike} className="pl-2">
@@ -178,20 +217,28 @@ export default function ProductDetailPage() {
               +
             </button>
             <span className="ml-auto text-base font-semibold">
-              {Intl.NumberFormat().format(product.price * count)}원
+              {(product.extra.saledPrice * count).toLocaleString()}원
+            </span>
+            <span className="text-[12px] text-red1 mt-[3px]">
+              (-
+              {(
+                (product.price - product.extra.saledPrice) *
+                count
+              ).toLocaleString()}
+              원 할인)
             </span>
           </div>
         </div>
         <div className="bg-gray1 border-y border-gray3 border-t py-3 flex justify-center">
-          <p className="">
-            상품 금액 {Intl.NumberFormat().format(product.price * count)} 원 +
-            배송비 {product.shoppingFees} 원
+          <p>
+            상품 금액 {(product.extra.saledPrice * count).toLocaleString()} 원 +
+            배송비 {product.shippingFees.toLocaleString()} 원
           </p>
         </div>
         <div className="flex justify-between gap-3">
           <button
             className="flex-1 text-lg text-btn-primary p-3 rounded-[10px] border border-btn-primary"
-            onClick={openModal}
+            onClick={() => cartItem.mutate()}
           >
             장바구니
           </button>
