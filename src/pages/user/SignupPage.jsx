@@ -35,5 +35,5 @@ export default function SignupPage() {
     });
   }, []);
 
-  return <UserForm buttonText="가입하기" onSubmit={handleSignup} />;
+  return <UserForm buttonText="가입하기" onSubmitUser={handleSignup} />;
 }
