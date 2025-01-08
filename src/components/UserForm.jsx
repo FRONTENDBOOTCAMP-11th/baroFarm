@@ -12,10 +12,10 @@ UserForm.propTypes = {
     address: PropTypes.string,
   }),
   buttonText: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  onSubmitUser: PropTypes.func.isRequired,
 };
 
-export default function UserForm({ userInfo, buttonText, onSubmit }) {
+export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
   const {
     register,
     handleSubmit,
@@ -45,9 +45,9 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
       },
       // onBlur: input 필드에서 포커스가 빠져나갈때(이메일 중복 체크)
       onBlur: async (e) => {
-        console.log("onBlur 실행됨");
+        // console.log("onBlur 실행됨");
         const email = e.target.value;
-        console.log("입력된 이메일:", email);
+        // console.log("입력된 이메일:", email);
 
         // 이메일 형식이 올바른 경우에만 중복 체크(email 값이 존재 + 정규식 검사를 수행, 두 조건을 모두 확인)
         if (email && /\S+@\S+\.\S+/.test(email)) {
@@ -64,7 +64,7 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
 
             // ok 1이면 사용 가능(사용 가능한 이메일)
             if (data.ok === 1) {
-              console.log("서버 응답:", data);
+              // console.log("서버 응답:", data);
               // 이전에 설정된 email 필드의 모든 에러 상태를 제거함 =>  setError로 설정된 에러를 초기화하여, 유효한 이메일 입력 시 오류 메시지가 자동으로 사라짐
               clearErrors("email");
             }
@@ -114,9 +114,9 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
     name: {
       required: "닉네임은 필수입니다.",
       onBlur: async (e) => {
-        console.log("onBlur 실행됨");
+        // console.log("onBlur 실행됨");
         const name = e.target.value;
-        console.log("입력된 닉네임:", name);
+        // console.log("입력된 닉네임:", name);
 
         if (name) {
           try {
@@ -132,7 +132,7 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
 
             // ok 1이면 사용 가능(사용 가능한 닉네임)
             if (data.ok === 1) {
-              console.log("서버 응답:", data);
+              // console.log("서버 응답:", data);
               clearErrors("name");
             }
           } catch (error) {
@@ -187,7 +187,7 @@ export default function UserForm({ userInfo, buttonText, onSubmit }) {
   const handleFormSubmit = (formData) => {
     // ...submitData는 confirmPassword를 제외한 나머지 모든 속성
     const { confirmPassword, ...submitData } = formData;
-    onSubmit(submitData);
+    onSubmitUser(submitData);
   };
 
   return (
