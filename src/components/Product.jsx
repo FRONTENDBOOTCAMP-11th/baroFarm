@@ -40,6 +40,7 @@ export default function Product(product) {
   };
 
   const [isLiked, setIsLiked] = useState(product.bookmarks || false);
+  // mybookmarkid 사용
 
   const { mutate: addLike } = useMutation({
     mutationFn: async () => {
@@ -62,6 +63,7 @@ export default function Product(product) {
 
     onSuccess: () => {
       setIsLiked(true);
+      // 캐시된거 제거하기
     },
     onError: () => {
       console.error("찜 추가 실패: ", error);
