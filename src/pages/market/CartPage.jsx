@@ -21,7 +21,7 @@ export default function CartPage() {
   const [discount, setDiscount] = useState(0);
   const [totalPayFees, setTotalPayFees] = useState(0);
   // 체크된 상품의 아이디를 담은 배열 상태 관리
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [checkedItemsIds, setCheckedItemsIds] = useState([]);
 
   // targetRef가 보이면 결제버튼을 보이게 함
   const targetRef = useRef(null);
@@ -145,28 +145,65 @@ export default function CartPage() {
     onError: (err) => console.error(err),
   });
 
-  // 선택한 아이템, 데이터가 변경될 때 상품 금액 다시 계산
+  // 장바구니 아이템 체크하기
+  const toggleCartItemCheck = (targetId) => {
+    // 체크한 상품을 장바구니 데이터에서 찾음
+    const cartItem = data.item.find((item) => item._id === targetId);
+
+    // 체크한 상품의 product_id를 checkedCartItems 상태에 추가/제거
+    setCheckedItemsIds((prevCheckedIds) => {
+      const isAlreadyChecked = prevCheckedIds.includes(cartItem.product_id);
+
+      if (isAlreadyChecked) {
+        return prevCheckedIds.filter((id) => id !== cartItem.product_id);
+      }
+      return [...prevCheckedIds, cartItem.product_id];
+    });
+  };
+
+  // 선택한 아이템, 데이터가 변경될 때 상품 금액, 할인 금액 다시 계산
   useEffect(() => {
-    // selectedItems 배열을 사용해 총 상품 비용 계산
-    // selectedItem은 위 배열 중 하나의 아이템을 의미
-    const total = selectedItems.reduce((sum, selectedItem) => {
-      // 장바구니에 있는 상품 중 방금 selectedItems 배열에 추가된 상품이 무엇인지 찾기
-      const currentItem = data.item.find(
-        (item) => item.product_id === selectedItem.product_id
-      );
+    // 체크한 상품이 없다면 총금액, 할인금액을 0으로 설정하고 빠져나감
+    if (checkedItemsIds.length === 0) {
+      setTotalFees(0);
+      setDiscount(0);
+      return;
+    }
 
-      // 원래 합계와 방금 추가된 상품의 금액을 합침
-      return sum + currentItem.quantity * currentItem.product.price;
-    }, 0);
+    const { subtotal, totalDiscount } = checkedItemsIds.reduce(
+      (acc, checkedId) => {
+        // 장바구니에서 아이템 찾기
+        const currentCartItem = data.item.find(
+          (item) => item.product_id === checkedId
+        );
 
-    // 반환된 합계로 최종 상품 금액을 업데이트
-    setTotalFees(total);
-  }, [selectedItems, data?.item]);
+        // 해당 아이템의 총 합산 금액 구하기
+        const itemTotal =
+          currentCartItem.quantity * currentCartItem.product.price;
+
+        // 해당 아이템의 할인 금액 구하기
+        const itemDiscount =
+          currentCartItem.quantity *
+          (currentCartItem.product.price -
+            currentCartItem.product.extra.saledPrice);
+
+        return {
+          subtotal: acc.subtotal + itemTotal, // 상품 금액 합계
+          totalDiscount: acc.totalDiscount + itemDiscount, // 할인 금액 합계
+        };
+      },
+      // 초기값 설정
+      { subtotal: 0, totalDiscount: 0 }
+    );
+
+    setTotalFees(subtotal);
+    setDiscount(totalDiscount);
+  }, [checkedItemsIds, data?.item]);
 
   // 총 결제금액 업데이트
   useEffect(() => {
     setTotalPayFees(totalFees - discount);
-  }, [totalFees]);
+  }, [totalFees, discount]);
 
   if (isLoading) {
     return (
@@ -192,34 +229,6 @@ export default function CartPage() {
   const totalShippingFees =
     data.cost.shippingFees - data.cost.discount.shippingFees;
 
-  // 장바구니 아이템 체크하기
-  const checkItem = (targetId) => {
-    // 선택한 상품을 장바구니 데이터에서 찾음
-    const selectedItem = data.item.find((item) => item._id === targetId);
-    const discount =
-      selectedItem.product.price - selectedItem.product.extra.saledPrice;
-
-    // 해당 상품이 이미 체크된 상품인지 확인
-    const hasItem = selectedItems.some(
-      (item) => item.product_id === selectedItem.product_id
-    );
-
-    // 이미 체크된 상품이라면
-    if (hasItem) {
-      // 구매할 목록에서 삭제
-      setSelectedItems((prevState) =>
-        prevState.filter((item) => item.product_id !== selectedItem.product_id)
-      );
-      setDiscount((prevState) => prevState - discount);
-    } else {
-      // 체크된 상품이 아니라면 구매할 목록에 추가
-      setSelectedItems((prevState) => [...prevState, selectedItem]);
-      setDiscount((prevState) => prevState + discount);
-    }
-  };
-
-  console.log(selectedItems);
-
   const itemList = data.item.map((item) => (
     <CartItem
       key={item._id}
@@ -227,23 +236,33 @@ export default function CartPage() {
       register={register}
       deleteItem={deleteItem}
       updateItem={updateItem}
-      checkItem={checkItem}
+      toggleCartItemCheck={toggleCartItemCheck}
     />
   ));
 
-  // 선택된 아이템의 아이디를 배열에 담음
+  // 체크한 아이템의 데이터가 담긴 배열을 구매 페이지로 전송
   const selectItem = () => {
-    if (selectedItems.length > 0) {
-      // 선택된 아이템과 최종 금액이 담긴 데이터를 구매 페이지로 전송
-      navigate("/payment", {
-        // seletedItems : 구매할 아이템의 데이터가 딤긴 배열
-        // totalFees : 최종 상품 금액
-        // totalShippingFees : 최종 배송비
-        state: { selectedItems, totalFees: totalPayFees, totalShippingFees },
-      });
-    } else {
+    if (checkedItemsIds.length === 0) {
       alert("구매할 물품을 선택하세요");
+      return;
     }
+
+    // 결제 페이지로 체크한 상품의 데이터 넘기기
+    const selectedItems = checkedItemsIds.map((id) =>
+      // 각각의 id 마다 checkedItemsIds에 담긴 id와 같은 상품을 장바구니에서 찾아서 리턴
+      data.item.find((item) => item.product_id === id)
+    );
+
+    navigate("/payment", {
+      // seletedItems : 체크한 아이템의 아이디가 딤긴 배열
+      // totalFees : 최종 상품 금액
+      // totalShippingFees : 최종 배송비
+      state: {
+        selectedItems,
+        totalFees: totalPayFees,
+        totalShippingFees,
+      },
+    });
   };
 
   return (

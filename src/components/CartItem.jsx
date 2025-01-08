@@ -24,7 +24,7 @@ CartItem.propTypes = {
   }).isRequired,
   deleteItem: PropTypes.object.isRequired,
   updateItem: PropTypes.object.isRequired,
-  checkItem: PropTypes.func,
+  toggleCartItemCheck: PropTypes.func,
 };
 
 export default function CartItem({
@@ -34,7 +34,7 @@ export default function CartItem({
   register,
   deleteItem,
   updateItem,
-  checkItem,
+  toggleCartItemCheck,
 }) {
   // 판매자 이름 상태관리
   const [seller, setSeller] = useState("");
@@ -67,7 +67,7 @@ export default function CartItem({
         <Checkbox
           name={`${_id}`}
           register={register(`${_id}`)}
-          onClick={() => checkItem(_id)}
+          onClick={() => toggleCartItemCheck(_id)}
         />
         <img
           src={`https://11.fesp.shop${product.image.path}`}
@@ -87,7 +87,8 @@ export default function CartItem({
               className="size-6 border-r border-gray2"
               type="button"
               onClick={() => {
-                updateItem.mutate({ _id, quantity: quantity - 1 });
+                if (quantity > 1)
+                  updateItem.mutate({ _id, quantity: quantity - 1 });
               }}
             >
               -
