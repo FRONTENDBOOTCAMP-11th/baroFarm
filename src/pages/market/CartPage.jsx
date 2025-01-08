@@ -10,8 +10,6 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
-const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
-
 export default function CartPage() {
   const axios = useAxiosInstance();
   // 구매할 물품 선택을 위한 폼

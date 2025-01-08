@@ -11,11 +11,12 @@ import {
   useOutletContext,
 } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-
-const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
+import useUserStore from "@zustand/useUserStore";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 export default function PaymentPage() {
+  // axios instance
+  const axios = useAxiosInstance();
   // 구매할 상품 목록 상태 관리
   const [paymentItems, setPaymentItems] = useState([]);
   // 헤더 상태 설정 함수
@@ -27,7 +28,8 @@ export default function PaymentPage() {
   const [showButton, setShowButton] = useState(false);
   // 배송 메모 관리
   const [memo, setMemo] = useState({});
-
+  // 로그인한 유저 정보 가져오기
+  const { user } = useUserStore();
   // targetRef가 보이면 결제버튼을 보이게 함
   const targetRef = useRef(null);
   // 모달 창 선택
@@ -60,25 +62,10 @@ export default function PaymentPage() {
     });
   }, []);
 
-  const user = {
-    _id: 4,
-  };
   // 로그인한 사용자 정보 조회
   const { data, isLoading, isError } = useQuery({
     queryKey: ["users", `${user._id}`],
-    queryFn: () =>
-      axios.get(`https://11.fesp.shop/users/${user._id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-          // 임시로 하드 코딩한 액세스 토큰 사용
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
-        params: {
-          delay: 500,
-        },
-      }),
+    queryFn: () => axios.get(`/users/${user._id}`),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
   });
@@ -121,24 +108,14 @@ export default function PaymentPage() {
 
   // 장바구니 아이템 삭제 함수
   const deleteItem = useMutation({
-    mutationFn: (itemsId) =>
-      axios.delete(
-        `https://11.fesp.shop/carts`,
-
-        {
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-            "client-id": "final04",
-            // 임시로 하드 코딩한 액세스 토큰 사용
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
-          },
-          // delete method에서 data는 config 객체 안에 담아서 보내야 함.
-          data: {
-            carts: itemsId,
-          },
-        }
-      ),
+    mutationFn: (itemIds) =>
+      axios.delete(`/carts`, {
+        // delete method에서 data는 config 객체 안에 담아서 보내야 함.
+        data: {
+          carts: itemIds,
+        },
+      }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["carts"] }),
     onError: (err) => console.error(err),
   });
 
@@ -159,29 +136,16 @@ export default function PaymentPage() {
   const queryClient = useQueryClient();
   const purchaseItem = useMutation({
     mutationFn: ({ _id, quantity }) =>
-      axios.post(
-        "https://11.fesp.shop/orders",
-        {
-          products: [
-            {
-              _id: _id,
-              quantity: quantity,
-              memo: memo,
-            },
-          ],
-        },
-        {
-          // request config
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-            "client-id": "final04",
-            // 임시로 하드 코딩한 액세스 토큰 사용
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
+      axios.post("/orders", {
+        products: [
+          {
+            _id: _id,
+            quantity: quantity,
+            memo: memo,
           },
-        }
-      ),
-    onSuccess: (data) => {
+        ],
+      }),
+    onSuccess: () => {
       // 구매 성공시
       // 장바구니에서 구매한 아이템 삭제
       let purchasedItems = [];
@@ -189,8 +153,6 @@ export default function PaymentPage() {
       selectedItems.forEach((item) => purchasedItems.push(item._id));
       // 배열을 삭제 요청에 전달
       deleteItem.mutate(purchasedItems);
-      // 장바구니에 캐시된 데이터 삭제 하고
-      queryClient.invalidateQueries({ queryKey: ["carts"] });
       openModal(); // 모달창으로 안내
     },
     onError: (err) => console.error(err),
@@ -214,11 +176,11 @@ export default function PaymentPage() {
           <br />
           <strong className="font-semibold">결제</strong>가 완료되었어요
         </p>
-        <Link to="/cart">
+        <button onClick={() => navigate("/", { replace: true })}>
           <span className="font-light border-b border-b-black">
             더 쇼핑하러 가기
           </span>
-        </Link>
+        </button>
       </Modal>
       <section className="px-5 py-[14px]">
         <div>
