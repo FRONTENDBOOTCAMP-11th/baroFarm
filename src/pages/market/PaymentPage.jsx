@@ -4,15 +4,11 @@ import HeaderIcon from "@components/HeaderIcon";
 import Modal from "@components/Modal";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useOutletContext,
-} from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import PaymentModal from "@components/PaymentModal";
 
 export default function PaymentPage() {
   // axios instance
@@ -32,6 +28,8 @@ export default function PaymentPage() {
   const { user } = useUserStore();
   // targetRef가 보이면 결제버튼을 보이게 함
   const targetRef = useRef(null);
+  // 결제 모달 창 상태
+  const [isModalOpen, setIsModalOpen] = useState(false);
   // 모달 창 선택
   const modalRef = useRef();
   const openModal = () => {
@@ -379,16 +377,17 @@ export default function PaymentPage() {
         <Button
           isBig={true}
           onClick={() => {
-            selectedItems.forEach((item) =>
-              purchaseItem.mutate({
-                _id: item.product_id,
-                quantity: item.quantity,
-              })
-            );
+            setIsModalOpen(true);
           }}
         >
           {totalFees.toLocaleString()}원 결제하기
         </Button>
+        <PaymentModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          productData={location.state}
+          purchaseItem={purchaseItem}
+        />
       </section>
     </>
   );
