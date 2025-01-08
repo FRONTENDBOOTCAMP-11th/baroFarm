@@ -166,7 +166,8 @@ export default function ProductNewPage() {
     onSuccess: () => {
       alert("상품이 등록되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["posts", "community"] });
-      navigate("");
+      // 판매 내역 페이지로 이동하도록 이후 설정
+      navigate('/users/mypage');
     },
     onError: (error) => {
       setValue("image", null);
