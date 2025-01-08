@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 import PropTypes from "prop-types";
@@ -31,16 +31,15 @@ Product.propTypes = {
 };
 
 export default function Product(product) {
-  // console.log(product);
-
   const navigate = useNavigate();
 
   const goDetailPage = () => {
     navigate(`/product/${product._id}`);
   };
 
-  const [isLiked, setIsLiked] = useState(product.bookmarks || false);
-  // mybookmarkid 사용
+  const [isLiked, setIsLiked] = useState(product.myBookmarkId || false);
+
+  const queryClient = useQueryClient();
 
   const { mutate: addLike } = useMutation({
     mutationFn: async () => {
@@ -63,40 +62,17 @@ export default function Product(product) {
 
     onSuccess: () => {
       setIsLiked(true);
-      // 캐시된거 제거하기
+      queryClient.invalidateQueries(["products"], product.extra.category);
     },
-    onError: () => {
+    onError: (error) => {
       console.error("찜 추가 실패: ", error);
     },
-  });
-
-  const {
-    data: likeItem,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["like", product._id],
-    queryFn: async () => {
-      const response = await axios.get(
-        `https://11.fesp.shop/bookmarks/product/${product._id}`,
-        {
-          headers: {
-            "Content-type": "application/json",
-            accept: "application/json",
-            "client-id": "final04",
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
-          },
-        }
-      );
-      return response.data.item;
-    },
-    enabled: !!isLiked,
   });
 
   const { mutate: removeLike } = useMutation({
     mutationFn: async () => {
       const response = await axios.delete(
-        `https://11.fesp.shop/bookmarks/${likeItem?._id}`,
+        `https://11.fesp.shop/bookmarks/${product.myBookmarkId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -110,6 +86,7 @@ export default function Product(product) {
     },
     onSuccess: () => {
       setIsLiked(false);
+      queryClient.invalidateQueries(["products"], product.extra.category);
     },
     onError: () => {
       console.error("좋아요 삭제 실패: ", error);
@@ -117,7 +94,7 @@ export default function Product(product) {
   });
 
   const handleLike = () => {
-    if (isLiked && likeItem?._id) {
+    if (isLiked && product.myBookmarkId) {
       removeLike();
     } else {
       addLike();
