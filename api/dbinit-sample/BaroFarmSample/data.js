@@ -1223,7 +1223,7 @@ export const initData = async (clientId, nextSeq) => {
         _id: await nextSeq("post"),
         type: "community",
         views: 15,
-        image:'/files/final04/Sample_magoli.jpg',
+        image:'/files/final04/sample-duck.png',
         bookmarks: 0,
         user: {
           _id: 2,
@@ -1238,7 +1238,7 @@ export const initData = async (clientId, nextSeq) => {
         _id: await nextSeq("post"),
         type: "community",
         views: 25,
-        image:'/files/final04/Sample_NongDam.svg',
+        image:'/files/final04/sample_shine.png',
         bookmarks: 0,
         user: {
           _id: 2,
@@ -1253,7 +1253,7 @@ export const initData = async (clientId, nextSeq) => {
         _id: await nextSeq("post"),
         type: "community",
         views: 563,
-        image:'/files/final04/Sample_dog.svg',
+        image:'/files/final04/sample_shine.png',
         bookmarks: 0,
         user: {
           _id: 3,
@@ -1268,7 +1268,7 @@ export const initData = async (clientId, nextSeq) => {
         _id: await nextSeq("post"),
         type: "community",
         views: 62,
-        image:'/files/final04/Sample_DanPatPPang.jpg',
+        image:'/files/final04/sample_ricecake.png',
         bookmarks: 0,
         user: {
           _id: 4,
@@ -1283,7 +1283,7 @@ export const initData = async (clientId, nextSeq) => {
         _id: await nextSeq("post"),
         type: "community",
         views: 15,
-        image:'/files/final04/Sample_kimchiCake.png',
+        image:'/files/final04/sample_kimchi.png',
         bookmarks: 0,
         user: {
           _id: 1,
@@ -1298,7 +1298,7 @@ export const initData = async (clientId, nextSeq) => {
         _id: await nextSeq("post"),
         type: "community",
         views: 124,
-        image:'/files/final04/Sample_gookbabbad.jpg',
+        image:'/files/final04/sample_shine.png',
         bookmarks: 0,
         user: {
           _id: 1,
@@ -1313,7 +1313,7 @@ export const initData = async (clientId, nextSeq) => {
         _id: await nextSeq("post"),
         type: "community",
         views: 45,
-        image:'/files/final04/Sample_pizza.jpg',
+        image:'/files/final04/sample_pizza.png',
         bookmarks: 0,
         user: {
           _id: 3,
@@ -1328,7 +1328,7 @@ export const initData = async (clientId, nextSeq) => {
         _id: await nextSeq("post"),
         type: "community",
         views: 185,
-        image:'/files/final04/Sample_KalbyJjim.jpg',
+        image:'/files/final04/sample_pork.png',
         bookmarks: 0,
         user: {
           _id: 1,
@@ -1343,7 +1343,7 @@ export const initData = async (clientId, nextSeq) => {
         _id: await nextSeq("post"),
         type: "community",
         views: 15,
-        image:'/files/final04/Sample_apple.jpg',
+        image:'/files/final04/sample_fruitset.png',
         bookmarks: 0,
         user: {
           _id: 4,
