@@ -4,9 +4,12 @@ import {
   useOutletContext,
   Link,
   useParams,
+  useLocation,
 } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
+
+import { useLikeToggle } from "@hooks/useLikeToggle";
 
 import PurchaseModal from "@components/PurchaseModal";
 import Modal from "@components/Modal";
@@ -29,30 +32,6 @@ export default function ProductDetailPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
-  const purchaseModalRef = useRef();
-  const modalRef = useRef();
-
-  const openPurchaseModal = () => {
-    purchaseModalRef.current.open();
-  };
-
-  const openModal = () => {
-    modalRef.current.open();
-    purchaseModalRef.current.close();
-  };
-
-  const [isLiked, setIsLiked] = useState(false);
-  const [count, setCount] = useState(1);
-
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-  };
-
-  const handleCount = (sign) => {
-    if (sign === "plus") setCount((count) => count + 1);
-    else if (sign === "minus" && count > 1) setCount((count) => count - 1);
-  };
-
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
@@ -71,18 +50,43 @@ export default function ProductDetailPage() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["product", _id],
+    queryKey: ["product"],
     queryFn: async () => {
       const response = await axios.get(`https://11.fesp.shop/products/${_id}`, {
         headers: {
           "Content-Type": "application/json",
           accept: "application/json",
           "client-id": "final04",
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
       });
       return response.data.item;
     },
   });
+
+  const purchaseModalRef = useRef();
+  const modalRef = useRef();
+
+  const openPurchaseModal = () => {
+    purchaseModalRef.current.open();
+  };
+
+  const openModal = () => {
+    modalRef.current.open();
+    purchaseModalRef.current.close();
+  };
+
+  const location = useLocation();
+  const { product: preProduct } = location.state;
+
+  const { isLiked, handleLike } = useLikeToggle(preProduct);
+
+  const [count, setCount] = useState(1);
+
+  const handleCount = (sign) => {
+    if (sign === "plus") setCount((count) => count + 1);
+    else if (sign === "minus" && count > 1) setCount((count) => count - 1);
+  };
 
   const cartItem = useMutation({
     mutationFn: async () => {
