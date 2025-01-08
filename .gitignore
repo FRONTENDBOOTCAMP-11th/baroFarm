@@ -1,7 +1,6 @@
 *.env
 
 # api
-api
 bruno-sample
 *.bru
 
