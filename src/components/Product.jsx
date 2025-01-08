@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 import PropTypes from "prop-types";
@@ -41,7 +41,7 @@ export default function Product(product) {
 
   const [isLiked, setIsLiked] = useState(product.bookmarks || false);
 
-  const { mutate: addLike, data: likeItem } = useMutation({
+  const { mutate: addLike } = useMutation({
     mutationFn: async () => {
       const response = await axios.post(
         `https://11.fesp.shop/bookmarks/product`,
@@ -68,11 +68,33 @@ export default function Product(product) {
     },
   });
 
-  console.log(likeItem?._id);
+  const {
+    data: likeItem,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["like", product._id],
+    queryFn: async () => {
+      const response = await axios.get(
+        `https://11.fesp.shop/bookmarks/product/${product._id}`,
+        {
+          headers: {
+            "Content-type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
+        }
+      );
+      return response.data.item;
+    },
+    enabled: !!isLiked,
+  });
+
   const { mutate: removeLike } = useMutation({
     mutationFn: async () => {
       const response = await axios.delete(
-        `https://11.fesp.shop/bookmarks/${product._id}`,
+        `https://11.fesp.shop/bookmarks/${likeItem?._id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -93,7 +115,7 @@ export default function Product(product) {
   });
 
   const handleLike = () => {
-    if (isLiked) {
+    if (isLiked && likeItem?._id) {
       removeLike();
     } else {
       addLike();
