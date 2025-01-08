@@ -2,6 +2,7 @@ import Button from "@components/Button";
 import CartItem from "@components/CartItem";
 import Checkbox from "@components/Checkbox";
 import HeaderIcon from "@components/HeaderIcon";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import clsx from "clsx";
@@ -12,6 +13,7 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 
 export default function CartPage() {
+  const axios = useAxiosInstance();
   // 구매할 물품 선택을 위한 폼
   const { register, handleSubmit } = useForm();
   // 결제 버튼 보이기 상태
@@ -41,19 +43,7 @@ export default function CartPage() {
   // 장바구니 목록 조회
   const { data, isLoading, isError } = useQuery({
     queryKey: ["carts"],
-    queryFn: () =>
-      axios.get("https://11.fesp.shop/carts", {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-          // 임시로 하드 코딩한 액세스 토큰 사용
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
-        params: {
-          delay: 500,
-        },
-      }),
+    queryFn: () => axios.get("/carts"),
     select: (res) => res.data,
     staleTime: 1000 * 10,
   });
@@ -99,16 +89,7 @@ export default function CartPage() {
   const deleteItem = useMutation({
     mutationFn: (_id) => {
       const ok = confirm("상품을 삭제하시겠습니까?");
-      if (ok)
-        axios.delete(`https://11.fesp.shop/carts/${_id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-            "client-id": "final04",
-            // 임시로 하드 코딩한 액세스 토큰 사용
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
-          },
-        });
+      if (ok) axios.delete(`/carts/${_id}`);
     },
     onSuccess: () => {
       alert("상품이 삭제되었습니다.");
@@ -121,23 +102,10 @@ export default function CartPage() {
   // 장바구니 수량 변경
   const updateItem = useMutation({
     mutationFn: ({ _id, quantity }) =>
-      axios.patch(
-        `https://11.fesp.shop/carts/${_id}`,
-        {
-          // 보낼 데이터
-          quantity: quantity,
-        },
-        {
-          // request config
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-            "client-id": "final04",
-            // 임시로 하드 코딩한 액세스 토큰 사용
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
-          },
-        }
-      ),
+      axios.patch(`/carts/${_id}`, {
+        // 보낼 데이터
+        quantity: quantity,
+      }),
     onSuccess: () => {
       // 캐시된 데이터 삭제 후 리렌더링
       queryClient.invalidateQueries({ queryKey: ["carts"] });
