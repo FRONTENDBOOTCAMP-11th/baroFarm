@@ -45,21 +45,17 @@ export default function BoardNewPage() {
   // };
 
   const addItem = useMutation({
-    mutationFn: async (item) => {
+    mutationFn: (item) => {
       let imageUrl = null;
       if (item.image && item.image[0]) {
         const formData = new FormData();
         formData.append("attach", item.image[0]);
         try {
-          const uploadImg = await axios.post(
-            `https://11.fesp.shop/files`,
-            formData,
-            {
-              headers: {
-                "client-id": "final04",
-              },
-            }
-          );
+          const uploadImg = axios.post(`https://11.fesp.shop/files`, formData, {
+            headers: {
+              "client-id": "final04",
+            },
+          });
           imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
         } catch (error) {
           console.error(

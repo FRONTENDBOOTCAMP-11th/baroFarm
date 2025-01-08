@@ -1,5 +1,7 @@
 import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -9,6 +11,7 @@ export default function ProductNewPage() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
@@ -19,22 +22,18 @@ export default function ProductNewPage() {
     });
   }, []);
 
-  const check = (data) => {
-    console.log(data);
-
-    const item = {
-      name: data.name,
-      mainImages: data.image,
-      content: data.content,
-      price: parseInt(data.price),
-      quantity: parseInt(data.quantity),
-      extra: {
-        bestSeason: [parseInt(data.seasonStart), parseInt(data.seasonEnd)],
-        category: data.category,
-        sale: data.sale ? parseInt(data.sale) : null,
+  const check = async (data) => {
+    const codes = await axios.get("https://11.fesp.shop/codes", {
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        "client-id": "final04",
       },
-    };
-    console.log("item", item);
+    });
+    console.log("code", codes);
+    const categoryList = codes.data.item.nested.productCategory.codes;
+    const category = categoryList.filter((item) => item.code == data.category);
+    console.log("category", category[0].code, category[0].sort);
   };
 
   // div 내에 입력한 input & select 태그의 value 변경을 위함
@@ -45,15 +44,137 @@ export default function ProductNewPage() {
   // form 태그를 참조
   const formRef = useRef(null);
 
+  const queryClient = useQueryClient();
+
+  // access token 하드 코딩
+  const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
+
+  // 숫자만 남기기
   const handlePriceChange = (e) => {
-    // 숫자만 남기기
     setPrice(parseInt(e.target.value.replace(/[^0-9]/g, "")));
   };
 
   //price 값을 string값으로 변화
   const priceToString = price ? Number(price).toLocaleString() : "";
+
+  //업로드되는 파일은 이미지 파일로 제한
+  const checkImg = (file) => {
+    const validTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "image/svg",
+    ]; // 허용 MIME 타입
+    if (!validTypes.includes(file.type)) {
+      return true;
+    }
+    return false;
+  };
+
+  //상품 추가 함수
+  //이미지 업로드와 카테고리 조회를 먼저 실행한 후 해당 함수에서 반환된 값을 가지고 body객체를 생성
+  const addProduct = useMutation({
+    mutationFn: async (item) => {
+      let imageUrl = null;
+      let imageName = null;
+      let imageOriginalName = null;
+
+      // 이미지 파일 확인 절차
+      if (checkImg(item.image[0])) {
+        throw new Error("이미지 파일을 업로드해야 합니다");
+      }
+      // 이미지 첨부는 필수이므로 이미지 첨부가 되어있지 않다면 아예 생성되지 않음
+      if (item.image && item.image[0]) {
+        const formData = new FormData();
+        formData.append("attach", item.image[0]);
+        try {
+          const uploadImg = await axios.post(
+            `https://11.fesp.shop/files`,
+            formData,
+            {
+              headers: {
+                "client-id": "final04",
+              },
+            }
+          );
+          imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
+          imageName = uploadImg.data.item[0].name; // 서버에서 반환된 이미지 이름
+          imageOriginalName = uploadImg.data.item[0].originalname; // 서버에서 반환된 이미지 원본 이름
+        } catch (error) {
+          console.error(
+            "Image upload failed:",
+            error.response?.data || error.message
+          );
+          throw new Error("Image upload failed.");
+        }
+        const codes = await axios.get("https://11.fesp.shop/codes", {
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+          },
+        });
+        const categoryList = codes.data.item.nested.productCategory.codes;
+        const category = categoryList.filter(
+          (data) => data.code == item.category
+        );
+
+        const body = {
+          name: item.name,
+          content: `<p>${item.content}</p>`,
+          price: price,
+          quantity: parseInt(item.quantity),
+          extra: {
+            isNew: true,
+            isBest: false,
+            bestSeason: [parseInt(item.seasonStart), parseInt(item.seasonEnd)],
+            category: category[0].code,
+            sort: category[0].sort,
+            depth: category[0].depth,
+            sale: item.sale ? parseInt(item.sale) : null,
+            saledPrice:
+              price * (1 - (item.sale ? parseInt(item.sale) : 0) / 100),
+            // 새로운 상품이므로 평점은 0으로 초기화
+            rating: 0,
+          },
+          mainImages: {
+            path: imageUrl,
+            name: imageName,
+            originalname: imageOriginalName,
+          },
+        };
+
+        console.log(body);
+        return axios.post("https://11.fesp.shop/seller/products", body, {
+          headers: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+          },
+        });
+      }
+    },
+    onSuccess: () => {
+      alert("게시물이 등록되었습니다.");
+      queryClient.invalidateQueries({ queryKey: ["posts", "community"] });
+      navigate("");
+    },
+    onError: (error) => {
+      setValue("image", null);
+      console.error("에러 발생: ", error.message);
+      alert(`에러: ${error.message}`);
+    },
+  });
+
   return (
-    <form className="mx-5 py-5" ref={formRef} onSubmit={handleSubmit(check)}>
+    <form
+      className="mx-5 py-5"
+      ref={formRef}
+      onSubmit={handleSubmit(addProduct.mutate)}
+    >
       <input
         name="name"
         id="name"
@@ -61,7 +182,7 @@ export default function ProductNewPage() {
         className="bg-gray2/20 w-full h-[50px] px-4 focus:outline-btn-primary rounded-md"
         placeholder="상품명을 입력해주세요."
         {...register("name", {
-          required: "상품명을 입력해주세요",
+          required: "필수 입력 정보입니다",
         })}
       />
       {errors.name && (
@@ -76,7 +197,7 @@ export default function ProductNewPage() {
         className={`mt-[25px] text-center bg-gray2 rounded-lg py-1  pe-6 appearance-none focus:outline-none cursor-pointer
     bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem] w-1/2`}
         {...register("category", {
-          required: "카테고리를 선택해주세요",
+          required: "필수 입력 정보입니다",
           onChange: (e) => setTag(e.target.value),
         })}
       >
@@ -104,9 +225,7 @@ export default function ProductNewPage() {
             type="month"
             id="seasonStart"
             name="seasonStart"
-            {...register("seasonStart", {
-              required: "제철 기간을 지정해주세요",
-            })}
+            {...register("seasonStart")}
             required
           >
             <option value="1">1월</option>
@@ -129,9 +248,7 @@ export default function ProductNewPage() {
             type="month"
             id="seasonEnd"
             name="seasonEnd"
-            {...register("seasonEnd", {
-              required: "제철 기간을 지정해주세요",
-            })}
+            {...register("seasonEnd")}
             required
           >
             <option value="1">1월</option>
@@ -150,14 +267,17 @@ export default function ProductNewPage() {
         </>
       )}
       <textarea
-        name="productInfo"
-        className="border-2 border-white w-full mt-[25px] mb-[15px] h-[200px] p-3 bg-gray2/20 outline-none focus:border-btn-primary rounded-md"
+        name="content"
+        className="border-2 border-white w-full mt-[25px] h-[200px] p-3 bg-gray2/20 outline-none focus:border-btn-primary rounded-md"
         placeholder="상품 소개문을 입력해주세요."
         {...register("content", {
-          required: "상품 소개문을 입력해주세요",
+          required: "필수 입력 정보입니다",
         })}
       ></textarea>
-      <label className="font-bold">판매 희망 가격</label>
+      {errors.content && (
+        <p className="text-red1 text-xs ps-1 -mt-1">{errors.content.message}</p>
+      )}
+      <label className="font-bold block mt-[15px]">판매 희망 가격</label>
       <div className="relative w-full mt-[10px]">
         <input
           type="text"
@@ -170,21 +290,29 @@ export default function ProductNewPage() {
             onChange: handlePriceChange,
           })}
         />
+
         <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600">
           원
         </span>
       </div>
+      {errors.price && (
+        <p className="text-red1 text-xs mt-1 ps-1">{errors.price.message}</p>
+      )}
       <br />
       <label className="font-bold">판매 희망 개수</label>
       <input
-        type="text"
-        className="bg-gray2/20 w-full h-[50px] mb-[25px] px-4 mt-[10px] focus:outline-btn-primary rounded-md"
+        type="number"
+        name="quantity"
+        className="bg-gray2/20 w-full h-[50px] px-4 mt-[10px] focus:outline-btn-primary rounded-md"
         placeholder="판매 개수를 입력하세요"
         {...register("quantity", {
           required: "필수 입력 정보입니다",
         })}
       />
-      <div className="flex gap-1 items-center mb-[25px]">
+      {errors.quantity && (
+        <p className="text-red1 text-xs mt-1 ps-1">{errors.quantity.message}</p>
+      )}
+      <div className="flex gap-1 items-center mt-[25px]">
         <p className="font-bold">할인을 적용하시겠습니까?</p>
         <input
           type="radio"
@@ -217,24 +345,36 @@ export default function ProductNewPage() {
         </label>
       </div>
       {checkDiscount && (
-        <div className="relative w-full">
-          <label className="font-bold block">할인률 %</label>
-          <input
-            id="sale"
-            name="sale"
-            type="text"
-            className="bg-gray2/20 w-full h-[50px] pr-12  focus:text-right mb-[25px] px-4 mt-[10px] focus:outline-btn-primary rounded-md"
-            placeholder="1 ~ 99 까지의 할인률을 입력하세요"
-            {...register("sale", {
-              required: "필수 입력 정보입니다",
-            })}
-          />
-          <span className="absolute right-4 top-1/2 transform -translate-y-1/3 text-gray-600">
-            %
-          </span>
-        </div>
+        <>
+          <label className="font-bold block mt-[25px]">할인률 %</label>
+          <div className="relative w-full">
+            <input
+              id="sale"
+              name="sale"
+              type="text"
+              className="bg-gray2/20 w-full h-[50px] pr-12  focus:text-right px-4 mt-[10px] focus:outline-btn-primary rounded-md"
+              placeholder="1 ~ 99 까지의 할인율을 입력하세요"
+              {...register("sale", {
+                required: "필수 입력 정보입니다",
+                validate: (value) => {
+                  const sale = parseInt(value); // 현재 sale의 값
+                  return (
+                    (sale >= 1 && sale <= 99) ||
+                    "1~99 사이의 숫자여야만 합니다."
+                  );
+                },
+              })}
+            />
+            <span className="absolute right-4 top-1/2 transform -translate-y-1/4 text-gray-600">
+              %
+            </span>
+          </div>
+          {errors.sale && (
+            <p className="text-red1 text-xs mt-1 ps-1">{errors.sale.message}</p>
+          )}
+        </>
       )}
-      <label className="font-bold">이미지 첨부</label>
+      <label className="font-bold block mt-[25px]">이미지 첨부</label>
       <input
         type="file"
         id="attach"
@@ -242,7 +382,10 @@ export default function ProductNewPage() {
         placeholder="이미지를 선택하세요"
         className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 mt-[10px] focus:outline-btn-primary mb-[25px]"
         name="attach"
-        {...register("image")}
+        {...register("image", {
+          required: "이미지 파일을 선택해주세요.",
+        })}
+        required
       />
       <Button height="45px" fontSize={24} type="submit" isBig={true}>
         등록
