@@ -1346,9 +1346,9 @@ export const initData = async (clientId, nextSeq) => {
         image:'/files/final04/Sample_apple.jpg',
         bookmarks: 0,
         user: {
-          _id: 1,
-          name: "무지",
-          image: "/files/final04/user-muzi.webp",
+          _id: 4,
+          name: "제이지",
+          image: "/files/final04/user-jayg.webp",
         },
         content: "사과가 참 탐스럽게 생겼네요. 벌써부터 입 안에 침이 고여요.",
         createdAt: getTime(-4, -60 * 60 * 20),
