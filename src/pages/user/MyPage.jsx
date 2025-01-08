@@ -7,16 +7,14 @@ export default function MyPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   const [data, setData] = useState({
-    name: "김아무개",
+    name: "온도감",
     gender: "남",
     age: 42,
     email: "kimamuge@gmail.com",
     phone: "000-1111-2222",
     auth: "판매자",
     address: "대한민국 어딘가",
-    extra: {
-      userName: "온도감",
-    },
+    userName: "김아무개",
   });
 
   useEffect(() => {
@@ -47,16 +45,14 @@ export default function MyPage() {
     // navigate("/users/login");
 
     setData({
-      name: "김아무개",
+      name: "온도감",
       gender: "남",
       age: 42,
       email: "kimamuge@gmail.com",
       phone: "000-1111-2222",
       auth: "판매자",
       address: "대한민국 어딘가",
-      extra: {
-        userName: "온도감",
-      },
+      userName: "김아무개",
     });
   };
 

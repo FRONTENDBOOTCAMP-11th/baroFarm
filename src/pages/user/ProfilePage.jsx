@@ -1,6 +1,11 @@
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect } from "react";
-import { Link, useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useOutletContext,
+} from "react-router-dom";
 
 export default function ProfilePage() {
   const { setHeaderContents } = useOutletContext();
@@ -48,7 +53,7 @@ export default function ProfilePage() {
           }}
         />
         <div className="mt-[25px] mb-[30px] text-2xl font-bold">
-          {data.extra.userName}
+          {data.name}
         </div>
       </div>
       <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
@@ -60,7 +65,7 @@ export default function ProfilePage() {
           주소
         </section>
         <section className="text-gray5">
-          {data.name} <br />
+          {data.userName} <br />
           {data.gender} <br />
           {data.email} <br />
           {data.phone} <br />

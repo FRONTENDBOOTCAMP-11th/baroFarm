@@ -76,11 +76,11 @@ export default function Product(product) {
             {product.extra.sale}%
           </span>
           <span className="font-extrabold text-lg">
-            {Intl.NumberFormat().format(product.price)}원
+            {product.extra.saledPrice.toLocaleString()}원
           </span>
         </div>
         <span className="font-semibold text-xs pr-2">
-          ⭐️ {product.extra.rating}
+          ⭐️ {product.rating ? product.rating.toFixed(1) : 0}
         </span>
         <span className="text-gray4 font-regular text-xs ">
           ({product.replies})
