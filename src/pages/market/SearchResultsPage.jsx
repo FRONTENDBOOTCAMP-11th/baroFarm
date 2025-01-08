@@ -30,11 +30,14 @@ export default function SearchResultsPage() {
     queryFn: () => axios.get("/products", { params: { keyword: keyword } }),
     select: (res) => res.data.item,
     staleTime: 1000 * 60, // 1분
-    // !! 연산자: keyword의 값을 boolean으로 변환
-    // null, undefined, 빈 문자열 → false (쿼리 미실행)
-    // 실제 문자열 존재 → true (쿼리 실행)
-    // enabled: !!keyword,
   });
+
+  // /search/results(URL)로 직접 접근했을 때 키워드가 없으면 검색 페이지로 리다이렉트
+  useEffect(() => {
+    if (!keyword) {
+      navigate("/search");
+    }
+  }, []);
 
   if (isLoading) {
     return (
