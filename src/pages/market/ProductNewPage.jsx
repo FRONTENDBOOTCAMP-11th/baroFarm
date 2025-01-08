@@ -125,17 +125,23 @@ export default function ProductNewPage() {
           name: item.name,
           content: `<p>${item.content}</p>`,
           price: price,
+          shippingFees: price >= 35000 ? 2500 : 0,
           quantity: parseInt(item.quantity),
           extra: {
             isNew: true,
             isBest: false,
-            bestSeason: [parseInt(item.seasonStart), parseInt(item.seasonEnd)],
+            bestSeason:
+              item.seasonStart !== item.seasonEnd
+                ? [parseInt(item.seasonStart), parseInt(item.seasonEnd)]
+                : [parseInt(item.seasonStart)], // 두 제철 값이 같은 경우에는 값 하나만 입력되게 함
             category: category[0].code,
             sort: category[0].sort,
             depth: category[0].depth,
             sale: item.sale ? parseInt(item.sale) : null,
             saledPrice:
-              price * (1 - (item.sale ? parseInt(item.sale) : 0) / 100),
+              Math.round(
+                (price * (1 - (item.sale ? parseInt(item.sale) : 0) / 100)) / 10
+              ) * 10,
             // 새로운 상품이므로 평점은 0으로 초기화
             rating: 0,
           },
@@ -158,7 +164,7 @@ export default function ProductNewPage() {
       }
     },
     onSuccess: () => {
-      alert("게시물이 등록되었습니다.");
+      alert("상품이 등록되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["posts", "community"] });
       navigate("");
     },
