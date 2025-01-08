@@ -25,6 +25,8 @@ export default function PaymentPage() {
   const [isDefaultAddress, setIsDefaultAddress] = useState(true);
   // 결제 버튼 보이기 상태
   const [showButton, setShowButton] = useState(false);
+  // 배송 메모 관리
+  const [memo, setMemo] = useState({});
 
   // targetRef가 보이면 결제버튼을 보이게 함
   const targetRef = useRef(null);
@@ -41,7 +43,6 @@ export default function PaymentPage() {
   // 이전 페이지에서 넘어온 최종 금액
   const totalFees = location.state.totalFees;
   const totalShippingFees = location.state.totalShippingFees;
-  console.log(location);
 
   // 구매할 상품 컴포넌트 동적 렌더링
   useEffect(() => {
@@ -141,6 +142,19 @@ export default function PaymentPage() {
     onError: (err) => console.error(err),
   });
 
+  // 배송 메모 입력하기
+  const postMemo = (e) => {
+    setMemo((prevState) => {
+      const newState = { ...prevState };
+
+      if (e.target.name === "memo" && e.target.value !== "직접 입력하기") {
+        delete newState.detail;
+      }
+
+      return { ...newState, [e.target.name]: e.target.value };
+    });
+  };
+
   // 물품 구매하기
   const queryClient = useQueryClient();
   const purchaseItem = useMutation({
@@ -152,6 +166,7 @@ export default function PaymentPage() {
             {
               _id: _id,
               quantity: quantity,
+              memo: memo,
             },
           ],
         },
@@ -166,7 +181,7 @@ export default function PaymentPage() {
           },
         }
       ),
-    onSuccess: () => {
+    onSuccess: (data) => {
       // 구매 성공시
       // 장바구니에서 구매한 아이템 삭제
       let purchasedItems = [];
@@ -216,7 +231,6 @@ export default function PaymentPage() {
           >
             기본 배송지 정보 토글 버튼 ({isDefaultAddress ? "있음" : "없음"})
           </button> */}
-
           <div className="flex flex-col gap-5 px-5 py-6 bg-white border-2 border-bg-primary2/50 rounded-[10px] shadow-md mb-6">
             {isDefaultAddress ? (
               <>
@@ -233,6 +247,8 @@ export default function PaymentPage() {
                   <select
                     id="memo"
                     className="text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
+                    name="memo"
+                    onChange={postMemo}
                   >
                     <option value="null">배송메모를 선택하세요.</option>
                     <option value="문 앞에 놓아주세요">
@@ -244,8 +260,16 @@ export default function PaymentPage() {
                     <option value="배송 전 미리 연락해주세요">
                       배송 전 미리 연락해주세요
                     </option>
-                    <option>직접 입력하기</option>
+                    <option value={"직접 입력하기"}>직접 입력하기</option>
                   </select>
+                  {memo.memo === "직접 입력하기" && (
+                    <input
+                      className="border border-gray3 rounded-md w-full px-2 py-1 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
+                      placeholder="이 곳에 입력하세요."
+                      name="detail"
+                      onChange={postMemo}
+                    />
+                  )}
                 </div>
               </>
             ) : (
