@@ -45,13 +45,14 @@ export default function BoardNewPage() {
   // };
 
   const addItem = useMutation({
-    mutationFn: (item) => {
+    mutationFn: async (item) => {
       let imageUrl = null;
+      
       if (item.image && item.image[0]) {
         const formData = new FormData();
         formData.append("attach", item.image[0]);
         try {
-          const uploadImg = axios.post(`https://11.fesp.shop/files`, formData, {
+          const uploadImg = await axios.post(`https://11.fesp.shop/files`, formData, {
             headers: {
               "client-id": "final04",
             },
@@ -64,20 +65,23 @@ export default function BoardNewPage() {
           );
           throw new Error("Image upload failed.");
         }
+        const body = {
+          content: item.content,
+          type: "community",
+          image: imageUrl,
+        };
+        return axios.post(`https://11.fesp.shop/posts`, body, {
+          headers: {
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "client-id": "final04",
+          },
+        });
+      } else {
+        throw new Error("이미지를 업로드해야 합니다");
       }
-      const body = {
-        content: item.content,
-        type: "community",
-        image: imageUrl,
-      };
-      return axios.post(`https://11.fesp.shop/posts`, body, {
-        headers: {
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-        },
-      });
+      
     },
     onSuccess: () => {
       alert("게시물이 등록되었습니다.");

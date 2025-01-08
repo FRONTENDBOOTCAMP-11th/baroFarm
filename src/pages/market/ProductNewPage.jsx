@@ -22,20 +22,6 @@ export default function ProductNewPage() {
     });
   }, []);
 
-  const check = async (data) => {
-    const codes = await axios.get("https://11.fesp.shop/codes", {
-      headers: {
-        "Content-Type": "application/json",
-        accept: "application/json",
-        "client-id": "final04",
-      },
-    });
-    console.log("code", codes);
-    const categoryList = codes.data.item.nested.productCategory.codes;
-    const category = categoryList.filter((item) => item.code == data.category);
-    console.log("category", category[0].code, category[0].sort);
-  };
-
   // div 내에 입력한 input & select 태그의 value 변경을 위함
   const [price, setPrice] = useState();
   const [tag, setTag] = useState("");
@@ -151,8 +137,6 @@ export default function ProductNewPage() {
             originalname: imageOriginalName,
           },
         };
-
-        console.log(body);
         return axios.post("https://11.fesp.shop/seller/products", body, {
           headers: {
             Authorization: `Bearer ${ACCESS_TOKEN}`,
