@@ -44,6 +44,9 @@ export default function MainPage() {
   // Outlet 컴포넌트로 전달받은 props.setHeaderContents 접근
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  // 현재 날짜
+  const date = new Date();
+  const currentMonth = new Date().getMonth() + 1;
 
   // 헤더 아이콘 설정
   useEffect(() => {
@@ -118,7 +121,7 @@ export default function MainPage() {
 
   // // 제철 상품 렌더링
   const filteredOnMonthData = data.filter((item) =>
-    item.extra.bestMonth?.includes(1)
+    item.extra.bestMonth?.includes(currentMonth)
   );
   const onMonthProducts = filteredOnMonthData
     .filter((_, index) => index < 6)
