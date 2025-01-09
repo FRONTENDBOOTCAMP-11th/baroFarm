@@ -23,6 +23,11 @@ export default function SearchResultsPage() {
       leftChild: <HeaderIcon name="back" onClick={() => navigate("/search")} />,
       title: keyword,
     });
+
+    // /search/results(URL)로 직접 접근했을 때 키워드가 없으면 검색 페이지로 리다이렉트
+    if (!keyword) {
+      navigate("/search");
+    }
   }, []);
 
   const { data, isLoading, isError } = useQuery({
@@ -31,13 +36,6 @@ export default function SearchResultsPage() {
     select: (res) => res.data.item,
     staleTime: 1000 * 60, // 1분
   });
-
-  // /search/results(URL)로 직접 접근했을 때 키워드가 없으면 검색 페이지로 리다이렉트
-  useEffect(() => {
-    if (!keyword) {
-      navigate("/search");
-    }
-  }, []);
 
   if (isLoading) {
     return (
