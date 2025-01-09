@@ -10,9 +10,12 @@ import Products from "@components/Products";
 
 export default function SearchResultsPage() {
   // URL의 쿼리 파라미터를 가져오기
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   // URL 쿼리 파라미터에서 "keyword" 값을 추출 (예: ?keyword=귤 → "귤")
   const keyword = searchParams.get("keyword");
+  // 예: URL이 /search/results?keyword=귤&sort={"rating":-1} 일 때 sort = '{"rating":-1}' // URL의 sort 값 사용
+  // URL이 /search/results?keyword=귤 일 때 sort = '{"createdAt":-1}' // 기본값 사용
+  const sort = searchParams.get("sort") || '{"createdAt":-1}';
   const axios = useAxiosInstance();
 
   const { setHeaderContents } = useOutletContext();
@@ -25,14 +28,29 @@ export default function SearchResultsPage() {
     });
 
     // /search/results(URL)로 직접 접근했을 때 키워드가 없으면 검색 페이지로 리다이렉트
-    if (!keyword) {
-      navigate("/search");
-    }
+    // if (!keyword) {
+    //   navigate("/search");
+    // }
   }, []);
 
+  // 정렬 기준 변경 핸들러
+  const handleSortChange = (sortValue) => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("sort", sortValue); // 선택한 sort 값을 URL에 설정
+    setSearchParams(newSearchParams); // URL 업데이트
+  };
+
+  // const hasSaledPrice =
+
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["searchProducts", keyword],
-    queryFn: () => axios.get("/products", { params: { keyword: keyword } }),
+    queryKey: ["searchProducts", keyword, sort],
+    queryFn: () =>
+      axios.get("/products", {
+        params: {
+          keyword: keyword,
+          sort: sort,
+        },
+      }),
     select: (res) => res.data.item,
     staleTime: 1000 * 60, // 1분
   });
@@ -62,16 +80,19 @@ export default function SearchResultsPage() {
           <select
             className=" text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer
     bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
-            defaultValue="maxPrice"
+            defaultValue='{"createdAt":-1}'
             aria-label="정렬 기준 선택"
             name="sort"
+            value={sort} // 현재 URL의 sort 값을 반영
+            onChange={(e) => handleSortChange(e.target.value)} // 정렬 기준 변경 시 handleSortChange 호출
           >
-            <option value="maxPrice">높은 가격순</option>
-            <option value="minPrice">낮은 가격순</option>
-            <option value="rating">평점순</option>
-            <option value="replies">후기 개수순</option>
-            <option value="createdAt">최신순</option>
-            <option value="buyQuantity">판매 수량순</option>
+            <option value='{"createdAt":-1}'>최신순</option>
+            <option value='{"extra.saledPrice":-1}'>높은 가격순</option>
+            <option value='{"extra.saledPrice":-1}'>낮은 가격순</option>
+            {/* extra.rating: 임의로 설정한 평점, rating: 리뷰의 평점을 기반으로 서버에서 자동 계산된 값 */}
+            <option value='{"rating":-1}'>평점순</option>
+            <option value='{"replies":-1}'>후기 개수순</option>
+            <option value='{"buyQuantity":-1}'>판매 수량순</option>
           </select>
         </div>
       </div>
