@@ -7,6 +7,7 @@ Button.propTypes = {
   onClick: PropTypes.func,
   color: PropTypes.string,
   isBig: PropTypes.bool,
+  isWhite: PropTypes.bool,
 };
 
 export default function Button({
@@ -15,6 +16,7 @@ export default function Button({
   onClick: clickHandler,
   color = "#72BF78",
   isBig = false,
+  isWhite = false,
 }) {
   // 동적인 클래스는 style 객체 활용
   const style = {
@@ -22,12 +24,13 @@ export default function Button({
   };
 
   const baseClasses =
-    "flex items-center justify-center rounded-md shrink-0 text-white";
+    "flex items-center justify-center rounded-md shrink-0 self-start";
+  const styleClasses = isWhite ? "border border-gray2" : "text-white";
   const sizeClasses = isBig
     ? "w-full py-3 text-xl font-bold"
     : "py-1 px-3 text-sm font-semibold";
 
-  const classes = clsx(baseClasses, sizeClasses);
+  const classes = clsx(baseClasses, styleClasses, sizeClasses);
 
   return (
     <button

@@ -163,15 +163,28 @@ export default function PaymentPage() {
     return number.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
   };
 
-  const features = `
-  width=500,
-  height=400,
-  left=200,
-  top=100,
-  resizable=yes,
-  scrollbars=yes,
-  status=yes
-`;
+  const openAddressPopup = () => {
+    // 팝업 주소록 창 사이즈
+    const features = `
+      width=500,
+      height=650,
+      left=200,
+      top=100,
+      resizable=yes,
+      scrollbars=yes,
+      status=yes
+    `;
+
+    // 팝업창 오픈
+    const popup = window.open("/users/address", "popup", features);
+    // 팝업창이 열렸다고 가정하고 일정 시간 후 메시지 전송
+    const timer = setInterval(() => {
+      if (popup && !popup.closed) {
+        popup.postMessage({ message: "Hello, Popup!" }, "*");
+        clearInterval(timer); // 메시지를 한 번만 보내도록 타이머 정리
+      }
+    }, 500);
+  };
 
   return (
     <>
@@ -208,13 +221,7 @@ export default function PaymentPage() {
                 <div className="flex flex-col gap-[6px]">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-bold">{data?.name}</p>
-                    <Button
-                      onClick={() =>
-                        window.open("users/address", "_blank", features)
-                      }
-                    >
-                      변경
-                    </Button>
+                    <Button onClick={openAddressPopup}>변경</Button>
                   </div>
                   <p className="text-xs text-gray4 font-medium">
                     {formatPhoneNumber(data?.phone)}
