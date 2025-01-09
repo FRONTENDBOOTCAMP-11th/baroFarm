@@ -11,8 +11,6 @@ HeaderIcon.propTypes = {
 };
 
 export default function HeaderIcon({ name, onClick }) {
-  // 로그인한 유저 정보
-  const { user } = useUserStore();
   const axios = useAxiosInstance();
   // 장바구니가 차 있는지 아닌지 확인하는 상태관리 변수
   const [isFullCart, setIsFullCart] = useState(false);
@@ -25,7 +23,6 @@ export default function HeaderIcon({ name, onClick }) {
     queryKey: ["carts"],
     queryFn: () => axios.get("https://11.fesp.shop/carts"),
     select: (res) => res.data,
-    enabled: !!user, // `user`가 존재할 때만 쿼리를 실행
     staleTime: 1000 * 10,
     enabled: !!user,
   });

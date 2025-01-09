@@ -9,6 +9,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import PaymentModal from "@components/PaymentModal";
+import AddressModal from "@components/AddressModal";
 
 export default function PaymentPage() {
   // axios instance
@@ -24,12 +25,16 @@ export default function PaymentPage() {
   const [showButton, setShowButton] = useState(false);
   // 배송 메모 관리
   const [memo, setMemo] = useState({});
+  // 현재 선택한 배송지 아이디
+  const [addressId, setAddressId] = useState();
   // 로그인한 유저 정보 가져오기
   const { user } = useUserStore();
   // targetRef가 보이면 결제버튼을 보이게 함
   const targetRef = useRef(null);
   // 결제 모달 창 상태
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPayModalOpen, setIsPayModalOpen] = useState(false);
+  // 주소지 모달 창 상태
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   // 모달 창 선택
   const modalRef = useRef();
   const openModal = () => {
@@ -163,29 +168,6 @@ export default function PaymentPage() {
     return number.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
   };
 
-  const openAddressPopup = () => {
-    // 팝업 주소록 창 사이즈
-    const features = `
-      width=500,
-      height=650,
-      left=200,
-      top=100,
-      resizable=yes,
-      scrollbars=yes,
-      status=yes
-    `;
-
-    // 팝업창 오픈
-    const popup = window.open("/users/address", "popup", features);
-    // 팝업창이 열렸다고 가정하고 일정 시간 후 메시지 전송
-    const timer = setInterval(() => {
-      if (popup && !popup.closed) {
-        popup.postMessage({ message: "Hello, Popup!" }, "*");
-        clearInterval(timer); // 메시지를 한 번만 보내도록 타이머 정리
-      }
-    }, 500);
-  };
-
   return (
     <>
       <Modal ref={modalRef}>
@@ -203,6 +185,11 @@ export default function PaymentPage() {
           </span>
         </button>
       </Modal>
+      <AddressModal
+        isOpen={isAddressModalOpen}
+        onClose={() => setIsAddressModalOpen(false)}
+        userData={data}
+      />
       <section className="px-5 py-[14px]">
         <div>
           <h3 className="mb-3 text-sm font-bold">주문자 정보</h3>
@@ -221,7 +208,9 @@ export default function PaymentPage() {
                 <div className="flex flex-col gap-[6px]">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-bold">{data?.name}</p>
-                    <Button onClick={openAddressPopup}>변경</Button>
+                    <Button onClick={() => setIsAddressModalOpen(true)}>
+                      변경
+                    </Button>
                   </div>
                   <p className="text-xs text-gray4 font-medium">
                     {formatPhoneNumber(data?.phone)}
@@ -400,14 +389,14 @@ export default function PaymentPage() {
         <Button
           isBig={true}
           onClick={() => {
-            setIsModalOpen(true);
+            setIsPayModalOpen(true);
           }}
         >
           {totalFees.toLocaleString()}원 결제하기
         </Button>
         <PaymentModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          isOpen={isPayModalOpen}
+          onClose={() => setIsPayModalOpen(false)}
           productData={location.state}
           purchaseItem={purchaseItem}
         />
