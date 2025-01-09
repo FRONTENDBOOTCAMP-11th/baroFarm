@@ -14,10 +14,26 @@ export default function SearchPage() {
     });
   }, []);
 
+  // 검색어 제출 처리 함수
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // 폼에서 name="keyword"인 입력값을 가져와 앞뒤 공백 제거
+    const keyword = e.target.keyword.value.trim();
+
+    // 검색어가 없는 경우 경고 메시지 출력 후 종료
+    if (!keyword) {
+      alert("검색어를 입력해주세요.");
+      return; // navigate 방지
+    }
+
+    // 검색어가 있는 경우 검색 결과 페이지로 이동
+    navigate(`/search/results?keyword=${keyword}`);
+  };
+
   return (
     <div className="p-5">
       {/* 검색창 */}
-      <form>
+      <form onSubmit={handleSubmit}>
         <label htmlFor="search" className="text-sm font-semibold block mb-2">
           찾으시는 상품이 있으신가요?
         </label>
