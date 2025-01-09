@@ -8,6 +8,7 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 export default function MyPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  const url = "https://11.fesp.shop";
 
   // zustand store에서 유저 상태 가져옴
   const user = useUserStore((store) => store.user);
@@ -57,7 +58,7 @@ export default function MyPage() {
     return;
   }
 
-  console.log(data);
+  console.log(data.image);
 
   return (
     <div className="pt-[18px] px-5 mb-[70px]">
@@ -68,7 +69,7 @@ export default function MyPage() {
               <img
                 src={
                   data.image
-                    ? data.image
+                    ? url + data.image
                     : "/images/profile/ProfileImage_Sample.svg"
                 }
                 className="mr-5 w-[49px] h-[50px] rounded-full"

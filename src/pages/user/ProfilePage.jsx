@@ -14,6 +14,7 @@ export default function ProfilePage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   const axios = useAxiosInstance();
+  const url = "https://11.fesp.shop";
 
   const queryClient = useQueryClient();
 
@@ -96,13 +97,17 @@ export default function ProfilePage() {
       document.getElementById("profileImgChange").click();
   };
 
+  console.log(data.image);
+
   return (
     <div className="pt-[60px] mb-[70px]">
       <div className="w-fit mx-auto text-center relative">
         <img
           id="profileImg"
           src={
-            data.image ? data.image : "/images/profile/ProfileImage_Sample.svg"
+            data.image
+              ? url + data.image
+              : "/images/profile/ProfileImage_Sample.svg"
           }
           alt="Profile Image"
           className="w-[100px] h-[100px] rounded-full"
