@@ -49,17 +49,17 @@ export default function PaymentModal({
       payMethod: "EASY_PAY",
     });
 
+    if (response.code !== undefined) {
+      // 오류 발생
+      return alert(response.message);
+    }
+
     selectedItems.forEach((item) =>
       purchaseItem.mutate({
         _id: item.product_id,
         quantity: item.quantity,
       })
     );
-
-    if (response.code !== undefined) {
-      // 오류 발생
-      return alert(response.message);
-    }
   }
 
   // 토스페이로 결제하기
@@ -75,6 +75,12 @@ export default function PaymentModal({
       currency: "CURRENCY_KRW",
       payMethod: "EASY_PAY",
     });
+    console.log(response);
+
+    if (response.code !== undefined) {
+      // 오류 발생
+      return alert(response.message);
+    }
 
     selectedItems.forEach((item) =>
       purchaseItem.mutate({
@@ -82,11 +88,6 @@ export default function PaymentModal({
         quantity: item.quantity,
       })
     );
-
-    if (response.code !== undefined) {
-      // 오류 발생
-      return alert(response.message);
-    }
   }
 
   return createPortal(
