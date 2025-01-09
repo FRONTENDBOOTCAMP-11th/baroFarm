@@ -36,7 +36,7 @@ export default function BoardPageDetail({ item }) {
     return formatRelativeTime(createdDate);
   };
 
-  const newDate = createdTime(item.createdAt);
+  const newDate = () => createdTime(item.createdAt);
   console.log(item);
   return (
     <div className="relative">
@@ -61,20 +61,18 @@ export default function BoardPageDetail({ item }) {
             </span>
           </div>
           <div className="mx-[5px] mt-[30px]">{item.content}</div>
-          {item.image && (
-            <img
-              className="relative mt-10 rounded-md"
-              src={`https://11.fesp.shop${item.image}`}
-              onLoad={checkOverflow}
-            />
-          )}
+          <img
+            className="relative mt-10 rounded-md"
+            src={`https://11.fesp.shop${item.image}`}
+            onLoad={() => checkOverflow()}
+          />
           {isOverflow && (
             <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
           )}
         </div>
 
         <div className="text-[10px] text-gray4 text-left mb-5 mt-1">
-          {newDate}
+          {newDate()}
         </div>
       </Link>
       <div className="h-[7px] bg-gray1 -mx-5"></div>
