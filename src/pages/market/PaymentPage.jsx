@@ -163,6 +163,16 @@ export default function PaymentPage() {
     return number.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
   };
 
+  const features = `
+  width=500,
+  height=400,
+  left=200,
+  top=100,
+  resizable=yes,
+  scrollbars=yes,
+  status=yes
+`;
+
   return (
     <>
       <Modal ref={modalRef}>
@@ -198,7 +208,13 @@ export default function PaymentPage() {
                 <div className="flex flex-col gap-[6px]">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-bold">{data?.name}</p>
-                    <Button>변경</Button>
+                    <Button
+                      onClick={() =>
+                        window.open("users/address", "_blank", features)
+                      }
+                    >
+                      변경
+                    </Button>
                   </div>
                   <p className="text-xs text-gray4 font-medium">
                     {formatPhoneNumber(data?.phone)}

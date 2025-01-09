@@ -28,6 +28,7 @@ const SearchPage = lazy(() => import("@pages/market/SearchPage"));
 const SearchResultsPage = lazy(() => import("@pages/market/SearchResultsPage"));
 const MainPage = lazy(() => import("@pages/index"));
 const LoginPage = lazy(() => import("@pages/user/LoginPage"));
+const AddressPage = lazy(() => import("@pages/user/AddressPage"));
 const SignupPage = lazy(() => import("@pages/user/SignupPage"));
 const EditProfilePage = lazy(() => import("@pages/user/EditProfilePage"));
 const MyPostPage = lazy(() => import("@pages/user/MyPostPage"));
@@ -36,7 +37,6 @@ const SearchNewPage = lazy(() => import("@pages/market/SearchNewPage"));
 const SearchSeasonalPage = lazy(() =>
   import("@pages/market/SearchSeasonalPage")
 );
-
 const Layout = lazy(() => import("@components/layout"));
 
 const router = createBrowserRouter(
@@ -100,6 +100,10 @@ const router = createBrowserRouter(
           ],
         },
       ],
+    },
+    {
+      path: "/users/address",
+      element: <AddressPage />,
     },
   ],
   {
