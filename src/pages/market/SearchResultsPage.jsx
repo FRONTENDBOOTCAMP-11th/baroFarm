@@ -88,7 +88,7 @@ export default function SearchResultsPage() {
           >
             <option value='{"createdAt":-1}'>최신순</option>
             <option value='{"extra.saledPrice":-1}'>높은 가격순</option>
-            <option value='{"extra.saledPrice":-1}'>낮은 가격순</option>
+            <option value='{"extra.saledPrice":1}'>낮은 가격순</option>
             {/* extra.rating: 임의로 설정한 평점, rating: 리뷰의 평점을 기반으로 서버에서 자동 계산된 값 */}
             <option value='{"rating":-1}'>평점순</option>
             <option value='{"replies":-1}'>후기 개수순</option>
