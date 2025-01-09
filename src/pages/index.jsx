@@ -4,10 +4,8 @@ import HeaderIcon from "@components/HeaderIcon";
 import Product from "@components/Product";
 import ProductBig from "@components/ProductBig";
 import Carousel from "@components/Carousel";
-
-// image
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 const images = [
   "/images/menu/Fruit.svg",
@@ -41,6 +39,8 @@ const getMonthlyData = (data) => {
 };
 
 export default function MainPage() {
+  // axios instance
+  const axios = useAxiosInstance();
   // Outlet 컴포넌트로 전달받은 props.setHeaderContents 접근
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
@@ -76,14 +76,7 @@ export default function MainPage() {
   // 상품 목록 데이터 fetching
   const { data, isLoading, isError } = useQuery({
     queryKey: ["products"],
-    queryFn: () =>
-      axios.get("https://11.fesp.shop/products", {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-        },
-      }),
+    queryFn: () => axios.get("/products"),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
   });
@@ -93,6 +86,15 @@ export default function MainPage() {
       <div className="mt-0 mx-auto text-center">
         로딩중... <br />
         잠시만 기다려주세요
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="mt-0 mx-auto text-center">
+        에러가 발생했습니다. <br />
+        잠시 후 다시 시도해주세요.
       </div>
     );
   }
