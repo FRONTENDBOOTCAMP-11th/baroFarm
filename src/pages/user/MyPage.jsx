@@ -6,16 +6,10 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 export default function MyPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  const [data, setData] = useState({
-    name: "온도감",
-    gender: "남",
-    age: 42,
-    email: "kimamuge@gmail.com",
-    phone: "000-1111-2222",
-    auth: "판매자",
-    address: "대한민국 어딘가",
-    userName: "김아무개",
-  });
+  const [data, setData] = useState();
+
+  // zustand store에서 유저 상태 가져옴
+  const user = useUserStore((store) => store.user);
 
   useEffect(() => {
     setHeaderContents({
@@ -42,25 +36,14 @@ export default function MyPage() {
 
   //로그인 시 데이터 추가
   const loginClick = () => {
-    // navigate("/users/login");
-
-    setData({
-      name: "온도감",
-      gender: "남",
-      age: 42,
-      email: "kimamuge@gmail.com",
-      phone: "000-1111-2222",
-      auth: "판매자",
-      address: "대한민국 어딘가",
-      userName: "김아무개",
-    });
+    navigate("/users/login");
   };
 
   return (
     <div className="pt-[18px] px-5 mb-[70px]">
       <div className="h-auto pb-4">
         <div className="flex flex-row items-center">
-          {data && (
+          {user && (
             <>
               <img
                 src="/images/profile/Profile_sample_1.jpg"
@@ -68,8 +51,8 @@ export default function MyPage() {
                 loading="lazy"
               />
               <div>
-                <p className="text-gray5/50 text-[12px] leading-[14px]">{data.auth}</p>
-                <h2 className="text-[16px] leading-[18px] mt-[4px]">{data.extra.userName}님! 어서오세요</h2>
+                <p className="text-gray5/50 text-[12px] leading-[14px]">판매자</p>
+                <h2 className="text-[16px] leading-[18px] mt-[4px]">{user.name}님! 어서오세요</h2>
               </div>
               <button onClick={logoutClick} className="flex ml-auto h-fit items-center text-[14px]">
                 로그아웃
@@ -77,7 +60,7 @@ export default function MyPage() {
               </button>
             </>
           )}
-          {!data && (
+          {!user && (
             <>
               <img
                 src="/images/profile/ProfileImage_Sample.svg"
@@ -94,7 +77,7 @@ export default function MyPage() {
             </>
           )}
         </div>
-        {data && (
+        {user && (
           <div className="flex border-t-[1px] border-gray2 h-[58px] mt-[16px]">
             <Link
               to={"/users/purchase"}
@@ -127,7 +110,7 @@ export default function MyPage() {
         </Link>
       </div>
       {/* 해당 영역은 로그아웃 상태일 시 사용을 필요로 하지 않음 */}
-      {data && (
+      {user && (
         <>
           <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
           <div className="h-[109px] pt-[18px] ">
