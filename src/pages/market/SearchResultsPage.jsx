@@ -28,19 +28,20 @@ export default function SearchResultsPage() {
     });
 
     // /search/results(URL)로 직접 접근했을 때 키워드가 없으면 검색 페이지로 리다이렉트
-    // if (!keyword) {
-    //   navigate("/search");
-    // }
+    if (!keyword) {
+      navigate("/search");
+    }
   }, []);
 
   // 정렬 기준 변경 핸들러
   const handleSortChange = (sortValue) => {
+    // 현재 URL의 모든 쿼리 파라미터를 복사 (예: ?keyword=귤&sort={"createdAt":-1})
     const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set("sort", sortValue); // 선택한 sort 값을 URL에 설정
-    setSearchParams(newSearchParams); // URL 업데이트
+    // 복사된 쿼리 파라미터에서 sort 값을 선택된 새로운 정렬 기준으로 변경 (예: sort={"extra.saledPrice":-1})
+    newSearchParams.set("sort", sortValue);
+    // 변경된 쿼리 파라미터로 URL 업데이트 (예: /search/results?keyword=귤&sort={"extra.saledPrice":-1})
+    setSearchParams(newSearchParams);
   };
-
-  // const hasSaledPrice =
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["searchProducts", keyword, sort],
@@ -52,7 +53,7 @@ export default function SearchResultsPage() {
         },
       }),
     select: (res) => res.data.item,
-    staleTime: 1000 * 60, // 1분
+    staleTime: 1000 * 60 * 5, // 5분
   });
 
   if (isLoading) {
