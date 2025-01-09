@@ -57,7 +57,6 @@ export default function AddressModal({ isOpen, onClose, userData }) {
           ],
         },
       };
-      console.log(newAddress);
       const ok = confirm("주소를 등록하시겠습니까?");
       if (ok) axios.patch(`/users/${userData._id}`, newAddress);
     },
@@ -65,6 +64,28 @@ export default function AddressModal({ isOpen, onClose, userData }) {
       alert("신규 주소가 등록되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["users"] });
       setIsOpenForm(false);
+    },
+  });
+
+  // 배송지 삭제
+  const deleteAddress = useMutation({
+    mutationFn: (targetId) => {
+      const filteredAddressList = addressBook.filter(
+        (item) => item.id !== targetId
+      );
+      const newAddressList = {
+        extra: {
+          address: filteredAddressList,
+        },
+      };
+      console.log("addressBook", addressBook);
+      console.log("newAddressList", newAddressList);
+      const ok = confirm("이 주소를 삭제하시겠습니까?");
+      if (ok) axios.patch(`/users/${userData._id}`, newAddressList);
+    },
+    onSuccess: () => {
+      alert("삭제되었습니다.");
+      queryClient.invalidateQueries({ queryKey: ["users"] });
     },
   });
 
@@ -110,7 +131,11 @@ export default function AddressModal({ isOpen, onClose, userData }) {
           <Button isWhite={true} color="white">
             수정
           </Button>
-          <Button isWhite={true} color="white">
+          <Button
+            isWhite={true}
+            color="white"
+            onClick={() => deleteAddress.mutate(item.id)}
+          >
             삭제
           </Button>
         </div>
