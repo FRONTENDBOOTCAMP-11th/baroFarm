@@ -123,7 +123,7 @@ export default function ProductNewPage() {
             category: category[0].code,
             sort: category[0].sort,
             depth: category[0].depth,
-            sale: item.sale ? parseInt(item.sale) : null,
+            sale: item.sale ? parseInt(item.sale) : 0,
             saledPrice:
               Math.round(
                 (price * (1 - (item.sale ? parseInt(item.sale) : 0) / 100)) / 10
@@ -151,7 +151,7 @@ export default function ProductNewPage() {
       alert("상품이 등록되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["posts", "community"] });
       // 판매 내역 페이지로 이동하도록 이후 설정
-      navigate('/users/mypage');
+      navigate("/users/mypage");
     },
     onError: (error) => {
       setValue("image", null);

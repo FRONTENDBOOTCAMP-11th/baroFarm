@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import useUserStore from "@zustand/useUserStore";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
@@ -13,6 +14,9 @@ const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 export default function HeaderIcon({ name, onClick }) {
   // 장바구니가 차 있는지 아닌지 확인하는 상태관리 변수
   const [isFullCart, setIsFullCart] = useState(false);
+
+  // zustand store에서 유저 상태 가져옴
+  const user = useUserStore((store) => store.user);
 
   // 장바구니 아이콘에 상품 개수를 표시하기 위한 장바구니 상품 목록 조회
   const { data } = useQuery({
@@ -29,6 +33,7 @@ export default function HeaderIcon({ name, onClick }) {
       }),
     select: (res) => res.data,
     staleTime: 1000 * 10,
+    enabled: !!user,
   });
 
   const iconPath = `/icons/icon_${name}.svg`;

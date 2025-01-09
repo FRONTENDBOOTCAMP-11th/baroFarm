@@ -8,7 +8,6 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 export default function MyPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  // const [data, setData] = useState();
 
   // zustand store에서 유저 상태 가져옴
   const user = useUserStore((store) => store.user);
@@ -49,8 +48,10 @@ export default function MyPage() {
     queryFn: () => axios.get(`/users/${user._id}`),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
+    enabled: !!user,
   });
 
+  // 로그인 아닌 경우에는 로그아웃 시 화면 보일 수 있게 예외처리
   if (!data && user) {
     //이 아래에는 로딩 페이지
     return;
@@ -65,7 +66,11 @@ export default function MyPage() {
           {user && (
             <>
               <img
-                src="/images/profile/Profile_sample_1.jpg"
+                src={
+                  data.image
+                    ? data.image
+                    : "/images/profile/ProfileImage_Sample.svg"
+                }
                 className="mr-5 w-[49px] h-[50px] rounded-full"
                 loading="lazy"
               />
@@ -93,7 +98,7 @@ export default function MyPage() {
           {!user && (
             <>
               <img
-                src="/images/profile/ProfileImage_Sample.svg"
+                src={"/images/profile/ProfileImage_Sample.svg"}
                 className="mr-5 w-[49px] h-[50px] rounded-full"
                 loading="lazy"
               />
