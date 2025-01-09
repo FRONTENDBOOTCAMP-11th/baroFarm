@@ -25,6 +25,7 @@ export default function MyPage() {
 
   /// store에서 user 상태를 초기화하는 함수 가져오기
   const resetUser = useUserStore((store) => store.resetUser);
+  
   const logoutClick = () => {
     //로그아웃 시 데이터 삭제
     // setData(null); - 태호님 작성
