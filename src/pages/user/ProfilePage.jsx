@@ -65,8 +65,8 @@ export default function ProfilePage() {
           주소
         </section>
         <section className="text-gray5">
-          {data.userName} <br />
-          {data.gender} <br />
+          {data.extra.userName} <br />
+          {data.extra.gender === "male" ? "남성" : "여성"} <br />
           {data.email} <br />
           {data.phone} <br />
           {data.address}
