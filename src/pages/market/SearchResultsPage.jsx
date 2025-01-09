@@ -80,7 +80,6 @@ export default function SearchResultsPage() {
           <select
             className=" text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer
     bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
-            defaultValue='{"createdAt":-1}'
             aria-label="정렬 기준 선택"
             name="sort"
             value={sort} // 현재 URL의 sort 값을 반영
