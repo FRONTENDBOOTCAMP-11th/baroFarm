@@ -26,7 +26,7 @@ export default function PaymentPage() {
   // 배송 메모 관리
   const [memo, setMemo] = useState({});
   // 현재 선택한 배송지 아이디
-  const [addressId, setAddressId] = useState();
+  const [addressId, setAddressId] = useState(null);
   // 로그인한 유저 정보 가져오기
   const { user } = useUserStore();
   // targetRef가 보이면 결제버튼을 보이게 함
@@ -189,6 +189,8 @@ export default function PaymentPage() {
         isOpen={isAddressModalOpen}
         onClose={() => setIsAddressModalOpen(false)}
         userData={data}
+        addressId={addressId}
+        setAddressId={setAddressId}
       />
       <section className="px-5 py-[14px]">
         <div>

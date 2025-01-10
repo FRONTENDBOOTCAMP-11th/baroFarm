@@ -21,9 +21,16 @@ AddressModal.propTypes = {
   }).isRequired,
 };
 
-export default function AddressModal({ isOpen, onClose, userData }) {
+export default function AddressModal({
+  isOpen,
+  onClose,
+  userData,
+  addressId,
+  setAddressId,
+}) {
   // 신규 배송지 입력 폼 토글 상태
   const [isOpenForm, setIsOpenForm] = useState(false);
+
   // axios instance
   const axios = useAxiosInstance();
 
@@ -38,7 +45,9 @@ export default function AddressModal({ isOpen, onClose, userData }) {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    mode: "onSubmit", // 유효성 검사 실행 시점
+  });
 
   // 배송지 추가
   const queryClient = useQueryClient();
@@ -60,6 +69,7 @@ export default function AddressModal({ isOpen, onClose, userData }) {
               userName: formData.userName,
               name: formData.name,
               value: formData.value,
+              phone: formData.phone,
             },
           ],
         },
@@ -86,8 +96,6 @@ export default function AddressModal({ isOpen, onClose, userData }) {
           addressBook: filteredAddressList,
         },
       };
-      console.log("addressBook", addressBook);
-      console.log("newAddressList", newAddressList);
       const ok = confirm("이 주소를 삭제하시겠습니까?");
       if (ok) axios.patch(`/users/${userData._id}`, newAddressList);
     },
@@ -107,14 +115,29 @@ export default function AddressModal({ isOpen, onClose, userData }) {
     return (
       <div className="[&:not(:last-child)]:border-b border-gray2 py-3">
         <div className="flex mb-2 justify-between">
-          <div className="flex flex-col gap-[2px]">
-            <span className="text-base font-bold text-btn-primary">
+          <div className="flex flex-col gap-1">
+            <span
+              className={
+                addressId === null
+                  ? `text-base font-bold text-btn-primary`
+                  : `text-base font-medium`
+              }
+            >
               {`${userName}`}
             </span>
+            <span className="text-sm text-gray4">{userData.phone}</span>
           </div>
-          <Button>선택</Button>
+          <div>
+            {addressId === null ? (
+              <span className="text-sm text-btn-primary font-semibold">
+                선택됨
+              </span>
+            ) : (
+              <Button onClick={() => setAddressId(null)}>선택</Button>
+            )}
+          </div>
         </div>
-        <p className="text-sm font-medium mb-2">{defaultAddress}</p>
+        <p className="text-sm font-regular mb-2">{defaultAddress}</p>
       </div>
     );
   };
@@ -127,18 +150,30 @@ export default function AddressModal({ isOpen, onClose, userData }) {
         className="[&:not(:last-child)]:border-b border-gray2 py-3"
       >
         <div className="flex mb-2 justify-between">
-          <div className="flex flex-col gap-[2px]">
-            <span className="text-base font-bold text-btn-primary">
-              {`${item.userName}(${item.name})`}
+          <div className="flex flex-col gap-1">
+            <span
+              className={
+                addressId === item.id
+                  ? `text-base font-bold text-btn-primary`
+                  : `text-base font-medium`
+              }
+            >
+              {`${userName} (${item.name})`}
             </span>
+            <span className="text-sm text-gray4">{item.phone}</span>
           </div>
-          <Button>선택</Button>
+          <div>
+            {addressId === item.id ? (
+              <span className="text-sm text-btn-primary font-semibold">
+                선택됨
+              </span>
+            ) : (
+              <Button onClick={() => setAddressId(item.id)}>선택</Button>
+            )}
+          </div>
         </div>
-        <p className="text-sm font-medium mb-2">{item.value}</p>
+        <p className="text-sm font-regular mb-2">{item.value}</p>
         <div className="flex gap-2">
-          <Button isWhite={true} color="white">
-            수정
-          </Button>
           <Button
             isWhite={true}
             color="white"
@@ -190,6 +225,25 @@ export default function AddressModal({ isOpen, onClose, userData }) {
                 placeholder="받는 사람을 입력해주세요."
                 {...register("userName", {
                   required: "받는 사람을 입력해주세요.",
+                })}
+              />
+              {errors.userName && (
+                <p className="text-red1 text-xs mt-1 ps-1">
+                  {errors.userName.message}
+                </p>
+              )}
+            </div>
+            <div className="mb-2.5 text-sm">
+              <label className="block mb-2.5 font-semibold" htmlFor="email">
+                연락처
+              </label>
+              <input
+                className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
+                type="text"
+                id="phone"
+                placeholder="연락처를 입력해주세요."
+                {...register("phone", {
+                  required: "연락처를 입력해주세요.",
                 })}
               />
               {errors.userName && (
