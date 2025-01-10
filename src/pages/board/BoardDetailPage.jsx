@@ -1,9 +1,9 @@
 import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import Comment from "@pages/board/Comment";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
-import axios from "axios";
 import { useEffect } from "react";
 import {
   useLocation,
@@ -20,6 +20,7 @@ export default function BoardDetailPage() {
   const newDate = location.state?.newDate;
   const repliesCount = location.state?.repliesCount;
   const { user } = useUserStore();
+  const axios = useAxiosInstance();
 
   useEffect(() => {
     setHeaderContents({
@@ -56,6 +57,16 @@ export default function BoardDetailPage() {
     );
   }
 
+  const deletePost = async () => {
+    if (confirm("게시글을 삭제하시겠습니까?")) {
+      await axios.delete(`/posts/${_id}`);
+      alert("게시글 삭제가 완료되었습니다.");
+      navigate("/board");
+    }
+  };
+
+  const editPost = () => {};
+
   return (
     <div className="mx-5">
       <div className="flex flex-row mt-5 items-center">
@@ -76,7 +87,8 @@ export default function BoardDetailPage() {
       />
       {data.user._id === user._id && (
         <div className="text-right text-xs">
-          <button>수정</button> | <button>삭제</button>
+          <button onClick={editPost}>수정</button> |{" "}
+          <button onClick={deletePost}>삭제</button>
         </div>
       )}
       <Comment repliesCount={repliesCount} />

@@ -13,6 +13,7 @@ export default function BoardNewPage() {
   const { register, handleSubmit } = useForm();
   const isBoard = true;
   const queryClient = useQueryClient();
+  const { user } = useUserStore();
 
   const axios = useAxiosInstance();
 

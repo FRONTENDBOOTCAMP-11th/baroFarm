@@ -64,6 +64,8 @@ export default function BoardPage() {
     }
   };
 
+  console.log(data);
+
   const boards = data.map((item) => (
     <BoardPageDetail key={item._id} item={item} />
   ));
