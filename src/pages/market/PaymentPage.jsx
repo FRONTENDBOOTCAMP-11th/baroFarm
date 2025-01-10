@@ -1,7 +1,6 @@
 import Button from "@components/Button";
 import ProductToBuy from "@components/ProductToBuy";
 import HeaderIcon from "@components/HeaderIcon";
-import Modal from "@components/Modal";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
@@ -182,21 +181,6 @@ export default function PaymentPage() {
 
   return (
     <>
-      <Modal ref={modalRef}>
-        <img src="/images/Star.png" className="w-[66px]" />
-        <p className="text-center text-lg">
-          <span className="font-semibold">
-            총 {totalFees.toLocaleString()}원
-          </span>
-          <br />
-          <strong className="font-semibold">결제</strong>가 완료되었어요
-        </p>
-        <button onClick={() => navigate("/", { replace: true })}>
-          <span className="font-light border-b border-b-black">
-            더 쇼핑하러 가기
-          </span>
-        </button>
-      </Modal>
       <AddressModal
         isOpen={isAddressModalOpen}
         onClose={() => setIsAddressModalOpen(false)}
