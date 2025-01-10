@@ -99,12 +99,12 @@ export default function LoginPage() {
           />
         </div>
         {errors.password && <p className="text-red1 text-xs -mt-3 mb-4">{errors.password.message}</p>}
-        <label className="mb-8 flex items-center gap-1 cursor-pointer font-normal">
+        <label className="mb-8 flex items-center gap-1 font-normal">
           <input
-            className="w-5 h-5 mr-1 rounded-full appearance-none bg-gray2 checked:bg-btn-primary"
+            className="w-5 h-5 mr-1 rounded-full appearance-none bg-gray2 checked:bg-btn-primary checked:bg-[url('/icons/icon_check_white.svg')] checked:bg-center checked:bg-no-repeat cursor-pointer "
             type="checkbox"
           />
-          <span>로그인 상태 유지</span>
+          <span className="text-sm cursor-pointer">자동 로그인</span>
         </label>
         <div className="mb-5 w-full h-[3.25rem] m-auto">
           <button
