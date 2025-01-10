@@ -25,6 +25,8 @@ export default function PaymentPage() {
   const [memo, setMemo] = useState({});
   // 현재 선택한 배송지 아이디
   const [addressId, setAddressId] = useState(0);
+  // 현재 선택한 배송지
+  const [currentAddress, setCurrentAddress] = useState();
   // 로그인한 유저 정보 가져오기
   const { user } = useUserStore();
   // targetRef가 보이면 결제버튼을 보이게 함
@@ -41,11 +43,8 @@ export default function PaymentPage() {
 
   // 이전 페이지에서 넘어온 정보
   const location = useLocation();
-  // 이전 페이지에서 넘어온 구매할 상품
-  const selectedItems = location.state.selectedItems;
-  // 이전 페이지에서 넘어온 최종 금액
-  const totalFees = location.state.totalFees;
-  const totalShippingFees = location.state.totalShippingFees;
+  // 이전 페이지에서 넘어온 구매할 상품, 최종금액, 배송비
+  const { selectedItems, totalFees, totalShippingFees } = location.state;
 
   // 구매할 상품 컴포넌트 동적 렌더링
   useEffect(() => {
@@ -71,12 +70,20 @@ export default function PaymentPage() {
     staleTime: 1000 * 10,
   });
 
-  // 현재 선택한 배송지 (초기값은 유저의 기본정보로 설정)
-  const [currentAddress, setCurrentAddress] = useState({
-    userName: data?.name,
-    phone: data?.phone,
-    value: data?.address,
-  });
+  // 데이터 로딩 완료 후 기본 배송지를 유저의 기본 정보로 설정
+  useEffect(() => {
+    if (addressId === 0) {
+      setCurrentAddress({
+        userName: data?.name,
+        phone: data?.phone,
+        value: data?.address,
+      });
+    } else {
+      setCurrentAddress(
+        data?.extra?.addressBook?.find((item) => item.id === addressId)
+      );
+    }
+  }, [data, addressId]);
 
   // 스크롤에 따라 결제버튼 보이게 하기
   useEffect(() => {
@@ -164,20 +171,12 @@ export default function PaymentPage() {
       // 배열을 삭제 요청에 전달
       deleteItem.mutate(purchasedItems);
       navigate("/complete", {
-        state: { product: location.state, totalFees, memo, currentAddress },
+        state: { selectedItems, totalFees, memo, currentAddress },
       });
       // openModal(); // 모달창으로 안내
     },
     onError: (err) => console.error(err),
   });
-
-  // 배송지 변경하기
-  useEffect(() => {
-    setCurrentAddress(
-      data?.extra?.addressBook?.find((item) => item.id === addressId)
-    );
-  }, [addressId]);
-  console.log(currentAddress);
 
   if (!data) return null;
 

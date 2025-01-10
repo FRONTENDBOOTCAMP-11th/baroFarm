@@ -27,8 +27,21 @@ export default function OrderCompletePage() {
   }, []);
 
   const location = useLocation();
-  console.log(location);
-  const selectedItems = location.state.product.selectedItems;
+  console.log(location.state);
+
+  const { selectedItems, currentAddress, memo, totalFees } = location.state;
+
+  const products = selectedItems.map((item) => {
+    return (
+      <div
+        key={item._id}
+        className="flex justify-between text-sm font-light pl-3 gap-5"
+      >
+        <p className="truncate">{item.product.name}</p>
+        <span className="w-11 shrink-0 text-right text-gray4">{`${item.quantity}개`}</span>
+      </div>
+    );
+  });
 
   return (
     <div>
@@ -47,35 +60,26 @@ export default function OrderCompletePage() {
           <div className="flex justify-between items-center border-b">
             <span className="text-gray4">결제금액</span>
             <span className="text-xl text-btn-primary font-semibold">
-              23,240원
+              {`${totalFees.toLocaleString()}원`}
             </span>
           </div>
           <div className="space-y-2 border-b">
             <span className="text-gray4">주문상품</span>
-            <div className="flex justify-between text-sm font-light pl-3 gap-5">
-              <p className="truncate">
-                [소스증정] 반값!! 고니알탕 (겨울 기획상품)awefawefawef
-              </p>
-              <span className="w-11 shrink-0 text-right text-gray4">1개</span>
-            </div>
-            <div className="flex justify-between text-sm font-light pl-3 gap-5">
-              <p className="truncate">
-                [소스증정] 반값!! 고니알탕 (겨울 기획상품)awefawefawef
-              </p>
-              <span className="w-11 shrink-0 text-right text-gray4">1개</span>
-            </div>
+            {products}
           </div>
           <div className="space-y-2 border-b">
             <span className="text-gray4">배송지</span>
             <div className="space-y-0.5 text-sm pl-3">
-              <p>강진수</p>
-              <p className="text-gray4">010-0000-0000</p>
-              <p>서울특별시 마포구 동교로 194</p>
+              <p>{`${currentAddress.userName} ${
+                currentAddress.name ? `(${currentAddress.name})` : ""
+              }`}</p>
+              <p className="text-gray4">{currentAddress.phone}</p>
+              <p>{currentAddress.value}</p>
             </div>
           </div>
           <div className="space-y-2">
             <span className="text-gray4">배송메모</span>
-            <p className="text-sm pl-3">배송 전에 미리 연락 바랍니다.</p>
+            <p className="text-sm pl-3">{memo.memo ? memo.memo : "없음"}</p>
           </div>
         </section>
         <section className="px-4">
