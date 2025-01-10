@@ -35,11 +35,6 @@ export default function PaymentPage() {
   const [isPayModalOpen, setIsPayModalOpen] = useState(false);
   // 주소지 모달 창 상태
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  // 모달 창 선택
-  const modalRef = useRef();
-  const openModal = () => {
-    modalRef.current.open();
-  };
 
   // 이전 페이지에서 넘어온 정보
   const location = useLocation();

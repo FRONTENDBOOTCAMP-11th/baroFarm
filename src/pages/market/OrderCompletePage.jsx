@@ -27,7 +27,6 @@ export default function OrderCompletePage() {
   }, []);
 
   const location = useLocation();
-  console.log(location.state);
 
   const { selectedItems, currentAddress, memo, totalFees } = location.state;
 
