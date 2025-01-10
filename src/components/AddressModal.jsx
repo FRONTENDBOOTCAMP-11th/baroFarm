@@ -14,7 +14,7 @@ AddressModal.propTypes = {
   userData: PropTypes.shape({
     address: PropTypes.string.isRequired,
     extra: PropTypes.shape({
-      address: PropTypes.array,
+      addressBook: PropTypes.array,
     }).isRequired,
     name: PropTypes.string.isRequired,
     _id: PropTypes.number.isRequired,
@@ -29,27 +29,34 @@ export default function AddressModal({ isOpen, onClose, userData }) {
 
   // 전달 받은 유저 데이터를 변수에 할당
   const defaultAddress = userData.address;
-  const addressBook = userData.extra.address;
+  const addressBook = userData.extra.addressBook;
   const userName = userData.name;
 
   // 신규 배송지 입력을 받기 위한 reack-hook-form
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-    clearErrors,
   } = useForm();
 
   // 배송지 추가
   const queryClient = useQueryClient();
   const addAddress = useMutation({
     mutationFn: (formData) => {
+      // addressBook 속성이 없으면 에러가 나기에 빈배열로 할당
+      const currentAddressBook = userData.extra?.addressBook || [];
+      // 새롭게 추가될 주소를 더한 extra 속성
       const newAddress = {
         extra: {
-          address: [
-            ...addressBook,
+          ...userData.extra,
+          addressBook: [
+            ...currentAddressBook,
             {
-              id: addressBook[addressBook.length - 1].id + 1,
+              // 처음 추가되는 주소라면 아이디를 1로, 아니라면 마지막 주소 아이디 + 1
+              id: addressBook.length
+                ? addressBook[addressBook.length - 1].id + 1
+                : 1,
               userName: formData.userName,
               name: formData.name,
               value: formData.value,
@@ -64,6 +71,7 @@ export default function AddressModal({ isOpen, onClose, userData }) {
       alert("신규 주소가 등록되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["users"] });
       setIsOpenForm(false);
+      reset();
     },
   });
 
@@ -75,7 +83,7 @@ export default function AddressModal({ isOpen, onClose, userData }) {
       );
       const newAddressList = {
         extra: {
-          address: filteredAddressList,
+          addressBook: filteredAddressList,
         },
       };
       console.log("addressBook", addressBook);
@@ -121,7 +129,7 @@ export default function AddressModal({ isOpen, onClose, userData }) {
         <div className="flex mb-2 justify-between">
           <div className="flex flex-col gap-[2px]">
             <span className="text-base font-bold text-btn-primary">
-              {`${userName}(${item.name})`}
+              {`${item.userName}(${item.name})`}
             </span>
           </div>
           <Button>선택</Button>
@@ -180,8 +188,15 @@ export default function AddressModal({ isOpen, onClose, userData }) {
                 type="text"
                 id="userName"
                 placeholder="받는 사람을 입력해주세요."
-                {...register("userName")}
+                {...register("userName", {
+                  required: "받는 사람을 입력해주세요.",
+                })}
               />
+              {errors.userName && (
+                <p className="text-red1 text-xs mt-1 ps-1">
+                  {errors.userName.message}
+                </p>
+              )}
             </div>
             <div className="mb-2.5 text-sm">
               <label className="block mb-2.5 font-semibold" htmlFor="email">
@@ -192,8 +207,13 @@ export default function AddressModal({ isOpen, onClose, userData }) {
                 type="text"
                 id="name"
                 placeholder="배송지명을 입력해주세요."
-                {...register("name")}
+                {...register("name", { required: "배송지명을 입력해주세요." })}
               />
+              {errors.name && (
+                <p className="text-red1 text-xs mt-1 ps-1">
+                  {errors.name.message}
+                </p>
+              )}
             </div>
             <div className="mb-2.5 text-sm mt-2.5">
               <label className="block mb-2.5 font-semibold" htmlFor="email">
@@ -204,8 +224,13 @@ export default function AddressModal({ isOpen, onClose, userData }) {
                 type="text"
                 id="value"
                 placeholder="주소를 입력해주세요."
-                {...register("value")}
+                {...register("value", { required: "주소를 입력해주세요." })}
               />
+              {errors.value && (
+                <p className="text-red1 text-xs mt-1 ps-1">
+                  {errors.value.message}
+                </p>
+              )}
             </div>
             <div className="flex gap-2 justify-end">
               <Button type="submit">저장</Button>
