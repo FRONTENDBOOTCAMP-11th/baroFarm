@@ -161,7 +161,7 @@ export default function AddressModal({
                   : `text-base font-medium`
               }
             >
-              {`${userName} (${item.name})`}
+              {`${item.userName} (${item.name})`}
             </span>
             <span className="text-sm text-gray4">{item.phone}</span>
           </div>
