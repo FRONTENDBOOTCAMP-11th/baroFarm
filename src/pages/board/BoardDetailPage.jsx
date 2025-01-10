@@ -2,6 +2,7 @@ import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
 import Comment from "@pages/board/Comment";
 import { useQuery } from "@tanstack/react-query";
+import useUserStore from "@zustand/useUserStore";
 import axios from "axios";
 import { useEffect } from "react";
 import {
@@ -18,6 +19,7 @@ export default function BoardDetailPage() {
   const location = useLocation();
   const newDate = location.state?.newDate;
   const repliesCount = location.state?.repliesCount;
+  const { user } = useUserStore();
 
   useEffect(() => {
     setHeaderContents({
@@ -31,7 +33,7 @@ export default function BoardDetailPage() {
     });
   }, []);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["posts", _id],
     queryFn: () =>
       axios.get(`https://11.fesp.shop/posts/${_id}`, {
@@ -72,9 +74,11 @@ export default function BoardDetailPage() {
         className="relative mt-10 mb-1 rounded-md"
         src={`https://11.fesp.shop${data.image}`}
       />
-      <div className="text-right text-xs">
-        <button>수정</button> | <button>삭제</button>
-      </div>
+      {data.user._id === user._id && (
+        <div className="text-right text-xs">
+          <button>수정</button> | <button>삭제</button>
+        </div>
+      )}
       <Comment repliesCount={repliesCount} />
 
       <div className="h-[65px] flex items-center px-5 -mx-5">
