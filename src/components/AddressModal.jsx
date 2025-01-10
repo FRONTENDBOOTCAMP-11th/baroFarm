@@ -192,14 +192,23 @@ export default function AddressModal({
   return createPortal(
     <div className="fixed inset-0 flex items-center justify-center z-50">
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onClose} />
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50"
+        onClick={() => {
+          onClose();
+          setIsOpenForm(false);
+        }}
+      />
 
       {/* 모달창 */}
       <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">배송지 목록</h2>
           <button
-            onClick={onClose}
+            onClick={() => {
+              onClose();
+              setIsOpenForm(false);
+            }}
             className="text-gray-400 hover:text-gray-500"
           >
             ✕
@@ -211,98 +220,102 @@ export default function AddressModal({
           + 배송지 신규입력
         </Button>
 
-        {/* 배송지 신규 입력 폼 */}
-        {isOpenForm && (
-          <form
-            onSubmit={handleSubmit(addAddress.mutate)}
-            className="my-4 bg-gray1 p-3 rounded-lg"
-          >
-            <div className="mb-2.5 text-sm">
-              <label className="block mb-2.5 font-semibold" htmlFor="email">
-                받는 사람
-              </label>
-              <input
-                className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
-                type="text"
-                id="userName"
-                placeholder="받는 사람을 입력해주세요."
-                {...register("userName", {
-                  required: "받는 사람을 입력해주세요.",
-                })}
-              />
-              {errors.userName && (
-                <p className="text-red1 text-xs mt-1 ps-1">
-                  {errors.userName.message}
-                </p>
-              )}
-            </div>
-            <div className="mb-2.5 text-sm">
-              <label className="block mb-2.5 font-semibold" htmlFor="email">
-                연락처
-              </label>
-              <input
-                className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
-                type="text"
-                id="phone"
-                placeholder="연락처를 입력해주세요."
-                {...register("phone", {
-                  required: "연락처를 입력해주세요.",
-                })}
-              />
-              {errors.userName && (
-                <p className="text-red1 text-xs mt-1 ps-1">
-                  {errors.userName.message}
-                </p>
-              )}
-            </div>
-            <div className="mb-2.5 text-sm">
-              <label className="block mb-2.5 font-semibold" htmlFor="email">
-                배송지명
-              </label>
-              <input
-                className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
-                type="text"
-                id="name"
-                placeholder="배송지명을 입력해주세요."
-                {...register("name", { required: "배송지명을 입력해주세요." })}
-              />
-              {errors.name && (
-                <p className="text-red1 text-xs mt-1 ps-1">
-                  {errors.name.message}
-                </p>
-              )}
-            </div>
-            <div className="mb-2.5 text-sm mt-2.5">
-              <label className="block mb-2.5 font-semibold" htmlFor="email">
-                주소
-              </label>
-              <input
-                className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
-                type="text"
-                id="value"
-                placeholder="주소를 입력해주세요."
-                {...register("value", { required: "주소를 입력해주세요." })}
-              />
-              {errors.value && (
-                <p className="text-red1 text-xs mt-1 ps-1">
-                  {errors.value.message}
-                </p>
-              )}
-            </div>
-            <div className="flex gap-2 justify-end">
-              <Button type="submit">저장</Button>
-              <Button isWhite={true} onClick={() => setIsOpenForm(false)}>
-                취소
-              </Button>
-            </div>
-          </form>
+        {/* 배송지 신규 입력창이 나타나면 배송지 목록은 사라짐 */}
+        {isOpenForm ? (
+          <>
+            {/* 배송지 신규 입력 폼 */}
+            <form
+              onSubmit={handleSubmit(addAddress.mutate)}
+              className="my-4 bg-gray1 p-3 rounded-lg"
+            >
+              <div className="mb-2.5 text-sm">
+                <label className="block mb-2.5 font-semibold" htmlFor="email">
+                  받는 사람
+                </label>
+                <input
+                  className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
+                  type="text"
+                  id="userName"
+                  placeholder="받는 사람을 입력해주세요."
+                  {...register("userName", {
+                    required: "받는 사람을 입력해주세요.",
+                  })}
+                />
+                {errors.userName && (
+                  <p className="text-red1 text-xs mt-1 ps-1">
+                    {errors.userName.message}
+                  </p>
+                )}
+              </div>
+              <div className="mb-2.5 text-sm">
+                <label className="block mb-2.5 font-semibold" htmlFor="email">
+                  연락처
+                </label>
+                <input
+                  className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
+                  type="text"
+                  id="phone"
+                  placeholder="연락처를 입력해주세요."
+                  {...register("phone", {
+                    required: "연락처를 입력해주세요.",
+                  })}
+                />
+                {errors.userName && (
+                  <p className="text-red1 text-xs mt-1 ps-1">
+                    {errors.userName.message}
+                  </p>
+                )}
+              </div>
+              <div className="mb-2.5 text-sm">
+                <label className="block mb-2.5 font-semibold" htmlFor="email">
+                  배송지명
+                </label>
+                <input
+                  className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
+                  type="text"
+                  id="name"
+                  placeholder="배송지명을 입력해주세요."
+                  {...register("name", {
+                    required: "배송지명을 입력해주세요.",
+                  })}
+                />
+                {errors.name && (
+                  <p className="text-red1 text-xs mt-1 ps-1">
+                    {errors.name.message}
+                  </p>
+                )}
+              </div>
+              <div className="mb-2.5 text-sm mt-2.5">
+                <label className="block mb-2.5 font-semibold" htmlFor="email">
+                  주소
+                </label>
+                <input
+                  className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
+                  type="text"
+                  id="value"
+                  placeholder="주소를 입력해주세요."
+                  {...register("value", { required: "주소를 입력해주세요." })}
+                />
+                {errors.value && (
+                  <p className="text-red1 text-xs mt-1 ps-1">
+                    {errors.value.message}
+                  </p>
+                )}
+              </div>
+              <div className="flex gap-2 justify-end">
+                <Button type="submit">저장</Button>
+                <Button isWhite={true} onClick={() => setIsOpenForm(false)}>
+                  취소
+                </Button>
+              </div>
+            </form>
+          </>
+        ) : (
+          <>
+            <RenderDefaultAddress />
+            {addressItem}
+          </>
         )}
-
-        {/* 배송지 목록 */}
-        <>
-          <RenderDefaultAddress />
-          {addressItem}
-        </>
       </div>
     </div>,
     document.body
