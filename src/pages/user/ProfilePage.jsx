@@ -114,10 +114,7 @@ export default function ProfilePage() {
           alt="Profile Image"
           className="w-[100px] h-[100px] rounded-full object-cover"
         />
-        <button
-          className="absolute right-0 bottom-[50px]"
-          onClick={setProfileImg}
-        >
+        <button className="absolute right-0 -bottom-2" onClick={setProfileImg}>
           <img
             src="/icons/icon_camera.svg"
             alt="이미지 수정 아이콘"
@@ -130,9 +127,9 @@ export default function ProfilePage() {
           className="hidden"
           onChange={handleFileChange}
         />
-        <div className="mt-[25px] mb-[30px] text-2xl font-bold">
-          {data.name}
-        </div>
+      </div>
+      <div className="mt-[25px] mb-[30px] mx-auto max-w-fit text-2xl font-bold">
+        {data.name}
       </div>
       <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
         <section>
