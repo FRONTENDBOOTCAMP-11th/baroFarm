@@ -25,7 +25,7 @@ const icons = {
 
 export default function Footer() {
   return (
-    <nav className="h-[100px] border-t-[1px] border-gray1 flex items-center justify-around fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto bg-white">
+    <nav className="h-[100px] border-t border-gray1 flex items-center justify-around fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto bg-white">
       <NavItem
         to="/menu"
         defaultIcon={icons.category.default}
@@ -36,7 +36,7 @@ export default function Footer() {
         to="/board"
         defaultIcon={icons.community.default}
         activeIcon={icons.community.active}
-        label="커뮤니티"
+        label="바로파밍"
       />
       <NavItem
         to="/"

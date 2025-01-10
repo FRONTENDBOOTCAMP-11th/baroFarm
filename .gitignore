@@ -1,7 +1,6 @@
 *.env
 
 # api
-api
 bruno-sample
 *.bru
 
@@ -29,3 +28,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# tokens
+tokens.js

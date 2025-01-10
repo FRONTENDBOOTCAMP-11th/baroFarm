@@ -1,21 +1,20 @@
-export default function RecentKeywordItem() {
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+
+RecentKeywordItem.propTypes = {
+  keyword: PropTypes.string.isRequired,
+  onRemove: PropTypes.func.isRequired,
+};
+
+export default function RecentKeywordItem({ keyword, onRemove }) {
   return (
-    <>
-      <li className="bg-gray2 px-3 rounded-xl">
-        <a className="hover:font-semibold" href="#">
-          귤
-        </a>
-      </li>
-      <li className="bg-gray2 px-3 rounded-xl">
-        <a className="hover:font-semibold" href="#">
-          갈치
-        </a>
-      </li>
-      <li className="bg-gray2 px-3 rounded-xl">
-        <a className="hover:font-semibold" href="#">
-          고랭지배추
-        </a>
-      </li>
-    </>
+    <li className="rounded-full border border-btn-primary text-btn-primary flex items-center gap-1 px-2">
+      <Link to={`/search/results?keyword=${keyword}`} className="hover:font-bold">
+        {keyword}
+      </Link>
+      <button aria-label="검색어 삭제" onClick={() => onRemove(keyword)}>
+        <img src="/icons/icon_x_green.svg" alt="삭제" />
+      </button>
+    </li>
   );
 }

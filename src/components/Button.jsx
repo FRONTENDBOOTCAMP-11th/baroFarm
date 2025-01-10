@@ -6,39 +6,30 @@ Button.propTypes = {
   type: PropTypes.string,
   onClick: PropTypes.func,
   color: PropTypes.string,
-  width: PropTypes.string,
-  height: PropTypes.string,
-  fontSize: PropTypes.number,
+  isBig: PropTypes.bool,
+  isWhite: PropTypes.bool,
 };
 
 export default function Button({
   children,
   type = "button",
   onClick: clickHandler,
-  color = "#72BF78",
-  width = "auto",
-  height = "auto",
-  fontSize = 12,
+  isBig = false,
+  isWhite = false,
 }) {
-  // 동적인 클래스는 style 객체 활용
-  const style = {
-    width,
-    height,
-    backgroundColor: color,
-    fontSize: fontSize,
-  };
+  const baseClasses =
+    "flex items-center justify-center rounded-md shrink-0 self-start";
+  const styleClasses = isWhite
+    ? "border border-gray2 bg-white"
+    : "text-white bg-btn-primary";
+  const sizeClasses = isBig
+    ? "w-full py-3 text-xl font-bold"
+    : "py-1 px-3 text-sm font-semibold";
 
-  // 정적인 클래스만 사용
-  const buttonClass =
-    "flex justify-center items-center rounded-md shrink-0 text-white font-semibold";
+  const classes = clsx(baseClasses, styleClasses, sizeClasses);
 
   return (
-    <button
-      className={buttonClass}
-      style={style}
-      type={type}
-      onClick={clickHandler}
-    >
+    <button className={classes} type={type} onClick={clickHandler}>
       {children}
     </button>
   );

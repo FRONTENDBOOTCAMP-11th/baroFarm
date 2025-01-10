@@ -1,91 +1,27 @@
 import Button from "@components/Button";
 import CartItem from "@components/CartItem";
+import Checkbox from "@components/Checkbox";
 import HeaderIcon from "@components/HeaderIcon";
+import useAxiosInstance from "@hooks/useAxiosInstance";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
-const DUMMY_CARTS_ITEMS = {
-  ok: 1,
-  item: [
-    {
-      _id: 1,
-      product_id: 1,
-      quantity: 2,
-      createdAt: "2024.04.01 08:36:39",
-      updatedAt: "2024.04.01 08:36:39",
-      product: {
-        _id: 1,
-        name: "[소스증정] 반값!! 고니알탕 (겨울 기획상품)",
-        price: 14900,
-        seller_id: 2,
-        quantity: 1,
-        buyQuantity: 310,
-        image: {
-          url: "/images/sample/food.svg",
-          fileName: "sample-dog.jpg",
-          orgName: "스턴트 독.jpg",
-        },
-        extra: {
-          isNew: true,
-          isBest: true,
-          category: ["PC03", "PC0301"],
-          sort: 5,
-          seller_name: "팔도다옴",
-          option: "고니알탕 500g * 4팩",
-          discount: 0.09,
-        },
-      },
-    },
-    {
-      _id: 2,
-      product_id: 1,
-      quantity: 2,
-      createdAt: "2024.04.01 08:36:39",
-      updatedAt: "2024.04.01 08:36:39",
-      product: {
-        _id: 1,
-        name: "[소스증정] 반값!! 고니알탕 (겨울 기획상품)",
-        price: 14900,
-        seller_id: 2,
-        quantity: 1,
-        buyQuantity: 310,
-        image: {
-          url: "/images/sample/food.svg",
-          fileName: "sample-dog.jpg",
-          orgName: "스턴트 독.jpg",
-        },
-        extra: {
-          isNew: true,
-          isBest: true,
-          category: ["PC03", "PC0301"],
-          sort: 5,
-          seller_name: "팔도다옴",
-          option: "고니알탕 500g * 4팩",
-          discount: 0.09,
-        },
-      },
-    },
-  ],
-  cost: {
-    products: 29800,
-    shippingFees: 2500,
-    discount: {
-      products: 0,
-      shippingFees: 2500,
-    },
-    total: 29800,
-  },
-};
-
-const DUMMY_EMPTY_CARTS = {
-  ok: 1,
-  item: [],
-};
-
 export default function CartPage() {
+  const axios = useAxiosInstance();
+  // 구매할 물품 선택을 위한 폼
+  const { register, handleSubmit } = useForm();
   // 결제 버튼 보이기 상태
   const [showButton, setShowButton] = useState(false);
+  // 최종 상품 금액을 따로 상태로 관리
+  const [totalFees, setTotalFees] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [totalPayFees, setTotalPayFees] = useState(0);
+  // 체크된 상품의 아이디를 담은 배열 상태 관리
+  const [checkedItemsIds, setCheckedItemsIds] = useState([]);
+
   // targetRef가 보이면 결제버튼을 보이게 함
   const targetRef = useRef(null);
 
@@ -93,14 +29,24 @@ export default function CartPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
+  // 헤더 상태 설정
   useEffect(() => {
-    // 헤더 상태 설정
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "장바구니",
     });
+  }, []);
 
-    // 스크롤에 따라 결제버튼 보이게 하기
+  // 장바구니 목록 조회
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["carts"],
+    queryFn: () => axios.get("/carts"),
+    select: (res) => res.data,
+    staleTime: 1000 * 10,
+  });
+
+  // 스크롤에 따라 결제버튼 보이게 하기
+  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -133,74 +79,224 @@ export default function CartPage() {
         observer.unobserve(targetElement);
       }
     };
-  }, []);
+  }, [data]);
 
-  const cartItems = DUMMY_CARTS_ITEMS.item.map((item) => (
-    <CartItem key={item._id} {...item.product} />
+  // 장바구니 상품 삭제
+  const queryClient = useQueryClient();
+  const deleteItem = useMutation({
+    mutationFn: (_id) => {
+      const ok = confirm("상품을 삭제하시겠습니까?");
+      if (ok) axios.delete(`/carts/${_id}`);
+    },
+    onSuccess: () => {
+      alert("상품이 삭제되었습니다.");
+      // 캐시된 데이터 삭제 후 리렌더링
+      queryClient.invalidateQueries({ queryKey: ["carts"] });
+    },
+    onError: (err) => console.error(err),
+  });
+
+  // 장바구니 수량 변경
+  const updateItem = useMutation({
+    mutationFn: ({ _id, quantity }) =>
+      axios.patch(`/carts/${_id}`, {
+        // 보낼 데이터
+        quantity: quantity,
+      }),
+    onSuccess: () => {
+      // 캐시된 데이터 삭제 후 리렌더링
+      queryClient.invalidateQueries({ queryKey: ["carts"] });
+    },
+    onError: (err) => console.error(err),
+  });
+
+  // 장바구니 아이템 체크하기
+  const toggleCartItemCheck = (targetId) => {
+    // 체크한 상품을 장바구니 데이터에서 찾음
+    const cartItem = data.item.find((item) => item._id === targetId);
+
+    // 체크한 상품의 product_id를 checkedCartItems 상태에 추가/제거
+    setCheckedItemsIds((prevCheckedIds) => {
+      const isAlreadyChecked = prevCheckedIds.includes(cartItem.product_id);
+
+      if (isAlreadyChecked) {
+        return prevCheckedIds.filter((id) => id !== cartItem.product_id);
+      }
+      return [...prevCheckedIds, cartItem.product_id];
+    });
+  };
+
+  // 선택한 아이템, 데이터가 변경될 때 상품 금액, 할인 금액 다시 계산
+  useEffect(() => {
+    // 체크한 상품이 없다면 총금액, 할인금액을 0으로 설정하고 빠져나감
+    if (checkedItemsIds.length === 0) {
+      setTotalFees(0);
+      setDiscount(0);
+      return;
+    }
+
+    const { subtotal, totalDiscount } = checkedItemsIds.reduce(
+      (acc, checkedId) => {
+        // 장바구니에서 아이템 찾기
+        const currentCartItem = data.item.find(
+          (item) => item.product_id === checkedId
+        );
+
+        // 해당 아이템의 총 합산 금액 구하기
+        const itemTotal =
+          currentCartItem.quantity * currentCartItem.product.price;
+
+        // 해당 아이템의 할인 금액 구하기
+        const itemDiscount =
+          currentCartItem.quantity *
+          (currentCartItem.product.price -
+            currentCartItem.product.extra.saledPrice);
+
+        return {
+          subtotal: acc.subtotal + itemTotal, // 상품 금액 합계
+          totalDiscount: acc.totalDiscount + itemDiscount, // 할인 금액 합계
+        };
+      },
+      // 초기값 설정
+      { subtotal: 0, totalDiscount: 0 }
+    );
+
+    setTotalFees(subtotal);
+    setDiscount(totalDiscount);
+  }, [checkedItemsIds, data?.item]);
+
+  // 총 결제금액 업데이트
+  useEffect(() => {
+    setTotalPayFees(totalFees - discount);
+  }, [totalFees, discount]);
+
+  if (isLoading) {
+    return (
+      <div className="mt-0 mx-auto text-center">
+        로딩중... <br />
+        잠시만 기다려주세요
+      </div>
+    );
+  }
+  if (isError) {
+    return (
+      <div className="mt-0 mx-auto text-center">
+        에러가 발생했습니다. <br />
+        잠시 후 다시 시도해주세요.
+      </div>
+    );
+  }
+  // 데이터 없을시 null 반환하여 에러 방지
+  if (!data) return null;
+  console.log(data);
+
+  // 최종 배송비 계산
+  const totalShippingFees =
+    data.cost.shippingFees - data.cost.discount.shippingFees;
+
+  const itemList = data.item.map((item) => (
+    <CartItem
+      key={item._id}
+      {...item}
+      register={register}
+      deleteItem={deleteItem}
+      updateItem={updateItem}
+      toggleCartItemCheck={toggleCartItemCheck}
+    />
   ));
 
-  const totalShippingFees =
-    DUMMY_CARTS_ITEMS.cost.shippingFees ===
-    DUMMY_CARTS_ITEMS.cost.discount.shippingFees
-      ? "무료"
-      : DUMMY_CARTS_ITEMS.cost.shippingFees;
+  // 체크한 아이템의 데이터가 담긴 배열을 구매 페이지로 전송
+  const selectItem = () => {
+    if (checkedItemsIds.length === 0) {
+      alert("구매할 물품을 선택하세요");
+      return;
+    }
+
+    // 결제 페이지로 체크한 상품의 데이터 넘기기
+    const selectedItems = checkedItemsIds.map((id) =>
+      // 각각의 id 마다 checkedItemsIds에 담긴 id와 같은 상품을 장바구니에서 찾아서 리턴
+      data.item.find((item) => item.product_id === id)
+    );
+
+    navigate("/payment", {
+      // seletedItems : 체크한 아이템의 아이디가 딤긴 배열
+      // totalFees : 최종 상품 금액
+      // totalShippingFees : 최종 배송비
+      state: {
+        selectedItems,
+        totalFees: totalPayFees,
+        totalShippingFees,
+      },
+    });
+  };
 
   return (
-    <div className="">
-      {cartItems.length > 0 ? (
+    <div>
+      {itemList.length > 0 ? (
         <>
           <section className="py-[14px] px-5 flex gap-[6px] items-center border-b border-gray2">
-            <input type="checkbox" id="checkAll" />
-            <label htmlFor="checkAll" className="grow">
+            <label
+              className="flex items-center cursor-pointer relative gap-2 grow"
+              htmlFor="checkAll"
+            >
+              <Checkbox id="checkAll" name="checkAll" />
               전체 선택 (1/2)
             </label>
-            <Button width="44px" height="25px">
-              삭제
-            </Button>
+            <Button>삭제</Button>
           </section>
-          <section className="px-5 pb-4 border-b-4 border-gray2">
-            {cartItems}
-          </section>
-          <section className="px-5 py-3">
-            <div className="border-b border-gray2">
-              <div className="text-xs flex justify-between mb-3">
-                <span className="text-gray4">총 상품 금액</span>
+          <form onSubmit={handleSubmit(selectItem)}>
+            <section className="px-5 pb-4 border-b-4 border-gray2">
+              {itemList}
+            </section>
+            <section className="px-5 py-3">
+              <div className="border-b border-gray2">
+                <div className="text-xs flex justify-between mb-3">
+                  <span className="text-gray4">총 상품 금액</span>
+                  <span>{totalFees.toLocaleString()}원</span>
+                </div>
+                <div className="text-xs flex justify-between mb-3">
+                  <span className="text-gray4">할인 금액</span>
+                  <span className="text-red1">
+                    {discount.toLocaleString()}원
+                  </span>
+                </div>
+                <div className="text-xs flex justify-between mb-3">
+                  <span className="text-gray4">배송비</span>
+                  <span>
+                    {totalShippingFees === 0 ? "무료" : totalShippingFees}
+                  </span>
+                </div>
+              </div>
+              <div className="flex justify-between mb-3 py-3 text-[16px] font-bold">
+                <span>총 결제 금액</span>
                 <span>
-                  {DUMMY_CARTS_ITEMS.cost.products.toLocaleString()}원
+                  {(totalPayFees + totalShippingFees).toLocaleString()}원
                 </span>
               </div>
-              <div className="text-xs flex justify-between mb-3">
-                <span className="text-gray4">배송비</span>
-                <span>{totalShippingFees}</span>
-              </div>
-            </div>
-            <div className="flex justify-between mb-3 py-3 text-[16px] font-bold">
-              <span>총 결제 금액</span>
-              <span>{DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원</span>
-            </div>
-          </section>
-          <div
-            ref={targetRef}
-            style={{ height: "1px", background: "transparent" }}
-          ></div>
-          <section
-            className={clsx(
-              "max-w-[390px] mx-auto px-5 py-8 bg-gray1 shadow-top fixed left-0 right-0 transition-all duration-150 ease-in-out",
-              showButton ? "bottom-0 opacity-100" : "-bottom-24 opacity-0"
-            )}
-          >
-            <Link to="/payment">
-              <button className="bg-btn-primary py-3 w-full text-white text-xl font-bold rounded-lg">
-                {DUMMY_CARTS_ITEMS.cost.total.toLocaleString()}원 구매하기
-              </button>
-            </Link>
-          </section>
+            </section>
+            <div
+              ref={targetRef}
+              style={{ height: "1px", background: "transparent" }}
+            ></div>
+            <section
+              className={clsx(
+                "max-w-[390px] mx-auto px-5 py-8 bg-gray1 shadow-top fixed left-0 right-0 transition-all duration-150 ease-in-out",
+                showButton ? "bottom-0 opacity-100" : "-bottom-24 opacity-0"
+              )}
+            >
+              <Button isBig={true} type="submit">
+                {totalPayFees.toLocaleString()}원 구매하기
+              </Button>
+            </section>
+          </form>
         </>
       ) : (
         <>
           <section className="pt-[100px] flex flex-col gap-[10px] items-center text-[14px]">
             <span className="text-gray4">담은 상품이 없습니다.</span>
-            <span className="text-bg-primary underline">쇼핑하러 가기</span>
+            <Link to="/" className="text-bg-primary underline">
+              쇼핑하러 가기
+            </Link>
           </section>
         </>
       )}
