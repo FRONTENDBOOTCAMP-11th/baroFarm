@@ -1,7 +1,8 @@
 import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import useUserStore from "@zustand/useUserStore";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -14,6 +15,7 @@ export default function ProductNewPage() {
     setValue,
   } = useForm();
   const { setHeaderContents } = useOutletContext();
+
   const navigate = useNavigate();
   useEffect(() => {
     setHeaderContents({
@@ -31,6 +33,10 @@ export default function ProductNewPage() {
   const formRef = useRef(null);
 
   const queryClient = useQueryClient();
+
+  // zustand store에서 유저 상태 가져옴
+  const user = useUserStore((store) => store.user);
+  const axios = useAxiosInstance();
 
   // access token 하드 코딩
   const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
@@ -76,15 +82,11 @@ export default function ProductNewPage() {
         const formData = new FormData();
         formData.append("attach", item.image[0]);
         try {
-          const uploadImg = await axios.post(
-            `https://11.fesp.shop/files`,
-            formData,
-            {
-              headers: {
-                "client-id": "final04",
-              },
-            }
-          );
+          const uploadImg = await axios.post(`/files`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
           imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
           imageName = uploadImg.data.item[0].name; // 서버에서 반환된 이미지 이름
           imageOriginalName = uploadImg.data.item[0].originalname; // 서버에서 반환된 이미지 원본 이름
@@ -95,13 +97,7 @@ export default function ProductNewPage() {
           );
           throw new Error("Image upload failed.");
         }
-        const codes = await axios.get("https://11.fesp.shop/codes", {
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-            "client-id": "final04",
-          },
-        });
+        const codes = await axios.get("/codes");
         const categoryList = codes.data.item.nested.productCategory.codes;
         const category = categoryList.filter(
           (data) => data.code == item.category
@@ -137,14 +133,7 @@ export default function ProductNewPage() {
             originalname: imageOriginalName,
           },
         };
-        return axios.post("https://11.fesp.shop/seller/products", body, {
-          headers: {
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
-            "Content-Type": "application/json",
-            accept: "application/json",
-            "client-id": "final04",
-          },
-        });
+        return axios.post("/seller/products", body);
       }
     },
     onSuccess: () => {
