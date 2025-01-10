@@ -32,9 +32,6 @@ export default function MyPage() {
 
   const logoutClick = () => {
     //로그아웃 시 데이터 삭제
-    // setData(null); - 태호님 작성
-
-    // navigate("/users/login");
     resetUser();
     navigate("/");
   };
@@ -58,8 +55,6 @@ export default function MyPage() {
     return;
   }
 
-  console.log(data.image);
-
   return (
     <div className="pt-[18px] px-5 mb-[70px]">
       <div className="h-auto pb-4">
@@ -72,7 +67,7 @@ export default function MyPage() {
                     ? url + data.image
                     : "/images/profile/ProfileImage_Sample.svg"
                 }
-                className="mr-5 w-[49px] h-[50px] rounded-full"
+                className="mr-5 w-[49px] h-[50px] rounded-full object-cover"
                 loading="lazy"
               />
               <div>

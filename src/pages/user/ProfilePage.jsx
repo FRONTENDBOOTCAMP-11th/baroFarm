@@ -2,7 +2,6 @@ import HeaderIcon from "@components/HeaderIcon";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import {
   Link,
   useLocation,
@@ -15,8 +14,6 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const axios = useAxiosInstance();
   const url = "https://11.fesp.shop";
-
-  const queryClient = useQueryClient();
 
   const location = useLocation();
   const data = location.state.user;
@@ -59,9 +56,12 @@ export default function ProfilePage() {
       if (item.image && item.image[0]) {
         const formData = new FormData();
         formData.append("attach", item.image[0]);
-        console.log(formData);
         try {
-          const uploadImg = await axios.post(`/files`, formData);
+          const uploadImg = await axios.post(`/files`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
           imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
         } catch (error) {
           console.error(
@@ -78,8 +78,7 @@ export default function ProfilePage() {
     },
     onSuccess: () => {
       alert("프로필 이미지 설정 성공!");
-      // 판매 내역 페이지로 이동하도록 이후 설정
-      navigate("");
+      navigate("/users/mypage");
     },
     onError: (error) => {
       alert(`에러: ${error.message}`);
@@ -110,12 +109,9 @@ export default function ProfilePage() {
               : "/images/profile/ProfileImage_Sample.svg"
           }
           alt="Profile Image"
-          className="w-[100px] h-[100px] rounded-full"
+          className="w-[100px] h-[100px] rounded-full object-cover"
         />
-        <button
-          className="absolute right-0 bottom-[50px]"
-          onClick={setProfileImg}
-        >
+        <button className="absolute right-0 -bottom-2" onClick={setProfileImg}>
           <img
             src="/icons/icon_camera.svg"
             alt="이미지 수정 아이콘"
@@ -128,19 +124,19 @@ export default function ProfilePage() {
           className="hidden"
           onChange={handleFileChange}
         />
-        <div className="mt-[25px] mb-[30px] text-2xl font-bold">
-          {data.name}
-        </div>
+      </div>
+      <div className="mt-[25px] mb-[30px] mx-auto max-w-fit text-2xl font-bold">
+        {data.name}
       </div>
       <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
-        <section>
+        <section className="min-w-[65px]">
           이름 <br />
           성별 <br />
           이메일 <br />
           전화번호 <br />
           주소
         </section>
-        <section className="text-gray5">
+        <section className="text-gray5 break-keep">
           {data.extra.userName} <br />
           {data.extra.gender === "male" ? "남성" : "여성"} <br />
           {data.email} <br />
