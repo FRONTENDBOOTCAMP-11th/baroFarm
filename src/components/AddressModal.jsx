@@ -18,7 +18,10 @@ AddressModal.propTypes = {
     }).isRequired,
     name: PropTypes.string.isRequired,
     _id: PropTypes.number.isRequired,
+    phone: PropTypes.string.isRequired,
   }).isRequired,
+  addressId: PropTypes.number.isRequired,
+  setAddressId: PropTypes.func.isRequired,
 };
 
 export default function AddressModal({
@@ -118,7 +121,7 @@ export default function AddressModal({
           <div className="flex flex-col gap-1">
             <span
               className={
-                addressId === null
+                addressId === 0
                   ? `text-base font-bold text-btn-primary`
                   : `text-base font-medium`
               }
@@ -128,12 +131,12 @@ export default function AddressModal({
             <span className="text-sm text-gray4">{userData.phone}</span>
           </div>
           <div>
-            {addressId === null ? (
+            {addressId === 0 ? (
               <span className="text-sm text-btn-primary font-semibold">
                 선택됨
               </span>
             ) : (
-              <Button onClick={() => setAddressId(null)}>선택</Button>
+              <Button onClick={() => setAddressId(0)}>선택</Button>
             )}
           </div>
         </div>

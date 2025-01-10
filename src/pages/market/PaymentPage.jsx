@@ -19,14 +19,14 @@ export default function PaymentPage() {
   // 헤더 상태 설정 함수
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  // 기본 배송지 상태 임시 토글 기능
-  const [isDefaultAddress, setIsDefaultAddress] = useState(true);
   // 결제 버튼 보이기 상태
   const [showButton, setShowButton] = useState(false);
   // 배송 메모 관리
   const [memo, setMemo] = useState({});
   // 현재 선택한 배송지 아이디
-  const [addressId, setAddressId] = useState(null);
+  const [addressId, setAddressId] = useState(0);
+  // 현재 선택한 배송지
+  const [currentAddress, setCurrentAddress] = useState({});
   // 로그인한 유저 정보 가져오기
   const { user } = useUserStore();
   // targetRef가 보이면 결제버튼을 보이게 함
@@ -145,12 +145,14 @@ export default function PaymentPage() {
             _id: _id,
             quantity: quantity,
             memo: memo,
+            address: currentAddress,
           },
         ],
       }),
-    onSuccess: () => {
+    onSuccess: (res) => {
       // 구매 성공시
       // 장바구니에서 구매한 아이템 삭제
+      console.log(res);
       let purchasedItems = [];
       // 구매 목록의 아이디를 배열에 담고
       selectedItems.forEach((item) => purchasedItems.push(item._id));
@@ -160,6 +162,14 @@ export default function PaymentPage() {
     },
     onError: (err) => console.error(err),
   });
+
+  // 배송지 변경하기
+  useEffect(() => {
+    setCurrentAddress(
+      data?.extra?.addressBook?.find((item) => item.id === addressId)
+    );
+  }, [addressId]);
+  console.log(currentAddress);
 
   if (!data) return null;
 
@@ -195,161 +205,52 @@ export default function PaymentPage() {
       <section className="px-5 py-[14px]">
         <div>
           <h3 className="mb-3 text-sm font-bold">주문자 정보</h3>
-          {/* <button
-            className="bg-blue-200 p-1 rounded-lg mb-2"
-            onClick={() =>
-              setIsDefaultAddress((prevState) => (prevState = !prevState))
-            }
-          >
-            기본 배송지 정보 토글 버튼 ({isDefaultAddress ? "있음" : "없음"})
-          </button> */}
           <div className="flex flex-col gap-5 px-5 py-6 bg-white border-2 border-bg-primary2/50 rounded-[10px] shadow-md mb-6">
-            {isDefaultAddress ? (
-              <>
-                {/* 기본 배송지가 있을 때 표시할 UI */}
-                <div className="flex flex-col gap-[6px]">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-bold">{data?.name}</p>
-                    <Button onClick={() => setIsAddressModalOpen(true)}>
-                      변경
-                    </Button>
-                  </div>
-                  <p className="text-xs text-gray4 font-medium">
-                    {formatPhoneNumber(data?.phone)}
-                  </p>
-                  <p className="text-xs font-medium">{data?.address}</p>
-                  <select
-                    id="memo"
-                    className="text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
-                    name="memo"
-                    onChange={postMemo}
-                  >
-                    <option value="null">배송메모를 선택하세요.</option>
-                    <option value="문 앞에 놓아주세요">
-                      문 앞에 놓아주세요
-                    </option>
-                    <option value="부재시 미리 연락 부탁드려요">
-                      부재시 미리 연락 부탁드려요
-                    </option>
-                    <option value="배송 전 미리 연락해주세요">
-                      배송 전 미리 연락해주세요
-                    </option>
-                    <option value={"직접 입력하기"}>직접 입력하기</option>
-                  </select>
-                  {memo.memo === "직접 입력하기" && (
-                    <input
-                      className="border border-gray3 rounded-md w-full px-2 py-1 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
-                      placeholder="이 곳에 입력하세요."
-                      name="detail"
-                      onChange={postMemo}
-                    />
-                  )}
-                </div>
-              </>
-            ) : (
-              <>
-                {/* 기본 배송지가 없을 때 표시할 UI */}
-                <form className="flex flex-col gap-[10px]">
-                  <div className="flex items-center justify-between">
-                    <label
-                      htmlFor="name"
-                      className="text-xs text-gray4 font-medium shrink-0"
-                    >
-                      이름
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      className="ring-1 ring-gray3 w-[253px] h-[34px] rounded-[5px] bg-white px-2 text-sm placeholder:text-gray2 focus:outline-none focus:ring-1 focus:ring-btn-primary"
-                      placeholder="이름을 입력하세요."
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <label
-                      htmlFor="phone"
-                      className="text-xs text-gray4 font-medium shrink-0"
-                    >
-                      휴대폰
-                    </label>
-                    <input
-                      type="text"
-                      id="phone"
-                      className="ring-1 ring-gray3 w-[253px] h-[34px] rounded-[5px] bg-white px-2 text-sm placeholder:text-gray2 focus:outline-none focus:ring-1 focus:ring-btn-primary"
-                      placeholder="휴대폰 번호를 입력하세요."
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <label
-                      htmlFor="phone"
-                      className="text-xs text-gray4 font-medium shrink-0"
-                    >
-                      주소
-                    </label>
-                    <div className="flex w-[253px] gap-[10px]">
-                      <input
-                        type="text"
-                        id="phone"
-                        className="grow ring-1 ring-gray3 h-[34px] rounded-[5px] bg-white px-2 text-sm placeholder:text-gray2 focus:outline-none focus:ring-1 focus:ring-btn-primary disabled:bg-gray2 disabled:placeholder:text-gray4"
-                        disabled
-                        placeholder="주소를 입력하세요."
-                      />
-                      <Button>주소 검색</Button>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <label
-                      htmlFor="phone"
-                      className="text-xs text-gray4 font-medium shrink-0"
-                    >
-                      상세주소
-                    </label>
-                    <input
-                      type="text"
-                      id="phone"
-                      className="ring-1 ring-gray3 w-[253px] h-[34px] rounded-[5px] bg-white px-2 text-sm placeholder:text-gray2 focus:outline-none focus:ring-1 focus:ring-btn-primary"
-                      placeholder="상세주소(동・층・호수 등)를 입력해주세요."
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="text-xs text-gray4 font-medium shrink-0"></div>
-                    <select
-                      id="memo"
-                      className="text-center w-[253px] bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
-                    >
-                      <option value="null">배송메모를 선택하세요.</option>
-                      <option value="문 앞에 놓아주세요">
-                        문 앞에 놓아주세요
-                      </option>
-                      <option value="부재시 미리 연락 부탁드려요">
-                        부재시 미리 연락 부탁드려요
-                      </option>
-                      <option value="배송 전 미리 연락해주세요">
-                        배송 전 미리 연락해주세요
-                      </option>
-                      <option>직접 입력하기</option>
-                    </select>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="text-xs text-gray4 font-medium shrink-0"></div>
-                    <input
-                      type="text"
-                      id="postMemo"
-                      className="ring-1 ring-gray3 w-[253px] h-[34px] rounded-[5px] bg-white px-2 text-sm placeholder:text-gray2 focus:outline-none focus:ring-1 focus:ring-btn-primary"
-                      placeholder="이 곳에 입력하세요."
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="text-xs text-gray4 font-medium shrink-0"></div>
-                    <div className="flex gap-2 w-[253px] text-sm">
-                      <input type="checkbox" id="saveAddress" />
-                      <label htmlFor="saveAddress">
-                        이 주소를 기본 배송지로 저장
-                      </label>
-                    </div>
-                  </div>
-                </form>
-              </>
-            )}
+            {/* 기본 배송지 렌더링 */}
+            <div className="flex flex-col gap-[6px]">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-bold">
+                  {addressId === 0
+                    ? data?.name
+                    : `${currentAddress?.userName} (${currentAddress?.name})`}
+                </p>
+                <Button onClick={() => setIsAddressModalOpen(true)}>
+                  변경
+                </Button>
+              </div>
+              <p className="text-xs text-gray4 font-medium">
+                {addressId === 0
+                  ? formatPhoneNumber(data?.phone)
+                  : currentAddress?.phone}
+              </p>
+              <p className="text-xs font-medium">
+                {addressId === 0 ? data?.address : currentAddress?.value}
+              </p>
+              <select
+                id="memo"
+                className="text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
+                name="memo"
+                onChange={postMemo}
+              >
+                <option value="null">배송메모를 선택하세요.</option>
+                <option value="문 앞에 놓아주세요">문 앞에 놓아주세요</option>
+                <option value="부재시 미리 연락 부탁드려요">
+                  부재시 미리 연락 부탁드려요
+                </option>
+                <option value="배송 전 미리 연락해주세요">
+                  배송 전 미리 연락해주세요
+                </option>
+                <option value={"직접 입력하기"}>직접 입력하기</option>
+              </select>
+              {memo.memo === "직접 입력하기" && (
+                <input
+                  className="border border-gray3 rounded-md w-full px-2 py-1 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
+                  placeholder="이 곳에 입력하세요."
+                  name="detail"
+                  onChange={postMemo}
+                />
+              )}
+            </div>
           </div>
         </div>
         <div>
