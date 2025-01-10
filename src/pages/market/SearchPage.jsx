@@ -101,6 +101,7 @@ export default function SearchPage() {
             placeholder="검색어를 입력해주세요"
             id="search"
             name="keyword"
+            maxLength={20}
           />
         </div>
       </form>
@@ -113,7 +114,9 @@ export default function SearchPage() {
       </div>
 
       <ul className="mt-2.5 flex items-center flex-wrap gap-2.5 text-sm">
-        <RecentKeywordItem />
+        {recentKeywords.map((keyword) => (
+          <RecentKeywordItem key={keyword} keyword={keyword} onRemove={removeKeyword} />
+        ))}
       </ul>
     </div>
   );
