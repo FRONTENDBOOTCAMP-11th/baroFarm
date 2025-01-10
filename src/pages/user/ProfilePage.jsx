@@ -129,14 +129,14 @@ export default function ProfilePage() {
         {data.name}
       </div>
       <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
-        <section>
+        <section className="min-w-[65px]">
           이름 <br />
           성별 <br />
           이메일 <br />
           전화번호 <br />
           주소
         </section>
-        <section className="text-gray5">
+        <section className="text-gray5 break-keep">
           {data.extra.userName} <br />
           {data.extra.gender === "male" ? "남성" : "여성"} <br />
           {data.email} <br />
