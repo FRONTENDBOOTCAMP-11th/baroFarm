@@ -36,13 +36,12 @@ export default function BoardPageDetail({ item }) {
     return formatRelativeTime(createdDate);
   };
 
-  const newDate = () => createdTime(item.createdAt);
-  console.log(item);
+  const newDate = createdTime(item.createdAt);
   return (
     <div className="relative">
       <Link
         to={`${item._id}`}
-        state={{ newDate, repliesCount: item.repliesCount }}
+        state={{ newDate: newDate, repliesCount: item.repliesCount }}
       >
         <div
           ref={containerRef}
@@ -52,7 +51,7 @@ export default function BoardPageDetail({ item }) {
             <img
               src={`https://11.fesp.shop${item.user.image}`}
               alt="ProfileImage"
-              className="w-6 h-6 rounded-full"
+              className="w-6 h-6 rounded-full object-cover"
             />
             <span className="mx-[5px] text-sm">{item.user.name}</span>
 
@@ -72,7 +71,7 @@ export default function BoardPageDetail({ item }) {
         </div>
 
         <div className="text-[10px] text-gray4 text-left mb-5 mt-1">
-          {newDate()}
+          {newDate}
         </div>
       </Link>
       <div className="h-[7px] bg-gray1 -mx-5"></div>

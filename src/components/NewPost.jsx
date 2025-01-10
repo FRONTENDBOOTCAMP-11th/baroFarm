@@ -1,3 +1,6 @@
+import useAxiosInstance from "@hooks/useAxiosInstance";
+import { useQuery } from "@tanstack/react-query";
+import useUserStore from "@zustand/useUserStore";
 import PropTypes from "prop-types";
 import { useState } from "react";
 
@@ -14,17 +17,36 @@ NewPost.propTypes = {
 
 export default function NewPost({ isBoard, handleSubmit, register }) {
   const [selectedStar, setSelectedStar] = useState(0);
+  const { user } = useUserStore();
+  const axios = useAxiosInstance();
   const handleClick = (index) => setSelectedStar(index);
+
+  const { data } = useQuery({
+    queryKey: ["user", user?._id],
+    queryFn: () => axios.get(`/users/${user._id}`),
+    select: (res) => res.data.item,
+    staleTime: 1000 * 10,
+    enabled: !!user,
+  });
+
+  if (!data) {
+    //이 아래에는 로딩 페이지
+    return;
+  }
 
   return (
     <div className="p-5">
       <div className="flex flex-row items-center">
         <img
-          src="/images/profile/Profile_sample_1.jpg"
+          src={
+            data.image
+              ? `https://11.fesp.shop${data.image}`
+              : "/images/profile/ProfileImage_Sample.svg"
+          }
           alt="ProfileImage"
-          className="w-6 h-6 rounded-full border"
+          className="w-6 h-6 rounded-full border object-cover"
         />
-        <span className="mx-[5px] text-sm">온도감</span>
+        <span className="mx-[5px] text-sm">{data.name}</span>
       </div>
 
       <form onSubmit={handleSubmit}>

@@ -2,7 +2,6 @@ import HeaderIcon from "@components/HeaderIcon";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import {
   Link,
   useLocation,
@@ -15,8 +14,6 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const axios = useAxiosInstance();
   const url = "https://11.fesp.shop";
-
-  const queryClient = useQueryClient();
 
   const location = useLocation();
   const data = location.state.user;

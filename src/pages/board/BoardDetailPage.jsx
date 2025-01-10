@@ -60,7 +60,7 @@ export default function BoardDetailPage() {
         <img
           src={`https://11.fesp.shop${data.user.image}`}
           alt="ProfileImage"
-          className="w-6 h-6 rounded-full"
+          className="w-6 h-6 rounded-full object-cover"
         />
         <span className="mx-[5px] text-sm">{data.user.name}</span>
         <span className="text-[10px] ml-auto self-start text-gray4">

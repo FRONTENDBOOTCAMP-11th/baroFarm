@@ -32,9 +32,6 @@ export default function MyPage() {
 
   const logoutClick = () => {
     //로그아웃 시 데이터 삭제
-    // setData(null); - 태호님 작성
-
-    // navigate("/users/login");
     resetUser();
     navigate("/");
   };
