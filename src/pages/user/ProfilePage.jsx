@@ -59,9 +59,12 @@ export default function ProfilePage() {
       if (item.image && item.image[0]) {
         const formData = new FormData();
         formData.append("attach", item.image[0]);
-        console.log(formData);
         try {
-          const uploadImg = await axios.post(`/files`, formData);
+          const uploadImg = await axios.post(`/files`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
           imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
         } catch (error) {
           console.error(

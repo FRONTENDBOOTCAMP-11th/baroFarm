@@ -58,8 +58,6 @@ export default function MyPage() {
     return;
   }
 
-  console.log(data.image);
-
   return (
     <div className="pt-[18px] px-5 mb-[70px]">
       <div className="h-auto pb-4">
