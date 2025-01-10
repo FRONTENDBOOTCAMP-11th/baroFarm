@@ -81,8 +81,7 @@ export default function ProfilePage() {
     },
     onSuccess: () => {
       alert("프로필 이미지 설정 성공!");
-      // 판매 내역 페이지로 이동하도록 이후 설정
-      navigate("");
+      navigate("/users/mypage");
     },
     onError: (error) => {
       alert(`에러: ${error.message}`);
@@ -113,7 +112,7 @@ export default function ProfilePage() {
               : "/images/profile/ProfileImage_Sample.svg"
           }
           alt="Profile Image"
-          className="w-[100px] h-[100px] rounded-full"
+          className="w-[100px] h-[100px] rounded-full object-cover"
         />
         <button
           className="absolute right-0 bottom-[50px]"

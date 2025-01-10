@@ -70,7 +70,7 @@ export default function MyPage() {
                     ? url + data.image
                     : "/images/profile/ProfileImage_Sample.svg"
                 }
-                className="mr-5 w-[49px] h-[50px] rounded-full"
+                className="mr-5 w-[49px] h-[50px] rounded-full object-cover"
                 loading="lazy"
               />
               <div>
