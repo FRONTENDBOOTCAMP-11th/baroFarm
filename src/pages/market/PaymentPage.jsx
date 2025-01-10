@@ -25,8 +25,6 @@ export default function PaymentPage() {
   const [memo, setMemo] = useState({});
   // 현재 선택한 배송지 아이디
   const [addressId, setAddressId] = useState(0);
-  // 현재 선택한 배송지
-  const [currentAddress, setCurrentAddress] = useState({});
   // 로그인한 유저 정보 가져오기
   const { user } = useUserStore();
   // targetRef가 보이면 결제버튼을 보이게 함
@@ -71,6 +69,13 @@ export default function PaymentPage() {
     queryFn: () => axios.get(`/users/${user._id}`),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
+  });
+
+  // 현재 선택한 배송지 (초기값은 유저의 기본정보로 설정)
+  const [currentAddress, setCurrentAddress] = useState({
+    userName: data?.name,
+    phone: data?.phone,
+    value: data?.address,
   });
 
   // 스크롤에 따라 결제버튼 보이게 하기
@@ -158,7 +163,10 @@ export default function PaymentPage() {
       selectedItems.forEach((item) => purchasedItems.push(item._id));
       // 배열을 삭제 요청에 전달
       deleteItem.mutate(purchasedItems);
-      openModal(); // 모달창으로 안내
+      navigate("/complete", {
+        state: { product: location.state, totalFees, memo, currentAddress },
+      });
+      // openModal(); // 모달창으로 안내
     },
     onError: (err) => console.error(err),
   });
@@ -269,14 +277,16 @@ export default function PaymentPage() {
             <div className="text-sm flex justify-between">
               <span className="text-gray4">배송비</span>
               <span>
-                {totalShippingFees === 0 ? "무료" : totalShippingFees}
+                {totalShippingFees === 0
+                  ? "무료"
+                  : `${totalShippingFees.toLocaleString()}원`}
               </span>
             </div>
           </div>
         </div>
         <div className="flex justify-between mb-3 py-3 text-lg font-bold">
           <span>총 결제 금액</span>
-          <span>{totalFees.toLocaleString()}원</span>
+          <span>{(totalFees + totalShippingFees).toLocaleString()}원</span>
         </div>
       </section>
       <div
@@ -295,7 +305,7 @@ export default function PaymentPage() {
             setIsPayModalOpen(true);
           }}
         >
-          {totalFees.toLocaleString()}원 결제하기
+          {(totalFees + totalShippingFees).toLocaleString()}원 결제하기
         </Button>
         <PaymentModal
           isOpen={isPayModalOpen}

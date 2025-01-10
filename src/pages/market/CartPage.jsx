@@ -263,7 +263,9 @@ export default function CartPage() {
                 <div className="text-xs flex justify-between mb-3">
                   <span className="text-gray4">배송비</span>
                   <span>
-                    {totalShippingFees === 0 ? "무료" : totalShippingFees}
+                    {totalShippingFees === 0
+                      ? "무료"
+                      : `${totalShippingFees.toLocaleString()}원`}
                   </span>
                 </div>
               </div>
@@ -285,7 +287,7 @@ export default function CartPage() {
               )}
             >
               <Button isBig={true} type="submit">
-                {totalPayFees.toLocaleString()}원 구매하기
+                {(totalPayFees + totalShippingFees).toLocaleString()}원 구매하기
               </Button>
             </section>
           </form>
