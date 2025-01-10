@@ -54,7 +54,7 @@ export default function LoginPage() {
         refreshToken: user.token.refreshToken,
       });
 
-      alert(res.data.item.name + "님, 로그인 되었습니다.");
+      alert(user.name + "님, 로그인 되었습니다.");
       // location.state?.from: 로그인이 필요한 페이지에서 전달받은 리다이렉트 경로
       // ⭐️ 로그인이 필요한 페이지에서는 navigate('/users/login', { state: { from: 현재경로 } })로 전달해야 함
       // 전달받은 경로가 있으면 해당 페이지로, 없으면 메인("/")으로 이동
