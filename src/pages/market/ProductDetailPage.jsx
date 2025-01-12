@@ -4,12 +4,12 @@ import {
   useOutletContext,
   Link,
   useParams,
-  useLocation,
 } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 import { useLikeToggle } from "@hooks/useLikeToggle";
+import { useCategory } from "@hooks/useCategory";
 
 import PurchaseModal from "@components/PurchaseModal";
 import Modal from "@components/Modal";
@@ -32,19 +32,6 @@ export default function ProductDetailPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
-      title: "카테고리",
-      rightChild: (
-        <>
-          <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
-          <HeaderIcon name="cart_empty" onClick={() => navigate("/cart")} />
-        </>
-      ),
-    });
-  }, []);
-
   const {
     data: product,
     isLoading,
@@ -65,6 +52,20 @@ export default function ProductDetailPage() {
   });
 
   const { isLiked, handleLike } = useLikeToggle(product);
+  const categoryTitle = useCategory(product);
+
+  useEffect(() => {
+    setHeaderContents({
+      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      title: categoryTitle,
+      rightChild: (
+        <>
+          <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
+          <HeaderIcon name="cart_empty" onClick={() => navigate("/cart")} />
+        </>
+      ),
+    });
+  }, [product, categoryTitle]);
 
   const purchaseModalRef = useRef();
   const modalRef = useRef();
