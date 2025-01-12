@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 
 export const useLikeToggle = (product) => {
-  const [isLiked, setIsLiked] = useState(product.myBookmarkId || false);
+  const [isLiked, setIsLiked] = useState(!!product?.myBookmarkId);
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setIsLiked(!!product?.myBookmarkId);
+  }, [product]);
 
   const { mutate: addLike } = useMutation({
     mutationFn: async () => {
+      if (!product) return;
       const response = await axios.post(
         `https://11.fesp.shop/bookmarks/product`,
         {
@@ -38,6 +43,7 @@ export const useLikeToggle = (product) => {
 
   const { mutate: removeLike } = useMutation({
     mutationFn: async () => {
+      if (!product || !product.myBookmarkId) return;
       const response = await axios.delete(
         `https://11.fesp.shop/bookmarks/${product.myBookmarkId}`,
         {

@@ -31,11 +31,7 @@ export default function Product(product) {
   const navigate = useNavigate();
 
   const goDetailPage = () => {
-    navigate(`/product/${product._id}`, {
-      state: {
-        product,
-      },
-    });
+    navigate(`/product/${product._id}`);
   };
 
   const { isLiked, handleLike } = useLikeToggle(product);

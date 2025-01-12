@@ -64,6 +64,8 @@ export default function ProductDetailPage() {
     },
   });
 
+  const { isLiked, handleLike } = useLikeToggle(product);
+
   const purchaseModalRef = useRef();
   const modalRef = useRef();
 
@@ -75,11 +77,6 @@ export default function ProductDetailPage() {
     modalRef.current.open();
     purchaseModalRef.current.close();
   };
-
-  const location = useLocation();
-  const { product: preProduct } = location.state;
-
-  const { isLiked, handleLike } = useLikeToggle(preProduct);
 
   const [count, setCount] = useState(1);
 
@@ -118,8 +115,6 @@ export default function ProductDetailPage() {
   if (isLoading) return <div>Loading...</div>;
   if (isError || !product) return <div>Error loading product</div>;
 
-  const formattedPrice = product.extra.saledPrice.toLocaleString();
-
   return (
     <>
       <img
@@ -152,7 +147,7 @@ export default function ProductDetailPage() {
             {product.price.toLocaleString()}원
           </span>
           <p className="font-extrabold text-xl text-btn-primary">
-            {formattedPrice}원
+            {product.extra.saledPrice.toLocaleString()}원
           </p>
         </div>
       </section>
