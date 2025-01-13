@@ -36,14 +36,12 @@ export default function CommentItem({ item }) {
           className="w-6 h-6 rounded-full object-cover"
         />
         <span className="mx-[5px] text-sm">{item.user.name}</span>
-        <span className="text-[10px] mt-[6px] ml-auto text-gray4">
-          {newDate}
-        </span>
+        <span className="text-[10px] ml-auto text-gray4">{newDate}</span>
       </div>
       <div className="flex pb-5 border-b-[1px] border-gray3/50 px-[15px]">
-        <div className="mt-3 text-xs text-gray5">{item.content}</div>
+        <div className="mt-3 text-xs text-gray5 pl-5">{item.content}</div>
         {user._id === item.user._id && (
-          <span className="ml-auto text-xs mt-auto">
+          <span className="ml-auto text-xs mt-auto flex-shrink-0">
             <button>수정</button> | <button>삭제</button>
           </span>
         )}
