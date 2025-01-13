@@ -61,14 +61,16 @@ export default function ProductNewReviewPage() {
           throw new Error("Upload failed.");
         }
         const body = {
-          order_id: order_id,
-          product_id: _id,
+          order_id: parseInt(order_id),
+          product_id: parseInt(_id),
           rating: rating,
           content: item.content,
           extra: {
             image: imageUrl,
           },
         };
+
+        console.log(body);
         return axios.post(`/replies`, body);
       } else {
         throw new Error("이미지를 업로드해야 합니다");

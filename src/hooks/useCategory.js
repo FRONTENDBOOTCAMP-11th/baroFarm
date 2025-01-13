@@ -24,7 +24,7 @@ export const useCategory = (product) => {
   });
 
   const category = categoryData?.productCategory.codes.find(
-    (item) => item.code === product.extra.category
+    (item) => item.code === product.extra?.category
   );
 
   return category?.value;
