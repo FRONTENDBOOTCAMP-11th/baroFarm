@@ -13,14 +13,26 @@ NewPost.propTypes = {
   isBoard: PropTypes.bool,
   handleSubmit: PropTypes.func,
   register: PropTypes.func.isRequired,
+  handleRating: PropTypes.func.isRequired,
 };
 
-export default function NewPost({ isBoard, handleSubmit, register }) {
-  const [selectedStar, setSelectedStar] = useState(0);
+export default function NewPost({
+  isBoard,
+  handleSubmit,
+  register,
+  handleRating,
+}) {
   const { user } = useUserStore();
   const axios = useAxiosInstance();
-  const handleClick = (index) => setSelectedStar(index);
 
+  const [selectedStar, setSelectedStar] = useState(0);
+  const [rating, setRating] = useState(0);
+
+  const handleClick = (index) => {
+    setSelectedStar(index);
+    setRating(index);
+    handleRating(index);
+  };
   const { data } = useQuery({
     queryKey: ["user", user?._id],
     queryFn: () => axios.get(`/users/${user._id}`),
