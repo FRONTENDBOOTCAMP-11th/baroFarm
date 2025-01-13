@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 const BoardDetailPage = lazy(() => import("@pages/board/BoardDetailPage"));
 const BoardNewPage = lazy(() => import("@pages/board/BoardNewPage"));
+const BoardEditPage = lazy(() => import("@pages/board/BoardEditPage"));
 const BoardPage = lazy(() => import("@pages/board/BoardPage"));
 const CategoryPage = lazy(() => import("@pages/market/CategoryPage"));
 const ProductDetailPage = lazy(() => import("@pages/market/ProductDetailPage"));
@@ -96,6 +97,7 @@ const router = createBrowserRouter(
             { index: true, element: <BoardPage /> },
             { path: "new", element: <BoardNewPage /> },
             { path: ":_id", element: <BoardDetailPage /> },
+            { path: ":_id/edit", element: <BoardEditPage /> },
           ],
         },
       ],

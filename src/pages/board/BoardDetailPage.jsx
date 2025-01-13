@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import {
+  Link,
   useLocation,
   useNavigate,
   useOutletContext,
@@ -59,13 +60,13 @@ export default function BoardDetailPage() {
 
   const deletePost = async () => {
     if (confirm("게시글을 삭제하시겠습니까?")) {
-      await axios.delete(`/posts/${_id}`);
-      alert("게시글 삭제가 완료되었습니다.");
-      navigate("/board");
+      const response = await axios.delete(`/posts/${_id}`);
+      if (response.status === 200) {
+        alert("게시글 삭제가 완료되었습니다.");
+        navigate("/board");
+      }
     }
   };
-
-  const editPost = () => {};
 
   return (
     <div className="mx-5">
@@ -87,8 +88,10 @@ export default function BoardDetailPage() {
       />
       {data.user._id === user._id && (
         <div className="text-right text-xs">
-          <button onClick={editPost}>수정</button> |{" "}
-          <button onClick={deletePost}>삭제</button>
+          <Link to="edit" state={{ item: data }}>
+            수정
+          </Link>{" "}
+          | <button onClick={deletePost}>삭제</button>
         </div>
       )}
       <Comment repliesCount={repliesCount} />

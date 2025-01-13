@@ -55,7 +55,8 @@ export default function BoardNewPage() {
         throw new Error("이미지를 업로드해야 합니다");
       }
     },
-    onSuccess: () => {
+    onSuccess: (res) => {
+      console.log("data", res.data);
       alert("게시물이 등록되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["posts", "community"] });
       navigate(`/board`);
