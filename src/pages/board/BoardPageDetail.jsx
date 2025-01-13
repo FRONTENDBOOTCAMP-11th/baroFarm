@@ -41,7 +41,11 @@ export default function BoardPageDetail({ item }) {
         >
           <div className="flex flex-row mt-5 items-center">
             <img
-              src={`https://11.fesp.shop${item.user.image}`}
+              src={
+                item.user.image
+                  ? `https://11.fesp.shop${item.user.image}`
+                  : "/images/profile/ProfileImage_Sample.svg"
+              }
               alt="ProfileImage"
               className="w-6 h-6 rounded-full object-cover"
             />

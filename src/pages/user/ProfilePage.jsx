@@ -1,6 +1,7 @@
 import HeaderIcon from "@components/HeaderIcon";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useUserStore from "@zustand/useUserStore";
 import { useEffect, useState } from "react";
 import {
   Link,
@@ -17,6 +18,9 @@ export default function ProfilePage() {
 
   const location = useLocation();
   const data = location.state.user;
+
+  /// store에서 user 상태를 초기화하는 함수 가져오기
+  const resetUser = useUserStore((store) => store.resetUser);
 
   useEffect(() => {
     setHeaderContents({
@@ -77,7 +81,8 @@ export default function ProfilePage() {
       }
     },
     onSuccess: () => {
-      alert("프로필 이미지 설정 성공!");
+      alert("프로필 이미지 설정 성공!\n설정 적용을 위해 로그아웃합니다");
+      resetUser();
       navigate("/users/mypage");
     },
     onError: (error) => {
