@@ -36,6 +36,7 @@ export default function BoardPageDetail({ item }) {
     return formatRelativeTime(createdDate);
   };
 
+  console.log(item);
   const newDate = createdTime(item.createdAt);
   return (
     <div className="relative">

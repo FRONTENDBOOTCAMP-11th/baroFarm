@@ -5,10 +5,10 @@ import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 
 Comment.propTypes = {
-  repliesCount: PropTypes.number.isRequired,
+  replies: PropTypes.array.isRequired,
 };
 
-export default function Comment({ repliesCount }) {
+export default function Comment({ replies = {} }) {
   const { _id } = useParams();
   const axios = useAxiosInstance();
 
@@ -19,20 +19,19 @@ export default function Comment({ repliesCount }) {
     staleTime: 1000 * 10,
   });
 
+  const repliesList = replies.map((item) => (
+    <CommentItem key={item._id} item={item}></CommentItem>
+  ));
+
   return (
     <section className="pt-5">
-      <span className="font-semibold">댓글 ({repliesCount})</span>
-      {!repliesCount && (
+      <span className="font-semibold">댓글 ({replies.length})</span>
+      {replies.length === 0 && (
         <div className="h-[85px] flex justify-center items-center">
           아직 댓글이 없습니다!
         </div>
       )}
-      {repliesCount && (
-        <>
-          <CommentItem />
-          <CommentItem />
-        </>
-      )}
+      {replies.length !== 0 && repliesList}
     </section>
   );
 }
