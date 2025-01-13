@@ -1,10 +1,12 @@
 import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import Comment from "@pages/board/Comment";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import {
+  Link,
   useLocation,
   useNavigate,
   useOutletContext,
@@ -18,10 +20,12 @@ export default function BoardDetailPage() {
   const location = useLocation();
   const newDate = location.state?.newDate;
   const repliesCount = location.state?.repliesCount;
+  const { user } = useUserStore();
+  const axios = useAxiosInstance();
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      leftChild: <HeaderIcon name="back" onClick={() => navigate("/board")} />,
       title: "게시글",
       rightChild: (
         <>
@@ -31,7 +35,7 @@ export default function BoardDetailPage() {
     });
   }, []);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["posts", _id],
     queryFn: () =>
       axios.get(`https://11.fesp.shop/posts/${_id}`, {
@@ -54,7 +58,15 @@ export default function BoardDetailPage() {
     );
   }
 
-  console.log(data);
+  const deletePost = async () => {
+    if (confirm("게시글을 삭제하시겠습니까?")) {
+      const response = await axios.delete(`/posts/${_id}`);
+      if (response.status === 200) {
+        alert("게시글 삭제가 완료되었습니다.");
+        navigate("/board");
+      }
+    }
+  };
 
   return (
     <div className="mx-5">
@@ -74,9 +86,14 @@ export default function BoardDetailPage() {
         className="relative mt-10 mb-1 rounded-md"
         src={`https://11.fesp.shop${data.image}`}
       />
-      <div className="text-right text-xs">
-        <button>수정</button> | <button>삭제</button>
-      </div>
+      {data.user._id === user?._id && (
+        <div className="text-right text-xs">
+          <Link to="edit" state={{ data: data }}>
+            수정
+          </Link>{" "}
+          | <button onClick={deletePost}>삭제</button>
+        </div>
+      )}
       <Comment repliesCount={repliesCount} />
 
       <form className="h-[65px] flex items-center px-5 -mx-5">
