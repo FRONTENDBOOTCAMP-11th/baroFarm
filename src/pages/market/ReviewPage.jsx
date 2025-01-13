@@ -86,7 +86,7 @@ export default function ReviewPage() {
 
       <section className="py-5">
         <p className="font-bold pl-5 pb-1">후기 {product.replies.length}개</p>
-        <button
+        {/* <button
           className={`pl-5 text-sm font-semibold ${
             sortOrder === "best" ? "text-bg-primary" : "text-gray4"
           }`}
@@ -101,7 +101,7 @@ export default function ReviewPage() {
           onClick={() => handleSort("new")}
         >
           최신순
-        </button>
+        </button> */}
         {product.replies.map((reply) => (
           <ReviewItem
             key={reply._id}
