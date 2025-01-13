@@ -5,7 +5,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import PortOne from "@portone/browser-sdk/v2";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 
@@ -202,7 +202,7 @@ export default function AddressModal({
       />
 
       {/* 모달창 */}
-      <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+      <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md max-h-[80vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">배송지 목록</h2>
           <button
