@@ -35,11 +35,7 @@ export default function ProductNewPage() {
   const queryClient = useQueryClient();
 
   // zustand store에서 유저 상태 가져옴
-  const user = useUserStore((store) => store.user);
   const axios = useAxiosInstance();
-
-  // access token 하드 코딩
-  const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 
   // 숫자만 남기기
   const handlePriceChange = (e) => {
