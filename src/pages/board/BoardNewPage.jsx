@@ -85,6 +85,7 @@ export default function BoardNewPage() {
     },
     onError: (err) => {
       console.error(err);
+      alert(err);
     },
   });
 
