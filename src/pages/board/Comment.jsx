@@ -2,6 +2,7 @@ import Button from "@components/Button";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import CommentItem from "@pages/board/CommentItem";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import useUserStore from "@zustand/useUserStore";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";

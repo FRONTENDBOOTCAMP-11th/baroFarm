@@ -1,21 +1,50 @@
-import createdTime from "@pages/board/createdTime";
+import createdTime from "@components/createdTime";
+import useAxiosInstance from "@hooks/useAxiosInstance";
+import { useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import PropTypes from "prop-types";
+import { useNavigate, useParams } from "react-router-dom";
 
 CommentItem.propTypes = {
-  item: PropTypes.shape(),
+  item: PropTypes.shape({
+    createdAt: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      image: PropTypes.string,
+      _id: PropTypes.number.isRequired,
+    }).isRequired,
+    content: PropTypes.string.isRequired,
+    _id: PropTypes.number.isRequired,
+  }),
 };
 
 export default function CommentItem({ item }) {
   const { user } = useUserStore();
+  const axios = useAxiosInstance();
+  const { _id } = useParams();
+  const queryClient = useQueryClient();
   console.log(item);
+
+  const deleteComment = async () => {
+    if (confirm("댓글을 삭제하시겠습니까?")) {
+      const response = await axios.delete(`/posts/${_id}/replies/${item._id}`);
+      if (response.status === 200) {
+        alert("댓글 삭제가 완료되었습니다.");
+        queryClient.invalidateQueries({ queryKey: ["posts", _id] });
+      }
+    }
+  };
 
   const newDate = createdTime(item.createdAt);
   return (
     <>
       <div className="flex flex-row mt-5 px-[15px] items-center">
         <img
-          src={`https://11.fesp.shop${item.user.image}`}
+          src={
+            item.user.image
+              ? `https://11.fesp.shop${item.user.image}`
+              : "/images/profile/ProfileImage_Sample.svg"
+          }
           alt="ProfileImage"
           className="w-6 h-6 rounded-full object-cover"
         />
@@ -26,9 +55,9 @@ export default function CommentItem({ item }) {
       </div>
       <div className="flex pb-5 border-b-[1px] border-gray3/50 px-[15px]">
         <div className="mt-3 text-xs text-gray5 pl-5">{item.content}</div>
-        {user._id === item.user._id && (
+        {user?._id === item.user._id && (
           <span className="ml-auto text-xs mt-auto flex-shrink-0">
-            <button>수정</button> | <button>삭제</button>
+            <button onClick={deleteComment}>삭제</button>
           </span>
         )}
       </div>

@@ -3,6 +3,7 @@ import HeaderIcon from "@components/HeaderIcon";
 import NewPost from "@components/NewPost";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -27,6 +28,15 @@ export default function BoardEditPage() {
       title: "게시글 수정하기",
     });
   }, []);
+
+  // Zustand store에서 user 상태를 가져옴
+  const user = useUserStore((store) => store.user);
+  // 익명의 사용자가 편집 페이지에 접근하는 것을 방지
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, [user]);
 
   const checkImg = (file) => {
     const validTypes = [

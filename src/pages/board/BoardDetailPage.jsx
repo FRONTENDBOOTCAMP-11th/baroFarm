@@ -1,7 +1,7 @@
 import HeaderIcon from "@components/HeaderIcon";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import Comment from "@pages/board/Comment";
-import createdTime from "@pages/board/createdTime";
+import createdTime from "@components/createdTime";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
@@ -41,7 +41,7 @@ export default function BoardDetailPage() {
   if (isLoading) {
     return (
       <div className="mt-0 mx-auto text-center">
-        로딩중... <br />
+        로딩중..... <br />
         잠시만 기다려주세요
       </div>
     );
@@ -63,7 +63,11 @@ export default function BoardDetailPage() {
     <div className="mx-5">
       <div className="flex flex-row mt-5 items-center">
         <img
-          src={`https://11.fesp.shop${data.user.image}`}
+          src={
+            data.user.image
+              ? `https://11.fesp.shop${data.user.image}`
+              : "/images/profile/ProfileImage_Sample.svg"
+          }
           alt="ProfileImage"
           className="w-6 h-6 rounded-full object-cover"
         />

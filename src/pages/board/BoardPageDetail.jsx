@@ -1,10 +1,20 @@
-import createdTime from "@pages/board/createdTime";
+import createdTime from "@components/createdTime";
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 BoardPageDetail.propTypes = {
-  item: PropTypes.shape(),
+  item: PropTypes.shape({
+    createdAt: PropTypes.string.isRequired,
+    _id: PropTypes.number.isRequired,
+    repliesCount: PropTypes.number.isRequired,
+    content: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      image: PropTypes.string,
+    }),
+    image: PropTypes.string.isRequired,
+  }),
 };
 
 export default function BoardPageDetail({ item }) {
@@ -31,7 +41,11 @@ export default function BoardPageDetail({ item }) {
         >
           <div className="flex flex-row mt-5 items-center">
             <img
-              src={`https://11.fesp.shop${item.user.image}`}
+              src={
+                item.user.image
+                  ? `https://11.fesp.shop${item.user.image}`
+                  : "/images/profile/ProfileImage_Sample.svg"
+              }
               alt="ProfileImage"
               className="w-6 h-6 rounded-full object-cover"
             />
