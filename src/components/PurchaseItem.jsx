@@ -1,9 +1,10 @@
 import PhotoReviewItem from "@components/PhotoReviewItem";
 import { Link } from "react-router-dom";
 
-export default function PurchaseItem() {
+export default function PurchaseItem(product) {
   const isReviewed = false;
 
+  console.log(product);
   return (
     <section className="flex gap-5 border-b-[0.5px] border-gray2 py-3">
       <PhotoReviewItem />
