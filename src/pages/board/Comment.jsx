@@ -8,7 +8,7 @@ Comment.propTypes = {
   replies: PropTypes.array.isRequired,
 };
 
-export default function Comment({ replies = {} }) {
+export default function Comment({ replies = [] }) {
   const { _id } = useParams();
   const axios = useAxiosInstance();
 
@@ -27,7 +27,7 @@ export default function Comment({ replies = {} }) {
     <section className="pt-5">
       <span className="font-semibold">댓글 ({replies.length})</span>
       {replies.length === 0 && (
-        <div className="h-[85px] flex justify-center items-center">
+        <div className="h-[85px]  flex justify-center items-center border-b-[1px] border-gray3/50">
           아직 댓글이 없습니다!
         </div>
       )}

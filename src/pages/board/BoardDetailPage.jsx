@@ -19,7 +19,6 @@ export default function BoardDetailPage() {
   const { _id } = useParams();
   const location = useLocation();
   const newDate = location.state?.newDate;
-  const repliesCount = location.state?.repliesCount;
   const { user } = useUserStore();
   const axios = useAxiosInstance();
 
