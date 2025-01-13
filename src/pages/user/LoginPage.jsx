@@ -139,7 +139,7 @@ export default function LoginPage() {
         {errors.password && <p className="text-red1 text-xs -mt-3 mb-4">{errors.password.message}</p>}
         <label className="mb-8 flex items-center gap-1 font-normal">
           <input
-            className="w-5 h-5 mr-1 rounded-full appearance-none bg-gray2 checked:bg-btn-primary checked:bg-[url('/icons/icon_check_white.svg')] checked:bg-center checked:bg-no-repeat cursor-pointer "
+            className="w-5 h-5 mr-1 rounded-full appearance-none bg-gray2  bg-[url('/icons/icon_check_white.svg')] bg-center bg-no-repeat  checked:bg-btn-primary checked:bg-[url('/icons/icon_check_white.svg')] checked:bg-center checked:bg-no-repeat cursor-pointer "
             type="checkbox"
             checked={rememberMe}
             onChange={(e) => {
@@ -162,6 +162,17 @@ export default function LoginPage() {
           </button>
         </div>
       </form>
+
+      <div className="mb-5 w-full h-[3.25rem] m-auto">
+        <button
+          type="button"
+          className="w-full h-[3.25rem] text-center text-xl rounded-full bg-yellow1 font-medium flex items-center justify-center gap-1"
+        >
+          {/* 이미지가 장식 목적이고 옆의 텍스트가 이미 충분한 의미를 전달하고 있기 때문에 alt = "" 지정*/}
+          <img className="w-8 h-8" src="/images/login/kakaoLogo.png" alt="" />
+          <span>카카오 1초 로그인</span>
+        </button>
+      </div>
 
       <div className="mb-5 w-full h-[3.25rem] m-auto">
         <Link
