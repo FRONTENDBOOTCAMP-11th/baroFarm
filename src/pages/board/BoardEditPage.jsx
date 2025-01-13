@@ -1,30 +1,33 @@
+import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
 import NewPost from "@components/NewPost";
 import useAxiosInstance from "@hooks/useAxiosInstance";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import useUserStore from "@zustand/useUserStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 
-export default function BoardNewPage() {
+export default function BoardEditPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
-  const isBoard = true;
-  const queryClient = useQueryClient();
-  const { user } = useUserStore();
-
+  const location = useLocation();
+  const data = location.state.data;
+  const { _id } = useParams();
   const axios = useAxiosInstance();
-
+  const queryClient = useQueryClient();
+  const { register, handleSubmit } = useForm();
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
-      title: "새 글 작성",
+      title: "게시글 수정하기",
     });
   }, []);
 
-  //업로드되는 파일은 이미지 파일로 제한
   const checkImg = (file) => {
     const validTypes = [
       "image/jpeg",
@@ -40,12 +43,13 @@ export default function BoardNewPage() {
     return false;
   };
 
-  const addItem = useMutation({
+  const editPost = useMutation({
     mutationFn: async (item) => {
       let imageUrl = null;
 
+      // 이미지 변경을 진행했을 경우 처음 등록할 때와 같이 업로드를 진행한 후 body에 imgURL을 추가
+      // 단, 이미지 업로드는 필수가 아님
       if (item.image && item.image[0]) {
-        // 없로드되는 파일은 이미지로 제한
         if (checkImg(item.image[0])) {
           throw new Error(
             "jpeg, jpg, png, gif, webp, svg 파일을 업로드해야 합니다."
@@ -60,6 +64,11 @@ export default function BoardNewPage() {
             },
           });
           imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
+          const body = {
+            content: item.content,
+            image: imageUrl,
+          };
+          return axios.patch(`/posts/${_id}`, body);
         } catch (error) {
           console.error(
             "Image upload failed:",
@@ -67,21 +76,17 @@ export default function BoardNewPage() {
           );
           throw new Error("Image upload failed.");
         }
+      } else {
         const body = {
           content: item.content,
-          type: "community",
-          image: imageUrl,
         };
-        return axios.post(`/posts`, body);
-      } else {
-        throw new Error("이미지를 업로드해야 합니다");
+        return axios.patch(`/posts/${_id}`, body);
       }
     },
-    onSuccess: (res) => {
-      console.log("data", res.data);
-      alert("게시물이 등록되었습니다.");
-      queryClient.invalidateQueries({ queryKey: ["posts", "community"] });
-      navigate(`/board`);
+    onSuccess: () => {
+      alert("게시물이 수정되었습니다.");
+      queryClient.invalidateQueries({ queryKey: ["posts", _id] });
+      navigate(`/board/${_id}`);
     },
     onError: (err) => {
       console.error(err);
@@ -90,12 +95,11 @@ export default function BoardNewPage() {
   });
 
   return (
-    <>
-      <NewPost
-        isBoard={isBoard}
-        handleSubmit={handleSubmit(addItem.mutate)}
-        register={register}
-      ></NewPost>
-    </>
+    <NewPost
+      isBoard={true}
+      handleSubmit={handleSubmit(editPost.mutate)}
+      register={register}
+      editInfo={data.content}
+    />
   );
 }
