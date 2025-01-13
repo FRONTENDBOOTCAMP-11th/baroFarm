@@ -6,6 +6,8 @@ import axios from "axios";
 import HeaderIcon from "@components/HeaderIcon";
 import Products from "@components/Products";
 
+const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
+
 export default function CategoryPage() {
   const { category } = useParams();
   const { setHeaderContents } = useOutletContext();
@@ -50,6 +52,7 @@ export default function CategoryPage() {
           "Content-Type": "application/json",
           accept: "application/json",
           "client-id": "final04",
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
       });
       return response.data.item;
