@@ -32,9 +32,8 @@ export default function BoardEditPage() {
   // Zustand store에서 user 상태를 가져옴
   const user = useUserStore((store) => store.user);
   // 익명의 사용자가 편집 페이지에 접근하는 것을 방지
-  // 작성자가 아닌 타인미 편집하는 것을 방지
   useEffect(() => {
-    if (!user || user._id !== data.user._id) {
+    if (!user) {
       navigate("/");
     }
   }, [user]);

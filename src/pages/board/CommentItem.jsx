@@ -34,7 +34,7 @@ export default function CommentItem({ item }) {
       </div>
       <div className="flex pb-5 border-b-[1px] border-gray3/50 px-[15px]">
         <div className="mt-3 text-xs text-gray5 pl-5">{item.content}</div>
-        {user._id === item.user._id && (
+        {user?._id === item.user._id && (
           <span className="ml-auto text-xs mt-auto flex-shrink-0">
             <button>삭제</button>
           </span>
