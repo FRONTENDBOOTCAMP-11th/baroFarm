@@ -24,11 +24,33 @@ export default function BoardNewPage() {
     });
   }, []);
 
+  //업로드되는 파일은 이미지 파일로 제한
+  const checkImg = (file) => {
+    const validTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "image/svg",
+    ]; // 허용 MIME 타입
+    if (!validTypes.includes(file.type)) {
+      return true;
+    }
+    return false;
+  };
+
   const addItem = useMutation({
     mutationFn: async (item) => {
       let imageUrl = null;
 
       if (item.image && item.image[0]) {
+        // 없로드되는 파일은 이미지로 제한
+        if (checkImg(item.image[0])) {
+          throw new Error(
+            "jpeg, jpg, png, gif, webp, svg 파일을 업로드해야 합니다."
+          );
+        }
         const formData = new FormData();
         formData.append("attach", item.image[0]);
         try {
@@ -67,12 +89,12 @@ export default function BoardNewPage() {
   });
 
   return (
-    <div className="relative mx-5">
+    <>
       <NewPost
         isBoard={isBoard}
         handleSubmit={handleSubmit(addItem.mutate)}
         register={register}
       ></NewPost>
-    </div>
+    </>
   );
 }

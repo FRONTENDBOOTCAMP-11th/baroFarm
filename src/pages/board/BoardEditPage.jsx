@@ -1,5 +1,6 @@
 import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
+import NewPost from "@components/NewPost";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -19,11 +20,7 @@ export default function BoardEditPage() {
   const { _id } = useParams();
   const axios = useAxiosInstance();
   const queryClient = useQueryClient();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
@@ -31,9 +28,60 @@ export default function BoardEditPage() {
     });
   }, []);
 
+  const checkImg = (file) => {
+    const validTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "image/svg",
+    ]; // 허용 MIME 타입
+    if (!validTypes.includes(file.type)) {
+      return true;
+    }
+    return false;
+  };
+
   const editPost = useMutation({
-    mutationFn: (formData) => {
-      return axios.patch(`/posts/${_id}`, formData);
+    mutationFn: async (item) => {
+      let imageUrl = null;
+
+      // 이미지 변경을 진행했을 경우 처음 등록할 때와 같이 업로드를 진행한 후 body에 imgURL을 추가
+      // 단, 이미지 업로드는 필수가 아님
+      if (item.image && item.image[0]) {
+        if (checkImg(item.image[0])) {
+          throw new Error(
+            "jpeg, jpg, png, gif, webp, svg 파일을 업로드해야 합니다."
+          );
+        }
+        const formData = new FormData();
+        formData.append("attach", item.image[0]);
+        try {
+          const uploadImg = await axios.post(`/files`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
+          const body = {
+            content: item.content,
+            image: imageUrl,
+          };
+          return axios.patch(`/posts/${_id}`, body);
+        } catch (error) {
+          console.error(
+            "Image upload failed:",
+            error.response?.data || error.message
+          );
+          throw new Error("Image upload failed.");
+        }
+      } else {
+        const body = {
+          content: item.content,
+        };
+        return axios.patch(`/posts/${_id}`, body);
+      }
     },
     onSuccess: () => {
       alert("게시물이 수정되었습니다.");
@@ -46,27 +94,11 @@ export default function BoardEditPage() {
   });
 
   return (
-    <div className="p-5">
-      <form onSubmit={handleSubmit(editPost.mutate)}>
-        <textarea
-          name="content"
-          id="content"
-          className="w-full mt-[10px] mb-[25px] h-[550px] p-3 border-gray3 border-[1px] bg-gray2/20 focus:outline-btn-primary rounded-md"
-          placeholder="본문 내용을 입력해주세요."
-          defaultValue={data.content}
-          {...register("content", {
-            required: "본문 내용을 입력해주세요",
-          })}
-        ></textarea>
-        {errors.content && (
-          <p className="text-red1 text-xs mt-1 ps-1">
-            {errors.content.message}
-          </p>
-        )}
-        <Button height="45px" fontSize={24} type="submit" isBig={true}>
-          수정
-        </Button>
-      </form>
-    </div>
+    <NewPost
+      isBoard={true}
+      handleSubmit={handleSubmit(editPost.mutate)}
+      register={register}
+      editInfo={data.content}
+    />
   );
 }
