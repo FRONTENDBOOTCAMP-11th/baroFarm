@@ -1,4 +1,4 @@
-import createdTime from "@pages/board/createdTime";
+import createdTime from "@components/createdTime";
 import useUserStore from "@zustand/useUserStore";
 import PropTypes from "prop-types";
 

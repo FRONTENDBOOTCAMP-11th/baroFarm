@@ -1,4 +1,4 @@
-import createdTime from "@pages/board/createdTime";
+import createdTime from "@components/createdTime";
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
