@@ -3,10 +3,15 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 
 import HeaderIcon from "@components/HeaderIcon";
 import SoldItem from "@components/SoldItem";
+import { useQuery } from "@tanstack/react-query";
+import useUserStore from "@zustand/useUserStore";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 export default function SalePage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  const { user } = useUserStore();
+  const axios = useAxiosInstance();
 
   useEffect(() => {
     setHeaderContents({
@@ -19,6 +24,20 @@ export default function SalePage() {
       ),
     });
   }, []);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["products"],
+    queryFn: () => axios.get(`/seller/products?sort={"createdAt": -1}`),
+    select: (res) => res.data.item,
+    staleTime: 1000 * 10,
+    enabled: !!user,
+  });
+
+  if (isLoading) {
+    return <>로딩 중입니다...</>;
+  }
+  const pastDate = new Date(data[0].createdAt).toLocaleDateString();
+  console.log(data, "date: ", pastDate);
 
   return (
     <>
