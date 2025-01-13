@@ -1,13 +1,12 @@
-import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import Comment from "@pages/board/Comment";
+import createdTime from "@pages/board/createdTime";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import {
   Link,
-  useLocation,
   useNavigate,
   useOutletContext,
   useParams,
@@ -17,9 +16,6 @@ export default function BoardDetailPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   const { _id } = useParams();
-  const location = useLocation();
-  const newDate = location.state?.newDate;
-  const repliesCount = location.state?.repliesCount;
   const { user } = useUserStore();
   const axios = useAxiosInstance();
 
@@ -37,14 +33,7 @@ export default function BoardDetailPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["posts", _id],
-    queryFn: () =>
-      axios.get(`https://11.fesp.shop/posts/${_id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-        },
-      }),
+    queryFn: () => axios.get(`/posts/${_id}`),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
   });
@@ -67,6 +56,8 @@ export default function BoardDetailPage() {
       }
     }
   };
+
+  const newDate = createdTime(data.createdAt);
 
   return (
     <div className="mx-5">
@@ -94,18 +85,7 @@ export default function BoardDetailPage() {
           | <button onClick={deletePost}>삭제</button>
         </div>
       )}
-      <Comment repliesCount={repliesCount} />
-
-      <div className="h-[65px] flex items-center px-5 -mx-5">
-        <input
-          type="text"
-          name="comment"
-          className="max-w-[285px] h-[35px] rounded-full px-[15px] mr-5 bg-gray1 flex-grow focus:outline-btn-primary"
-        />
-        <Button width={45} height={35} onClick={() => navigate("/board")}>
-          등록
-        </Button>
-      </div>
+      <Comment replies={data.replies} />
     </div>
   );
 }
