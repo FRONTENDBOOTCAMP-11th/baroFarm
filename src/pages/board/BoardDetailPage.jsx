@@ -54,6 +54,8 @@ export default function BoardDetailPage() {
     );
   }
 
+  console.log(data);
+
   return (
     <div className="mx-5">
       <div className="flex flex-row mt-5 items-center">
@@ -77,7 +79,7 @@ export default function BoardDetailPage() {
       </div>
       <Comment repliesCount={repliesCount} />
 
-      <div className="h-[65px] flex items-center px-5 -mx-5">
+      <form className="h-[65px] flex items-center px-5 -mx-5">
         <input
           type="text"
           name="comment"
@@ -86,7 +88,7 @@ export default function BoardDetailPage() {
         <Button width={45} height={35} onClick={() => navigate("/board")}>
           등록
         </Button>
-      </div>
+      </form>
     </div>
   );
 }

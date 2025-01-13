@@ -1,4 +1,10 @@
-export default function CommentItem() {
+import PropTypes from "prop-types";
+
+CommentItem.propTypes = {
+  item: PropTypes.shape(),
+};
+
+export default function CommentItem({ item }) {
   return (
     <div className="px-[15px] ">
       <div className="flex flex-row mt-5">
