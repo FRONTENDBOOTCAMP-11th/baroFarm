@@ -1,5 +1,6 @@
 import Button from "@components/Button";
 import PGButton from "@components/PGButton";
+import PostcodeSearch from "@components/PostcodeSearch";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import PortOne from "@portone/browser-sdk/v2";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -302,6 +303,7 @@ export default function AddressModal({
                   </p>
                 )}
               </div>
+              <PostcodeSearch />
               <div className="flex gap-2 justify-end">
                 <Button type="submit">저장</Button>
                 <Button isWhite={true} onClick={() => setIsOpenForm(false)}>
