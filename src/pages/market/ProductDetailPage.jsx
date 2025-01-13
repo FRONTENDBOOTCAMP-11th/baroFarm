@@ -8,6 +8,9 @@ import {
 import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
+import { useLikeToggle } from "@hooks/useLikeToggle";
+import { useCategory } from "@hooks/useCategory";
+
 import PurchaseModal from "@components/PurchaseModal";
 import Modal from "@components/Modal";
 import ReviewBox from "@components/ReviewBox";
@@ -29,6 +32,41 @@ export default function ProductDetailPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
+  const {
+    data: product,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["product"],
+    queryFn: async () => {
+      const response = await axios.get(`https://11.fesp.shop/products/${_id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+          "client-id": "final04",
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
+      });
+      return response.data.item;
+    },
+  });
+
+  const { isLiked, handleLike } = useLikeToggle(product);
+  const categoryTitle = useCategory(product);
+
+  useEffect(() => {
+    setHeaderContents({
+      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      title: categoryTitle,
+      rightChild: (
+        <>
+          <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
+          <HeaderIcon name="cart_empty" onClick={() => navigate("/cart")} />
+        </>
+      ),
+    });
+  }, [product, categoryTitle]);
+
   const purchaseModalRef = useRef();
   const modalRef = useRef();
 
@@ -41,48 +79,12 @@ export default function ProductDetailPage() {
     purchaseModalRef.current.close();
   };
 
-  const [isLiked, setIsLiked] = useState(false);
   const [count, setCount] = useState(1);
-
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-  };
 
   const handleCount = (sign) => {
     if (sign === "plus") setCount((count) => count + 1);
     else if (sign === "minus" && count > 1) setCount((count) => count - 1);
   };
-
-  useEffect(() => {
-    setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
-      title: "카테고리",
-      rightChild: (
-        <>
-          <HeaderIcon name="home_empty" onClick={() => navigate("/")} />
-          <HeaderIcon name="cart_empty" onClick={() => navigate("/cart")} />
-        </>
-      ),
-    });
-  }, []);
-
-  const {
-    data: product,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["product", _id],
-    queryFn: async () => {
-      const response = await axios.get(`https://11.fesp.shop/products/${_id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-        },
-      });
-      return response.data.item;
-    },
-  });
 
   const cartItem = useMutation({
     mutationFn: async () => {
@@ -113,8 +115,6 @@ export default function ProductDetailPage() {
 
   if (isLoading) return <div>Loading...</div>;
   if (isError || !product) return <div>Error loading product</div>;
-
-  const formattedPrice = product.extra.saledPrice.toLocaleString();
 
   return (
     <>
@@ -148,7 +148,7 @@ export default function ProductDetailPage() {
             {product.price.toLocaleString()}원
           </span>
           <p className="font-extrabold text-xl text-btn-primary">
-            {formattedPrice}원
+            {product.extra.saledPrice.toLocaleString()}원
           </p>
         </div>
       </section>
@@ -244,7 +244,15 @@ export default function ProductDetailPage() {
           </button>
           <button
             className="flex-1 text-lg text-white bg-btn-primary p-3 rounded-[10px]"
-            onClick={() => navigate("/payment")}
+            onClick={() =>
+              navigate("/payment", {
+                state: {
+                  selectedItems: product,
+                  totalFees: product.extra.saledPrice * count,
+                  totalShippingFees: product.shippingFees,
+                },
+              })
+            }
           >
             구매하기
           </button>
