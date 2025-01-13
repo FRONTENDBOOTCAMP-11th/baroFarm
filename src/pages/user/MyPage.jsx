@@ -168,7 +168,7 @@ export default function MyPage() {
         </Link>
       </div>
       {/* 해당 영역은 로그아웃 상태일 시 사용을 필요로 하지 않음 */}
-      {user && (
+      {user && user.type === "seller" && (
         <>
           <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
           <div className="h-[109px] pt-[18px] ">
@@ -185,6 +185,10 @@ export default function MyPage() {
               />
             </Link>
           </div>
+        </>
+      )}
+      {user && (
+        <>
           <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
           <div className="h-[109px] pt-[18px] ">
             <h2 className="text-base leading-[19px]">계정 관리</h2>
