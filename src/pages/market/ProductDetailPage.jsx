@@ -244,7 +244,15 @@ export default function ProductDetailPage() {
           </button>
           <button
             className="flex-1 text-lg text-white bg-btn-primary p-3 rounded-[10px]"
-            onClick={() => navigate("/payment")}
+            onClick={() =>
+              navigate("/payment", {
+                state: {
+                  selectedItems: product,
+                  totalFees: product.extra.saledPrice * count,
+                  totalShippingFees: product.shippingFees,
+                },
+              })
+            }
           >
             구매하기
           </button>
