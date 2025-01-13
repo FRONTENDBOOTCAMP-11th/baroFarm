@@ -4,7 +4,17 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 BoardPageDetail.propTypes = {
-  item: PropTypes.shape(),
+  item: PropTypes.shape({
+    createdAt: PropTypes.string.isRequired,
+    _id: PropTypes.number.isRequired,
+    repliesCount: PropTypes.number.isRequired,
+    content: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      image: PropTypes.string,
+    }),
+    image: PropTypes.string.isRequired,
+  }),
 };
 
 export default function BoardPageDetail({ item }) {
