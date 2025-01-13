@@ -67,20 +67,20 @@ export default function ReviewPage() {
       <section className="p-5 border-b-8 border-b-gray1">
         <div className="flex items-center justify-between">
           <span className="font-bold">사진 후기</span>
-          <Link
-            to={`/product/${_id}/reviews/photo`}
-            className="font-medium text-sm text-gray5 flex items-center"
-          >
-            더보기
-            <img src={forwardIcon} className="w-3" />
-          </Link>
+          {/* <Link
+          to={`/product/${_id}/reviews/photo`}
+          className="font-medium text-sm text-gray5 flex items-center"
+        >
+          더보기
+          <img src={forwardIcon} className="w-3" />
+        </Link> */}
         </div>
         <div className="flex overflow-x-auto gap-3 scrollbar-hide pt-5">
-          <PhotoReviewItem />
-          <PhotoReviewItem />
-          <PhotoReviewItem />
-          <PhotoReviewItem />
-          <PhotoReviewItem />
+          {product.replies
+            .filter((review) => review.extra && review.extra.image)
+            .map((review) => (
+              <PhotoReviewItem key={review._id} image={review.extra.image} />
+            ))}
         </div>
       </section>
 
