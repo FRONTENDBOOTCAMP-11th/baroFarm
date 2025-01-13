@@ -36,7 +36,7 @@ export default function BoardDetailPage() {
   }, []);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["posts", _id],
+    queryKey: ["posts"],
     queryFn: () =>
       axios.get(`https://11.fesp.shop/posts/${_id}`, {
         headers: {
@@ -86,7 +86,7 @@ export default function BoardDetailPage() {
         className="relative mt-10 mb-1 rounded-md"
         src={`https://11.fesp.shop${data.image}`}
       />
-      {data.user._id === user._id && (
+      {data.user._id === user?._id && (
         <div className="text-right text-xs">
           <Link to="edit" state={{ item: data }}>
             수정
