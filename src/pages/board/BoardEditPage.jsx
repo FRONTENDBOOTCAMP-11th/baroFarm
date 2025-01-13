@@ -4,12 +4,18 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 
 export default function BoardEditPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  const item = location.state.item;
+  const location = useLocation();
+  const data = location.state.data;
   const { _id } = useParams();
   const axios = useAxiosInstance();
   const queryClient = useQueryClient();
@@ -27,7 +33,7 @@ export default function BoardEditPage() {
 
   const editPost = useMutation({
     mutationFn: (formData) => {
-      return axios.patch(`/post/${_id}`, formData);
+      return axios.patch(`/posts/${_id}`, formData);
     },
     onSuccess: () => {
       alert("게시물이 수정되었습니다.");
@@ -47,7 +53,7 @@ export default function BoardEditPage() {
           id="content"
           className="w-full mt-[10px] mb-[25px] h-[550px] p-3 border-gray3 border-[1px] bg-gray2/20 focus:outline-btn-primary rounded-md"
           placeholder="본문 내용을 입력해주세요."
-          defaultValue={item.content}
+          defaultValue={data.content}
           {...register("content", {
             required: "본문 내용을 입력해주세요",
           })}

@@ -25,7 +25,7 @@ export default function BoardDetailPage() {
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      leftChild: <HeaderIcon name="back" onClick={() => navigate("/board")} />,
       title: "게시글",
       rightChild: (
         <>
@@ -36,7 +36,7 @@ export default function BoardDetailPage() {
   }, []);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["posts"],
+    queryKey: ["posts", _id],
     queryFn: () =>
       axios.get(`https://11.fesp.shop/posts/${_id}`, {
         headers: {
@@ -88,7 +88,7 @@ export default function BoardDetailPage() {
       />
       {data.user._id === user?._id && (
         <div className="text-right text-xs">
-          <Link to="edit" state={{ item: data }}>
+          <Link to="edit" state={{ data: data }}>
             수정
           </Link>{" "}
           | <button onClick={deletePost}>삭제</button>
