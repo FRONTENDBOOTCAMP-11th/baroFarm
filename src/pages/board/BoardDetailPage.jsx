@@ -87,19 +87,6 @@ export default function BoardDetailPage() {
         </div>
       )}
       <Comment replies={data.replies} />
-
-      <form className="h-[65px] flex px-5 -mx-5 items-center">
-        <input
-          type="text"
-          name="comment"
-          className="max-w-[285px] h-[35px] rounded-full px-[15px] mr-5 bg-gray1 flex-grow focus:outline-btn-primary"
-        />
-        <div>
-          <Button width={45} height={35} onClick={() => navigate("/board")}>
-            등록
-          </Button>
-        </div>
-      </form>
     </div>
   );
 }
