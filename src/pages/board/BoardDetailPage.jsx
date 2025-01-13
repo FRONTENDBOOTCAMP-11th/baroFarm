@@ -1,13 +1,12 @@
-import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import Comment from "@pages/board/Comment";
+import createdTime from "@pages/board/createdTime";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import {
   Link,
-  useLocation,
   useNavigate,
   useOutletContext,
   useParams,
@@ -17,8 +16,6 @@ export default function BoardDetailPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   const { _id } = useParams();
-  const location = useLocation();
-  const newDate = location.state?.newDate;
   const { user } = useUserStore();
   const axios = useAxiosInstance();
 
@@ -59,6 +56,8 @@ export default function BoardDetailPage() {
       }
     }
   };
+
+  const newDate = createdTime(data.createdAt);
 
   return (
     <div className="mx-5">

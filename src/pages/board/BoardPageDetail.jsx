@@ -1,3 +1,4 @@
+import createdTime from "@pages/board/createdTime";
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -19,31 +20,11 @@ export default function BoardPageDetail({ item }) {
     checkOverflow();
   }, []);
 
-  const createdTime = (createdDate) => {
-    const formatRelativeTime = (inputDate) => {
-      const now = new Date();
-      const pastDate = new Date(inputDate);
-      const minDiff = Math.floor((now - pastDate) / (1000 * 60));
-      if (minDiff < 1) return "방금 전";
-      if (minDiff < 60) return `${minDiff}분 전`;
-      if (minDiff < 1440) return `${parseInt(minDiff / 60)}시간 전`;
-      if (minDiff < 2880) return `${parseInt(minDiff / 1440)}일 전`;
-
-      // 이틀 이상인 경우에는 날짜를 표시
-      return pastDate.toLocaleString();
-    };
-
-    return formatRelativeTime(createdDate);
-  };
-
   console.log(item);
   const newDate = createdTime(item.createdAt);
   return (
     <div className="relative">
-      <Link
-        to={`${item._id}`}
-        state={{ newDate: newDate, repliesCount: item.repliesCount }}
-      >
+      <Link to={`${item._id}`}>
         <div
           ref={containerRef}
           className="max-h-[550px] overflow-hidden relative"
