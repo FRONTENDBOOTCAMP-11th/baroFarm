@@ -49,26 +49,42 @@ export default function PurchasePage() {
     },
   });
 
+  if (!reviewData || reviewData.length === 0) {
+    return (
+      <>
+        <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xl text-gray4">
+          구매 내역이 없습니다.
+        </p>
+      </>
+    );
+  }
+
+  const groupedData = reviewData.reduce((acc, order) => {
+    const date = order.createdAt.split(" ")[0]; // "YYYY.MM.DD" 형식의 날짜 추출
+    if (!acc[date]) {
+      acc[date] = [];
+    }
+    acc[date].push(order);
+    return acc;
+  }, {});
+
   return (
-    <>
-      <div className="p-5 pb-0">
-        <p className="font-bold text-lg pl-1">2024. 12. 30</p>
-        <PurchaseItem />
-        <PurchaseItem />
-        <PurchaseItem />
-      </div>
-      <div className="p-5 pb-0">
-        <p className="font-bold text-lg pl-1">2024. 12. 30</p>
-        <PurchaseItem />
-        <PurchaseItem />
-        <PurchaseItem />
-      </div>
-      <div className="p-5 pb-0">
-        <p className="font-bold text-lg pl-1">2024. 12. 30</p>
-        <PurchaseItem />
-        <PurchaseItem />
-        <PurchaseItem />
-      </div>
-    </>
+    <div className="p-5 pb-0">
+      {Object.entries(groupedData).map(([date, orders]) => (
+        <div key={date} className="mb-5">
+          <p className="font-bold text-lg pl-1">{date}</p>
+          {orders.map((order) =>
+            order.products.map((product) => (
+              <PurchaseItem
+                key={product._id}
+                orderId={order._id}
+                product={product}
+                date={order.createdAt}
+              />
+            ))
+          )}
+        </div>
+      ))}
+    </div>
   );
 }

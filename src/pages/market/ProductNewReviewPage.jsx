@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import {
+  useNavigate,
+  useOutletContext,
+  useParams,
+  useLocation,
+} from "react-router-dom";
 
 export default function ProductNewReviewPage() {
   const { setHeaderContents } = useOutletContext();
@@ -14,7 +19,7 @@ export default function ProductNewReviewPage() {
   const queryClient = useQueryClient();
   const axios = useAxiosInstance();
 
-  const product = useParams();
+  const { _id, order_id } = useParams();
 
   useEffect(() => {
     setHeaderContents({
@@ -56,8 +61,8 @@ export default function ProductNewReviewPage() {
           throw new Error("Upload failed.");
         }
         const body = {
-          order_id: 1,
-          product_id: product._id,
+          order_id: order_id,
+          product_id: _id,
           rating: rating,
           content: item.content,
           extra: {
