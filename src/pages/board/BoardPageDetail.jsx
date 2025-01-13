@@ -37,12 +37,11 @@ export default function BoardPageDetail({ item }) {
   };
 
   const newDate = createdTime(item.createdAt);
-  console.log(item);
   return (
     <div className="relative">
       <Link
         to={`${item._id}`}
-        state={{ newDate, repliesCount: item.repliesCount }}
+        state={{ newDate: newDate, repliesCount: item.repliesCount }}
       >
         <div
           ref={containerRef}
@@ -52,7 +51,7 @@ export default function BoardPageDetail({ item }) {
             <img
               src={`https://11.fesp.shop${item.user.image}`}
               alt="ProfileImage"
-              className="w-6 h-6 rounded-full"
+              className="w-6 h-6 rounded-full object-cover"
             />
             <span className="mx-[5px] text-sm">{item.user.name}</span>
 
@@ -61,13 +60,11 @@ export default function BoardPageDetail({ item }) {
             </span>
           </div>
           <div className="mx-[5px] mt-[30px]">{item.content}</div>
-          {item.image && (
-            <img
-              className="relative mt-10 rounded-md"
-              src={`https://11.fesp.shop${item.image}`}
-              onLoad={checkOverflow}
-            />
-          )}
+          <img
+            className="relative mt-10 rounded-md"
+            src={`https://11.fesp.shop${item.image}`}
+            onLoad={() => checkOverflow()}
+          />
           {isOverflow && (
             <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
           )}

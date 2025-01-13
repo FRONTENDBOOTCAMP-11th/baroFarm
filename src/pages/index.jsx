@@ -4,55 +4,8 @@ import HeaderIcon from "@components/HeaderIcon";
 import Product from "@components/Product";
 import ProductBig from "@components/ProductBig";
 import Carousel from "@components/Carousel";
-
-// image
-import productImage1 from "/images/Sample1.svg";
-import productImage2 from "/images/Sample2.svg";
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-
-const productsData = [
-  {
-    id: 1,
-    image: productImage1,
-    title: "온도감",
-    content: "촉촉함이 다른 카스테라 5종...",
-    sale: "92%",
-    price: "14,900원",
-    rate: "⭐️ 4.9",
-    review: "(2,210)",
-  },
-  {
-    id: 2,
-    image: productImage2,
-    title: "강아지",
-    content: "강아지 귀여워",
-    sale: "12%",
-    price: "24,900원",
-    rate: "⭐️ 3.9",
-    review: "(6,210)",
-  },
-  {
-    id: 3,
-    image: productImage1,
-    title: "햄스터",
-    content: "햄스터 귀여워",
-    sale: "2%",
-    price: "4,900원",
-    rate: "⭐️ 0.9",
-    review: "(210)",
-  },
-  {
-    id: 4,
-    image: productImage2,
-    title: "강아지",
-    content: "강아지 귀여워",
-    sale: "2%",
-    price: "4,900원",
-    rate: "⭐️ 0.9",
-    review: "(210)",
-  },
-];
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 const images = [
   "/images/menu/Fruit.svg",
@@ -86,9 +39,14 @@ const getMonthlyData = (data) => {
 };
 
 export default function MainPage() {
+  // axios instance
+  const axios = useAxiosInstance();
   // Outlet 컴포넌트로 전달받은 props.setHeaderContents 접근
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  // 현재 날짜
+  const date = new Date();
+  const currentMonth = new Date().getMonth() + 1;
 
   // 헤더 아이콘 설정
   useEffect(() => {
@@ -118,14 +76,7 @@ export default function MainPage() {
   // 상품 목록 데이터 fetching
   const { data, isLoading, isError } = useQuery({
     queryKey: ["products"],
-    queryFn: () =>
-      axios.get("https://11.fesp.shop/products", {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-        },
-      }),
+    queryFn: () => axios.get("/products"),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
   });
@@ -139,22 +90,48 @@ export default function MainPage() {
     );
   }
 
+  if (isError) {
+    return (
+      <div className="mt-0 mx-auto text-center">
+        에러가 발생했습니다. <br />
+        잠시 후 다시 시도해주세요.
+      </div>
+    );
+  }
+
   // 데이터 없을시 null 반환하여 에러 방지
   if (!data) return null;
-
   console.log(data);
+
+  // 캐러셀을 위한 할인 상품 sorting
+  const sortedSaleData = data.toSorted((a, b) => b.extra.sale - a.extra.sale);
+  const saleProducts = sortedSaleData.filter((_, index) => index < 6);
+
+  // 인기 상품 렌더링
+  const sortedBestData = data.toSorted((a, b) => b.buyQuantity - a.buyQuantity);
+  const bestProducts = sortedBestData
+    // 4개의 상품만 골라서 Product 컴포넌트로 보여준다.
+    .filter((_, index) => index < 4)
+    .map((product) => <Product key={product._id} {...product} />);
 
   // 새상품 렌더링
   const filteredNewData = getMonthlyData(data);
-  const newProducts = filteredNewData.map((product, index) => {
-    if (index < 4) {
-      return <Product key={product._id} {...product} />;
-    }
-  });
+  const newProducts = filteredNewData
+    // 4개의 상품만 골라서 Product 컴포넌트로 보여준다.
+    .filter((_, index) => index < 4)
+    .map((product) => <Product key={product._id} {...product} />);
+
+  // // 제철 상품 렌더링
+  const filteredOnMonthData = data.filter((item) =>
+    item.extra.bestMonth?.includes(currentMonth)
+  );
+  const onMonthProducts = filteredOnMonthData
+    .filter((_, index) => index < 6)
+    .map((product) => <ProductBig key={product._id} {...product} />);
 
   return (
     <div>
-      <Carousel height={225} data={productsData} />
+      <Carousel height={225} data={saleProducts} />
       <section className="px-5 mb-4">
         <h2 className="text-xl mb-3">
           관심있는 <span className="font-bold">카테고리</span> 선택하기
@@ -168,21 +145,22 @@ export default function MainPage() {
           <h2 className="text-xl">
             지금 최고 <span className="font-bold">인기 상품! 🔥</span>
           </h2>
-          <Link to="/search/best" className="text-xs flex gap-1 items-start ">
+          <button
+            className="text-xs flex gap-1 items-start cursor-pointer"
+            onClick={() =>
+              navigate("/search/best", { state: { sortedBestData } })
+            }
+          >
             더보기
-            <button>
-              <img
-                src="/icons/icon_move.svg"
-                alt="더보기 버튼"
-                className="size-4"
-              />
-            </button>
-          </Link>
+            <img
+              src="/icons/icon_move.svg"
+              alt="더보기 버튼"
+              className="size-4"
+            />
+          </button>
         </div>
         <div className="flex flex-wrap justify-between gap-3">
-          {productsData.map((product) => (
-            <Product key={product.id} {...product} />
-          ))}
+          {bestProducts}
         </div>
       </section>
       <section className="px-5 mb-4">
@@ -190,16 +168,19 @@ export default function MainPage() {
           <h2 className="text-xl">
             따끈따끈한 <span className="font-bold">신상품! ⏰</span>
           </h2>
-          <Link to="/search/new" className="text-xs flex gap-1 items-start ">
+          <button
+            className="text-xs flex gap-1 items-start cursor-pointer"
+            onClick={() =>
+              navigate("/search/new", { state: { filteredNewData } })
+            }
+          >
             더보기
-            <button>
-              <img
-                src="/icons/icon_move.svg"
-                alt="더보기 버튼"
-                className="size-4"
-              />
-            </button>
-          </Link>
+            <img
+              src="/icons/icon_move.svg"
+              alt="더보기 버튼"
+              className="size-4"
+            />
+          </button>
         </div>
         <div className="flex flex-wrap justify-between gap-3">
           {newProducts}
@@ -210,25 +191,21 @@ export default function MainPage() {
           <h2 className="text-xl">
             이 맛이야! <span className="font-bold">제철 음식 🍂</span>
           </h2>
-          <Link
-            to="/search/seasonal"
-            className="text-xs flex gap-1 items-start "
+          <button
+            className="text-xs flex gap-1 items-start cursor-pointer"
+            onClick={() =>
+              navigate("/search/seasonal", { state: { filteredOnMonthData } })
+            }
           >
             더보기
-            <button>
-              <img
-                src="/icons/icon_move.svg"
-                alt="더보기 버튼"
-                className="size-4"
-              />
-            </button>
-          </Link>
+            <img
+              src="/icons/icon_move.svg"
+              alt="더보기 버튼"
+              className="size-4"
+            />
+          </button>
         </div>
-        <div className="flex overflow-x-auto gap-3">
-          {productsData.map((product) => (
-            <ProductBig key={product.id} {...product} />
-          ))}
-        </div>
+        <div className="flex overflow-x-auto gap-3">{onMonthProducts}</div>
       </section>
       <section className="mb-4">
         <div className="flex justify-between px-5 mb-4">

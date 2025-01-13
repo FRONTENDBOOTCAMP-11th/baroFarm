@@ -36,7 +36,6 @@ const SearchNewPage = lazy(() => import("@pages/market/SearchNewPage"));
 const SearchSeasonalPage = lazy(() =>
   import("@pages/market/SearchSeasonalPage")
 );
-
 const Layout = lazy(() => import("@components/layout"));
 
 const router = createBrowserRouter(

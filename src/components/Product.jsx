@@ -43,7 +43,7 @@ export default function Product(product) {
     >
       <div className="relative">
         <img
-          className="h-[165px] rounded-lg object-cover"
+          className="h-[165px] rounded-lg object-cover w-full"
           alt={product.name}
           src={`https://11.fesp.shop${product.mainImages[0]?.path}`}
         />
