@@ -80,6 +80,7 @@ export default function ProductDetailPage() {
   };
 
   const [count, setCount] = useState(1);
+  const purchaseItem = [product];
 
   const handleCount = (sign) => {
     if (sign === "plus") setCount((count) => count + 1);
@@ -247,9 +248,10 @@ export default function ProductDetailPage() {
             onClick={() =>
               navigate("/payment", {
                 state: {
-                  selectedItems: product,
+                  selectedItems: purchaseItem,
                   totalFees: product.extra.saledPrice * count,
                   totalShippingFees: product.shippingFees,
+                  buyQuantity: parseInt(count),
                 },
               })
             }

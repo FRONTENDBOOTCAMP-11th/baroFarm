@@ -38,12 +38,13 @@ export default function PaymentPage() {
   // 이전 페이지에서 넘어온 정보
   const location = useLocation();
   // 이전 페이지에서 넘어온 구매할 상품, 최종금액, 배송비
-  const { selectedItems, totalFees, totalShippingFees } = location.state;
+  const { selectedItems, totalFees, totalShippingFees, buyQuantity } =
+    location.state;
 
   // 구매할 상품 컴포넌트 동적 렌더링
   useEffect(() => {
     const itemsToBuy = selectedItems?.map((item) => (
-      <ProductToBuy key={item.product_id} {...item} />
+      <ProductToBuy key={item._id} product={item} quantity={buyQuantity} />
     ));
     setPaymentItems(itemsToBuy);
   }, []);
