@@ -110,6 +110,16 @@ export default function LoginPage() {
     },
   });
 
+  const handleKakaoLogin = () => {
+    window.Kakao.Auth.authorize({
+      // window.location.origin: 현재 웹사이트의 도메인 주소를 가져옴 => 환경에 따라 자동으로 적절한 도메인이 적용됨
+      redirectUri: `${window.location.origin}/users/login/kakao`,
+      // scope는 사용자가 로그인할 때 동의해야 하는 권한을 지정하는 데 사용됩니다.
+      // 이를 통해 카카오 계정으로부터 어떤 정보를 가져올지를 결정할 수 있습니다.
+    });
+    console.log("리다이렉트 URI: ", `${window.location.origin}/users/login/kakao`);
+  };
+
   return (
     <div className="p-5">
       {/* 로고 영역 */}
@@ -167,6 +177,7 @@ export default function LoginPage() {
         <button
           type="button"
           className="w-full h-[3.25rem] text-center text-xl rounded-full bg-yellow1 font-medium flex items-center gap-16"
+          onClick={handleKakaoLogin}
         >
           {/* 이미지가 장식 목적이고 옆의 텍스트가 이미 충분한 의미를 전달하고 있기 때문에 alt = "" 지정*/}
           <img className="w-8 h-8 ml-6" src="/images/login/kakaoLogo.png" alt="" />

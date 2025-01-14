@@ -1,3 +1,4 @@
+import KakaoCallbackPage from "@pages/user/KakaoCallbackPage";
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -10,12 +11,8 @@ const ProductDetailPage = lazy(() => import("@pages/market/ProductDetailPage"));
 const ProductNewPage = lazy(() => import("@pages/market/ProductNewPage"));
 const ReviewPage = lazy(() => import("@pages/market/ReviewPage"));
 const PhotoReviewPage = lazy(() => import("@pages/market/PhotoReviewPage"));
-const ProductMyReviewPage = lazy(() =>
-  import("@pages/market/ProductMyReviewPage")
-);
-const ProductNewReviewPage = lazy(() =>
-  import("@pages/market/ProductNewReviewPage")
-);
+const ProductMyReviewPage = lazy(() => import("@pages/market/ProductMyReviewPage"));
+const ProductNewReviewPage = lazy(() => import("@pages/market/ProductNewReviewPage"));
 const BookmarkPage = lazy(() => import("@pages/user/BookmarkPage"));
 const MyPage = lazy(() => import("@pages/user/MyPage"));
 const ProfilePage = lazy(() => import("@pages/user/ProfilePage"));
@@ -35,9 +32,7 @@ const EditProfilePage = lazy(() => import("@pages/user/EditProfilePage"));
 const MyPostPage = lazy(() => import("@pages/user/MyPostPage"));
 const SearchBestPage = lazy(() => import("@pages/market/SearchBestPage"));
 const SearchNewPage = lazy(() => import("@pages/market/SearchNewPage"));
-const SearchSeasonalPage = lazy(() =>
-  import("@pages/market/SearchSeasonalPage")
-);
+const SearchSeasonalPage = lazy(() => import("@pages/market/SearchSeasonalPage"));
 const Layout = lazy(() => import("@components/layout"));
 
 const router = createBrowserRouter(
@@ -83,6 +78,7 @@ const router = createBrowserRouter(
           children: [
             { path: "signup", element: <SignupPage /> },
             { path: "login", element: <LoginPage /> },
+            { path: "login/kakao", element: <KakaoCallbackPage /> },
             { path: "mypage", element: <MyPage /> },
             { path: "profile", element: <ProfilePage /> },
             { path: "profile/edit", element: <EditProfilePage /> },
