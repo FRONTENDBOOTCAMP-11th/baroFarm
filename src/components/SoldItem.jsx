@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import productImage from "/images/Sample1.svg";
 
 SoldItem.propTypes = {
   item: PropTypes.shape().isRequired,
@@ -17,14 +16,14 @@ export default function SoldItem({ item }) {
       <div className="text-sm">
         <p className="font-semibold break-keep">{item.name}</p>
         <p className="text-xs  text-gray5 py-1 pb-3">
-          {/* {productSelling
-            ? "현재 판매 중" */}
-          {new Date(item.updatedAt).toLocaleString("ko-kr", {
-            year: "numeric",
-            month: "numeric",
-            day: "numeric",
-            weekday: "short",
-          }) + " 판매 완료"}
+          {productSelling
+            ? "현재 판매 중"
+            : new Date(item.updatedAt).toLocaleString("ko-kr", {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+                weekday: "short",
+              }) + " 판매 완료"}
         </p>
         <span className="text-red1 font-semibold pr-1">{item.extra.sale}%</span>
         <span className="font-semibold">
