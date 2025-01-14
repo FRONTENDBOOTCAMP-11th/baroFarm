@@ -13,7 +13,7 @@ export default function EditProfilePage() {
   const data = location.state.user;
   const axios = useAxiosInstance();
   0;
-  const { user, setUser } = useUserStore();
+  const { user, resetUser } = useUserStore();
 
   useEffect(() => {
     setHeaderContents({
@@ -24,12 +24,11 @@ export default function EditProfilePage() {
 
   const editUserInfo = useMutation({
     mutationFn: (formData) => axios.patch(`/users/${data._id}`, formData),
-    onSuccess: (res) => {
-      console.log(res);
-      const newName = res.data.item.name;
-      // 현재 유저 스토어에 기록되어 있는 내용을 재갱신
-      setUser({ ...user, name: newName });
-      alert("프로필 정보 변경이 완료되었습니다.");
+    onSuccess: () => {
+      resetUser();
+      alert(
+        "프로필 정보 변경이 완료되었습니다. 설정 적용을 위해 로그아웃합니다"
+      );
       navigate("/users/mypage");
     },
     onError: (err) => {

@@ -1,11 +1,12 @@
-import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import Comment from "@pages/board/Comment";
+import createdTime from "@components/createdTime";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import {
-  useLocation,
+  Link,
   useNavigate,
   useOutletContext,
   useParams,
@@ -15,13 +16,12 @@ export default function BoardDetailPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   const { _id } = useParams();
-  const location = useLocation();
-  const newDate = location.state?.newDate;
-  const repliesCount = location.state?.repliesCount;
+  const { user } = useUserStore();
+  const axios = useAxiosInstance();
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      leftChild: <HeaderIcon name="back" onClick={() => navigate("/board")} />,
       title: "게시글",
       rightChild: (
         <>
@@ -31,16 +31,9 @@ export default function BoardDetailPage() {
     });
   }, []);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["posts", _id],
-    queryFn: () =>
-      axios.get(`https://11.fesp.shop/posts/${_id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-        },
-      }),
+    queryFn: () => axios.get(`/posts/${_id}`),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
   });
@@ -48,17 +41,33 @@ export default function BoardDetailPage() {
   if (isLoading) {
     return (
       <div className="mt-0 mx-auto text-center">
-        로딩중... <br />
+        로딩중..... <br />
         잠시만 기다려주세요
       </div>
     );
   }
 
+  const deletePost = async () => {
+    if (confirm("게시글을 삭제하시겠습니까?")) {
+      const response = await axios.delete(`/posts/${_id}`);
+      if (response.status === 200) {
+        alert("게시글 삭제가 완료되었습니다.");
+        navigate("/board");
+      }
+    }
+  };
+
+  const newDate = createdTime(data.createdAt);
+
   return (
     <div className="mx-5">
       <div className="flex flex-row mt-5 items-center">
         <img
-          src={`https://11.fesp.shop${data.user.image}`}
+          src={
+            data.user.image
+              ? `https://11.fesp.shop${data.user.image}`
+              : "/images/profile/ProfileImage_Sample.svg"
+          }
           alt="ProfileImage"
           className="w-6 h-6 rounded-full object-cover"
         />
@@ -72,21 +81,15 @@ export default function BoardDetailPage() {
         className="relative mt-10 mb-1 rounded-md"
         src={`https://11.fesp.shop${data.image}`}
       />
-      <div className="text-right text-xs">
-        <button>수정</button> | <button>삭제</button>
-      </div>
-      <Comment repliesCount={repliesCount} />
-
-      <div className="h-[65px] flex items-center px-5 -mx-5">
-        <input
-          type="text"
-          name="comment"
-          className="max-w-[285px] h-[35px] rounded-full px-[15px] mr-5 bg-gray1 flex-grow focus:outline-btn-primary"
-        />
-        <Button width={45} height={35} onClick={() => navigate("/board")}>
-          등록
-        </Button>
-      </div>
+      {data.user._id === user?._id && (
+        <div className="text-right text-xs">
+          <Link to="edit" state={{ data: data }}>
+            수정
+          </Link>{" "}
+          | <button onClick={deletePost}>삭제</button>
+        </div>
+      )}
+      <Comment replies={data.replies} />
     </div>
   );
 }

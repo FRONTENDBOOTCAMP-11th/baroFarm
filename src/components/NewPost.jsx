@@ -14,6 +14,7 @@ NewPost.propTypes = {
   handleSubmit: PropTypes.func,
   register: PropTypes.func.isRequired,
   handleRating: PropTypes.func.isRequired,
+  editInfo: PropTypes.string,
 };
 
 export default function NewPost({
@@ -21,6 +22,7 @@ export default function NewPost({
   handleSubmit,
   register,
   handleRating,
+  editInfo,
 }) {
   const { user } = useUserStore();
   const axios = useAxiosInstance();
@@ -56,7 +58,7 @@ export default function NewPost({
               : "/images/profile/ProfileImage_Sample.svg"
           }
           alt="ProfileImage"
-          className="w-6 h-6 rounded-full border object-cover"
+          className="w-6 h-6 rounded-full object-cover"
         />
         <span className="mx-[5px] text-sm">{data.name}</span>
       </div>
@@ -70,6 +72,7 @@ export default function NewPost({
           {...register("content", {
             required: "본문 내용을 입력해주세요",
           })}
+          defaultValue={editInfo ? editInfo : null}
         ></textarea>
         <br />
 
