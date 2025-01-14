@@ -3,7 +3,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import PropTypes from "prop-types";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 CommentItem.propTypes = {
   item: PropTypes.shape({

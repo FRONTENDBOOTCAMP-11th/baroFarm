@@ -1,20 +1,22 @@
 import Button from "@components/Button";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import CommentItem from "@pages/board/CommentItem";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 Comment.propTypes = {
-  replies: PropTypes.array.isRequired,
+  replies: PropTypes.array,
 };
 
 export default function Comment({ replies = [] }) {
   const { _id } = useParams();
   const axios = useAxiosInstance();
   const queryClient = useQueryClient();
+  const { user } = useUserStore();
+  const navigate = useNavigate();
   const { register, handleSubmit, reset } = useForm();
 
   const repliesList = replies.map((item) => (
@@ -23,7 +25,11 @@ export default function Comment({ replies = [] }) {
 
   const addComment = useMutation({
     mutationFn: async (item) => {
-      return axios.post(`/posts/${_id}/replies`, item);
+      if (user) return axios.post(`/posts/${_id}/replies`, item);
+      else
+        throw Error(
+          "로그인 후에 이용할 수 있는 기능입니다. 로그인하시겠습니까?"
+        );
     },
     onSuccess: (res) => {
       console.log("data", res.data);
@@ -33,6 +39,9 @@ export default function Comment({ replies = [] }) {
     },
     onError: (err) => {
       console.error(err);
+      if (!user && confirm(err)) {
+        navigate("/users/login");
+      }
     },
   });
 

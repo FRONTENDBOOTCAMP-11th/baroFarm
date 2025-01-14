@@ -1,8 +1,8 @@
 import HeaderIcon from "@components/HeaderIcon";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import BoardPageDetail from "@pages/board/BoardPageDetail";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
@@ -11,6 +11,7 @@ export default function BoardPage() {
   const navigate = useNavigate();
   const { user } = useUserStore();
   const [isLogin, setIsLogin] = useState(true);
+  const axios = useAxiosInstance();
 
   useEffect(() => {
     setHeaderContents({
@@ -30,16 +31,16 @@ export default function BoardPage() {
     }
   }, []);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["posts"],
-    queryFn: () =>
-      axios.get("https://11.fesp.shop/posts?type=community", {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-        },
-      }),
+  const { data } = useQuery({
+    queryKey: ["posts", "community"],
+    queryFn: () => axios.get("/posts?type=community"),
+    select: (res) => res.data.item,
+    staleTime: 1000 * 10,
+  });
+
+  const { data: data2, isLoading } = useQuery({
+    queryKey: ["posts", "noPic"],
+    queryFn: () => axios.get("/posts?type=noPic"),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
   });
@@ -53,6 +54,9 @@ export default function BoardPage() {
     );
   }
 
+  const mergeData = [...data, ...data2];
+  const sortedData = mergeData.sort((prev, next) => next._id - prev._id);
+
   const handleClick = (event) => {
     if (
       !confirm(
@@ -63,7 +67,7 @@ export default function BoardPage() {
     }
   };
 
-  const boards = data.map((item) => (
+  const boards = sortedData?.map((item) => (
     <BoardPageDetail key={item._id} item={item} />
   ));
 
