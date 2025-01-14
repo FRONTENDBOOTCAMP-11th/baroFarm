@@ -20,14 +20,22 @@ const images = [
 ];
 
 const categories = [
-  { title: "제철 과일", image: "/images/menu/Fruit.svg" },
-  { title: "채소", image: "/images/menu/Vegetable.svg" },
-  { title: "김치", image: "/images/menu/Kimchi.svg" },
-  { title: "축산물", image: "/images/menu/Livestock.svg" },
-  { title: "수산물", image: "/images/menu/Seafood.svg" },
-  { title: "간편식품", image: "/images/menu/Simple.svg" },
-  { title: "떡", image: "/images/menu/Ricecake.svg" },
-  { title: "쌀/잡곡", image: "/images/menu/Rice.svg" },
+  { title: "제철 과일", image: "/images/menu/Fruit.svg", url: "/menu/fruit" },
+  {
+    title: "채소",
+    image: "/images/menu/Vegetable.svg",
+    url: "/menu/vegetable",
+  },
+  { title: "김치", image: "/images/menu/Kimchi.svg", url: "/menu/kimchi" },
+  {
+    title: "축산물",
+    image: "/images/menu/Livestock.svg",
+    url: "/menu/liveStock",
+  },
+  { title: "수산물", image: "/images/menu/Seafood.svg", url: "/menu/seafood" },
+  { title: "간편식품", image: "/images/menu/Simple.svg", url: "/menu/simple" },
+  { title: "떡", image: "/images/menu/Ricecake.svg", url: "/menu/riceCake" },
+  { title: "쌀/잡곡", image: "/images/menu/Rice.svg", url: "/menu/rice" },
 ];
 
 const getMonthlyData = (data) => {
@@ -67,10 +75,10 @@ export default function MainPage() {
   }, []);
 
   const categoryIcons = categories.map((item, index) => (
-    <div key={index}>
+    <Link to={item.url} key={index}>
       <img src={item.image} alt={`${item.title} 카테고리`} />
       <span>{item.title}</span>
-    </div>
+    </Link>
   ));
 
   // 임시 이미지. 나중에 게시글에서 가져올 예정.
