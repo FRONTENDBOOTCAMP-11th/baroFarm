@@ -32,8 +32,8 @@ export default function BoardPage() {
     }
   }, []);
 
-  const { data } = useQuery({
-    queryKey: ["posts", "community"],
+  const { data: communityBoard, isLoading } = useQuery({
+    queryKey: ["posts", "community", keyword],
     queryFn: () =>
       axios.get(`/posts`, {
         params: { type: "community", keyword: keyword },
@@ -42,8 +42,8 @@ export default function BoardPage() {
     staleTime: 1000 * 10,
   });
 
-  const { data: data2, isLoading } = useQuery({
-    queryKey: ["posts", "noPic"],
+  const { data: noPicBoard, isLoading: isLoading2 } = useQuery({
+    queryKey: ["posts", "noPic", keyword],
     queryFn: () =>
       axios.get(`/posts`, {
         params: { type: "noPic", keyword: keyword },
@@ -52,7 +52,7 @@ export default function BoardPage() {
     staleTime: 1000 * 10,
   });
 
-  if (isLoading) {
+  if (isLoading || isLoading2) {
     return (
       <div className="mt-0 mx-auto text-center">
         로딩중... <br />
@@ -61,7 +61,7 @@ export default function BoardPage() {
     );
   }
 
-  const mergeData = [...data, ...data2];
+  const mergeData = [...communityBoard, ...noPicBoard];
   const sortedData = mergeData.sort((prev, next) => next._id - prev._id);
 
   const handleClick = (event) => {
