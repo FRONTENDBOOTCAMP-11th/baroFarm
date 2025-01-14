@@ -66,7 +66,7 @@ export default function LoginPage() {
   const login = useMutation({
     mutationFn: (formData) => axios.post("/users/login", formData),
     onSuccess: (res) => {
-      console.log(res);
+      // console.log(res);
 
       // 로그인 성공 시 유저 정보를 zustand 스토어에 저장
       const user = res.data.item;
@@ -166,11 +166,11 @@ export default function LoginPage() {
       <div className="mb-5 w-full h-[3.25rem] m-auto">
         <button
           type="button"
-          className="w-full h-[3.25rem] text-center text-xl rounded-full bg-yellow1 font-medium flex items-center justify-center gap-1"
+          className="w-full h-[3.25rem] text-center text-xl rounded-full bg-yellow1 font-medium flex items-center gap-16"
         >
           {/* 이미지가 장식 목적이고 옆의 텍스트가 이미 충분한 의미를 전달하고 있기 때문에 alt = "" 지정*/}
-          <img className="w-8 h-8" src="/images/login/kakaoLogo.png" alt="" />
-          <span>카카오 1초 로그인</span>
+          <img className="w-8 h-8 ml-6" src="/images/login/kakaoLogo.png" alt="" />
+          <span>카카오 로그인</span>
         </button>
       </div>
 
