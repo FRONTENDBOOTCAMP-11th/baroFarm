@@ -1,5 +1,12 @@
 import Button from "@components/Button";
+import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
+
+PostcodeSearch.propTypes = {
+  isOpenIframe: PropTypes.bool.isRequired,
+  setIsOpenIframe: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
+};
 
 export default function PostcodeSearch({
   isOpenIframe,
@@ -40,6 +47,10 @@ export default function PostcodeSearch({
       },
       width: "100%",
       height: "100%",
+      // 내부
+      onresize: function (size) {
+        iframeRef.current.style.height = size.height + 4 + "px";
+      },
     }).embed(iframeRef.current);
 
     // 주소 검색 iframe 보이기
@@ -66,6 +77,7 @@ export default function PostcodeSearch({
             className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
             type="text"
             placeholder="상세주소"
+            autoFocus
             {...register("detailValue")}
           />
         </div>
@@ -74,7 +86,7 @@ export default function PostcodeSearch({
       <div
         id="wrap"
         ref={iframeRef}
-        className={`bg-red-100 border border-solid w-auto h-[300px] my-1 relative ${
+        className={`bg-red-100 border border-solid w-auto my-1 relative ${
           isOpenIframe ? "visible" : "hidden"
         }`}
       >
