@@ -51,7 +51,12 @@ export default function MainPage() {
   // 헤더 아이콘 설정
   useEffect(() => {
     setHeaderContents({
-      title: <img src="/images/BaroFarmLogo.svg" alt="홈 버튼" />,
+      leftChild: (
+        <img
+          src="/images/BaroFarmLogo_long.png"
+          className="absolute top-1/2 -translate-y-1/2 h-[40px]"
+        />
+      ),
       rightChild: (
         <>
           <HeaderIcon name="search" onClick={() => navigate("/search")} />
