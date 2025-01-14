@@ -32,7 +32,7 @@ export default function SalePage() {
   //   }
   // }, [user]);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: () => axios.get(`/seller/products?sort={"createdAt": -1}`),
     select: (res) => res.data.item,
