@@ -25,11 +25,12 @@ export default function SalePage() {
     });
   }, []);
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   const userCheck= () => {try {}} axios.get(`/users/${user._id}/type`);
+  //   if (userCheck === "user") {
+  //     navigate("/users/mypage");
+  //   }
+  // }, [user]);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["products"],
@@ -42,10 +43,6 @@ export default function SalePage() {
 
   if (isLoading) {
     return <>로딩 중입니다...</>;
-  }
-
-  if (isError) {
-    navigate("/users/mypage");
   }
 
   const pastDate1 = new Date(data[0].createdAt).toLocaleDateString();
