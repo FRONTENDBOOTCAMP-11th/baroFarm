@@ -145,7 +145,7 @@ export default function BoardPage() {
       {boards}
       {boards.length === 0 && keyword !== "" && (
         <div className="relative">
-          <span className="mt-10 block text-center">
+          <span className="mt-10 block text-center text-gray4">
             &quot;{keyword}&quot; 검색 결과가 없습니다.
           </span>
         </div>
