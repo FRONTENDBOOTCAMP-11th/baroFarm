@@ -6,8 +6,8 @@ import {
   useParams,
 } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import axios from "axios";
 
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useLikeToggle } from "@hooks/useLikeToggle";
 import { useCategory } from "@hooks/useCategory";
 
@@ -24,13 +24,13 @@ const likeIcon = {
   active: "/icons/icon_likeHeart_yes.svg",
 };
 
-const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
-
 export default function ProductDetailPage() {
   const { _id } = useParams();
 
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+
+  const instance = useAxiosInstance();
 
   const {
     data: product,
@@ -39,14 +39,7 @@ export default function ProductDetailPage() {
   } = useQuery({
     queryKey: ["product"],
     queryFn: async () => {
-      const response = await axios.get(`https://11.fesp.shop/products/${_id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
-      });
+      const response = await instance.get(`/products/${_id}`);
       return response.data.item;
     },
   });
@@ -89,21 +82,10 @@ export default function ProductDetailPage() {
 
   const cartItem = useMutation({
     mutationFn: async () => {
-      const response = await axios.post(
-        `https://11.fesp.shop/carts`,
-        {
-          product_id: _id,
-          quantity: count,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-            "client-id": "final04",
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
-          },
-        }
-      );
+      const response = await instance.post(`/carts`, {
+        product_id: _id,
+        quantity: count,
+      });
       return response.data.item;
     },
     onSuccess: () => {
@@ -221,7 +203,7 @@ export default function ProductDetailPage() {
               {(product.extra.saledPrice * count).toLocaleString()}원
             </span>
             <span className="text-[12px] text-red1 mt-[3px]">
-              (-
+              (
               {(
                 (product.price - product.extra.saledPrice) *
                 count
@@ -251,7 +233,7 @@ export default function ProductDetailPage() {
                   selectedItems: purchaseItem,
                   totalFees: product.extra.saledPrice * count,
                   totalShippingFees: product.shippingFees,
-                  buyQuantity: parseInt(count),
+                  quantity: parseInt(count),
                 },
               })
             }
