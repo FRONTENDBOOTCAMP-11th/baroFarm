@@ -15,6 +15,7 @@ NewPost.propTypes = {
   register: PropTypes.func.isRequired,
   handleRating: PropTypes.func.isRequired,
   editInfo: PropTypes.string,
+  errors: PropTypes.shape(),
 };
 
 export default function NewPost({
@@ -23,6 +24,7 @@ export default function NewPost({
   register,
   handleRating,
   editInfo,
+  errors = {},
 }) {
   const { user } = useUserStore();
   const axios = useAxiosInstance();
@@ -74,6 +76,11 @@ export default function NewPost({
           })}
           defaultValue={editInfo ? editInfo : null}
         ></textarea>
+        {errors.content && (
+          <p className="text-red1 text-xs -mt-7 ps-1">
+            {errors.content.message}
+          </p>
+        )}
         <br />
 
         {!isBoard && (

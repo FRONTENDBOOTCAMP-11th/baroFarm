@@ -1,8 +1,7 @@
 import HeaderIcon from "@components/HeaderIcon";
 import NewPost from "@components/NewPost";
 import useAxiosInstance from "@hooks/useAxiosInstance";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import useUserStore from "@zustand/useUserStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
@@ -10,10 +9,13 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 export default function BoardNewPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const isBoard = true;
   const queryClient = useQueryClient();
-  const { user } = useUserStore();
 
   const axios = useAxiosInstance();
 
@@ -43,6 +45,10 @@ export default function BoardNewPage() {
   const addItem = useMutation({
     mutationFn: async (item) => {
       let imageUrl = null;
+
+      if (!item.content) {
+        throw new Error("본문 내용은 필수로 입력해야 합니다");
+      }
 
       if (item.image && item.image[0]) {
         // 없로드되는 파일은 이미지로 제한
@@ -100,6 +106,7 @@ export default function BoardNewPage() {
         isBoard={isBoard}
         handleSubmit={handleSubmit(addItem.mutate)}
         register={register}
+        errors={errors}
       ></NewPost>
     </>
   );
