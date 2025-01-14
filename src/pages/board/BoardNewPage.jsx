@@ -67,6 +67,7 @@ export default function BoardNewPage() {
           );
           throw new Error("Image upload failed.");
         }
+
         const body = {
           content: item.content,
           type: "community",
@@ -74,13 +75,17 @@ export default function BoardNewPage() {
         };
         return axios.post(`/posts`, body);
       } else {
-        throw new Error("이미지를 업로드해야 합니다");
+        const body = {
+          content: item.content,
+          type: "noPic",
+        };
+        return axios.post(`/posts`, body);
       }
     },
     onSuccess: (res) => {
       console.log("data", res.data);
       alert("게시물이 등록되었습니다.");
-      queryClient.invalidateQueries({ queryKey: ["posts", "community"] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       navigate(`/board`);
     },
     onError: (err) => {
