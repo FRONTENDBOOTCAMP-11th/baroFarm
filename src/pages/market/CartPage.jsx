@@ -2,6 +2,7 @@ import Button from "@components/Button";
 import CartItem from "@components/CartItem";
 import Checkbox from "@components/Checkbox";
 import HeaderIcon from "@components/HeaderIcon";
+import ProductSmall from "@components/ProductSmall";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
@@ -112,6 +113,13 @@ export default function CartPage() {
     onError: (err) => console.error(err),
   });
 
+  // 찜한 상품 data fetching
+  const { data: likeItem } = useQuery({
+    queryKey: ["bookmarks", "product"],
+    queryFn: () => axios.get(`/bookmarks/product`),
+    select: (res) => res.data.item,
+  });
+
   // 장바구니 아이템 체크하기
   const toggleCartItemCheck = (targetId) => {
     // 체크한 상품을 장바구니 데이터에서 찾음
@@ -189,13 +197,13 @@ export default function CartPage() {
     );
   }
   // 데이터 없을시 null 반환하여 에러 방지
-  if (!data) return null;
-  console.log(data);
+  if (!data && likeItem) return null;
 
   // 최종 배송비 계산
   const totalShippingFees =
     data.cost.shippingFees - data.cost.discount.shippingFees;
 
+  // 장바구니 아이템으로 화면 렌더링
   const itemList = data.item.map((item) => (
     <CartItem
       key={item._id}
@@ -206,6 +214,12 @@ export default function CartPage() {
       toggleCartItemCheck={toggleCartItemCheck}
     />
   ));
+
+  // 찜한 상품으로 화면 렌더링
+  const likeItems = likeItem.map((item) => (
+    <ProductSmall key={item._id} product={item.product} id={item._id} />
+  ));
+  console.log(likeItem);
 
   // 체크한 아이템의 데이터가 담긴 배열을 구매 페이지로 전송
   const selectItem = () => {
@@ -253,7 +267,7 @@ export default function CartPage() {
               }`}
               onClick={() => setRenderCart(false)}
             >
-              찜한 상품(0)
+              찜한 상품({likeItem.length})
             </div>
           </section>
           {/* 장바구니 상품 혹은 찜한 상품 조건부 렌더링 */}
@@ -319,12 +333,21 @@ export default function CartPage() {
               </form>
             </div>
           ) : (
-            <section className="pt-[100px] flex flex-col gap-[10px] items-center text-[14px]">
-              <span className="text-gray4">찜한 상품이 없습니다.</span>
-              <Link to="/" className="text-bg-primary underline">
-                쇼핑하러 가기
-              </Link>
-            </section>
+            // 찜한 상품이 있는지 없는지에 따라 동적 렌더링
+            <div>
+              {likeItem.length > 0 ? (
+                <div className="grid grid-cols-3 gap-x-2 gap-y-4 py-2">
+                  {likeItems}
+                </div>
+              ) : (
+                <section className="pt-[100px] flex flex-col gap-[10px] items-center text-[14px]">
+                  <span className="text-gray4">찜한 상품이 없습니다.</span>
+                  <Link to="/" className="text-bg-primary underline">
+                    쇼핑하러 가기
+                  </Link>
+                </section>
+              )}
+            </div>
           )}
         </>
       ) : (
