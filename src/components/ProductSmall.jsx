@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import { useLikeToggle } from "@hooks/useLikeToggle";
 import Button from "@components/Button";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 const likeIcon = {
   default: "/icons/icon_likeHeart_no.svg",
@@ -29,23 +31,46 @@ ProductSmall.propTypes = {
 
 export default function ProductSmall({ product, bookmarkId }) {
   const navigate = useNavigate();
+  // 북마크 상태
+  const { isLiked, handleLike } = useLikeToggle(product);
+  const axios = useAxiosInstance();
 
+  // 상품을 누르면 상품 상세 페이지로 이동
   const goDetailPage = () => {
     navigate(`/product/${product._id}`);
   };
 
-  const { isLiked, handleLike } = useLikeToggle(product);
+  const queryClient = useQueryClient();
+  // 북마크 해제 기능
+  const deleteBookmark = useMutation({
+    mutationFn: () => axios.delete(`/bookmarks/${bookmarkId}`),
+  });
+
+  // 장바구니에 추가 기능
+  const addCartItem = useMutation({
+    mutationFn: () =>
+      axios.post(`/carts`, {
+        product_id: parseInt(product._id),
+        quantity: 1,
+      }),
+    onSuccess: () => {
+      deleteBookmark.mutate();
+      queryClient.invalidateQueries({ queryKey: ["bookmarks", "product"] });
+      alert("장바구니에 추가되었습니다.");
+    },
+    onError: (error) => {
+      console.error("Error adding to cart", error);
+    },
+  });
 
   return (
-    <section
-      className="flex flex-col cursor-pointer *:self-center"
-      onClick={goDetailPage}
-    >
+    <section className="flex flex-col cursor-pointer *:self-center">
       <div className="relative">
         <img
           className="h-[135px] rounded-lg object-cover w-full"
           alt={product.name}
           src={`https://11.fesp.shop${product.mainImages[0]?.path}`}
+          onClick={goDetailPage}
         />
         <button
           className="absolute bottom-3 right-3 bg-white p-1.5 rounded-full shadow-bottom"
@@ -60,7 +85,7 @@ export default function ProductSmall({ product, bookmarkId }) {
           />
         </button>
       </div>
-      <div className="pl-[5px] pt-[10px]">
+      <div className="pl-[5px] pt-[10px]" onClick={goDetailPage}>
         <p className="text-xs line-clamp-1">{product.name}</p>
         <div className="pt-1">
           <span className="text-red1 font-semibold text-base pr-1">
@@ -71,7 +96,9 @@ export default function ProductSmall({ product, bookmarkId }) {
           </span>
         </div>
       </div>
-      <Button isWhite={true}>장바구니에 추가</Button>
+      <Button isWhite={true} onClick={() => addCartItem.mutate()}>
+        장바구니에 추가
+      </Button>
     </section>
   );
 }

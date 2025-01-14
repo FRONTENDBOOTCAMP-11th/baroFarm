@@ -217,7 +217,7 @@ export default function CartPage() {
 
   // 찜한 상품으로 화면 렌더링
   const likeItems = likeItem.map((item) => (
-    <ProductSmall key={item._id} product={item.product} id={item._id} />
+    <ProductSmall key={item._id} product={item.product} bookmarkId={item._id} />
   ));
   console.log(likeItem);
 
