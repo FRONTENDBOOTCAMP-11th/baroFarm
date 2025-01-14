@@ -1,5 +1,5 @@
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import PropTypes from "prop-types";
 
 ProductToBuy.propTypes = {
@@ -17,23 +17,13 @@ ProductToBuy.propTypes = {
   quantity: PropTypes.number.isRequired,
 };
 
-const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
-
 export default function ProductToBuy({ product, quantity }) {
-  // 넘어온 데이터 기반으로 seller의 닉네임 fetching
+  const axios = useAxiosInstance();
 
+  // 넘어온 데이터 기반으로 seller의 닉네임 fetching
   const { data } = useQuery({
     queryKey: ["users", `${product.seller_id}`, "name"],
-    queryFn: () =>
-      axios.get(`https://11.fesp.shop/users/${product.seller_id}/name`, {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-          // 임시로 하드 코딩한 액세스 토큰 사용
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
-      }),
+    queryFn: () => axios.get(`/users/${product.seller_id}/name`),
     select: (res) => res.data,
     staleTime: 1000 * 10,
   });
