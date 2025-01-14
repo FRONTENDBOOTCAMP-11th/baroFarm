@@ -84,6 +84,7 @@ export default function BoardPage() {
 
   const searchKeyword = (e) => {
     // 폼에서 name="keyword"인 입력값을 가져와 앞뒤 공백 제거
+    e.preventDefault();
     const searchWord = e.target.keyword.value.trim();
     setSearchParams({ keyword: searchWord }); // URL에 keyword 저장
     console.log(keyword);
@@ -136,10 +137,9 @@ export default function BoardPage() {
       <div className="h-[7px] bg-gray1 -mx-5"></div>
       {boards.length !== 0 && keyword !== "" && (
         <>
-          <span className="">
+          <span className="block py-3 text-sm font-semibold">
             &quot;{keyword}&quot; 검색 결과 {boards.length}개
           </span>
-          <div className="h-[7px] bg-gray1 -mx-5"></div>
         </>
       )}
       {boards}
