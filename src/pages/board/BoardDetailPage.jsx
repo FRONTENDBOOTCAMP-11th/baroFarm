@@ -21,7 +21,7 @@ export default function BoardDetailPage() {
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate("/board")} />,
+      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "게시글",
       rightChild: (
         <>
