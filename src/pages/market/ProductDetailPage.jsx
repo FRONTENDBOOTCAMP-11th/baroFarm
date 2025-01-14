@@ -73,7 +73,20 @@ export default function ProductDetailPage() {
   };
 
   const [count, setCount] = useState(1);
-  const purchaseItem = [product];
+  // 이 아이템을 결제 페이지로 보낼때 재구조화하기 위해 상태관리
+  const [purchaseItem, setPurchaseItem] = useState();
+  // (1) 아이템 불러와졌을 때, (2) count가 바뀔 때 purchaseItem 상태 업데이트
+  useEffect(() => {
+    setPurchaseItem([
+      {
+        product: {
+          ...product,
+          image: { path: product?.mainImages[0].path },
+        },
+        quantity: count,
+      },
+    ]);
+  }, [product, count]);
 
   const handleCount = (sign) => {
     if (sign === "plus") setCount((count) => count + 1);
@@ -227,16 +240,17 @@ export default function ProductDetailPage() {
           </button>
           <button
             className="flex-1 text-lg text-white bg-btn-primary p-3 rounded-[10px]"
-            onClick={() =>
+            onClick={() => {
+              const currentUrl = window.location.href;
               navigate("/payment", {
                 state: {
                   selectedItems: purchaseItem,
                   totalFees: product.extra.saledPrice * count,
                   totalShippingFees: product.shippingFees,
-                  quantity: parseInt(count),
+                  previousUrl: currentUrl,
                 },
-              })
-            }
+              });
+            }}
           >
             구매하기
           </button>

@@ -45,7 +45,7 @@ export default function ProductToBuy({ product, quantity }) {
       <div className="text-sm font-bold">{data.item.name}</div>
       <div className="pt-4 flex gap-3">
         <img
-          src={`https://11.fesp.shop/${product.mainImages[0].path}`}
+          src={`https://11.fesp.shop/${product.image.path}`}
           alt="상품 이미지"
           className="size-[72px] object-cover rounded-md"
         />
