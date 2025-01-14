@@ -30,8 +30,10 @@ export default function PaymentModal({
   // 구매할 상품의 이름을 문자열로 표기
   const orderName =
     selectedItems.length > 2
-      ? `'${selectedItems[0].name}' 외 ${selectedItems.length - 1}개 상품`
-      : `'${selectedItems[0].name}'`;
+      ? `'${selectedItems[0].product.name}' 외 ${
+          selectedItems.length - 1
+        }개 상품`
+      : `'${selectedItems[0].product.name}'`;
 
   // 카카오페이로 결제하기
   async function requestKaKaoPayment() {
@@ -54,7 +56,7 @@ export default function PaymentModal({
 
     selectedItems.forEach((item) =>
       purchaseItem.mutate({
-        _id: item.product_id,
+        _id: item.product._id,
         quantity: item.quantity,
       })
     );
@@ -82,7 +84,7 @@ export default function PaymentModal({
 
     selectedItems.forEach((item) =>
       purchaseItem.mutate({
-        _id: item.product_id,
+        _id: item.product._id,
         quantity: item.quantity,
       })
     );

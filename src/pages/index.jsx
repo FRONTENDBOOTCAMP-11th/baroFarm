@@ -20,14 +20,22 @@ const images = [
 ];
 
 const categories = [
-  { title: "제철 과일", image: "/images/menu/Fruit.svg" },
-  { title: "채소", image: "/images/menu/Vegetable.svg" },
-  { title: "김치", image: "/images/menu/Kimchi.svg" },
-  { title: "축산물", image: "/images/menu/Livestock.svg" },
-  { title: "수산물", image: "/images/menu/Seafood.svg" },
-  { title: "간편식품", image: "/images/menu/Simple.svg" },
-  { title: "떡", image: "/images/menu/Ricecake.svg" },
-  { title: "쌀/잡곡", image: "/images/menu/Rice.svg" },
+  { title: "제철 과일", image: "/images/menu/Fruit.svg", url: "/menu/fruit" },
+  {
+    title: "채소",
+    image: "/images/menu/Vegetable.svg",
+    url: "/menu/vegetable",
+  },
+  { title: "김치", image: "/images/menu/Kimchi.svg", url: "/menu/kimchi" },
+  {
+    title: "축산물",
+    image: "/images/menu/Livestock.svg",
+    url: "/menu/liveStock",
+  },
+  { title: "수산물", image: "/images/menu/Seafood.svg", url: "/menu/seafood" },
+  { title: "간편식품", image: "/images/menu/Simple.svg", url: "/menu/simple" },
+  { title: "떡", image: "/images/menu/Ricecake.svg", url: "/menu/riceCake" },
+  { title: "쌀/잡곡", image: "/images/menu/Rice.svg", url: "/menu/rice" },
 ];
 
 const getMonthlyData = (data) => {
@@ -45,7 +53,6 @@ export default function MainPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   // 현재 날짜
-  const date = new Date();
   const currentMonth = new Date().getMonth() + 1;
 
   // 헤더 아이콘 설정
@@ -66,22 +73,26 @@ export default function MainPage() {
     });
   }, []);
 
+  // 카테고리 아이콘 렌더링
   const categoryIcons = categories.map((item, index) => (
-    <div key={index}>
+    <Link to={item.url} key={index}>
       <img src={item.image} alt={`${item.title} 카테고리`} />
       <span>{item.title}</span>
-    </div>
-  ));
-
-  // 임시 이미지. 나중에 게시글에서 가져올 예정.
-  const storyImages = images.map((item, index) => (
-    <img key={index} src={item} />
+    </Link>
   ));
 
   // 상품 목록 데이터 fetching
   const { data, isLoading, isError } = useQuery({
     queryKey: ["products"],
     queryFn: () => axios.get("/products"),
+    select: (res) => res.data.item,
+    staleTime: 1000 * 10,
+  });
+
+  // 게시글 데이터 fetching
+  const { data: board } = useQuery({
+    queryKey: ["posts", "community"],
+    queryFn: () => axios.get("/posts?type=community"),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
   });
@@ -133,6 +144,28 @@ export default function MainPage() {
   const onMonthProducts = filteredOnMonthData
     .filter((_, index) => index < 6)
     .map((product) => <ProductBig key={product._id} {...product} />);
+
+  // 게시글 개수에 따라 rows 정하기
+  const howManyRows = Math.ceil(board.length / 3);
+  console.log(howManyRows);
+  // 게시글 이미지 렌더링
+  const storyImages = (
+    <div
+      className={`grid grid-cols-3 grid-rows-${howManyRows} px-5 gap-1 *:size-[120px] *:object-cover *:cursor-pointer`}
+    >
+      {board
+        // 최대 9개까지만 필터링
+        .filter((_, index) => index < 9)
+        .map((item, index) => (
+          <img
+            key={index}
+            src={`https://11.fesp.shop${item.image}`}
+            alt={item.content}
+            onClick={() => navigate(`/board/${item._id}`)}
+          />
+        ))}
+    </div>
+  );
 
   return (
     <div>
@@ -230,9 +263,7 @@ export default function MainPage() {
             </button>
           </div>
         </div>
-        <div className="grid grid-cols-3 grid-rows-3 px-5 gap-1 *:size-[120px] *:object-cover">
-          {storyImages}
-        </div>
+        {storyImages}
       </section>
       <section className="flex flex-col gap-1 px-5 bg-gray1 text-black text-sm py-5">
         <p className="font-semibold">(주) 농담 사업자 정보</p>

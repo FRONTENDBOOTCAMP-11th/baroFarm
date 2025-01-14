@@ -49,13 +49,14 @@ export default function PaymentPage() {
   // 이전 페이지에서 넘어온 정보
   const location = useLocation();
   // 이전 페이지에서 넘어온 구매할 상품, 최종금액, 배송비
-  const { selectedItems, totalFees, totalShippingFees, quantity } =
+  const { selectedItems, totalFees, totalShippingFees, previousUrl } =
     location.state;
+  console.log(location);
 
   // 구매할 상품 컴포넌트 동적 렌더링
   useEffect(() => {
     const itemsToBuy = selectedItems?.map((item) => (
-      <ProductToBuy key={item._id} product={item} quantity={quantity} />
+      <ProductToBuy key={item.product._id} {...item} />
     ));
     setPaymentItems(itemsToBuy);
   }, []);
@@ -169,13 +170,14 @@ export default function PaymentPage() {
       }),
     onSuccess: (res) => {
       // 구매 성공시
-      // 장바구니에서 구매한 아이템 삭제
-      console.log(res);
-      let purchasedItems = [];
-      // 구매 목록의 아이디를 배열에 담고
-      selectedItems.forEach((item) => purchasedItems.push(item._id));
-      // 배열을 삭제 요청에 전달
-      deleteItem.mutate(purchasedItems);
+      // 장바구니에서 넘어온 상태라면 장바구니에서 구매한 아이템 삭제
+      if (previousUrl.includes("/cart")) {
+        let purchasedItems = [];
+        // 구매 목록의 아이디를 배열에 담고
+        selectedItems.forEach((item) => purchasedItems.push(item._id));
+        // 배열을 삭제 요청에 전달
+        deleteItem.mutate(purchasedItems);
+      }
       navigate("/complete", {
         state: { selectedItems, totalFees, memo, currentAddress },
       });

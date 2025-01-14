@@ -28,7 +28,7 @@ export default function Carousel({ width = 390, height, data }) {
           {item?.extra.sale}%
         </span>
         <span className="text-xs line-clamp-1">
-          {item?.name} ({item?.extra.rating})
+          {item?.name} ({item?.rating ? item?.rating : 0})
         </span>
       </div>
     </SwiperSlide>
