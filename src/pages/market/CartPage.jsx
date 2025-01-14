@@ -217,6 +217,7 @@ export default function CartPage() {
       // 각각의 id 마다 checkedItemsIds에 담긴 id와 같은 상품을 장바구니에서 찾아서 리턴
       data.item.find((item) => item.product_id === id)
     );
+    const currentUrl = window.location.href;
 
     navigate("/payment", {
       // seletedItems : 체크한 아이템의 아이디가 딤긴 배열
@@ -226,6 +227,7 @@ export default function CartPage() {
         selectedItems,
         totalFees: totalPayFees,
         totalShippingFees,
+        previousUrl: currentUrl,
       },
     });
   };
