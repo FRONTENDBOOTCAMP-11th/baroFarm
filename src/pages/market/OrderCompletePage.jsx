@@ -32,7 +32,7 @@ export default function OrderCompletePage() {
   const products = selectedItems.map((item) => {
     return (
       <div
-        key={item._id}
+        key={item.product._id}
         className="flex justify-between text-sm font-light pl-3 gap-5"
       >
         <p className="truncate">{item.product.name}</p>

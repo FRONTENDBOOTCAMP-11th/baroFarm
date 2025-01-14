@@ -56,7 +56,7 @@ export default function PaymentPage() {
   // 구매할 상품 컴포넌트 동적 렌더링
   useEffect(() => {
     const itemsToBuy = selectedItems?.map((item) => (
-      <ProductToBuy key={item.product_id} {...item} />
+      <ProductToBuy key={item.product._id} {...item} />
     ));
     setPaymentItems(itemsToBuy);
   }, []);
