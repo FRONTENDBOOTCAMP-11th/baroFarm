@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef, useEffect } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import { createPortal } from "react-dom";
 
 import closeIcon from "/icons/icon_x_black.svg";
@@ -10,14 +10,6 @@ const Modal = forwardRef(({ children }, ref) => {
     open: () => dialogRef.current.showModal(),
     close: () => dialogRef.current.close(),
   }));
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      dialogRef.current?.close();
-    }, 4000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   return createPortal(
     <dialog
