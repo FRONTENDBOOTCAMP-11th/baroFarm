@@ -21,6 +21,8 @@ export default function CartPage() {
   const [totalPayFees, setTotalPayFees] = useState(0);
   // 체크된 상품의 아이디를 담은 배열 상태 관리
   const [checkedItemsIds, setCheckedItemsIds] = useState([]);
+  // 보여줄 상품의 타입을 상태 관리
+  const [renderCart, setRenderCart] = useState(true);
 
   // targetRef가 보이면 결제버튼을 보이게 함
   const targetRef = useRef(null);
@@ -236,63 +238,94 @@ export default function CartPage() {
     <div>
       {itemList.length > 0 ? (
         <>
-          <section className="py-[14px] px-5 flex gap-[6px] items-center border-b border-gray2">
-            <label
-              className="flex items-center cursor-pointer relative gap-2 grow"
-              htmlFor="checkAll"
-            >
-              <Checkbox id="checkAll" name="checkAll" />
-              전체 선택 (1/2)
-            </label>
-            <Button>삭제</Button>
-          </section>
-          <form onSubmit={handleSubmit(selectItem)}>
-            <section className="px-5 pb-4 border-b-4 border-gray2">
-              {itemList}
-            </section>
-            <section className="px-5 py-3">
-              <div className="border-b border-gray2">
-                <div className="text-xs flex justify-between mb-3">
-                  <span className="text-gray4">총 상품 금액</span>
-                  <span>{totalFees.toLocaleString()}원</span>
-                </div>
-                <div className="text-xs flex justify-between mb-3">
-                  <span className="text-gray4">할인 금액</span>
-                  <span className="text-red1">
-                    {discount.toLocaleString()}원
-                  </span>
-                </div>
-                <div className="text-xs flex justify-between mb-3">
-                  <span className="text-gray4">배송비</span>
-                  <span>
-                    {totalShippingFees === 0
-                      ? "무료"
-                      : `${totalShippingFees.toLocaleString()}원`}
-                  </span>
-                </div>
-              </div>
-              <div className="flex justify-between mb-3 py-3 text-[16px] font-bold">
-                <span>총 결제 금액</span>
-                <span>
-                  {(totalPayFees + totalShippingFees).toLocaleString()}원
-                </span>
-              </div>
-            </section>
+          <section className="flex h-9 font-semibold border-b border-gray2 *:flex *:grow *:cursor-pointer *:self-stretch *:items-center *:justify-center">
             <div
-              ref={targetRef}
-              style={{ height: "1px", background: "transparent" }}
-            ></div>
-            <section
-              className={clsx(
-                "max-w-[390px] mx-auto px-5 py-8 bg-gray1 shadow-top fixed left-0 right-0 transition-all duration-150 ease-in-out",
-                showButton ? "bottom-0 opacity-100" : "-bottom-24 opacity-0"
-              )}
+              className={`${
+                renderCart ? "border-b-2 border-btn-primary" : "text-gray3"
+              }`}
+              onClick={() => setRenderCart(true)}
             >
-              <Button isBig={true} type="submit">
-                {(totalPayFees + totalShippingFees).toLocaleString()}원 구매하기
-              </Button>
+              담은 상품({itemList.length})
+            </div>
+            <div
+              className={`${
+                renderCart ? "text-gray3 " : "border-b-2 border-btn-primary"
+              }`}
+              onClick={() => setRenderCart(false)}
+            >
+              찜한 상품(0)
+            </div>
+          </section>
+          {/* 장바구니 상품 혹은 찜한 상품 조건부 렌더링 */}
+          {renderCart ? (
+            <div>
+              <section className="py-[14px] px-5 flex gap-[6px] items-center border-b border-gray2">
+                <label
+                  className="flex items-center cursor-pointer relative gap-2 grow"
+                  htmlFor="checkAll"
+                >
+                  <Checkbox id="checkAll" name="checkAll" />
+                  전체 선택 (1/2)
+                </label>
+                <Button>삭제</Button>
+              </section>
+              <form onSubmit={handleSubmit(selectItem)}>
+                <section className="px-5 pb-4 border-b-4 border-gray2">
+                  {itemList}
+                </section>
+                <section className="px-5 py-3">
+                  <div className="border-b border-gray2">
+                    <div className="text-xs flex justify-between mb-3">
+                      <span className="text-gray4">총 상품 금액</span>
+                      <span>{totalFees.toLocaleString()}원</span>
+                    </div>
+                    <div className="text-xs flex justify-between mb-3">
+                      <span className="text-gray4">할인 금액</span>
+                      <span className="text-red1">
+                        {discount.toLocaleString()}원
+                      </span>
+                    </div>
+                    <div className="text-xs flex justify-between mb-3">
+                      <span className="text-gray4">배송비</span>
+                      <span>
+                        {totalShippingFees === 0
+                          ? "무료"
+                          : `${totalShippingFees.toLocaleString()}원`}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between mb-3 py-3 text-[16px] font-bold">
+                    <span>총 결제 금액</span>
+                    <span>
+                      {(totalPayFees + totalShippingFees).toLocaleString()}원
+                    </span>
+                  </div>
+                </section>
+                <div
+                  ref={targetRef}
+                  style={{ height: "1px", background: "transparent" }}
+                ></div>
+                <section
+                  className={clsx(
+                    "max-w-[390px] mx-auto px-5 py-8 bg-gray1 shadow-top fixed left-0 right-0 transition-all duration-150 ease-in-out",
+                    showButton ? "bottom-0 opacity-100" : "-bottom-24 opacity-0"
+                  )}
+                >
+                  <Button isBig={true} type="submit">
+                    {(totalPayFees + totalShippingFees).toLocaleString()}원
+                    구매하기
+                  </Button>
+                </section>
+              </form>
+            </div>
+          ) : (
+            <section className="pt-[100px] flex flex-col gap-[10px] items-center text-[14px]">
+              <span className="text-gray4">찜한 상품이 없습니다.</span>
+              <Link to="/" className="text-bg-primary underline">
+                쇼핑하러 가기
+              </Link>
             </section>
-          </form>
+          )}
         </>
       ) : (
         <>
