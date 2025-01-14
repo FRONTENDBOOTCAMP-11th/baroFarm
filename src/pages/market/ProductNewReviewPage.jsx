@@ -46,35 +46,25 @@ export default function ProductNewReviewPage() {
       if (item.image && item.image[0]) {
         const formData = new FormData();
         formData.append("attach", item.image[0]);
-        try {
-          const uploadImg = await axios.post(`/files`, formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
-          imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
-        } catch (error) {
-          console.error(
-            "Upload failed:",
-            error.response?.data || error.message
-          );
-          throw new Error("Upload failed.");
-        }
-        const body = {
-          order_id: parseInt(order_id),
-          product_id: parseInt(_id),
-          rating: rating,
-          content: item.content,
-          extra: {
-            image: imageUrl,
-          },
-        };
 
-        console.log(body);
-        return axios.post(`/replies`, body);
-      } else {
-        throw new Error("이미지를 업로드해야 합니다");
+        const uploadImg = await axios.post(`/files`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
       }
+      const body = {
+        order_id: parseInt(order_id),
+        product_id: parseInt(_id),
+        rating: rating,
+        content: item.content,
+        extra: {
+          image: imageUrl,
+        },
+      };
+
+      return axios.post(`/replies`, body);
     },
     onSuccess: () => {
       alert("후기가 등록되었습니다.");
