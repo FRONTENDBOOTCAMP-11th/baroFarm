@@ -9,12 +9,11 @@ export default function OrderCompletePage() {
   const navigate = useNavigate();
   useEffect(() => {
     setHeaderContents({
-      title: (
+      leftChild: (
         <img
-          src="/images/BaroFarmLogo.svg"
-          alt="홈 버튼"
+          src="/images/BaroFarmLogo_long.png"
+          className="absolute top-1/2 -translate-y-1/2 h-[40px] cursor-pointer"
           onClick={() => navigate("/")}
-          className="cursor-pointer"
         />
       ),
       rightChild: (
