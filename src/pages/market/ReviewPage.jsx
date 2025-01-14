@@ -35,16 +35,13 @@ export default function ReviewPage() {
   } = useQuery({
     queryKey: ["product", _id, "reviews"],
     queryFn: async () => {
-      if (sortOrder === "best") {
-        const end = `{"rating": -1}`;
-      } else {
-        const end = `{"createdAt": -1}`;
-      }
+      const end = sortOrder === "best" ? { rating: -1 } : { createdAt: -1 };
       const response = await instance.get(
-        `/replies/products/${_id}?sort={"rating": -1}`
+        `/replies/products/${_id}?sort=${JSON.stringify(end)}`
       );
       return response.data.item;
     },
+    enable: !!_id && !!sortOrder,
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -53,6 +50,13 @@ export default function ReviewPage() {
   const ratings = reviewData.map((review) => review.rating);
   const totalRating =
     ratings.reduce((acc, curr) => acc + curr, 0) / ratings.length;
+
+  const sortedReviewData =
+    sortOrder === "new"
+      ? [...reviewData].sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        )
+      : reviewData;
 
   return (
     <>
@@ -102,7 +106,7 @@ export default function ReviewPage() {
         >
           최신순
         </button>
-        {reviewData.map((reply) => (
+        {sortedReviewData.map((reply) => (
           <ReviewItem
             key={reply._id}
             reply={reply}
