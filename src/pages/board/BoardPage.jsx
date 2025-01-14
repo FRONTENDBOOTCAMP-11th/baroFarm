@@ -4,7 +4,12 @@ import BoardPageDetail from "@pages/board/BoardPageDetail";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useOutletContext,
+  useSearchParams,
+} from "react-router-dom";
 
 export default function BoardPage() {
   const { setHeaderContents } = useOutletContext();
@@ -12,7 +17,8 @@ export default function BoardPage() {
   const { user } = useUserStore();
   const [isLogin, setIsLogin] = useState(true);
   const axios = useAxiosInstance();
-  const [keyword, setKeyword] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const keyword = searchParams.get("keyword") || ""; // URL에서 keyword 가져오기
 
   useEffect(() => {
     setHeaderContents({
@@ -32,6 +38,7 @@ export default function BoardPage() {
     }
   }, []);
 
+  // 사진을 포함한 게시글
   const { data: communityBoard, isLoading } = useQuery({
     queryKey: ["posts", "community", keyword],
     queryFn: () =>
@@ -42,6 +49,7 @@ export default function BoardPage() {
     staleTime: 1000 * 10,
   });
 
+  // 사진을 포함하지 않은 게시글
   const { data: noPicBoard, isLoading: isLoading2 } = useQuery({
     queryKey: ["posts", "noPic", keyword],
     queryFn: () =>
@@ -77,13 +85,15 @@ export default function BoardPage() {
   const searchKeyword = (e) => {
     // 폼에서 name="keyword"인 입력값을 가져와 앞뒤 공백 제거
     const searchWord = e.target.keyword.value.trim();
-    setKeyword(searchWord);
+    setSearchParams({ keyword: searchWord }); // URL에 keyword 저장
     console.log(keyword);
   };
 
   const boards = sortedData?.map((item) => (
     <BoardPageDetail key={item._id} item={item} />
   ));
+
+  console.log(boards);
 
   return (
     <div className="relative mx-5">
@@ -124,7 +134,22 @@ export default function BoardPage() {
       </div>
 
       <div className="h-[7px] bg-gray1 -mx-5"></div>
+      {boards.length !== 0 && keyword !== "" && (
+        <>
+          <span className="">
+            &quot;{keyword}&quot; 검색 결과 {boards.length}개
+          </span>
+          <div className="h-[7px] bg-gray1 -mx-5"></div>
+        </>
+      )}
       {boards}
+      {boards.length === 0 && keyword !== "" && (
+        <div className="relative">
+          <span className="mt-10 block text-center">
+            &quot;{keyword}&quot; 검색 결과가 없습니다.
+          </span>
+        </div>
+      )}
       <Link
         to={isLogin ? "new" : "/users/login"}
         onClick={!isLogin ? (event) => handleClick(event) : null}
