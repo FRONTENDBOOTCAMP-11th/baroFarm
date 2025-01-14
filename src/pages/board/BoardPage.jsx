@@ -12,6 +12,7 @@ export default function BoardPage() {
   const { user } = useUserStore();
   const [isLogin, setIsLogin] = useState(true);
   const axios = useAxiosInstance();
+  const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
     setHeaderContents({
@@ -33,14 +34,20 @@ export default function BoardPage() {
 
   const { data } = useQuery({
     queryKey: ["posts", "community"],
-    queryFn: () => axios.get("/posts?type=community"),
+    queryFn: () =>
+      axios.get(`/posts`, {
+        params: { type: "community", keyword: keyword },
+      }),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
   });
 
   const { data: data2, isLoading } = useQuery({
     queryKey: ["posts", "noPic"],
-    queryFn: () => axios.get("/posts?type=noPic"),
+    queryFn: () =>
+      axios.get(`/posts`, {
+        params: { type: "noPic", keyword: keyword },
+      }),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
   });
@@ -67,12 +74,42 @@ export default function BoardPage() {
     }
   };
 
+  const searchKeyword = (e) => {
+    // 폼에서 name="keyword"인 입력값을 가져와 앞뒤 공백 제거
+    const searchWord = e.target.keyword.value.trim();
+    setKeyword(searchWord);
+    console.log(keyword);
+  };
+
   const boards = sortedData?.map((item) => (
     <BoardPageDetail key={item._id} item={item} />
   ));
 
   return (
     <div className="relative mx-5">
+      <form className="pt-2" onSubmit={searchKeyword}>
+        <label htmlFor="search" className="text-sm font-semibold block mb-2">
+          게시판 검색
+        </label>
+        <div className="flex items-center gap-1 w-full rounded-md p-1 border border-gray3 focus-within:border-btn-primary">
+          <button type="submit" aria-label="검색하기">
+            <img src="/icons/icon_search.svg" alt="" />
+          </button>
+          <input
+            className="flex-grow border-none outline-none
+              [&::-webkit-search-cancel-button]:appearance-none
+              [&::-webkit-search-cancel-button]:bg-[url('/icons/icon_x_thin.svg')]
+              [&::-webkit-search-cancel-button]:bg-center
+              [&::-webkit-search-cancel-button]:h-4
+              [&::-webkit-search-cancel-button]:w-4"
+            type="search"
+            placeholder="키워드를 입력해주세요"
+            id="search"
+            name="keyword"
+            maxLength={20}
+          />
+        </div>
+      </form>
       <div className="flex my-2 items-center bg-green1 rounded-md">
         <img
           src="/images/BaroFarmLogo.svg"
@@ -85,6 +122,7 @@ export default function BoardPage() {
           <br /> 매너를 지키는 바로팜인이 됩시다!
         </p>
       </div>
+
       <div className="h-[7px] bg-gray1 -mx-5"></div>
       {boards}
       <Link
