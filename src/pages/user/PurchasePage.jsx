@@ -2,18 +2,15 @@ import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
-import axios from "axios";
-
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import HeaderIcon from "@components/HeaderIcon";
-
-import productImage from "/images/Sample1.svg";
 import PurchaseItem from "@components/PurchaseItem";
-
-const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 
 export default function PurchasePage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+
+  const instance = useAxiosInstance();
 
   useEffect(() => {
     setHeaderContents({
@@ -34,17 +31,7 @@ export default function PurchasePage() {
   } = useQuery({
     queryKey: ["purchase"],
     queryFn: async () => {
-      const response = await axios.get(
-        `https://11.fesp.shop/orders?sort={"createdAt": -1}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-            "client-id": "final04",
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
-          },
-        }
-      );
+      const response = await instance.get(`/orders?sort={"createdAt": -1}`);
       return response.data.item;
     },
   });

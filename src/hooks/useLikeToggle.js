@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-
-const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 export const useLikeToggle = (product) => {
   const [isLiked, setIsLiked] = useState(!!product?.myBookmarkId);
   const queryClient = useQueryClient();
+  const instance = useAxiosInstance();
 
   useEffect(() => {
     setIsLiked(!!product?.myBookmarkId);
@@ -15,20 +14,9 @@ export const useLikeToggle = (product) => {
   const { mutate: addLike } = useMutation({
     mutationFn: async () => {
       if (!product) return;
-      const response = await axios.post(
-        `https://11.fesp.shop/bookmarks/product`,
-        {
-          target_id: product._id,
-        },
-        {
-          headers: {
-            "Content-type": "application/json",
-            accept: "application/json",
-            "client-id": "final04",
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
-          },
-        }
-      );
+      const response = await instance.post(`/bookmarks/product`, {
+        target_id: product._id,
+      });
       return response.data.item;
     },
 
@@ -44,16 +32,8 @@ export const useLikeToggle = (product) => {
   const { mutate: removeLike } = useMutation({
     mutationFn: async () => {
       if (!product || !product.myBookmarkId) return;
-      const response = await axios.delete(
-        `https://11.fesp.shop/bookmarks/${product.myBookmarkId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-            "client-id": "final04",
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
-          },
-        }
+      const response = await instance.delete(
+        `/bookmarks/${product.myBookmarkId}`
       );
       return response.data;
     },

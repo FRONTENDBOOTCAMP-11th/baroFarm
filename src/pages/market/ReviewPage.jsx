@@ -1,16 +1,9 @@
 import { useEffect, useState } from "react";
-import {
-  useParams,
-  useNavigate,
-  useOutletContext,
-  Link,
-} from "react-router-dom";
+import { useParams, useNavigate, useOutletContext } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import HeaderIcon from "@components/HeaderIcon";
-import forwardIcon from "/icons/icon_forward.svg";
-
 import PhotoReviewItem from "@components/PhotoReviewItem";
 import ReviewItem from "@components/ReviewItem";
 
@@ -19,6 +12,8 @@ export default function ReviewPage() {
 
   const navigate = useNavigate();
   const { _id } = useParams();
+
+  const instance = useAxiosInstance();
 
   const [sortOrder, setSortOrder] = useState("best");
 
@@ -40,13 +35,7 @@ export default function ReviewPage() {
   } = useQuery({
     queryKey: ["product", _id, "reviews"],
     queryFn: async () => {
-      const response = await axios.get(`https://11.fesp.shop/products/${_id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-        },
-      });
+      const response = await instance.get(`/products/${_id}`);
       return response.data.item;
     },
   });
