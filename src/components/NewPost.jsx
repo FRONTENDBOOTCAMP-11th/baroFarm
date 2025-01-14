@@ -13,14 +13,28 @@ NewPost.propTypes = {
   isBoard: PropTypes.bool,
   handleSubmit: PropTypes.func,
   register: PropTypes.func.isRequired,
+  handleRating: PropTypes.func.isRequired,
+  editInfo: PropTypes.string,
 };
 
-export default function NewPost({ isBoard, handleSubmit, register }) {
-  const [selectedStar, setSelectedStar] = useState(0);
+export default function NewPost({
+  isBoard,
+  handleSubmit,
+  register,
+  handleRating,
+  editInfo,
+}) {
   const { user } = useUserStore();
   const axios = useAxiosInstance();
-  const handleClick = (index) => setSelectedStar(index);
 
+  const [selectedStar, setSelectedStar] = useState(0);
+  const [rating, setRating] = useState(0);
+
+  const handleClick = (index) => {
+    setSelectedStar(index);
+    setRating(index);
+    handleRating(index);
+  };
   const { data } = useQuery({
     queryKey: ["user", user?._id],
     queryFn: () => axios.get(`/users/${user._id}`),
@@ -44,7 +58,7 @@ export default function NewPost({ isBoard, handleSubmit, register }) {
               : "/images/profile/ProfileImage_Sample.svg"
           }
           alt="ProfileImage"
-          className="w-6 h-6 rounded-full border object-cover"
+          className="w-6 h-6 rounded-full object-cover"
         />
         <span className="mx-[5px] text-sm">{data.name}</span>
       </div>
@@ -58,6 +72,7 @@ export default function NewPost({ isBoard, handleSubmit, register }) {
           {...register("content", {
             required: "본문 내용을 입력해주세요",
           })}
+          defaultValue={editInfo ? editInfo : null}
         ></textarea>
         <br />
 

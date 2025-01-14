@@ -3,17 +3,18 @@ import { createBrowserRouter } from "react-router-dom";
 
 const BoardDetailPage = lazy(() => import("@pages/board/BoardDetailPage"));
 const BoardNewPage = lazy(() => import("@pages/board/BoardNewPage"));
+const BoardEditPage = lazy(() => import("@pages/board/BoardEditPage"));
 const BoardPage = lazy(() => import("@pages/board/BoardPage"));
 const CategoryPage = lazy(() => import("@pages/market/CategoryPage"));
 const ProductDetailPage = lazy(() => import("@pages/market/ProductDetailPage"));
 const ProductNewPage = lazy(() => import("@pages/market/ProductNewPage"));
 const ReviewPage = lazy(() => import("@pages/market/ReviewPage"));
 const PhotoReviewPage = lazy(() => import("@pages/market/PhotoReviewPage"));
-const ProductMyReviewPage = lazy(() =>
-  import("@pages/market/ProductMyReviewPage")
+const ProductMyReviewPage = lazy(
+  () => import("@pages/market/ProductMyReviewPage")
 );
-const ProductNewReviewPage = lazy(() =>
-  import("@pages/market/ProductNewReviewPage")
+const ProductNewReviewPage = lazy(
+  () => import("@pages/market/ProductNewReviewPage")
 );
 const BookmarkPage = lazy(() => import("@pages/user/BookmarkPage"));
 const MyPage = lazy(() => import("@pages/user/MyPage"));
@@ -34,8 +35,8 @@ const EditProfilePage = lazy(() => import("@pages/user/EditProfilePage"));
 const MyPostPage = lazy(() => import("@pages/user/MyPostPage"));
 const SearchBestPage = lazy(() => import("@pages/market/SearchBestPage"));
 const SearchNewPage = lazy(() => import("@pages/market/SearchNewPage"));
-const SearchSeasonalPage = lazy(() =>
-  import("@pages/market/SearchSeasonalPage")
+const SearchSeasonalPage = lazy(
+  () => import("@pages/market/SearchSeasonalPage")
 );
 const Layout = lazy(() => import("@components/layout"));
 
@@ -60,7 +61,10 @@ const router = createBrowserRouter(
             { path: ":_id/reviews", element: <ReviewPage /> },
             { path: ":_id/reviews/photo", element: <PhotoReviewPage /> },
             { path: ":_id/reviewed", element: <ProductMyReviewPage /> },
-            { path: ":_id/reviews/new", element: <ProductNewReviewPage /> },
+            {
+              path: ":_id/reviews/new/:order_id",
+              element: <ProductNewReviewPage />,
+            },
             { path: "new", element: <ProductNewPage /> },
           ],
         },
@@ -98,6 +102,7 @@ const router = createBrowserRouter(
             { index: true, element: <BoardPage /> },
             { path: "new", element: <BoardNewPage /> },
             { path: ":_id", element: <BoardDetailPage /> },
+            { path: ":_id/edit", element: <BoardEditPage /> },
           ],
         },
       ],

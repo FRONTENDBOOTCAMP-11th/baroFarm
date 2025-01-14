@@ -53,7 +53,6 @@ export default function BoardPage() {
     );
   }
 
-  // 로그인 기능이 개발된 후 활성화 예정
   const handleClick = (event) => {
     if (
       !confirm(
