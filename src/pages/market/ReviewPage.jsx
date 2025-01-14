@@ -58,6 +58,9 @@ export default function ReviewPage() {
         )
       : reviewData;
 
+  const photoReviews = reviewData.filter(
+    (review) => review.extra && review.extra.image
+  );
   return (
     <>
       <section className="p-5 border-b-[1px] border-b-gray2">
@@ -68,25 +71,25 @@ export default function ReviewPage() {
         <span className="font-extrabold">{totalRating.toFixed(1)}</span>
       </section>
 
-      <section className="p-5 border-b-8 border-b-gray1">
-        <div className="flex items-center justify-between">
-          <span className="font-bold">사진 후기</span>
-          {/* <Link
+      {photoReviews.length > 0 && (
+        <section className="p-5 border-b-8 border-b-gray1">
+          <div className="flex items-center justify-between">
+            <span className="font-bold">사진 후기</span>
+            {/* <Link
           to={`/product/${_id}/reviews/photo`}
           className="font-medium text-sm text-gray5 flex items-center"
         >
           더보기
           <img src={forwardIcon} className="w-3" />
         </Link> */}
-        </div>
-        <div className="flex overflow-x-auto gap-3 scrollbar-hide pt-5">
-          {reviewData
-            .filter((review) => review.extra && review.extra.image)
-            .map((review) => (
+          </div>
+          <div className="flex overflow-x-auto gap-3 scrollbar-hide pt-5">
+            {photoReviews.map((review) => (
               <PhotoReviewItem key={review._id} image={review.extra.image} />
             ))}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
       <section className="py-5">
         <p className="font-bold pl-5 pb-1">후기 {reviewData.length}개</p>

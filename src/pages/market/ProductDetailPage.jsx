@@ -96,8 +96,8 @@ export default function ProductDetailPage() {
   const cartItem = useMutation({
     mutationFn: async () => {
       const response = await instance.post(`/carts`, {
-        product_id: _id,
-        quantity: count,
+        product_id: parseInt(_id),
+        quantity: parseInt(count),
       });
       return response.data.item;
     },
