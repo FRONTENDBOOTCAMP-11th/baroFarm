@@ -44,6 +44,31 @@ export default function ProductDetailPage() {
     },
   });
 
+  if (!!product) {
+    let productData = JSON.parse(sessionStorage.getItem("productData"));
+
+    // 맨 처음 값 초기화
+    if (!Array.isArray(productData)) {
+      productData = [];
+    }
+
+    // 중복된 객체를 제거
+    productData = productData.filter(
+      (item) => item && item._id !== product._id
+    );
+
+    // 새로운 상품 추가
+    productData.unshift(product);
+
+    // // 최대 10개까지만 유지
+    // if (productData.length > 10) {
+    //   productData.pop();
+    // }
+
+    // 저장
+    sessionStorage.setItem("productData", JSON.stringify(productData));
+  }
+
   const { isLiked, handleLike } = useLikeToggle(product);
   const categoryTitle = useCategory(product);
 
