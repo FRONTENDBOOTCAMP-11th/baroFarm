@@ -35,6 +35,7 @@ export default function ProductSmall({ product, bookmarkId }) {
   const { isLiked, handleLike } = useLikeToggle(product);
   const axios = useAxiosInstance();
 
+  console.log(product);
   // 상품을 누르면 상품 상세 페이지로 이동
   const goDetailPage = () => {
     navigate(`/product/${product._id}`);
@@ -64,7 +65,7 @@ export default function ProductSmall({ product, bookmarkId }) {
   });
 
   return (
-    <section className="flex flex-col cursor-pointer *:self-center">
+    <section className="flex flex-col cursor-pointer">
       <div className="relative">
         <img
           className="h-[135px] rounded-lg object-cover w-full"
@@ -87,18 +88,20 @@ export default function ProductSmall({ product, bookmarkId }) {
       </div>
       <div className="pl-[5px] pt-[10px]" onClick={goDetailPage}>
         <p className="text-xs line-clamp-1">{product.name}</p>
-        <div className="pt-1">
+        <div className="pt-1 flex items-center">
           <span className="text-red1 font-semibold text-base pr-1">
             {product.extra.sale}%
           </span>
-          <span className="font-extrabold text-lg">
+          <span className="font-extrabold text-lg line-clamp-1">
             {product.extra.saledPrice.toLocaleString()}원
           </span>
         </div>
       </div>
-      <Button isWhite={true} onClick={() => addCartItem.mutate()}>
-        장바구니에 추가
-      </Button>
+      <div className="self-center">
+        <Button isWhite={true} onClick={() => addCartItem.mutate()}>
+          장바구니에 추가
+        </Button>
+      </div>
     </section>
   );
 }
