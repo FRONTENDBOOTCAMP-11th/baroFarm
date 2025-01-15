@@ -10,6 +10,7 @@ export default function MyPage() {
   const navigate = useNavigate();
   const url = "https://11.fesp.shop";
   const [isSeller, setIsSeller] = useState("/users/sale");
+  const [profileImage, setProfileImage] = useState();
 
   // zustand store에서 유저 상태 가져옴
   const user = useUserStore((store) => store.user);
@@ -55,7 +56,6 @@ export default function MyPage() {
     //이 아래에는 로딩 페이지
     return;
   }
-
   const onlySeller = (e) => {
     if (data.type !== "seller") {
       e.preventDefault();
@@ -75,8 +75,10 @@ export default function MyPage() {
               <img
                 src={
                   data.image
-                    ? url + data.image
-                    : "/images/profile/ProfileImage_Sample.svg"
+                    ? data.loginType === "email"
+                      ? url + data.image //이메일 타입
+                      : data.image //카카오 타입
+                    : "/images/profile/ProfileImage_Sample.svg" //이미지 설정이 없는 경우
                 }
                 className="mr-5 w-[49px] h-[50px] rounded-full object-cover"
                 loading="lazy"
