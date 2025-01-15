@@ -7,18 +7,6 @@ import Carousel from "@components/Carousel";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 
-const images = [
-  "/images/menu/Fruit.svg",
-  "/images/menu/Kimchi.svg",
-  "/images/menu/Livestock.svg",
-  "/images/menu/Rice.svg",
-  "/images/menu/Ricecake.svg",
-  "/images/menu/Seafood.svg",
-  "/images/menu/Simple.svg",
-  "/images/menu/Vegetable.svg",
-  "/images/sample/food.svg",
-];
-
 const categories = [
   { title: "제철 과일", image: "/images/menu/Fruit.svg", url: "/menu/fruit" },
   {
