@@ -294,7 +294,9 @@ export default function CartPage() {
                     <div className="text-xs flex justify-between mb-3">
                       <span className="text-gray4">할인 금액</span>
                       <span className="text-red1">
-                        - {discount.toLocaleString()}원
+                        {discount === 0
+                          ? `${discount}원`
+                          : `- ${discount.toLocaleString()}원`}
                       </span>
                     </div>
                     <div className="text-xs flex justify-between mb-3">
