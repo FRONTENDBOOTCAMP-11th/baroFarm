@@ -1,4 +1,4 @@
-import createdTime from "utils/createdTime";
+import createdTime from "@utils/createdTime";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";

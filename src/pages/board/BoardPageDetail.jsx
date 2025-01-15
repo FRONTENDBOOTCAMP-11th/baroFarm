@@ -1,4 +1,4 @@
-import createdTime from "utils/createdTime";
+import createdTime from "@utils/createdTime.js";
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -34,7 +34,7 @@ export default function BoardPageDetail({ item }) {
   const newDate = createdTime(item.createdAt);
   return (
     <div className="relative">
-      <Link to={`${item._id}`}>
+      <Link to={`/board/${item._id}`}>
         <div
           ref={containerRef}
           className="max-h-[550px] overflow-hidden relative"

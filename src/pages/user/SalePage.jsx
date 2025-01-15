@@ -26,7 +26,7 @@ export default function SalePage() {
   }, []);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", user._id],
     queryFn: () => axios.get(`/seller/products?sort={"createdAt": -1}`),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
@@ -47,8 +47,6 @@ export default function SalePage() {
     date,
     items,
   }));
-
-  console.log(groupedArray[1]);
 
   const SoldItemList = groupedArray.map((data) => {
     return (
