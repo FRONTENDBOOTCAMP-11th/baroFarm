@@ -197,7 +197,7 @@ export default function CartPage() {
     );
   }
   // 데이터 없을시 null 반환하여 에러 방지
-  if (!data && likeItem) return null;
+  if (!data && !likeItem) return null;
 
   // 최종 배송비 계산
   const totalShippingFees = totalFees > 30000 || totalFees === 0 ? 0 : 2500;
@@ -215,7 +215,7 @@ export default function CartPage() {
   ));
 
   // 찜한 상품으로 화면 렌더링
-  const likeItems = likeItem.map((item) => (
+  const likeItems = likeItem?.map((item) => (
     <ProductSmall key={item._id} product={item.product} bookmarkId={item._id} />
   ));
 
@@ -265,7 +265,7 @@ export default function CartPage() {
               }`}
               onClick={() => setRenderCart(false)}
             >
-              찜한 상품({likeItem.length})
+              찜한 상품({likeItem?.length})
             </div>
           </section>
           {/* 장바구니 상품 혹은 찜한 상품 조건부 렌더링 */}
