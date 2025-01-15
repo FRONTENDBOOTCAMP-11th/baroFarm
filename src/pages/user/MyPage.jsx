@@ -9,6 +9,7 @@ export default function MyPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   const url = "https://11.fesp.shop";
+  const [isSeller, setIsSeller] = useState("/users/sale");
 
   // zustand store에서 유저 상태 가져옴
   const user = useUserStore((store) => store.user);
@@ -54,6 +55,16 @@ export default function MyPage() {
     //이 아래에는 로딩 페이지
     return;
   }
+
+  const onlySeller = (e) => {
+    if (data.type !== "seller") {
+      e.preventDefault();
+      setIsSeller("");
+      return alert("판매자 회원만이 이용할 수 있는 기능입니다");
+    } else {
+      setIsSeller("/users/sale");
+    }
+  };
 
   return (
     <div className="pt-[18px] px-5 mb-[70px]">
@@ -126,7 +137,8 @@ export default function MyPage() {
               구매 내역
             </Link>
             <Link
-              to={"/users/sale"}
+              onClick={onlySeller}
+              to={isSeller}
               className="flex justify-center items-center flex-1 text-center h-[50px] border-r-[1px] border-gray2"
             >
               판매 내역
@@ -168,7 +180,7 @@ export default function MyPage() {
         </Link>
       </div>
       {/* 해당 영역은 로그아웃 상태일 시 사용을 필요로 하지 않음 */}
-      {user && (
+      {user && isSeller && (
         <>
           <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
           <div className="h-[109px] pt-[18px] ">
@@ -185,6 +197,10 @@ export default function MyPage() {
               />
             </Link>
           </div>
+        </>
+      )}
+      {user && (
+        <>
           <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
           <div className="h-[109px] pt-[18px] ">
             <h2 className="text-base leading-[19px]">계정 관리</h2>

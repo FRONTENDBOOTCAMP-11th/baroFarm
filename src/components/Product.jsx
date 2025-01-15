@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import PropTypes from "prop-types";
+
+import { useLikeToggle } from "@hooks/useLikeToggle";
 
 const likeIcon = {
   default: "/icons/icon_likeHeart_no.svg",
@@ -21,26 +21,19 @@ Product.propTypes = {
   ).isRequired,
   extra: PropTypes.shape({
     sale: PropTypes.number.isRequired,
-    rating: PropTypes.number.isRequired,
+    rating: PropTypes.number,
   }).isRequired,
   price: PropTypes.number.isRequired,
-  replies: PropTypes.number.isRequired, // 댓글 배열
 };
 
 export default function Product(product) {
-  // console.log(product);
-
   const navigate = useNavigate();
 
   const goDetailPage = () => {
     navigate(`/product/${product._id}`);
   };
 
-  const [isLiked, setIsLiked] = useState(false);
-
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-  };
+  const { isLiked, handleLike } = useLikeToggle(product);
 
   return (
     <section
@@ -71,11 +64,11 @@ export default function Product(product) {
           {product.seller.name}
         </span>
         <p className="text-xs line-clamp-1">{product.name}</p>
-        <div className="pt-1">
+        <div className="pt-1 flex items-center">
           <span className="text-red1 font-semibold text-base pr-1">
             {product.extra.sale}%
           </span>
-          <span className="font-extrabold text-lg">
+          <span className="font-extrabold text-lg line-clamp-1">
             {product.extra.saledPrice.toLocaleString()}원
           </span>
         </div>
@@ -83,7 +76,13 @@ export default function Product(product) {
           ⭐️ {product.rating ? product.rating.toFixed(1) : 0}
         </span>
         <span className="text-gray4 font-regular text-xs ">
-          ({product.replies})
+          (
+          {Array.isArray(product.replies)
+            ? product.replies.length > 0
+              ? product.replies.length
+              : 0
+            : product.replies}
+          )
         </span>
       </div>
     </section>

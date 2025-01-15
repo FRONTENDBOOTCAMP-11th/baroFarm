@@ -56,7 +56,7 @@ export default function PaymentModal({
 
     selectedItems.forEach((item) =>
       purchaseItem.mutate({
-        _id: item.product_id,
+        _id: item.product._id,
         quantity: item.quantity,
       })
     );
@@ -84,7 +84,7 @@ export default function PaymentModal({
 
     selectedItems.forEach((item) =>
       purchaseItem.mutate({
-        _id: item.product_id,
+        _id: item.product._id,
         quantity: item.quantity,
       })
     );

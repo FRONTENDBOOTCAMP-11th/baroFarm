@@ -1,16 +1,24 @@
 import HeaderIcon from "@components/HeaderIcon";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import BoardPageDetail from "@pages/board/BoardPageDetail";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useOutletContext,
+  useSearchParams,
+} from "react-router-dom";
 
 export default function BoardPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   const { user } = useUserStore();
   const [isLogin, setIsLogin] = useState(true);
+  const axios = useAxiosInstance();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const keyword = searchParams.get("keyword") || ""; // URL에서 keyword 가져오기
 
   useEffect(() => {
     setHeaderContents({
@@ -30,21 +38,29 @@ export default function BoardPage() {
     }
   }, []);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["posts"],
+  // 사진을 포함한 게시글
+  const { data: communityBoard, isLoading } = useQuery({
+    queryKey: ["posts", "community", keyword],
     queryFn: () =>
-      axios.get("https://11.fesp.shop/posts?type=community", {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-        },
+      axios.get(`/posts`, {
+        params: { type: "community", keyword: keyword },
       }),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
   });
 
-  if (isLoading) {
+  // 사진을 포함하지 않은 게시글
+  const { data: noPicBoard, isLoading: isLoading2 } = useQuery({
+    queryKey: ["posts", "noPic", keyword],
+    queryFn: () =>
+      axios.get(`/posts`, {
+        params: { type: "noPic", keyword: keyword },
+      }),
+    select: (res) => res.data.item,
+    staleTime: 1000 * 10,
+  });
+
+  if (isLoading || isLoading2) {
     return (
       <div className="mt-0 mx-auto text-center">
         로딩중... <br />
@@ -53,7 +69,9 @@ export default function BoardPage() {
     );
   }
 
-  // 로그인 기능이 개발된 후 활성화 예정
+  const mergeData = [...communityBoard, ...noPicBoard];
+  const sortedData = mergeData.sort((prev, next) => next._id - prev._id);
+
   const handleClick = (event) => {
     if (
       !confirm(
@@ -64,12 +82,45 @@ export default function BoardPage() {
     }
   };
 
-  const boards = data.map((item) => (
+  const searchKeyword = (e) => {
+    // 폼에서 name="keyword"인 입력값을 가져와 앞뒤 공백 제거
+    e.preventDefault();
+    const searchWord = e.target.keyword.value.trim();
+    setSearchParams({ keyword: searchWord }); // URL에 keyword 저장
+    console.log(keyword);
+  };
+
+  const boards = sortedData?.map((item) => (
     <BoardPageDetail key={item._id} item={item} />
   ));
 
+  console.log(boards);
+
   return (
     <div className="relative mx-5">
+      <form className="pt-2" onSubmit={searchKeyword}>
+        <label htmlFor="search" className="text-sm font-semibold block mb-2">
+          게시판 검색
+        </label>
+        <div className="flex items-center gap-1 w-full rounded-md p-1 border border-gray3 focus-within:border-btn-primary">
+          <button type="submit" aria-label="검색하기">
+            <img src="/icons/icon_search.svg" alt="" />
+          </button>
+          <input
+            className="flex-grow border-none outline-none
+              [&::-webkit-search-cancel-button]:appearance-none
+              [&::-webkit-search-cancel-button]:bg-[url('/icons/icon_x_thin.svg')]
+              [&::-webkit-search-cancel-button]:bg-center
+              [&::-webkit-search-cancel-button]:h-4
+              [&::-webkit-search-cancel-button]:w-4"
+            type="search"
+            placeholder="키워드를 입력해주세요"
+            id="search"
+            name="keyword"
+            maxLength={20}
+          />
+        </div>
+      </form>
       <div className="flex my-2 items-center bg-green1 rounded-md">
         <img
           src="/images/BaroFarmLogo.svg"
@@ -82,8 +133,23 @@ export default function BoardPage() {
           <br /> 매너를 지키는 바로팜인이 됩시다!
         </p>
       </div>
+
       <div className="h-[7px] bg-gray1 -mx-5"></div>
+      {boards.length !== 0 && keyword !== "" && (
+        <>
+          <span className="block py-3 text-sm font-semibold">
+            &quot;{keyword}&quot; 검색 결과 {boards.length}개
+          </span>
+        </>
+      )}
       {boards}
+      {boards.length === 0 && keyword !== "" && (
+        <div className="relative">
+          <span className="mt-10 block text-center text-gray4">
+            &quot;{keyword}&quot; 검색 결과가 없습니다.
+          </span>
+        </div>
+      )}
       <Link
         to={isLogin ? "new" : "/users/login"}
         onClick={!isLogin ? (event) => handleClick(event) : null}

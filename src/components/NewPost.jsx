@@ -1,4 +1,6 @@
+import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import DataErrorPage from "@pages/DataErrorPage";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import PropTypes from "prop-types";
@@ -13,15 +15,31 @@ NewPost.propTypes = {
   isBoard: PropTypes.bool,
   handleSubmit: PropTypes.func,
   register: PropTypes.func.isRequired,
+  handleRating: PropTypes.func.isRequired,
+  editInfo: PropTypes.string,
+  errors: PropTypes.shape(),
 };
 
-export default function NewPost({ isBoard, handleSubmit, register }) {
-  const [selectedStar, setSelectedStar] = useState(0);
+export default function NewPost({
+  isBoard,
+  handleSubmit,
+  register,
+  handleRating,
+  editInfo,
+  errors = {},
+}) {
   const { user } = useUserStore();
   const axios = useAxiosInstance();
-  const handleClick = (index) => setSelectedStar(index);
 
-  const { data } = useQuery({
+  const [selectedStar, setSelectedStar] = useState(0);
+  const [rating, setRating] = useState(0);
+
+  const handleClick = (index) => {
+    setSelectedStar(index);
+    setRating(index);
+    handleRating(index);
+  };
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["user", user?._id],
     queryFn: () => axios.get(`/users/${user._id}`),
     select: (res) => res.data.item,
@@ -29,11 +47,8 @@ export default function NewPost({ isBoard, handleSubmit, register }) {
     enabled: !!user,
   });
 
-  if (!data) {
-    //이 아래에는 로딩 페이지
-    return;
-  }
-
+  if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
   return (
     <div className="p-5">
       <div className="flex flex-row items-center">
@@ -44,7 +59,7 @@ export default function NewPost({ isBoard, handleSubmit, register }) {
               : "/images/profile/ProfileImage_Sample.svg"
           }
           alt="ProfileImage"
-          className="w-6 h-6 rounded-full border object-cover"
+          className="w-6 h-6 rounded-full object-cover"
         />
         <span className="mx-[5px] text-sm">{data.name}</span>
       </div>
@@ -58,7 +73,13 @@ export default function NewPost({ isBoard, handleSubmit, register }) {
           {...register("content", {
             required: "본문 내용을 입력해주세요",
           })}
+          defaultValue={editInfo ? editInfo : null}
         ></textarea>
+        {errors.content && (
+          <p className="text-red1 text-xs -mt-7 ps-1">
+            {errors.content.message}
+          </p>
+        )}
         <br />
 
         {!isBoard && (

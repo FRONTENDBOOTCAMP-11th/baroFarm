@@ -1,6 +1,7 @@
 import HeaderIcon from "@components/HeaderIcon";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useUserStore from "@zustand/useUserStore";
 import { useEffect, useState } from "react";
 import {
   Link,
@@ -17,6 +18,9 @@ export default function ProfilePage() {
 
   const location = useLocation();
   const data = location.state.user;
+
+  /// store에서 user 상태를 초기화하는 함수 가져오기
+  const resetUser = useUserStore((store) => store.resetUser);
 
   useEffect(() => {
     setHeaderContents({
@@ -77,7 +81,8 @@ export default function ProfilePage() {
       }
     },
     onSuccess: () => {
-      alert("프로필 이미지 설정 성공!");
+      alert("프로필 이미지 설정 성공!\n설정 적용을 위해 로그아웃합니다");
+      resetUser();
       navigate("/users/mypage");
     },
     onError: (error) => {
@@ -131,17 +136,15 @@ export default function ProfilePage() {
       <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
         <section className="min-w-[65px]">
           이름 <br />
-          성별 <br />
           이메일 <br />
           전화번호 <br />
           주소
         </section>
         <section className="text-gray5 break-keep">
-          {data.extra.userName} <br />
-          {data.extra.gender === "male" ? "남성" : "여성"} <br />
-          {data.email} <br />
-          {data.phone} <br />
-          {data.address}
+          {data.extra.userName ? data.extra.userName : "미입력"} <br />
+          {data.email ? data.email : "미입력"} <br />
+          {data.phone ? data.phone : "미입력"} <br />
+          {data.address ? data.address : "미입력"}
         </section>
         <Link
           to={"/users/profile/edit"}

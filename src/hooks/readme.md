@@ -1,1 +1,0 @@
-# hooks sample file

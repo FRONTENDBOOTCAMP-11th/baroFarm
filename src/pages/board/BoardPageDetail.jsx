@@ -1,9 +1,20 @@
+import createdTime from "@utils/createdTime.js";
 import PropTypes from "prop-types";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 BoardPageDetail.propTypes = {
-  item: PropTypes.shape(),
+  item: PropTypes.shape({
+    createdAt: PropTypes.string.isRequired,
+    _id: PropTypes.number.isRequired,
+    repliesCount: PropTypes.number.isRequired,
+    content: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      image: PropTypes.string,
+    }),
+    image: PropTypes.string.isRequired,
+  }),
 };
 
 export default function BoardPageDetail({ item }) {
@@ -19,37 +30,22 @@ export default function BoardPageDetail({ item }) {
     checkOverflow();
   }, []);
 
-  const createdTime = (createdDate) => {
-    const formatRelativeTime = (inputDate) => {
-      const now = new Date();
-      const pastDate = new Date(inputDate);
-      const minDiff = Math.floor((now - pastDate) / (1000 * 60));
-      if (minDiff < 1) return "방금 전";
-      if (minDiff < 60) return `${minDiff}분 전`;
-      if (minDiff < 1440) return `${parseInt(minDiff / 60)}시간 전`;
-      if (minDiff < 2880) return `${parseInt(minDiff / 1440)}일 전`;
-
-      // 이틀 이상인 경우에는 날짜를 표시
-      return pastDate.toLocaleString();
-    };
-
-    return formatRelativeTime(createdDate);
-  };
-
+  console.log(item);
   const newDate = createdTime(item.createdAt);
   return (
     <div className="relative">
-      <Link
-        to={`${item._id}`}
-        state={{ newDate: newDate, repliesCount: item.repliesCount }}
-      >
+      <Link to={`/board/${item._id}`}>
         <div
           ref={containerRef}
           className="max-h-[550px] overflow-hidden relative"
         >
           <div className="flex flex-row mt-5 items-center">
             <img
-              src={`https://11.fesp.shop${item.user.image}`}
+              src={
+                item.user.image
+                  ? `https://11.fesp.shop${item.user.image}`
+                  : "/images/profile/ProfileImage_Sample.svg"
+              }
               alt="ProfileImage"
               className="w-6 h-6 rounded-full object-cover"
             />
@@ -60,11 +56,13 @@ export default function BoardPageDetail({ item }) {
             </span>
           </div>
           <div className="mx-[5px] mt-[30px]">{item.content}</div>
-          <img
-            className="relative mt-10 rounded-md"
-            src={`https://11.fesp.shop${item.image}`}
-            onLoad={() => checkOverflow()}
-          />
+          {item.image && (
+            <img
+              className="relative mt-10 rounded-md"
+              src={`https://11.fesp.shop${item.image}`}
+              onLoad={() => checkOverflow()}
+            />
+          )}
           {isOverflow && (
             <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
           )}

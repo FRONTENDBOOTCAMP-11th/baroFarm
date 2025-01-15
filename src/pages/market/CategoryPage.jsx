@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import HeaderIcon from "@components/HeaderIcon";
 import Products from "@components/Products";
+import Spinner from "@components/Spinner";
+import DataErrorPage from "@pages/DataErrorPage";
 
 export default function CategoryPage() {
   const { category } = useParams();
@@ -35,6 +37,8 @@ export default function CategoryPage() {
     });
   }, [category]);
 
+  const instance = useAxiosInstance();
+
   const {
     data: productsData,
     isLoading,
@@ -42,22 +46,17 @@ export default function CategoryPage() {
   } = useQuery({
     queryKey: ["products", category],
     queryFn: async () => {
-      const response = await axios.get(`https://11.fesp.shop/products`, {
+      const response = await instance.get(`/products`, {
         params: {
           custom: JSON.stringify({ "extra.category": category }),
-        },
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
         },
       });
       return response.data.item;
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading products</div>;
+  if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
 
   return <Products productsData={productsData} />;
 }
