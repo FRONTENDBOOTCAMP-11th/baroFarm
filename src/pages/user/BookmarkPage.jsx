@@ -37,5 +37,11 @@ export default function BookmarkPage() {
       )
     : [];
 
-  return <Products productsData={likeProducts} />;
+  return likeProducts.length === 0 ? (
+    <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      찜한 상품이 없습니다.
+    </p>
+  ) : (
+    <Products productsData={likeProducts} />
+  );
 }

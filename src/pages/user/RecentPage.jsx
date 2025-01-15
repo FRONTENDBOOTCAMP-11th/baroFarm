@@ -23,13 +23,12 @@ export default function RecentPage() {
   const productsData = JSON.parse(sessionStorage.getItem("productData"));
 
   console.log(productsData);
-  {
-    return !!productsData ? (
-      <Products productsData={productsData} />
-    ) : (
-      <p className="absolute translate-x-1/2 -transform-x-1/2">
-        최근 본 상품이 없습니다.
-      </p>
-    );
-  }
+
+  return !!productsData ? (
+    <Products productsData={productsData} />
+  ) : (
+    <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      최근 본 상품이 없습니다.
+    </p>
+  );
 }
