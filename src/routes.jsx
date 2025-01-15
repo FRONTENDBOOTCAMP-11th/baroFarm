@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
+const ErrorPage = lazy(() => import("@pages/ErrorPage"));
 const BoardDetailPage = lazy(() => import("@pages/board/BoardDetailPage"));
 const BoardNewPage = lazy(() => import("@pages/board/BoardNewPage"));
 const BoardEditPage = lazy(() => import("@pages/board/BoardEditPage"));
@@ -46,6 +47,7 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: <Layout />,
+      errorElement: <ErrorPage />,
       children: [
         { index: true, element: <MainPage /> },
         {

@@ -1,19 +1,17 @@
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-
-import axios from "axios";
+import useAxiosInstance from "@hooks/useAxiosInstance";
 
 import HeaderIcon from "@components/HeaderIcon";
-
 import Products from "@components/Products";
-
-const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
+import Spinner from "@components/Spinner";
 
 export default function BookmarkPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
 
+  const instance = useAxiosInstance();
   useEffect(() => {
     setHeaderContents({
       leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
@@ -26,29 +24,28 @@ export default function BookmarkPage() {
     });
   }, []);
 
-  const { data: likeItem } = useQuery({
+  const { data: likeItem, isLoading } = useQuery({
     queryKey: ["like"],
     queryFn: async () => {
-      const response = await axios.get(`https://11.fesp.shop/products`, {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
-      });
+      const response = await instance.get(`/products`);
       return response.data.item;
     },
   });
 
-  console.log(likeItem);
-  console.log("Type of likeItem:", typeof likeItem);
+  if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
 
-  const likeProducts = likeItem
+  const likeProducts = !!likeItem
     ? Object.values(likeItem).filter(
         (item) => item && item.myBookmarkId !== undefined
       )
     : [];
 
-  return <Products productsData={likeProducts} />;
+  return likeProducts.length === 0 ? (
+    <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      찜한 상품이 없습니다.
+    </p>
+  ) : (
+    <Products productsData={likeProducts} />
+  );
 }

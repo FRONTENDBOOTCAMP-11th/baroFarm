@@ -1,78 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 import HeaderIcon from "@components/HeaderIcon";
-
-import productImage1 from "/images/Sample1.svg";
-import productImage2 from "/images/Sample2.svg";
 import Products from "@components/Products";
 
-const productsData = [
-  {
-    id: 1,
-    image: productImage1,
-    title: "온도감",
-    content: "촉촉함이 다른 카스테라 5종...",
-    sale: "92%",
-    price: "14,900원",
-    rate: "⭐️ 4.9",
-    review: "(2,210)",
-  },
-  {
-    id: 2,
-    image: productImage2,
-    title: "강아지",
-    content: "강아지 귀여워",
-    sale: "12%",
-    price: "24,900원",
-    rate: "⭐️ 3.9",
-    review: "(6,210)",
-  },
-  {
-    id: 3,
-    image: productImage1,
-    title: "햄스터",
-    content: "햄스터 귀여워",
-    sale: "2%",
-    price: "4,900원",
-    rate: "⭐️ 0.9",
-    review: "(210)",
-  },
-  {
-    id: 4,
-    image: productImage2,
-    title: "강아지",
-    content: "강아지 귀여워",
-    sale: "2%",
-    price: "4,900원",
-    rate: "⭐️ 0.9",
-    review: "(210)",
-  },
-  {
-    id: 5,
-    image: productImage1,
-    title: "햄스터",
-    content: "햄스터 귀여워",
-    sale: "2%",
-    price: "4,900원",
-    rate: "⭐️ 0.9",
-    review: "(210)",
-  },
-  {
-    id: 6,
-    image: productImage2,
-    title: "강아지",
-    content: "강아지 귀여워",
-    sale: "2%",
-    price: "4,900원",
-    rate: "⭐️ 0.9",
-    review: "(210)",
-  },
-];
+import Spinner from "@components/Spinner";
+import DataErrorPage from "@pages/DataErrorPage";
 
 export default function RecentPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [productsData, setProductsData] = useState(null);
 
   useEffect(() => {
     setHeaderContents({
@@ -84,7 +24,22 @@ export default function RecentPage() {
         </>
       ),
     });
+    const data = JSON.parse(sessionStorage.getItem("productData"));
+    setProductsData(data);
+
+    if (!!data) {
+      setIsLoading(false);
+    }
   }, []);
 
-  return <Products productsData={productsData} />;
+  if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
+
+  return !!productsData ? (
+    <Products productsData={productsData} />
+  ) : (
+    <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      최근 본 상품이 없습니다.
+    </p>
+  );
 }
