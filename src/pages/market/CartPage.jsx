@@ -3,7 +3,9 @@ import CartItem from "@components/CartItem";
 import Checkbox from "@components/Checkbox";
 import HeaderIcon from "@components/HeaderIcon";
 import ProductSmall from "@components/ProductSmall";
+import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import DataErrorPage from "@pages/DataErrorPage";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
@@ -180,22 +182,8 @@ export default function CartPage() {
     setTotalPayFees(totalFees - discount);
   }, [totalFees, discount]);
 
-  if (isLoading) {
-    return (
-      <div className="mt-0 mx-auto text-center">
-        로딩중... <br />
-        잠시만 기다려주세요
-      </div>
-    );
-  }
-  if (isError) {
-    return (
-      <div className="mt-0 mx-auto text-center">
-        에러가 발생했습니다. <br />
-        잠시 후 다시 시도해주세요.
-      </div>
-    );
-  }
+  if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
   // 데이터 없을시 null 반환하여 에러 방지
   if (!data && !likeItem) return null;
 
