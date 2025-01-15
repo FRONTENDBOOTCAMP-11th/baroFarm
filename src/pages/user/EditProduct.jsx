@@ -8,7 +8,7 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 
 export default function EditProduct() {
   const { id } = useParams();
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState();
   const axios = useAxiosInstance();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -40,12 +40,41 @@ export default function EditProduct() {
   });
 
   const patchProduct = useMutation({
-    mutationFn: (formData) => {
-      axios.patch(`/seller/products/${id}`, formData);
+    mutationFn: async (item) => {
+      const codes = await axios.get("/codes");
+      const categoryList = codes.data.item.nested.productCategory.codes;
+      setPrice(data.price);
+      const category = categoryList.filter(
+        (data) => data.code == item.category
+      );
+      const body = {
+        name: item.name,
+        content: `<p>${item.content}</p>`,
+        price: price,
+        shippingFees: price >= 35000 ? 2500 : 0,
+        quantity: parseInt(item.quantity),
+        extra: {
+          bestSeason:
+            item.seasonStart !== item.seasonEnd
+              ? [parseInt(item.seasonStart), parseInt(item.seasonEnd)]
+              : [parseInt(item.seasonStart)], // 두 제철 값이 같은 경우에는 값 하나만 입력되게 함
+          category: category[0].code,
+          sort: category[0].sort,
+          depth: category[0].depth,
+          sale: item.sale ? parseInt(item.sale) : 0,
+          saledPrice:
+            Math.round(
+              (price * (1 - (item.sale ? parseInt(item.sale) : 0) / 100)) / 10
+            ) * 10,
+        },
+      };
+      return axios.patch(`/seller/products/${id}`, body);
     },
-    onSuccess: () => {
+    onSuccess: (res) => {
+      console.log(`수정 결과: ${res.data.item}`);
       alert("상품 정보가 수정되었습니다.");
-      queryClient.invalidateQueries({ queryKey: ["product"] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["products", id] });
       navigate("/users/sale");
     },
     onError: (err) => {
@@ -63,7 +92,7 @@ export default function EditProduct() {
   return (
     <ProductInfoForm
       register={register}
-      handlesubmit={handleSubmit(patchProduct.addmutate)}
+      handlesubmit={handleSubmit(patchProduct.mutate)}
       errors={errors}
       price={price}
       setPrice={setPrice}

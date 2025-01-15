@@ -34,6 +34,12 @@ export default function ProductInfoForm({
 
   //price 값을 string값으로 변화
   const priceToString = price ? Number(price).toLocaleString() : "";
+
+  //상품 상세 정보 편집의 경우 가격을 변화하지 않음
+  if (editInfo) {
+    setPrice(editInfo.price);
+  }
+
   return (
     <form className="mx-5 py-5" onSubmit={handlesubmit}>
       <input
