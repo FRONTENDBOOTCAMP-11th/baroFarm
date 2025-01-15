@@ -73,8 +73,7 @@ export default function LoginPage() {
       setUser({
         _id: user._id,
         name: user.name,
-        // 카카오에서 넘어오는 name은 닉네임 밖에 없는 듯
-        userName: user.name,
+        userName: user.extra.userName,
         accessToken: user.token.accessToken,
         refreshToken: user.token.refreshToken,
       });
@@ -129,7 +128,7 @@ export default function LoginPage() {
       // scope는 사용자가 로그인할 때 동의해야 하는 권한을 지정하는 데 사용됩니다.
       // 이를 통해 카카오 계정으로부터 어떤 정보를 가져올지를 결정할 수 있습니다.
     });
-    console.log("리다이렉트 URI: ", `${window.location.origin}/users/login/kakao`);
+    // console.log("리다이렉트 URI: ", `${window.location.origin}/users/login/kakao`);
   };
 
   return (

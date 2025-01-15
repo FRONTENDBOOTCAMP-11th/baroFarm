@@ -1,4 +1,3 @@
-import KakaoCallbackPage from "@pages/user/KakaoCallbackPage";
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -27,6 +26,7 @@ const SearchPage = lazy(() => import("@pages/market/SearchPage"));
 const SearchResultsPage = lazy(() => import("@pages/market/SearchResultsPage"));
 const MainPage = lazy(() => import("@pages/index"));
 const LoginPage = lazy(() => import("@pages/user/LoginPage"));
+const KakaoAuthPage = lazy(() => import("@pages/user/KakaoCallbackPage"));
 const SignupPage = lazy(() => import("@pages/user/SignupPage"));
 const EditProfilePage = lazy(() => import("@pages/user/EditProfilePage"));
 const MyPostPage = lazy(() => import("@pages/user/MyPostPage"));
@@ -78,7 +78,7 @@ const router = createBrowserRouter(
           children: [
             { path: "signup", element: <SignupPage /> },
             { path: "login", element: <LoginPage /> },
-            { path: "login/kakao", element: <KakaoCallbackPage /> },
+            { path: "login/kakao", element: <KakaoAuthPage /> },
             { path: "mypage", element: <MyPage /> },
             { path: "profile", element: <ProfilePage /> },
             { path: "profile/edit", element: <EditProfilePage /> },

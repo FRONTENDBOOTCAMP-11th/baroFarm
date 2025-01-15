@@ -1,16 +1,21 @@
-// 카카오 콜백 페이지에서 헤더 푸터가 필요한지
-
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 
-// 카카오 콜백 페이지라고 보통 표현을 하는지
-export default function KakaoCallbackPage() {
+export default function KakaoAuthPage() {
   const [searchParms] = useSearchParams();
   const axios = useAxiosInstance();
   const setUser = useUserStore((store) => store.setUser);
+
+  const { setHeaderContents } = useOutletContext();
+  // 헤더 설정은 컴포넌트 마운트 시에만 실행
+  useEffect(() => {
+    setHeaderContents({
+      title: "카카오 로그인",
+    });
+  }, []);
 
   const kakaoLogin = useMutation({
     mutationFn: (code) =>
@@ -22,7 +27,6 @@ export default function KakaoCallbackPage() {
     onSuccess: (res) => {
       if (res.data.item) {
         console.log("카카오 로그인 성공:", res);
-        console.log("이걸 쓸거다", res.data.item);
 
         const user = res.data.item;
         setUser({
