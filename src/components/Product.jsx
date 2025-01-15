@@ -65,11 +65,11 @@ export default function Product(product) {
           {product.seller.name}
         </span>
         <p className="text-xs line-clamp-1">{product.name}</p>
-        <div className="pt-1">
+        <div className="pt-1 flex items-center">
           <span className="text-red1 font-semibold text-base pr-1">
             {product.extra.sale}%
           </span>
-          <span className="font-extrabold text-lg">
+          <span className="font-extrabold text-lg line-clamp-1">
             {product.extra.saledPrice.toLocaleString()}원
           </span>
         </div>
