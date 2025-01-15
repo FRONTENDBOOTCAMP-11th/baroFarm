@@ -33,6 +33,7 @@ export default function BookmarkPage() {
   });
 
   if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
 
   const likeProducts = !!likeItem
     ? Object.values(likeItem).filter(

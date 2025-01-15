@@ -6,6 +6,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import HeaderIcon from "@components/HeaderIcon";
 import PurchaseItem from "@components/PurchaseItem";
 import Spinner from "@components/Spinner";
+import DataErrorPage from "@pages/DataErrorPage";
 
 export default function PurchasePage() {
   const { setHeaderContents } = useOutletContext();
@@ -38,6 +39,7 @@ export default function PurchasePage() {
   });
 
   if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
 
   if (!reviewData || reviewData.length === 0) {
     return (

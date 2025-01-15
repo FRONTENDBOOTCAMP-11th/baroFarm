@@ -6,6 +6,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import HeaderIcon from "@components/HeaderIcon";
 import Products from "@components/Products";
 import Spinner from "@components/Spinner";
+import DataErrorPage from "@pages/DataErrorPage";
 
 export default function CategoryPage() {
   const { category } = useParams();
@@ -55,7 +56,7 @@ export default function CategoryPage() {
   });
 
   if (isLoading) return <Spinner />;
-  if (isError) return <div>Error loading products</div>;
+  if (isError) return <DataErrorPage />;
 
   return <Products productsData={productsData} />;
 }

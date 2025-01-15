@@ -5,6 +5,7 @@ import HeaderIcon from "@components/HeaderIcon";
 import Products from "@components/Products";
 
 import Spinner from "@components/Spinner";
+import DataErrorPage from "@pages/DataErrorPage";
 
 export default function RecentPage() {
   const { setHeaderContents } = useOutletContext();
@@ -32,6 +33,7 @@ export default function RecentPage() {
   }, []);
 
   if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
 
   return !!productsData ? (
     <Products productsData={productsData} />

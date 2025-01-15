@@ -19,6 +19,7 @@ import Spinner from "@components/Spinner";
 import forwardIcon from "/icons/icon_forward.svg";
 import cartIcon from "/icons/icon_cart_modal.svg";
 import HeaderIcon from "@components/HeaderIcon";
+import DataErrorPage from "@pages/DataErrorPage";
 
 const likeIcon = {
   default: "/icons/icon_likeHeart_no.svg",
@@ -136,6 +137,7 @@ export default function ProductDetailPage() {
   });
 
   if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
 
   return (
     <>

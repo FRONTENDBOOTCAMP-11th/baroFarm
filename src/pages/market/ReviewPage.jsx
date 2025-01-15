@@ -7,6 +7,7 @@ import HeaderIcon from "@components/HeaderIcon";
 import PhotoReviewItem from "@components/PhotoReviewItem";
 import ReviewItem from "@components/ReviewItem";
 import Spinner from "@components/Spinner";
+import DataErrorPage from "@pages/DataErrorPage";
 
 export default function ReviewPage() {
   const { setHeaderContents } = useOutletContext();
@@ -46,6 +47,7 @@ export default function ReviewPage() {
   });
 
   if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
 
   const ratings = reviewData.map((review) => review.rating);
   const totalRating =

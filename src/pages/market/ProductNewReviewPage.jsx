@@ -6,8 +6,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 
-import Spinner from "@components/Spinner";
-
 export default function ProductNewReviewPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
@@ -31,7 +29,6 @@ export default function ProductNewReviewPage() {
   }, []);
 
   const [rating, setRating] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
   const handleRating = (rating) => {
     setRating(rating);
   };
