@@ -1,3 +1,4 @@
+import { useLikeToggle } from "@hooks/useLikeToggle";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -33,15 +34,11 @@ export default function ProductBig(product) {
     navigate(`/product/${product._id}`);
   };
 
-  const [isLiked, setIsLiked] = useState(false);
-
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-  };
+  const { isLiked, handleLike } = useLikeToggle(product);
 
   return (
     <section
-      className="flex flex-col shrink-0 py-5 w-[201px]"
+      className="flex flex-col shrink-0 py-5 w-[201px] cursor-pointer"
       onClick={goDetailPage}
     >
       <div className="relative">
@@ -65,11 +62,11 @@ export default function ProductBig(product) {
           {product.seller.name}
         </span>
         <p className="text-xs line-clamp-1">{product.name}</p>
-        <div className="pt-1">
+        <div className="pt-1 flex items-center">
           <span className="text-red1 font-semibold text-base pr-1">
             {product.extra.sale}%
           </span>
-          <span className="font-extrabold text-lg">
+          <span className="font-extrabold text-lg line-clamp-1">
             {product.extra.saledPrice.toLocaleString()}원
           </span>
         </div>

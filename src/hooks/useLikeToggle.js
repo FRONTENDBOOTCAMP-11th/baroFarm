@@ -32,9 +32,7 @@ export const useLikeToggle = (product) => {
   const { mutate: removeLike } = useMutation({
     mutationFn: async () => {
       if (!product || !product.myBookmarkId) return;
-      const response = await instance.delete(
-        `/bookmarks/${product.myBookmarkId}`
-      );
+      const response = await instance.delete(`/bookmarks/${product.myBookmarkId}`);
       return response.data;
     },
     onSuccess: () => {
