@@ -34,7 +34,7 @@ export default function PurchaseItem({ orderId, product, date }) {
         <Link
           to={
             isReviewed
-              ? `/product/${product._id}/reviewed`
+              ? `/product/${product._id}/reviews`
               : `/product/${product._id}/reviews/new/${orderId}`
           }
           className={`text-xs absolute bottom-4 right-0 ${
