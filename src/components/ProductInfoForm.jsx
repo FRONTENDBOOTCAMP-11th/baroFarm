@@ -1,15 +1,32 @@
 import Button from "@components/Button";
+import PropTypes from "prop-types";
 import { useState } from "react";
 
-export default function ProductInfoForm(
+ProductInfoForm.propTypes = {
+  handlesubmit: PropTypes.func,
+  register: PropTypes.func.isRequired,
+  errors: PropTypes.shape(),
+  price: PropTypes.any,
+  setPrice: PropTypes.func,
+  isEdit: PropTypes.bool,
+  editInfo: PropTypes.shape(),
+};
+
+export default function ProductInfoForm({
   register,
   handlesubmit,
   errors,
   price,
-  setPrice
-) {
-  const [tag, setTag] = useState("");
-  const [checkDiscount, setCheckDiscount] = useState(false);
+  setPrice,
+  isEdit = false,
+  editInfo,
+}) {
+  const [tag, setTag] = useState(
+    editInfo && editInfo.extra.category ? editInfo.extra.category : ""
+  );
+  const [checkDiscount, setCheckDiscount] = useState(
+    editInfo && editInfo.extra.sale !== 0 ? true : false
+  );
   // 숫자만 남기기
   const handlePriceChange = (e) => {
     setPrice(parseInt(e.target.value.replace(/[^0-9]/g, "")));
@@ -28,6 +45,7 @@ export default function ProductInfoForm(
         {...register("name", {
           required: "필수 입력 정보입니다",
         })}
+        defaultValue={editInfo ? editInfo.name : ""}
       />
       {errors.name && (
         <p className="text-red1 text-xs mt-1 ps-1">{errors.name.message}</p>
@@ -71,6 +89,11 @@ export default function ProductInfoForm(
             name="seasonStart"
             {...register("seasonStart")}
             required
+            defaultValue={
+              editInfo && editInfo.extra.category === "fruit"
+                ? editInfo.extra.bestSeason[0]
+                : ""
+            }
           >
             <option value="1">1월</option>
             <option value="2">2월</option>
@@ -94,6 +117,11 @@ export default function ProductInfoForm(
             name="seasonEnd"
             {...register("seasonEnd")}
             required
+            defaultValue={
+              editInfo && editInfo.extra.category === "fruit"
+                ? editInfo.extra.bestSeason[1]
+                : ""
+            }
           >
             <option value="1">1월</option>
             <option value="2">2월</option>
@@ -117,33 +145,42 @@ export default function ProductInfoForm(
         {...register("content", {
           required: "필수 입력 정보입니다",
         })}
+        defaultValue={
+          editInfo ? editInfo.content.replace(/^<p>|<\/p>$/g, "") : ""
+        }
       ></textarea>
       {errors.content && (
         <p className="text-red1 text-xs ps-1 -mt-1">{errors.content.message}</p>
       )}
-      <label className="font-bold block mt-[15px]">판매 희망 가격</label>
-      <div className="relative w-full mt-[10px]">
-        <input
-          type="text"
-          name="price"
-          value={priceToString}
-          className="bg-gray2/20 w-full h-[50px] pr-12 px-4 focus:text-right placeholder:text-left focus:outline-btn-primary rounded-md"
-          placeholder="가격을 입력하세요"
-          {...register("price", {
-            required: "필수 입력 정보입니다",
-            onChange: handlePriceChange,
-          })}
-        />
+      {!editInfo && (
+        <>
+          <label className="font-bold block mt-[15px]">판매 희망 가격</label>
+          <div className="relative w-full mt-[10px]">
+            <input
+              type="text"
+              name="price"
+              value={priceToString}
+              className="bg-gray2/20 w-full h-[50px] pr-12 px-4 focus:text-right placeholder:text-left focus:outline-btn-primary rounded-md"
+              placeholder="가격을 입력하세요"
+              {...register("price", {
+                required: "필수 입력 정보입니다",
+                onChange: handlePriceChange,
+              })}
+            />
 
-        <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600">
-          원
-        </span>
-      </div>
-      {errors.price && (
-        <p className="text-red1 text-xs mt-1 ps-1">{errors.price.message}</p>
+            <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600">
+              원
+            </span>
+          </div>
+          {errors.price && (
+            <p className="text-red1 text-xs mt-1 ps-1">
+              {errors.price.message}
+            </p>
+          )}
+        </>
       )}
-      <br />
-      <label className="font-bold">판매 희망 개수</label>
+
+      <label className="font-bold block mt-[15px]">판매 희망 개수</label>
       <input
         type="number"
         name="quantity"
@@ -152,11 +189,13 @@ export default function ProductInfoForm(
         {...register("quantity", {
           required: "필수 입력 정보입니다",
         })}
+        defaultValue={editInfo ? editInfo.quantity : ""}
       />
       {errors.quantity && (
         <p className="text-red1 text-xs mt-1 ps-1">{errors.quantity.message}</p>
       )}
-      <div className="flex gap-1 items-center mt-[25px]">
+
+      <div className="flex gap-1 items-center my-[25px]">
         <p className="font-bold">할인을 적용하시겠습니까?</p>
         <input
           type="radio"
@@ -164,6 +203,7 @@ export default function ProductInfoForm(
           name="discount"
           id="discount-true"
           value="true"
+          defaultChecked={editInfo && editInfo.extra.sale !== 0 ? true : false}
           required
           onChange={() => {
             setCheckDiscount(true);
@@ -178,7 +218,7 @@ export default function ProductInfoForm(
           name="discount"
           id="discount-false"
           value="false"
-          defaultChecked
+          defaultChecked={!editInfo || editInfo.extra.sale === 0 ? true : false}
           required
           onChange={() => {
             setCheckDiscount(false);
@@ -189,7 +229,7 @@ export default function ProductInfoForm(
         </label>
       </div>
       {checkDiscount && (
-        <>
+        <div className="mb-[25px]">
           <label className="font-bold block mt-[25px]">할인률 %</label>
           <div className="relative w-full">
             <input
@@ -208,6 +248,7 @@ export default function ProductInfoForm(
                   );
                 },
               })}
+              defaultValue={editInfo ? editInfo.extra.sale : ""}
             />
             <span className="absolute right-4 top-1/2 transform -translate-y-1/4 text-gray-600">
               %
@@ -216,21 +257,25 @@ export default function ProductInfoForm(
           {errors.sale && (
             <p className="text-red1 text-xs mt-1 ps-1">{errors.sale.message}</p>
           )}
+        </div>
+      )}
+      {!isEdit && (
+        <>
+          <label className="font-bold">이미지 첨부</label>
+          <input
+            type="file"
+            id="attach"
+            accept="image/*"
+            placeholder="이미지를 선택하세요"
+            className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 mt-[10px] focus:outline-btn-primary mb-[25px]"
+            name="attach"
+            {...register("image", {
+              required: "이미지 파일을 선택해주세요.",
+            })}
+            required
+          />
         </>
       )}
-      <label className="font-bold block mt-[25px]">이미지 첨부</label>
-      <input
-        type="file"
-        id="attach"
-        accept="image/*"
-        placeholder="이미지를 선택하세요"
-        className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 mt-[10px] focus:outline-btn-primary mb-[25px]"
-        name="attach"
-        {...register("image", {
-          required: "이미지 파일을 선택해주세요.",
-        })}
-        required
-      />
       <Button height="45px" fontSize={24} type="submit" isBig={true}>
         등록
       </Button>

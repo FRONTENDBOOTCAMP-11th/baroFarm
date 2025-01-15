@@ -21,6 +21,7 @@ const MyPage = lazy(() => import("@pages/user/MyPage"));
 const ProfilePage = lazy(() => import("@pages/user/ProfilePage"));
 const RecentPage = lazy(() => import("@pages/user/RecentPage"));
 const SalePage = lazy(() => import("@pages/user/SalePage"));
+const EditProductPage = lazy(() => import("@pages/user/EditProduct"));
 const PurchasePage = lazy(() => import("@pages/user/PurchasePage"));
 const MenuPage = lazy(() => import("@pages/market/MenuPage"));
 const CartPage = lazy(() => import("@pages/market/CartPage"));
@@ -97,7 +98,13 @@ const router = createBrowserRouter(
 
             { path: "bookmarks", element: <BookmarkPage /> },
             { path: "recent", element: <RecentPage /> },
-            { path: "sale", element: <SalePage /> },
+            {
+              path: "sale",
+              children: [
+                { index: true, element: <SalePage /> },
+                { path: ":id/edit", element: <EditProductPage /> },
+              ],
+            },
             { path: "purchase", element: <PurchasePage /> },
             { path: "myboard", element: <MyPostPage /> },
           ],

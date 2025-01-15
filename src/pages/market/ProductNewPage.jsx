@@ -1,6 +1,6 @@
 import HeaderIcon from "@components/HeaderIcon";
 import useAxiosInstance from "@hooks/useAxiosInstance";
-import ProductInfoForm from "@pages/market/ProductInfoForm";
+import ProductInfoForm from "@components/ProductInfoForm";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

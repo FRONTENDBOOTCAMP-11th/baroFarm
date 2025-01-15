@@ -42,6 +42,7 @@ export default function SoldItem({ item }) {
         <div>
           남은 수량: <span>{item.quantity - item.buyQuantity}</span>개
         </div>
+        <Link to={`${item._id}/edit`}>수정</Link>
       </div>
     </section>
   );
