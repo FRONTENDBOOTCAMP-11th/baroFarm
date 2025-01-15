@@ -24,7 +24,11 @@ export default function BookmarkPage() {
     });
   }, []);
 
-  const { data: likeItem, isLoading } = useQuery({
+  const {
+    data: likeItem,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["like"],
     queryFn: async () => {
       const response = await instance.get(`/products`);

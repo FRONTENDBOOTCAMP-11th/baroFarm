@@ -33,7 +33,6 @@ export default function RecentPage() {
   }, []);
 
   if (isLoading) return <Spinner />;
-  if (isError) return <DataErrorPage />;
 
   return !!productsData ? (
     <Products productsData={productsData} />
