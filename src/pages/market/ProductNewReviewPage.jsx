@@ -29,7 +29,6 @@ export default function ProductNewReviewPage() {
   }, []);
 
   const [rating, setRating] = useState(0);
-
   const handleRating = (rating) => {
     setRating(rating);
   };

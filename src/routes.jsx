@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
+const ErrorPage = lazy(() => import("@pages/ErrorPage"));
 const BoardDetailPage = lazy(() => import("@pages/board/BoardDetailPage"));
 const BoardNewPage = lazy(() => import("@pages/board/BoardNewPage"));
 const BoardEditPage = lazy(() => import("@pages/board/BoardEditPage"));
@@ -17,6 +18,7 @@ const MyPage = lazy(() => import("@pages/user/MyPage"));
 const ProfilePage = lazy(() => import("@pages/user/ProfilePage"));
 const RecentPage = lazy(() => import("@pages/user/RecentPage"));
 const SalePage = lazy(() => import("@pages/user/SalePage"));
+const EditProductPage = lazy(() => import("@pages/user/EditProduct"));
 const PurchasePage = lazy(() => import("@pages/user/PurchasePage"));
 const MenuPage = lazy(() => import("@pages/market/MenuPage"));
 const CartPage = lazy(() => import("@pages/market/CartPage"));
@@ -40,6 +42,7 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: <Layout />,
+      errorElement: <ErrorPage />,
       children: [
         { index: true, element: <MainPage /> },
         {
@@ -83,11 +86,23 @@ const router = createBrowserRouter(
             { path: "login", element: <LoginPage /> },
             { path: "login/kakao", element: <KakaoAuthPage /> },
             { path: "mypage", element: <MyPage /> },
-            { path: "profile", element: <ProfilePage /> },
-            { path: "profile/edit", element: <EditProfilePage /> },
+            {
+              path: "profile",
+              children: [
+                { index: true, element: <ProfilePage /> },
+                { path: "edit", element: <EditProfilePage /> },
+              ],
+            },
+
             { path: "bookmarks", element: <BookmarkPage /> },
             { path: "recent", element: <RecentPage /> },
-            { path: "sale", element: <SalePage /> },
+            {
+              path: "sale",
+              children: [
+                { index: true, element: <SalePage /> },
+                { path: ":id/edit", element: <EditProductPage /> },
+              ],
+            },
             { path: "purchase", element: <PurchasePage /> },
             { path: "myboard", element: <MyPostPage /> },
           ],

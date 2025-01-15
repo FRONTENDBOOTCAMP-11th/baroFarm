@@ -5,6 +5,8 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import HeaderIcon from "@components/HeaderIcon";
 import PurchaseItem from "@components/PurchaseItem";
+import Spinner from "@components/Spinner";
+import DataErrorPage from "@pages/DataErrorPage";
 
 export default function PurchasePage() {
   const { setHeaderContents } = useOutletContext();
@@ -36,10 +38,13 @@ export default function PurchasePage() {
     },
   });
 
+  if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
+
   if (!reviewData || reviewData.length === 0) {
     return (
       <>
-        <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xl text-gray4">
+        <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           구매 내역이 없습니다.
         </p>
       </>

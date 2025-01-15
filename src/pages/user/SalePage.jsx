@@ -25,15 +25,8 @@ export default function SalePage() {
     });
   }, []);
 
-  // useEffect(() => {
-  //   const userCheck= () => {try {}} axios.get(`/users/${user._id}/type`);
-  //   if (userCheck === "user") {
-  //     navigate("/users/mypage");
-  //   }
-  // }, [user]);
-
   const { data, isLoading } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["products", user._id],
     queryFn: () => axios.get(`/seller/products?sort={"createdAt": -1}`),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
@@ -43,10 +36,6 @@ export default function SalePage() {
   if (isLoading) {
     return <>로딩 중입니다...</>;
   }
-
-  // const pastDate1 = new Date(data[0].createdAt).toLocaleDateString();
-  // const pastDate2 = new Date(data[3].createdAt).toLocaleDateString();
-  console.log(data);
 
   const groupedData = data.reduce((acc, item) => {
     const date = new Date(item.createdAt).toLocaleDateString(); // 날짜만 추출 (YYYY.MM.DD)
@@ -58,8 +47,6 @@ export default function SalePage() {
     date,
     items,
   }));
-
-  console.log(groupedArray[1]);
 
   const SoldItemList = groupedArray.map((data) => {
     return (
