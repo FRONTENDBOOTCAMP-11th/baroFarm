@@ -1,3 +1,4 @@
+import PhotoReviewItem from "@components/PhotoReviewItem";
 import PropTypes from "prop-types";
 
 ReviewItem.propTypes = {
@@ -24,8 +25,15 @@ export default function ReviewItem({ reply, productName }) {
 
       <span className="text-[10px] font-normal text-gray5">{dateOnly}</span>
 
-      <div className="relative mt-3">
-        <span className="absolute w-full border-[0.5px] border-gray-3"></span>
+      <div className="relative mt-3 ">
+        {reply.extra && reply.extra.image ? (
+          <>
+            <span className="absolute w-full"></span>
+            <PhotoReviewItem image={reply.extra.image} />
+          </>
+        ) : (
+          <span className="absolute w-full border-[0.5px] border-gray-3"></span>
+        )}
       </div>
 
       <p className="mt-7 text-sm font-medium text-gray4">옵션: {productName}</p>

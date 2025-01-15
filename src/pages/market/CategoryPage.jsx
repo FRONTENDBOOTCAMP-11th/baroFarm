@@ -1,12 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import HeaderIcon from "@components/HeaderIcon";
 import Products from "@components/Products";
-
-const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
 
 export default function CategoryPage() {
   const { category } = useParams();
@@ -37,6 +35,8 @@ export default function CategoryPage() {
     });
   }, [category]);
 
+  const instance = useAxiosInstance();
+
   const {
     data: productsData,
     isLoading,
@@ -44,15 +44,9 @@ export default function CategoryPage() {
   } = useQuery({
     queryKey: ["products", category],
     queryFn: async () => {
-      const response = await axios.get(`https://11.fesp.shop/products`, {
+      const response = await instance.get(`/products`, {
         params: {
           custom: JSON.stringify({ "extra.category": category }),
-        },
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
       });
       return response.data.item;

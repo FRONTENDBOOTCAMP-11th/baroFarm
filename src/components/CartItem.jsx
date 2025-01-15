@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 CartItem.propTypes = {
   _id: PropTypes.number.isRequired,
@@ -38,6 +39,7 @@ export default function CartItem({
 }) {
   // 판매자 이름 상태관리
   const [seller, setSeller] = useState("");
+  const navigate = useNavigate();
 
   // 판매자 id로 이름 fetching
   const { data } = useQuery({
@@ -72,15 +74,21 @@ export default function CartItem({
         <img
           src={`https://11.fesp.shop${product.image.path}`}
           alt="상품 이미지"
-          className="size-[72px] object-cover"
+          className="size-[72px] object-cover cursor-pointer"
+          onClick={() => navigate(`/product/${product._id}`)}
         />
         <div>
-          <p className="text-xs mb-1">{product.name}</p>
-          <div className="flex items-center mb-2">
-            <span className="text-xs font-semibold text-red1 mr-1">{`${product.extra.sale}%`}</span>
-            <span className="text-[16px] font-extrabold">
-              {product.extra.saledPrice.toLocaleString()}원
-            </span>
+          <div
+            className="cursor-pointer"
+            onClick={() => navigate(`/product/${product._id}`)}
+          >
+            <p className="text-xs mb-1">{product.name}</p>
+            <div className="flex items-center mb-2">
+              <span className="text-xs font-semibold text-red1 mr-1">{`${product.extra.sale}%`}</span>
+              <span className="text-[16px] font-extrabold">
+                {product.extra.saledPrice.toLocaleString()}원
+              </span>
+            </div>
           </div>
           <div className="ring-1 ring-gray2 w-fit flex text-center items-center rounded-sm *:flex *:items-center *:justify-center *:text-sm">
             <button

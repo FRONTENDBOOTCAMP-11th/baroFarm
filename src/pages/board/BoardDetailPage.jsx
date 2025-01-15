@@ -21,7 +21,7 @@ export default function BoardDetailPage() {
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate("/board")} />,
+      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "게시글",
       rightChild: (
         <>
@@ -77,10 +77,12 @@ export default function BoardDetailPage() {
         </span>
       </div>
       <div className="mx-[5px] mt-[30px]">{data.content}</div>
-      <img
-        className="relative mt-10 mb-1 rounded-md"
-        src={`https://11.fesp.shop${data.image}`}
-      />
+      {data.image && (
+        <img
+          className="relative mt-10 mb-1 rounded-md"
+          src={`https://11.fesp.shop${data.image}`}
+        />
+      )}
       {data.user._id === user?._id && (
         <div className="text-right text-xs">
           <Link to="edit" state={{ data: data }}>

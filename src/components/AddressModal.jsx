@@ -1,10 +1,11 @@
 import Button from "@components/Button";
 import PGButton from "@components/PGButton";
+import PostcodeSearch from "@components/PostcodeSearch";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import PortOne from "@portone/browser-sdk/v2";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 
@@ -33,6 +34,8 @@ export default function AddressModal({
 }) {
   // 신규 배송지 입력 폼 토글 상태
   const [isOpenForm, setIsOpenForm] = useState(false);
+  // 주소 검색 iframe 오픈 상태
+  const [isOpenIframe, setIsOpenIframe] = useState(false);
 
   // axios instance
   const axios = useAxiosInstance();
@@ -66,17 +69,18 @@ export default function AddressModal({
             ...currentAddressBook,
             {
               // 처음 추가되는 주소라면 아이디를 1로, 아니라면 마지막 주소 아이디 + 1
-              id: addressBook.length
+              id: addressBook?.length
                 ? addressBook[addressBook.length - 1].id + 1
                 : 1,
               userName: formData.userName,
               name: formData.name,
-              value: formData.value,
+              value: `${formData.value} ${formData.detailValue}`,
               phone: formData.phone,
             },
           ],
         },
       };
+
       const ok = confirm("주소를 등록하시겠습니까?");
       if (ok) axios.patch(`/users/${userData._id}`, newAddress);
     },
@@ -85,6 +89,9 @@ export default function AddressModal({
       queryClient.invalidateQueries({ queryKey: ["users"] });
       setIsOpenForm(false);
       reset();
+    },
+    onError: (err) => {
+      console.error(err);
     },
   });
 
@@ -201,7 +208,7 @@ export default function AddressModal({
       />
 
       {/* 모달창 */}
-      <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+      <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">배송지 목록</h2>
           <button
@@ -286,22 +293,14 @@ export default function AddressModal({
                 )}
               </div>
               <div className="mb-2.5 text-sm mt-2.5">
-                <label className="block mb-2.5 font-semibold" htmlFor="email">
-                  주소
-                </label>
-                <input
-                  className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
-                  type="text"
-                  id="value"
-                  placeholder="주소를 입력해주세요."
-                  {...register("value", { required: "주소를 입력해주세요." })}
+                <label className="block mb-2.5 font-semibold">주소</label>
+                <PostcodeSearch
+                  isOpenIframe={isOpenIframe}
+                  setIsOpenIframe={setIsOpenIframe}
+                  register={register}
                 />
-                {errors.value && (
-                  <p className="text-red1 text-xs mt-1 ps-1">
-                    {errors.value.message}
-                  </p>
-                )}
               </div>
+
               <div className="flex gap-2 justify-end">
                 <Button type="submit">저장</Button>
                 <Button isWhite={true} onClick={() => setIsOpenForm(false)}>

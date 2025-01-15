@@ -56,11 +56,13 @@ export default function BoardPageDetail({ item }) {
             </span>
           </div>
           <div className="mx-[5px] mt-[30px]">{item.content}</div>
-          <img
-            className="relative mt-10 rounded-md"
-            src={`https://11.fesp.shop${item.image}`}
-            onLoad={() => checkOverflow()}
-          />
+          {item.image && (
+            <img
+              className="relative mt-10 rounded-md"
+              src={`https://11.fesp.shop${item.image}`}
+              onLoad={() => checkOverflow()}
+            />
+          )}
           {isOverflow && (
             <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
           )}

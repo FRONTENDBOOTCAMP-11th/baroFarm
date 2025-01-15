@@ -6,8 +6,8 @@ import {
   useParams,
 } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import axios from "axios";
 
+import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useLikeToggle } from "@hooks/useLikeToggle";
 import { useCategory } from "@hooks/useCategory";
 
@@ -24,13 +24,13 @@ const likeIcon = {
   active: "/icons/icon_likeHeart_yes.svg",
 };
 
-const ACCESS_TOKEN = import.meta.env.VITE_ACCESS_TOKEN;
-
 export default function ProductDetailPage() {
   const { _id } = useParams();
 
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+
+  const instance = useAxiosInstance();
 
   const {
     data: product,
@@ -39,14 +39,7 @@ export default function ProductDetailPage() {
   } = useQuery({
     queryKey: ["product"],
     queryFn: async () => {
-      const response = await axios.get(`https://11.fesp.shop/products/${_id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-          "client-id": "final04",
-          Authorization: `Bearer ${ACCESS_TOKEN}`,
-        },
-      });
+      const response = await instance.get(`/products/${_id}`);
       return response.data.item;
     },
   });
@@ -80,6 +73,20 @@ export default function ProductDetailPage() {
   };
 
   const [count, setCount] = useState(1);
+  // 이 아이템을 결제 페이지로 보낼때 재구조화하기 위해 상태관리
+  const [purchaseItem, setPurchaseItem] = useState();
+  // (1) 아이템 불러와졌을 때, (2) count가 바뀔 때 purchaseItem 상태 업데이트
+  useEffect(() => {
+    setPurchaseItem([
+      {
+        product: {
+          ...product,
+          image: { path: product?.mainImages[0].path },
+        },
+        quantity: count,
+      },
+    ]);
+  }, [product, count]);
 
   const handleCount = (sign) => {
     if (sign === "plus") setCount((count) => count + 1);
@@ -88,21 +95,10 @@ export default function ProductDetailPage() {
 
   const cartItem = useMutation({
     mutationFn: async () => {
-      const response = await axios.post(
-        `https://11.fesp.shop/carts`,
-        {
-          product_id: _id,
-          quantity: count,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-            "client-id": "final04",
-            Authorization: `Bearer ${ACCESS_TOKEN}`,
-          },
-        }
-      );
+      const response = await instance.post(`/carts`, {
+        product_id: parseInt(_id),
+        quantity: parseInt(count),
+      });
       return response.data.item;
     },
     onSuccess: () => {
@@ -220,7 +216,7 @@ export default function ProductDetailPage() {
               {(product.extra.saledPrice * count).toLocaleString()}원
             </span>
             <span className="text-[12px] text-red1 mt-[3px]">
-              (-
+              (
               {(
                 (product.price - product.extra.saledPrice) *
                 count
@@ -244,15 +240,17 @@ export default function ProductDetailPage() {
           </button>
           <button
             className="flex-1 text-lg text-white bg-btn-primary p-3 rounded-[10px]"
-            onClick={() =>
+            onClick={() => {
+              const currentUrl = window.location.href;
               navigate("/payment", {
                 state: {
-                  selectedItems: product,
+                  selectedItems: purchaseItem,
                   totalFees: product.extra.saledPrice * count,
                   totalShippingFees: product.shippingFees,
+                  previousUrl: currentUrl,
                 },
-              })
-            }
+              });
+            }}
           >
             구매하기
           </button>
