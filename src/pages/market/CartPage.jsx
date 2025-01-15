@@ -277,7 +277,7 @@ export default function CartPage() {
                   htmlFor="checkAll"
                 >
                   <Checkbox id="checkAll" name="checkAll" />
-                  전체 선택 (1/2)
+                  전체 선택 ({checkedItemsIds.length}/{itemList?.length})
                 </label>
                 <Button>삭제</Button>
               </section>
