@@ -1,3 +1,4 @@
+import { useLikeToggle } from "@hooks/useLikeToggle";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -33,11 +34,7 @@ export default function ProductBig(product) {
     navigate(`/product/${product._id}`);
   };
 
-  const [isLiked, setIsLiked] = useState(false);
-
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-  };
+  const { isLiked, handleLike } = useLikeToggle(product);
 
   return (
     <section

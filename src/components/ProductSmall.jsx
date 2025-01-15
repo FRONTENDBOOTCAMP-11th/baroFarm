@@ -31,11 +31,8 @@ ProductSmall.propTypes = {
 
 export default function ProductSmall({ product, bookmarkId }) {
   const navigate = useNavigate();
-  // 북마크 상태
-  const { isLiked, handleLike } = useLikeToggle(product);
   const axios = useAxiosInstance();
 
-  console.log(product);
   // 상품을 누르면 상품 상세 페이지로 이동
   const goDetailPage = () => {
     navigate(`/product/${product._id}`);
@@ -77,13 +74,13 @@ export default function ProductSmall({ product, bookmarkId }) {
           className="absolute bottom-3 right-3 bg-white p-1.5 rounded-full shadow-bottom"
           onClick={(e) => {
             e.stopPropagation();
-            handleLike();
+            deleteBookmark.mutate();
+            queryClient.invalidateQueries({
+              queryKey: ["bookmarks", "product"],
+            });
           }}
         >
-          <img
-            className="w-5"
-            src={isLiked ? likeIcon.active : likeIcon.default}
-          />
+          <img className="w-5" src={likeIcon.active} />
         </button>
       </div>
       <div className="pl-[5px] pt-[10px]" onClick={goDetailPage}>

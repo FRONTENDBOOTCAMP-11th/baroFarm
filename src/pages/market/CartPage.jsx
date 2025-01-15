@@ -219,7 +219,6 @@ export default function CartPage() {
   const likeItems = likeItem.map((item) => (
     <ProductSmall key={item._id} product={item.product} bookmarkId={item._id} />
   ));
-  console.log(likeItem);
 
   // 체크한 아이템의 데이터가 담긴 배열을 구매 페이지로 전송
   const selectItem = () => {

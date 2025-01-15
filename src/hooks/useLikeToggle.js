@@ -6,6 +6,7 @@ export const useLikeToggle = (product) => {
   const [isLiked, setIsLiked] = useState(!!product?.myBookmarkId);
   const queryClient = useQueryClient();
   const instance = useAxiosInstance();
+  console.log(product);
 
   useEffect(() => {
     setIsLiked(!!product?.myBookmarkId);
@@ -32,9 +33,7 @@ export const useLikeToggle = (product) => {
   const { mutate: removeLike } = useMutation({
     mutationFn: async () => {
       if (!product || !product.myBookmarkId) return;
-      const response = await instance.delete(
-        `/bookmarks/${product.myBookmarkId}`
-      );
+      const response = await instance.delete(`/bookmarks/${product.myBookmarkId}`);
       return response.data;
     },
     onSuccess: () => {
