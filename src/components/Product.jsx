@@ -77,9 +77,11 @@ export default function Product(product) {
         </span>
         <span className="text-gray4 font-regular text-xs ">
           (
-          {(isNaN(product.replies)
-            ? product.replies.length
-            : product.replies) || 0}
+          {Array.isArray(product.replies)
+            ? product.replies.length > 0
+              ? product.replies.length
+              : 0
+            : product.replies}
           )
         </span>
       </div>
