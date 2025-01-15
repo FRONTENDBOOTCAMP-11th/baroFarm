@@ -14,6 +14,7 @@ import { useCategory } from "@hooks/useCategory";
 import PurchaseModal from "@components/PurchaseModal";
 import Modal from "@components/Modal";
 import ReviewBox from "@components/ReviewBox";
+import Spinner from "@components/Spinner";
 
 import forwardIcon from "/icons/icon_forward.svg";
 import cartIcon from "/icons/icon_cart_modal.svg";
@@ -134,8 +135,7 @@ export default function ProductDetailPage() {
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError || !product) return <div>Error loading product</div>;
+  if (isLoading) return <Spinner />;
 
   return (
     <>
@@ -201,6 +201,7 @@ export default function ProductDetailPage() {
       <section className="p-5 border-b-8 border-b-gray1">
         <div dangerouslySetInnerHTML={{ __html: product.content }} />
       </section>
+
       <footer className="h-[100px] p-5 border-t border-gray1 flex items-center justify-between fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto bg-white">
         <button onClick={handleLike} className="pl-2">
           <img

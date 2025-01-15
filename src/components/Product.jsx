@@ -24,7 +24,6 @@ Product.propTypes = {
     rating: PropTypes.number,
   }).isRequired,
   price: PropTypes.number.isRequired,
-  replies: PropTypes.number.isRequired, // 댓글 배열
 };
 
 export default function Product(product) {
@@ -77,7 +76,11 @@ export default function Product(product) {
           ⭐️ {product.rating ? product.rating.toFixed(1) : 0}
         </span>
         <span className="text-gray4 font-regular text-xs ">
-          ({product.replies})
+          (
+          {(isNaN(product.replies)
+            ? product.replies.length
+            : product.replies) || 0}
+          )
         </span>
       </div>
     </section>

@@ -5,6 +5,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 
 import HeaderIcon from "@components/HeaderIcon";
 import Products from "@components/Products";
+import Spinner from "@components/Spinner";
 
 export default function BookmarkPage() {
   const { setHeaderContents } = useOutletContext();
@@ -23,13 +24,15 @@ export default function BookmarkPage() {
     });
   }, []);
 
-  const { data: likeItem } = useQuery({
+  const { data: likeItem, isLoading } = useQuery({
     queryKey: ["like"],
     queryFn: async () => {
       const response = await instance.get(`/products`);
       return response.data.item;
     },
   });
+
+  if (isLoading) return <Spinner />;
 
   const likeProducts = !!likeItem
     ? Object.values(likeItem).filter(

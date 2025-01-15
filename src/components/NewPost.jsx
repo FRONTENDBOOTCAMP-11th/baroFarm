@@ -1,3 +1,4 @@
+import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
@@ -37,7 +38,7 @@ export default function NewPost({
     setRating(index);
     handleRating(index);
   };
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["user", user?._id],
     queryFn: () => axios.get(`/users/${user._id}`),
     select: (res) => res.data.item,
@@ -45,10 +46,7 @@ export default function NewPost({
     enabled: !!user,
   });
 
-  if (!data) {
-    //이 아래에는 로딩 페이지
-    return;
-  }
+  if (isLoading) return <Spinner />;
 
   return (
     <div className="p-5">

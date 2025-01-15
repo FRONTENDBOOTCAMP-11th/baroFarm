@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import HeaderIcon from "@components/HeaderIcon";
 import Products from "@components/Products";
+import Spinner from "@components/Spinner";
 
 export default function CategoryPage() {
   const { category } = useParams();
@@ -53,7 +54,7 @@ export default function CategoryPage() {
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Spinner />;
   if (isError) return <div>Error loading products</div>;
 
   return <Products productsData={productsData} />;
