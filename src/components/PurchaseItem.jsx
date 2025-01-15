@@ -11,10 +11,11 @@ PurchaseItem.propTypes = {
 };
 
 export default function PurchaseItem({ orderId, product, date }) {
-  const isReviewed = false;
+  let isReviewed = false;
   const [year, month, day] = date.split(".");
   const arriveDate = `${month}/${day.split(" ")[0]}`;
-  console.log(product);
+
+  if (!!product.review) isReviewed = true;
   return (
     <section className="flex gap-5 border-b-[0.5px] border-gray2 py-3 items-center">
       <PhotoReviewItem image={product.image.path} />
@@ -36,7 +37,11 @@ export default function PurchaseItem({ orderId, product, date }) {
               ? `/product/${product._id}/reviewed`
               : `/product/${product._id}/reviews/new/${orderId}`
           }
-          className="text-xs absolute bottom-4 right-0 border-b border-gray5 text-gray5 hover:text-btn-primary hover:border-b-btn-primary"
+          className={`text-xs absolute bottom-4 right-0 ${
+            isReviewed
+              ? "border-b border-gray5 text-gray5 hover:text-btn-primary hover:border-b-btn-primary"
+              : "border-b border-btn-primary text-btn-primary hover:text-gray5 hover:border-gray5"
+          }`}
         >
           {isReviewed ? "후기 보기" : "후기 작성"}
         </Link>
