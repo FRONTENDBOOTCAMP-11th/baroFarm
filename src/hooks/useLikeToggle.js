@@ -6,7 +6,6 @@ export const useLikeToggle = (product) => {
   const [isLiked, setIsLiked] = useState(!!product?.myBookmarkId);
   const queryClient = useQueryClient();
   const instance = useAxiosInstance();
-  console.log(product);
 
   useEffect(() => {
     setIsLiked(!!product?.myBookmarkId);
