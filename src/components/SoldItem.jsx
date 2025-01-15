@@ -19,7 +19,7 @@ export default function SoldItem({ item }) {
           className="aspect-square object-cover rounded-md"
         />
       </Link>
-      <div className="text-sm">
+      <div className="text-sm w-full">
         <Link to={`/product/${item._id}`}>
           <p className="font-semibold break-keep">{item.name}</p>
         </Link>
@@ -42,7 +42,9 @@ export default function SoldItem({ item }) {
         <div>
           남은 수량: <span>{item.quantity - item.buyQuantity}</span>개
         </div>
-        <Link to={`${item._id}/edit`}>수정</Link>
+        <Link to={`${item._id}/edit`} className="ml-auto underline">
+          상품 정보 수정
+        </Link>
       </div>
     </section>
   );
