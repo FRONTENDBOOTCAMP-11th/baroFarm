@@ -73,7 +73,8 @@ export default function LoginPage() {
       setUser({
         _id: user._id,
         name: user.name,
-        userName: user.extra.userName,
+        // 카카오에서 넘어오는 name은 닉네임 밖에 없는 듯
+        userName: user.name,
         accessToken: user.token.accessToken,
         refreshToken: user.token.refreshToken,
       });

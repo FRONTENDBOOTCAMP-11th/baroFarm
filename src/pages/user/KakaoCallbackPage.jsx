@@ -2,6 +2,7 @@
 
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation } from "@tanstack/react-query";
+import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
@@ -9,6 +10,7 @@ import { useSearchParams } from "react-router-dom";
 export default function KakaoCallbackPage() {
   const [searchParms] = useSearchParams();
   const axios = useAxiosInstance();
+  const setUser = useUserStore((store) => store.setUser);
 
   const kakaoLogin = useMutation({
     mutationFn: (code) =>
@@ -18,10 +20,22 @@ export default function KakaoCallbackPage() {
         user: {},
       }),
     onSuccess: (res) => {
-      console.log("성공:", res);
+      if (res.data.item) {
+        console.log("카카오 로그인 성공:", res);
+        console.log("이걸 쓸거다", res.data.item);
+
+        const user = res.data.item;
+        setUser({
+          _id: user._id,
+          name: user.name,
+          userName: user.name,
+          accessToken: user.token.accessToken,
+          refreshToken: user.token.refreshToken,
+        });
+      }
     },
     onError: (error) => {
-      console.error("실패", error);
+      console.error("카카오 로그인 실패", error);
     },
   });
 
@@ -29,7 +43,7 @@ export default function KakaoCallbackPage() {
     // URL에서 인가코드 추출
     const code = searchParms.get("code");
     if (code) {
-      kakaoLogin.mutate({ code });
+      kakaoLogin.mutate(code);
     }
     // console.log("인가 코드: ", code);
     // 서버에 전송
