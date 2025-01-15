@@ -134,8 +134,8 @@ export default function LoginPage() {
   return (
     <div className="p-5">
       {/* 로고 영역 */}
-      <div className="m-auto w-[300px] h-[300px]">
-        <img className="block w-full" src="/images/Logo1_old.svg" alt="바로팜 로고 이미지" />
+      <div className="flex justify-center items-center m-auto w-[300px] h-[300px]">
+        <img className="block w-full" src="/images/BaroFarmLogo.png" alt="바로팜 로고 이미지" />
       </div>
 
       {/* 폼 영역 */}
