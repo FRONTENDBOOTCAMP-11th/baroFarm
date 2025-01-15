@@ -1,7 +1,7 @@
 import HeaderIcon from "@components/HeaderIcon";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import Comment from "@pages/board/Comment";
-import createdTime from "@components/createdTime";
+import createdTime from "utils/createdTime";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
