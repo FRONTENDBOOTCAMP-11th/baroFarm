@@ -200,8 +200,7 @@ export default function CartPage() {
   if (!data && likeItem) return null;
 
   // 최종 배송비 계산
-  const totalShippingFees =
-    data.cost.shippingFees - data.cost.discount.shippingFees;
+  const totalShippingFees = totalFees > 30000 || totalFees === 0 ? 0 : 2500;
 
   // 장바구니 아이템으로 화면 렌더링
   const itemList = data.item.map((item) => (
@@ -295,7 +294,7 @@ export default function CartPage() {
                     <div className="text-xs flex justify-between mb-3">
                       <span className="text-gray4">할인 금액</span>
                       <span className="text-red1">
-                        {discount.toLocaleString()}원
+                        - {discount.toLocaleString()}원
                       </span>
                     </div>
                     <div className="text-xs flex justify-between mb-3">
@@ -303,7 +302,7 @@ export default function CartPage() {
                       <span>
                         {totalShippingFees === 0
                           ? "무료"
-                          : `${totalShippingFees.toLocaleString()}원`}
+                          : `+ ${totalShippingFees.toLocaleString()}원`}
                       </span>
                     </div>
                   </div>
