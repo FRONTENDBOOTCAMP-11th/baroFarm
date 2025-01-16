@@ -1,6 +1,7 @@
 import HeaderIcon from "@components/HeaderIcon";
 import UserForm from "@components/UserForm";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import ErrorPage from "@pages/ErrorPage";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
@@ -24,8 +25,13 @@ export default function EditProfilePage() {
 
   const editUserInfo = useMutation({
     mutationFn: (formData) => {
-      console.log(formData);
-      return axios.patch(`/users/${data._id}`, formData);
+      const { value, detailValue, ...userData } = formData;
+      const body = {
+        ...userData,
+        address: `${value ? value : ""} ${detailValue ? detailValue : ""}`,
+      };
+      console.log(body);
+      return axios.patch(`/users/${data._id}`, body);
     },
     onSuccess: () => {
       resetUser();
@@ -37,6 +43,7 @@ export default function EditProfilePage() {
     },
     onError: (err) => {
       console.error("회원 정보 변경 실패:", err);
+      return <ErrorPage />;
     },
   });
   return (

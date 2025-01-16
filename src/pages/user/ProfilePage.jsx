@@ -146,15 +146,51 @@ export default function ProfilePage() {
         {userData?.name ? userData.name : "닉네임 없음"}
       </div>
       <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
-        <section className="min-w-[65px]">
+        <section className="min-w-[65px] break-keep">
           이름 <br />
-          사용자 유형 <br />
+          성별 <br />
+          이메일 <br />
+          전화번호 <br />
+          생년월일 <br />
+          주소
         </section>
+
         <section className="text-gray5 break-keep">
-          {userData?.extra?.userName ? userData.extra.userName : "미입력"}{" "}
+          {userData?.extra?.userName ? (
+            userData.extra.userName
+          ) : (
+            <span className="text-gray3">이름을 입력해주세요</span>
+          )}
           <br />
-          {userData.type === "user" ? "구매자" : "판매자"}
+          {userData?.extra?.gender ? (
+            userData.extra.gender === "male" ? (
+              "남성"
+            ) : (
+              "여성"
+            )
+          ) : (
+            <span className="text-gray3">성별을 입력해주세요</span>
+          )}
           <br />
+          {userData?.email ? userData.email : "Kakao 로그인 회원"}
+          <br />
+          {userData?.phone ? (
+            userData.phone
+          ) : (
+            <span className="text-gray3">전화번호를 입력해주세요</span>
+          )}{" "}
+          <br />
+          {userData?.extra?.birth ? (
+            userData.extra.birth
+          ) : (
+            <span className="text-gray3">생년월일을 입력해주세요</span>
+          )}
+          <br />
+          {userData?.address ? (
+            userData.address
+          ) : (
+            <span className="text-gray3">주소를 입력해주세요</span>
+          )}
         </section>
         <Link
           to={"/users/profile/edit"}

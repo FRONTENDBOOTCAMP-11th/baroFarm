@@ -1,5 +1,7 @@
+import PostcodeSearch from "@components/PostcodeSearch";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 UserForm.propTypes = {
@@ -8,13 +10,14 @@ UserForm.propTypes = {
   userInfo: PropTypes.shape({
     // 프로필 수정 시 사용되는 필드들
     name: PropTypes.string, // 닉네임
-    // phone: PropTypes.string,
-    // address: PropTypes.string,
+    phone: PropTypes.string,
+    address: PropTypes.string,
     email: PropTypes.string,
     type: PropTypes.string,
     extra: PropTypes.shape({
       userName: PropTypes.string,
-      // birth: PropTypes.string,
+      birth: PropTypes.string,
+      gender: PropTypes.string,
     }),
   }),
   buttonText: PropTypes.string.isRequired,
@@ -33,17 +36,25 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
     defaultValues: {
       // input의 defaultValue 속성 대신 useForm의 defaultValues 옵션으로 초기값 설정
       name: userInfo?.name || "",
-      // phone: userInfo?.phone || "",
-      // address: userInfo?.address || "",
       email: userInfo?.email || "",
-      extra: {
-        userName: userInfo?.extra?.userName || "",
-        // birth: userInfo?.extra?.birth || "",
-      },
+      // extra: {
+      //   userName: userInfo?.extra?.userName || "",
+      // },
       type: userInfo?.type || "",
+      // 수정 데이터가 넘어올 때만 phone, address 항목 생성
+      ...(userInfo && {
+        phone: userInfo?.phone || "",
+        address: userInfo?.address || "",
+        extra: {
+          birth: userInfo?.extra?.birth || "",
+          gender: userInfo?.extra?.gender || "",
+        },
+      }),
     },
     mode: "onBlur", // 유효성 검사가 실행되는 시점을 onBlur로 설정
   });
+
+  const [isOpenIframe, setIsOpenIframe] = useState(false);
 
   // 코드 가독성을 위해 유효성 검사 규칙을 분리하여 관리
   const validationSchema = {
@@ -171,33 +182,33 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         }
       },
     },
-    // phone: {
-    //   required: userInfo ? undefined : "전화번호는 필수입니다.",
-    //   pattern: {
-    //     value: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
-    //     message: "올바른 전화번호 형식이 아닙니다.",
-    //   },
-    //   onChange: (e) => {
-    //     // 숫자가 아닌 모든 문자 제거 (예: "010-1234-5678" → "01012345678")
-    //     const number = e.target.value.replace(/[^\d]/g, "");
+    phone: {
+      required: userInfo ? undefined : "전화번호는 필수입니다.",
+      pattern: {
+        value: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
+        message: "올바른 전화번호 형식이 아닙니다.",
+      },
+      onChange: (e) => {
+        // 숫자가 아닌 모든 문자 제거 (예: "010-1234-5678" → "01012345678")
+        const number = e.target.value.replace(/[^\d]/g, "");
 
-    //     // 하이픈 추가 로직
-    //     let formattedNumber = "";
-    //     if (number.length <= 3) {
-    //       formattedNumber = number;
-    //     } else if (number.length <= 7) {
-    //       formattedNumber = `${number.slice(0, 3)}-${number.slice(3)}`;
-    //     } else {
-    //       formattedNumber = `${number.slice(0, 3)}-${number.slice(
-    //         3,
-    //         7
-    //       )}-${number.slice(7, 11)}`;
-    //     }
+        // 하이픈 추가 로직
+        let formattedNumber = "";
+        if (number.length <= 3) {
+          formattedNumber = number;
+        } else if (number.length <= 7) {
+          formattedNumber = `${number.slice(0, 3)}-${number.slice(3)}`;
+        } else {
+          formattedNumber = `${number.slice(0, 3)}-${number.slice(
+            3,
+            7
+          )}-${number.slice(7, 11)}`;
+        }
 
-    //     // 입력 값 업데이트
-    //     e.target.value = formattedNumber;
-    //   },
-    // },
+        // 입력 값 업데이트
+        e.target.value = formattedNumber;
+      },
+    },
     // address: {
     //   required: userInfo ? undefined : "주소는 필수입니다.",
     // },
@@ -286,6 +297,9 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               type="text"
               id="userName"
               placeholder="이름을 입력해주세요"
+              defaultValue={
+                userInfo?.extra?.userName ? userInfo.extra.userName : ""
+              }
               {...register("extra.userName", validationSchema.extra.userName)}
             />
             {errors.extra?.userName && (
@@ -315,7 +329,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         )}
       </div>
       {/* 휴대폰 */}
-      {/* {userInfo && (
+      {userInfo && (
         <>
           <div className="mb-2.5 text-sm">
             <label className="block mb-2.5 font-semibold" htmlFor="phone">
@@ -337,7 +351,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
             )}
           </div>
         </>
-      )} */}
+      )}
 
       {/* 회원 유형 */}
       {!userInfo && (
@@ -376,31 +390,11 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
           </div>
         </>
       )}
-      {/* 주소 */}
-      {/* {userInfo && (
-        <>
-          <div className="mb-5 text-sm">
-            <label className="block mb-2.5 font-semibold" htmlFor="address">
-              주소
-            </label>
-            <input
-              className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-0.5 outline-none focus:border-btn-primary"
-              type="text"
-              id="address"
-              placeholder="주소를 입력해주세요"
-              // defaultValue={userInfo ? userInfo.address : ""}
-              {...register("address", validationSchema.address)}
-            />
-            {errors.address && (
-              <p className="text-red1 text-xs ps-1">{errors.address.message}</p>
-            )}
-          </div>
-        </>
-      )} */}
-      {!userInfo && (
+
+      {userInfo && (
         <>
           {/* 성별 */}
-          {/* <div className="flex flex-wrap items-center gap-5 text-sm mb-5">
+          <div className="flex flex-wrap items-center gap-5 text-sm mb-5">
             <p className="font-semibold">성별</p>
             <div className="flex items-center gap-1">
               <input
@@ -424,20 +418,17 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
                 여자
               </label>
             </div>
-            {errors.extra?.gender && (
+            {/* {errors.extra?.gender && (
               <div className="w-full">
                 <p className=" text-red1 text-xs ps-0.5 -mt-3">
                   {errors.extra.gender.message}
                 </p>
               </div>
-            )}
-          </div> */}
-        </>
-      )}
-      {/* 생년월일 */}
-      {/* {userInfo && (
-        <>
-          <div className="mb-6 text-sm">
+            )} */}
+          </div>
+
+          {/* 생년월일 */}
+          <div className="mb-5 text-sm">
             <label className="block mb-2.5 font-semibold" htmlFor="birth">
               생년월일
             </label>
@@ -447,16 +438,28 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               id="birth"
               {...register("extra.birth", validationSchema.extra.birth)}
             />
-            {errors.extra?.birth && (
+            {/* {errors.extra?.birth && (
               <p className="text-red1 text-xs mt-1 ps-1">
                 {errors.extra.birth.message}
               </p>
-            )}
+            )} */}
+          </div>
+
+          {/* 주소 */}
+          <div className="mb-6 text-sm">
+            <label className="block mb-2.5 font-semibold" htmlFor="address">
+              주소
+            </label>
+            <PostcodeSearch
+              isOpenIframe={isOpenIframe}
+              setIsOpenIframe={setIsOpenIframe}
+              register={register}
+            />
           </div>
         </>
-      )} */}
+      )}
 
-      {/* 가입하기 버튼 */}
+      {/* 가입하기, 또는 수정하기 버튼 */}
       <button
         className="w-full h-[3.25rem] text-center text-xl rounded-full border border-btn-primary font-medium block m-auto mb-1 text-btn-primary"
         type="submit"
