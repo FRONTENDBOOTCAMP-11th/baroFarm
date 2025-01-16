@@ -122,8 +122,8 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
           message: "한글 또는 영문만 입력 가능합니다",
         },
       },
-      gender: { required: userInfo ? undefined : "성별을 선택해주세요." },
-      birth: { required: userInfo ? undefined : "생년월일을 선택해주세요." },
+      // gender: { required: "성별을 선택해주세요." },
+      // birth: { required: "생년월일을 선택해주세요." },
     },
     // 공통 필드(회원가입 및 프로필 수정 시 공통으로 사용)
     name: {
@@ -213,24 +213,22 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="p-5">
-      {/* 이메일 */}
-      <div className="mb-2.5 text-sm">
-        <label className="block mb-2.5 font-semibold" htmlFor="email">
-          이메일
-        </label>
-        <input
-          className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
-          type="email"
-          id="email"
-          placeholder="이메일을 입력해주세요 or barofarm@market.com"
-          {...register("email", validationSchema.email)}
-        />
-        {errors.email && (
-          <p className="text-red1 text-xs mt-1 ps-1">{errors.email.message}</p>
-        )}
-      </div>
       {!userInfo && (
         <>
+          {/* 이메일 */}
+          <div className="mb-2.5 text-sm">
+            <label className="block mb-2.5 font-semibold" htmlFor="email">
+              이메일
+            </label>
+            <input
+              className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
+              type="email"
+              id="email"
+              placeholder="이메일을 입력해주세요"
+              {...register("email", validationSchema.email)}
+            />
+            {errors.email && <p className="text-red1 text-xs mt-1 ps-1">{errors.email.message}</p>}
+          </div>
           {/* 비밀번호 */}
           <div className="mb-2.5 text-sm">
             <label className="block mb-2.5 font-semibold" htmlFor="password">
@@ -310,7 +308,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         )}
       </div>
       {/* 휴대폰 */}
-      <div className="mb-2.5 text-sm">
+      {/* <div className="mb-2.5 text-sm">
         <label className="block mb-2.5 font-semibold" htmlFor="phone">
           휴대폰
         </label>
@@ -332,7 +330,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
       {!userInfo && (
         <>
           {/* 회원 유형 */}
-          <div className="flex flex-wrap items-center gap-5 text-sm mb-5">
+          <div className="flex flex-wrap items-center gap-5 text-sm mb-5 mt-5">
             <p className="font-semibold">회원 유형</p>
             <div className="flex items-center gap-1">
               <input
@@ -343,7 +341,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
                 {...register("type", validationSchema.type)}
               />
               <label className="cursor-pointer" htmlFor="type-user">
-                구매회원
+                일반회원
               </label>
               <input
                 className="w-3.5 h-3.5 rounded-full appearance-none bg-gray2 checked:bg-btn-primary cursor-pointer ml-2.5"
@@ -367,7 +365,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         </>
       )}
       {/* 주소 */}
-      <div className="mb-5 text-sm">
+      {/* <div className="mb-5 text-sm">
         <label className="block mb-2.5 font-semibold" htmlFor="address">
           주소
         </label>

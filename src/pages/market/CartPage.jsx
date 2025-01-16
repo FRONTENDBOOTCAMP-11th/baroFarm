@@ -3,7 +3,9 @@ import CartItem from "@components/CartItem";
 import Checkbox from "@components/Checkbox";
 import HeaderIcon from "@components/HeaderIcon";
 import ProductSmall from "@components/ProductSmall";
+import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import DataErrorPage from "@pages/DataErrorPage";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
@@ -102,6 +104,7 @@ export default function CartPage() {
   // 장바구니 수량 변경
   const updateItem = useMutation({
     mutationFn: ({ _id, quantity }) =>
+      // _id는 장바구니 _id다 (상품의 _id는 product_id)
       axios.patch(`/carts/${_id}`, {
         // 보낼 데이터
         quantity: quantity,
@@ -120,21 +123,60 @@ export default function CartPage() {
     select: (res) => res.data.item,
   });
 
-  // 장바구니 아이템 체크하기
+  // 전체 선택 핸들러
+  // 전체 선택 체크박스의 체크 상태를 인수로 받는다.
+  const toggleCheckAll = (isChecked) => {
+    // 전체 선택 체크박스가 체크되었을 때
+    if (isChecked) {
+      // 장바구니에 담긴 모든 아이템의 아이디를 checkedItemsIds 배열에 담음
+      const allProductsIds = data.item.map((item) => item._id);
+      setCheckedItemsIds(allProductsIds);
+    } else {
+      // 체크 해제되었으면 checkedItemsIds 배열을 빈 배열로 설정
+      setCheckedItemsIds([]);
+    }
+  };
+
+  // 장바구니 개별 아이템 체크 핸들러
   const toggleCartItemCheck = (targetId) => {
     // 체크한 상품을 장바구니 데이터에서 찾음
     const cartItem = data.item.find((item) => item._id === targetId);
 
     // 체크한 상품의 product_id를 checkedCartItems 상태에 추가/제거
     setCheckedItemsIds((prevCheckedIds) => {
-      const isAlreadyChecked = prevCheckedIds.includes(cartItem.product_id);
+      const isAlreadyChecked = prevCheckedIds.includes(cartItem._id);
 
       if (isAlreadyChecked) {
-        return prevCheckedIds.filter((id) => id !== cartItem.product_id);
+        return prevCheckedIds.filter((id) => id !== cartItem._id);
       }
-      return [...prevCheckedIds, cartItem.product_id];
+      return [...prevCheckedIds, cartItem._id];
     });
   };
+  console.log("checkedItemsIds", checkedItemsIds);
+  console.log("장바구니 상품", data?.item);
+
+  // 장바구니 아이템 여러건 삭제
+  const deleteItems = useMutation({
+    mutationFn: () => {
+      if (checkedItemsIds.length !== 0) {
+        const ok = confirm("선택하신 상품을 삭제할까요?");
+        if (ok) {
+          setCheckedItemsIds([]);
+          return axios.delete("/carts", {
+            data: {
+              carts: checkedItemsIds,
+            },
+          });
+        }
+      } else {
+        alert("삭제할 상품을 선택하세요.");
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["carts"] });
+    },
+    onError: (err) => console.error(err),
+  });
 
   // 선택한 아이템, 데이터가 변경될 때 상품 금액, 할인 금액 다시 계산
   useEffect(() => {
@@ -149,18 +191,18 @@ export default function CartPage() {
       (acc, checkedId) => {
         // 장바구니에서 아이템 찾기
         const currentCartItem = data.item.find(
-          (item) => item.product_id === checkedId
+          (item) => item._id === checkedId
         );
 
         // 해당 아이템의 총 합산 금액 구하기
         const itemTotal =
-          currentCartItem.quantity * currentCartItem.product.price;
+          currentCartItem?.quantity * currentCartItem?.product.price;
 
         // 해당 아이템의 할인 금액 구하기
         const itemDiscount =
-          currentCartItem.quantity *
-          (currentCartItem.product.price -
-            currentCartItem.product.extra.saledPrice);
+          currentCartItem?.quantity *
+          (currentCartItem?.product.price -
+            currentCartItem?.product.extra.saledPrice);
 
         return {
           subtotal: acc.subtotal + itemTotal, // 상품 금액 합계
@@ -180,24 +222,10 @@ export default function CartPage() {
     setTotalPayFees(totalFees - discount);
   }, [totalFees, discount]);
 
-  if (isLoading) {
-    return (
-      <div className="mt-0 mx-auto text-center">
-        로딩중... <br />
-        잠시만 기다려주세요
-      </div>
-    );
-  }
-  if (isError) {
-    return (
-      <div className="mt-0 mx-auto text-center">
-        에러가 발생했습니다. <br />
-        잠시 후 다시 시도해주세요.
-      </div>
-    );
-  }
+  if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
   // 데이터 없을시 null 반환하여 에러 방지
-  if (!data && likeItem) return null;
+  if (!data && !likeItem) return null;
 
   // 최종 배송비 계산
   const totalShippingFees = totalFees > 30000 || totalFees === 0 ? 0 : 2500;
@@ -211,11 +239,12 @@ export default function CartPage() {
       deleteItem={deleteItem}
       updateItem={updateItem}
       toggleCartItemCheck={toggleCartItemCheck}
+      isChecked={checkedItemsIds.includes(item._id)}
     />
   ));
 
   // 찜한 상품으로 화면 렌더링
-  const likeItems = likeItem.map((item) => (
+  const likeItems = likeItem?.map((item) => (
     <ProductSmall key={item._id} product={item.product} bookmarkId={item._id} />
   ));
 
@@ -227,9 +256,9 @@ export default function CartPage() {
     }
 
     // 결제 페이지로 체크한 상품의 데이터 넘기기
-    const selectedItems = checkedItemsIds.map((id) =>
+    const selectedItems = checkedItemsIds.map((_id) =>
       // 각각의 id 마다 checkedItemsIds에 담긴 id와 같은 상품을 장바구니에서 찾아서 리턴
-      data.item.find((item) => item.product_id === id)
+      data.item.find((item) => item._id === _id)
     );
     const currentUrl = window.location.href;
 
@@ -265,7 +294,7 @@ export default function CartPage() {
               }`}
               onClick={() => setRenderCart(false)}
             >
-              찜한 상품({likeItem.length})
+              찜한 상품({likeItem?.length})
             </div>
           </section>
           {/* 장바구니 상품 혹은 찜한 상품 조건부 렌더링 */}
@@ -276,10 +305,15 @@ export default function CartPage() {
                   className="flex items-center cursor-pointer relative gap-2 grow"
                   htmlFor="checkAll"
                 >
-                  <Checkbox id="checkAll" name="checkAll" />
-                  전체 선택 (1/2)
+                  <Checkbox
+                    id="checkAll"
+                    name="checkAll"
+                    checked={checkedItemsIds.length === data.item.length}
+                    onChange={(e) => toggleCheckAll(e.target.checked)}
+                  />
+                  전체 선택 ({checkedItemsIds.length}/{itemList?.length})
                 </label>
-                <Button>삭제</Button>
+                <Button onClick={() => deleteItems.mutate()}>삭제</Button>
               </section>
               <form onSubmit={handleSubmit(selectItem)}>
                 <section className="px-5 pb-4 border-b-4 border-gray2">
