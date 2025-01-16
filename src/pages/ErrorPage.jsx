@@ -1,8 +1,10 @@
-import { useRouteError } from "react-router-dom";
+import { useRouteError, useNavigate } from "react-router-dom";
 import logoImage from "/images/BaroFarmIcon.png";
 
 export default function ErrorPage() {
   const error = useRouteError();
+  const navigate = useNavigate();
+
   console.error(error);
 
   return (
@@ -13,7 +15,10 @@ export default function ErrorPage() {
         <br /> 주소가 변경 혹은 삭제되어 요청하신 페이지를 찾을 수 없습니다.
       </p>
       <img src={logoImage} className="w-[300px]" />
-      <button className="text-white  bg-btn-primary px-6 py-2 rounded-md">
+      <button
+        className="text-white  bg-btn-primary px-6 py-2 rounded-md"
+        onClick={() => navigate(`/`)}
+      >
         메인으로
       </button>
     </div>
