@@ -187,7 +187,11 @@ export default function ProfilePage() {
           )}
           <br />
           {userData?.address ? (
-            userData.address
+            userData.address.trim("") === "" ? (
+              <span className="text-gray3">주소를 입력해주세요</span>
+            ) : (
+              userData.address
+            )
           ) : (
             <span className="text-gray3">주소를 입력해주세요</span>
           )}
