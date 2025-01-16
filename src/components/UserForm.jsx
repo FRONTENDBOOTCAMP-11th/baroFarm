@@ -10,6 +10,12 @@ UserForm.propTypes = {
     name: PropTypes.string, // 닉네임
     phone: PropTypes.string,
     address: PropTypes.string,
+    email: PropTypes.string,
+    type: PropTypes.string,
+    extra: PropTypes.shape({
+      userName: PropTypes.string,
+      birth: PropTypes.string,
+    }),
   }),
   buttonText: PropTypes.string.isRequired,
   onSubmitUser: PropTypes.func.isRequired,
@@ -29,7 +35,12 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
       name: userInfo?.name || "",
       phone: userInfo?.phone || "",
       address: userInfo?.address || "",
-      type: "seller",
+      email: userInfo?.email || "",
+      extra: {
+        userName: userInfo?.extra?.userName || "",
+        birth: userInfo?.extra?.birth || "",
+      },
+      type: userInfo?.type || "",
     },
     mode: "onBlur", // 유효성 검사가 실행되는 시점을 onBlur로 설정
   });
@@ -38,7 +49,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
   const validationSchema = {
     // 회원가입 전용 필드
     email: {
-      required: "이메일은 필수입니다.",
+      required: userInfo ? undefined : "이메일은 필수입니다.",
       pattern: {
         value: /\S+@\S+\.\S+/,
         message: "이메일 형식으로 입력해 주세요.",
@@ -50,17 +61,20 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         // console.log("입력된 이메일:", email);
 
         // 이메일 형식이 올바른 경우에만 중복 체크(email 값이 존재 + 정규식 검사를 수행, 두 조건을 모두 확인)
-        if (email && /\S+@\S+\.\S+/.test(email)) {
+        if (email && /\S+@\S+\.\S+/.test(email) && !userInfo) {
           try {
             console.log("axios 요청 직전");
-            const { data } = await axios.get("https://11.fesp.shop/users/email", {
-              params: { email },
-              headers: {
-                "client-id": "final04",
-                "Content-Type": "application/json",
-                accept: "application/json",
-              },
-            });
+            const { data } = await axios.get(
+              "https://11.fesp.shop/users/email",
+              {
+                params: { email },
+                headers: {
+                  "client-id": "final04",
+                  "Content-Type": "application/json",
+                  accept: "application/json",
+                },
+              }
+            );
 
             // ok 1이면 사용 가능(사용 가능한 이메일)
             if (data.ok === 1) {
@@ -95,13 +109,14 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
       required: "비밀번호를 확인해주세요.",
       // 기본 제공 되는 required,pattern 등으로는 처리할 수 없는 복잡한 유효성 검사를 할 때 사용(사용자 정의 유효성 검사 기능)
       validate: {
-        matchPassword: (value) => value === watch("password") || "비밀번호가 일치하지 않습니다.",
+        matchPassword: (value) =>
+          value === watch("password") || "비밀번호가 일치하지 않습니다.",
       },
     },
-    type: { required: "회원 유형을 선택해주세요." },
+    type: { required: userInfo ? undefined : "회원 유형을 선택해주세요." },
     extra: {
       userName: {
-        required: "이름은 필수입니다.",
+        required: userInfo ? undefined : "이름은 필수입니다.",
         pattern: {
           value: /^[A-Za-z가-힣]+$/,
           message: "한글 또는 영문만 입력 가능합니다",
@@ -118,17 +133,20 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         const name = e.target.value;
         // console.log("입력된 닉네임:", name);
 
-        if (name) {
+        if (name && !userInfo) {
           try {
             console.log("axios 요청 직전");
-            const { data } = await axios.get("https://11.fesp.shop/users/name", {
-              params: { name },
-              headers: {
-                "client-id": "final04",
-                "Content-Type": "application/json",
-                accept: "application/json",
-              },
-            });
+            const { data } = await axios.get(
+              "https://11.fesp.shop/users/name",
+              {
+                params: { name },
+                headers: {
+                  "client-id": "final04",
+                  "Content-Type": "application/json",
+                  accept: "application/json",
+                },
+              }
+            );
 
             // ok 1이면 사용 가능(사용 가능한 닉네임)
             if (data.ok === 1) {
@@ -154,7 +172,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
       },
     },
     phone: {
-      required: "전화번호는 필수입니다.",
+      required: userInfo ? undefined : "전화번호는 필수입니다.",
       pattern: {
         value: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
         message: "올바른 전화번호 형식이 아닙니다.",
@@ -170,7 +188,10 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         } else if (number.length <= 7) {
           formattedNumber = `${number.slice(0, 3)}-${number.slice(3)}`;
         } else {
-          formattedNumber = `${number.slice(0, 3)}-${number.slice(3, 7)}-${number.slice(7, 11)}`;
+          formattedNumber = `${number.slice(0, 3)}-${number.slice(
+            3,
+            7
+          )}-${number.slice(7, 11)}`;
         }
 
         // 입력 값 업데이트
@@ -178,7 +199,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
       },
     },
     address: {
-      required: "주소는 필수입니다.",
+      required: userInfo ? undefined : "주소는 필수입니다.",
     },
   };
 
@@ -206,7 +227,11 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               placeholder="이메일을 입력해주세요"
               {...register("email", validationSchema.email)}
             />
-            {errors.email && <p className="text-red1 text-xs mt-1 ps-1">{errors.email.message}</p>}
+            {errors.email && (
+              <p className="text-red1 text-xs mt-1 ps-1">
+                {errors.email.message}
+              </p>
+            )}
           </div>
           {/* 비밀번호 */}
           <div className="mb-2.5 text-sm">
@@ -220,11 +245,18 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               placeholder="비밀번호를 입력해주세요"
               {...register("password", validationSchema.password)}
             />
-            {errors.password && <p className="text-red1 text-xs mt-1 ps-1">{errors.password.message}</p>}
+            {errors.password && (
+              <p className="text-red1 text-xs mt-1 ps-1">
+                {errors.password.message}
+              </p>
+            )}
           </div>
           {/* 비밀번호 확인 */}
           <div className="mb-2.5 text-sm">
-            <label className="block mb-2.5 font-semibold" htmlFor="confirmPassword">
+            <label
+              className="block mb-2.5 font-semibold"
+              htmlFor="confirmPassword"
+            >
               비밀번호 확인
             </label>
             <input
@@ -234,10 +266,18 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               placeholder="비밀번호를 한번 더 입력해주세요"
               {...register("confirmPassword", validationSchema.confirmPassword)}
             />
-            {errors.confirmPassword && <p className="text-red1 text-xs mt-1 ps-1">{errors.confirmPassword.message}</p>}
+            {errors.confirmPassword && (
+              <p className="text-red1 text-xs mt-1 ps-1">
+                {errors.confirmPassword.message}
+              </p>
+            )}
           </div>
-          {/* 이름 */}
-          {/* <div className="mb-2.5 text-sm">
+        </>
+      )}
+      {/* 이름 */}
+      {userInfo && (
+        <>
+          <div className="mb-2.5 text-sm">
             <label className="block mb-2.5 font-semibold" htmlFor="userName">
               이름
             </label>
@@ -248,8 +288,12 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               placeholder="이름을 입력해주세요"
               {...register("extra.userName", validationSchema.extra.userName)}
             />
-            {errors.extra?.userName && <p className="text-red1 text-xs mt-1 ps-1">{errors.extra.userName.message}</p>}
-          </div> */}
+            {errors.extra?.userName && (
+              <p className="text-red1 text-xs mt-1 ps-1">
+                {errors.extra.userName.message}
+              </p>
+            )}
+          </div>
         </>
       )}
       {/* 닉네임 */}
@@ -266,24 +310,34 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
           // defaultValue={userInfo ? userInfo.extra.userName : ""}
           {...register("name", validationSchema.name)}
         />
-        {errors.name && <p className="text-red1 text-xs mt-1 ps-1">{errors.name.message}</p>}
+        {errors.name && (
+          <p className="text-red1 text-xs mt-1 ps-1">{errors.name.message}</p>
+        )}
       </div>
       {/* 휴대폰 */}
-      {/* <div className="mb-2.5 text-sm">
-        <label className="block mb-2.5 font-semibold" htmlFor="phone">
-          휴대폰
-        </label>
-        <input
-          className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-2.5 outline-none focus:border-btn-primary"
-          type="tel"
-          inputMode="numeric" // 모바일에서 숫자 키패드가 나타나도록 설정
-          id="phone"
-          placeholder="숫자만 입력해주세요 or 예시: 010-1234-5678"
-          // defaultValue={userInfo ? userInfo.phone : ""}
-          {...register("phone", validationSchema.phone)}
-        />
-        {errors.phone && <p className="text-red1 text-xs -mt-1.5 ps-1">{errors.phone.message}</p>}
-      </div> */}
+      {userInfo && (
+        <>
+          <div className="mb-2.5 text-sm">
+            <label className="block mb-2.5 font-semibold" htmlFor="phone">
+              휴대폰
+            </label>
+            <input
+              className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-2.5 outline-none focus:border-btn-primary"
+              type="tel"
+              inputMode="numeric" // 모바일에서 숫자 키패드가 나타나도록 설정
+              id="phone"
+              placeholder="숫자만 입력해주세요 or 예시: 010-1234-5678"
+              // defaultValue={userInfo ? userInfo.phone : ""}
+              {...register("phone", validationSchema.phone)}
+            />
+            {errors.phone && (
+              <p className="text-red1 text-xs -mt-1.5 ps-1">
+                {errors.phone.message}
+              </p>
+            )}
+          </div>
+        </>
+      )}
       {!userInfo && (
         <>
           {/* 회원 유형 */}
@@ -313,31 +367,39 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
             </div>
             {errors.type && (
               <div className="w-full">
-                <p className=" text-red1 text-xs ps-0.5 -mt-3">{errors.type.message}</p>
+                <p className=" text-red1 text-xs ps-0.5 -mt-3">
+                  {errors.type.message}
+                </p>
               </div>
             )}
           </div>
         </>
       )}
       {/* 주소 */}
-      {/* <div className="mb-5 text-sm">
-        <label className="block mb-2.5 font-semibold" htmlFor="address">
-          주소
-        </label>
-        <input
-          className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-0.5 outline-none focus:border-btn-primary"
-          type="text"
-          id="address"
-          placeholder="주소를 입력해주세요"
-          // defaultValue={userInfo ? userInfo.address : ""}
-          {...register("address", validationSchema.address)}
-        />
-        {errors.address && <p className="text-red1 text-xs ps-1">{errors.address.message}</p>}
-      </div> */}
-      {/* {!userInfo && (
-        <> */}
-      {/* 성별 */}
-      {/* <div className="flex flex-wrap items-center gap-5 text-sm mb-5">
+      {userInfo && (
+        <>
+          <div className="mb-5 text-sm">
+            <label className="block mb-2.5 font-semibold" htmlFor="address">
+              주소
+            </label>
+            <input
+              className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-0.5 outline-none focus:border-btn-primary"
+              type="text"
+              id="address"
+              placeholder="주소를 입력해주세요"
+              // defaultValue={userInfo ? userInfo.address : ""}
+              {...register("address", validationSchema.address)}
+            />
+            {errors.address && (
+              <p className="text-red1 text-xs ps-1">{errors.address.message}</p>
+            )}
+          </div>
+        </>
+      )}
+      {!userInfo && (
+        <>
+          {/* 성별 */}
+          {/* <div className="flex flex-wrap items-center gap-5 text-sm mb-5">
             <p className="font-semibold">성별</p>
             <div className="flex items-center gap-1">
               <input
@@ -363,12 +425,18 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
             </div>
             {errors.extra?.gender && (
               <div className="w-full">
-                <p className=" text-red1 text-xs ps-0.5 -mt-3">{errors.extra.gender.message}</p>
+                <p className=" text-red1 text-xs ps-0.5 -mt-3">
+                  {errors.extra.gender.message}
+                </p>
               </div>
             )}
           </div> */}
+        </>
+      )}
       {/* 생년월일 */}
-      {/* <div className="mb-6 text-sm">
+      {userInfo && (
+        <>
+          <div className="mb-6 text-sm">
             <label className="block mb-2.5 font-semibold" htmlFor="birth">
               생년월일
             </label>
@@ -378,10 +446,15 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               id="birth"
               {...register("extra.birth", validationSchema.extra.birth)}
             />
-            {errors.extra?.birth && <p className="text-red1 text-xs mt-1 ps-1">{errors.extra.birth.message}</p>}
+            {errors.extra?.birth && (
+              <p className="text-red1 text-xs mt-1 ps-1">
+                {errors.extra.birth.message}
+              </p>
+            )}
           </div>
         </>
-      )} */}
+      )}
+
       {/* 가입하기 버튼 */}
       <button
         className="w-full h-[3.25rem] text-center text-xl rounded-full border border-btn-primary font-medium block m-auto mb-1 text-btn-primary"
