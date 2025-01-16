@@ -155,7 +155,12 @@ export default function ProfilePage() {
         <section className="text-gray5 break-keep">
           {userData?.extra?.userName ? userData.extra.userName : "미입력"}{" "}
           <br />
-          {userData?.email ? userData.email : "미입력"} <br />
+          {userData?.email
+            ? userData.email
+            : userData.type === "email"
+            ? "미입력"
+            : "Kakao"}
+          <br />
           {userData?.phone ? userData.phone : "미입력"} <br />
           {userData?.address ? userData.address : "미입력"}
         </section>
