@@ -35,7 +35,7 @@ function useAxiosInstance() {
     config.params = {
       // 개별적으로 호출할 때 delay를 명시적으로 지정 안 했으면 아래가 default로 지정됨.
       // 개발할 때는 500으로, 운영할 때는 0으로 환경변수로 지정해주면 된다.
-      // delay: 500,
+      delay: 500,
       ...config.params, // config 객체의 나머지 기존 속성값은 그대로 유지
     };
 
@@ -102,11 +102,8 @@ function useAxiosInstance() {
 
   // 로그인되지 않은 사용자가 로그인 이후에 사용할 api호출할 때 리다이렉트
   function navigateLogin() {
-    const gotoLogin = confirm(
-      "로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?"
-    );
-    gotoLogin &&
-      navigate("/users/login", { state: { from: location.pathname } });
+    const gotoLogin = confirm("로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?");
+    gotoLogin && navigate("/users/login", { state: { from: location.pathname } });
   }
 
   return instance;
