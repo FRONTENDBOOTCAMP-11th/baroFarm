@@ -1,8 +1,9 @@
 import HeaderIcon from "@components/HeaderIcon";
+import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   Link,
   useLocation,
@@ -16,10 +17,10 @@ export default function ProfilePage() {
   const axios = useAxiosInstance();
   const url = "https://11.fesp.shop";
 
-  const user = useUserStore();
+  const queryClient = useQueryClient();
 
   const location = useLocation();
-  const data = location.state.user;
+  const id = location.state.id;
 
   /// store에서 user 상태를 초기화하는 함수 가져오기
   const resetUser = useUserStore((store) => store.resetUser);
@@ -79,11 +80,12 @@ export default function ProfilePage() {
         const body = {
           image: imageUrl,
         };
-        return axios.patch(`/users/${data._id}`, body);
+        return axios.patch(`/users/${id}`, body);
       }
     },
     onSuccess: () => {
       alert("프로필 이미지 설정 성공!\n설정 적용을 위해 로그아웃합니다");
+      queryClient.invalidateQueries({ queryKey: ["user", id] });
       resetUser();
       navigate("/users/mypage");
     },
@@ -103,14 +105,24 @@ export default function ProfilePage() {
       document.getElementById("profileImgChange").click();
   };
 
+  const { data: userData, isLoading } = useQuery({
+    queryKey: ["user", id],
+    queryFn: () => axios.get(`/users/${id}`),
+    select: (res) => res.data.item,
+  });
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <div className="pt-[60px] mb-[70px]">
       <div className="w-fit mx-auto text-center relative">
         <img
           id="profileImg"
           src={
-            data?.image
-              ? url + data.image
+            userData?.image
+              ? url + userData.image
               : "/images/profile/ProfileImage_Sample.svg"
           }
           alt="Profile Image"
@@ -131,7 +143,7 @@ export default function ProfilePage() {
         />
       </div>
       <div className="mt-[25px] mb-[30px] mx-auto max-w-fit text-2xl font-bold">
-        {data?.name ? data.name : "닉네임 없음"}
+        {userData?.name ? userData.name : "닉네임 없음"}
       </div>
       <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
         <section className="min-w-[65px]">
@@ -141,22 +153,22 @@ export default function ProfilePage() {
           주소
         </section>
         <section className="text-gray5 break-keep">
-          {data?.extra.userName ? data.extra.userName : "미입력"} <br />
-          {data?.email ? data.email : "미입력"} <br />
-          {data?.phone ? data.phone : "미입력"} <br />
-          {data?.address ? data.address : "미입력"}
+          {userData?.extra.userName ? userData.extra.userName : "미입력"} <br />
+          {userData?.email ? userData.email : "미입력"} <br />
+          {userData?.phone ? userData.phone : "미입력"} <br />
+          {userData?.address ? userData.address : "미입력"}
         </section>
         <Link
           to={"/users/profile/edit"}
           className="flex w-7 h-7 items-center text-[14px] absolute right-2 top-2 group"
-          state={{ user: data }}
+          state={{ user: userData }}
         >
           <img
             src="/icons/icon_profileEdit_full.svg"
             className="h-10 ml-auto"
             alt="addProduct icon"
           />
-          <div className="absolute w-auto box-border text-nowrap translate-y-6 px-1 bg-btn-primary text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <div className="absolute w-auto box-border text-nowrap -translate-x-8 px-1 bg-btn-primary text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <p className="">수정</p>
           </div>
         </Link>

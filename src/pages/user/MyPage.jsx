@@ -12,6 +12,7 @@ export default function MyPage() {
   const url = "https://11.fesp.shop";
 
   // zustand store에서 유저 상태 가져옴
+  // 유저가 로그인 상태인지 확인하는 용도
   const user = useUserStore((store) => store.user);
 
   const axios = useAxiosInstance();
@@ -76,7 +77,7 @@ export default function MyPage() {
                   {data.type == "seller" ? "판매자" : "구매자"}
                 </p>
                 <h2 className="text-[16px] leading-[18px] mt-[4px]">
-                  {user.name}님! 어서오세요
+                  {data?.name}님! 어서오세요
                 </h2>
               </div>
               <button
@@ -198,7 +199,7 @@ export default function MyPage() {
             <Link
               to={`/users/profile`}
               className="flex items-center text-[14px] mt-[27px] mb-[24px]"
-              state={{ user: null }}
+              state={{ id: data._id }}
             >
               내 정보 보기
               <img

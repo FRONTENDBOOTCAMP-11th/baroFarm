@@ -1,7 +1,7 @@
 import HeaderIcon from "@components/HeaderIcon";
 import UserForm from "@components/UserForm";
 import useAxiosInstance from "@hooks/useAxiosInstance";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
@@ -12,8 +12,8 @@ export default function EditProfilePage() {
   const location = useLocation();
   const data = location.state.user;
   const axios = useAxiosInstance();
-  0;
-  const { user, resetUser } = useUserStore();
+  const queryClient = useQueryClient();
+  const { resetUser } = useUserStore();
 
   useEffect(() => {
     setHeaderContents({
@@ -29,6 +29,7 @@ export default function EditProfilePage() {
       alert(
         "프로필 정보 변경이 완료되었습니다. 설정 적용을 위해 로그아웃합니다"
       );
+      queryClient.invalidateQueries({ queryKey: ["user", data._id] });
       navigate("/users/mypage");
     },
     onError: (err) => {
