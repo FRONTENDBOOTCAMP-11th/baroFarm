@@ -66,14 +66,13 @@ export default function LoginPage() {
   const login = useMutation({
     mutationFn: (formData) => axios.post("/users/login", formData),
     onSuccess: (res) => {
-      console.log(res);
+      // console.log(res);
 
       // 로그인 성공 시 유저 정보를 zustand 스토어에 저장
       const user = res.data.item;
       setUser({
         _id: user._id,
         name: user.name,
-        userName: user.extra.userName,
         accessToken: user.token.accessToken,
         refreshToken: user.token.refreshToken,
       });
@@ -110,11 +109,32 @@ export default function LoginPage() {
     },
   });
 
+  const handleKakaoLogin = () => {
+    // SDK가 초기화되지 않은 경우에만 초기화 진행
+    // window.Kakao를 사용하는 이유
+    // - React 컴포넌트(.jsx) 파일은 독립적인 공간을 가지고 있어서
+    // - index.html에서 추가한 카카오 SDK를 바로 찾을 수 없음
+    // - window(브라우저 전역 객체)를 통해 카카오 SDK에 접근해야 함
+    if (!window.Kakao.isInitialized()) {
+      // VITE_KAKAO_JS_KEY: 카카오 Developer에서 발급받은 JavaScript 키
+      window.Kakao.init(import.meta.env.VITE_KAKAO_JS_KEY);
+      console.log("카카오 초기화 여부: ", window.Kakao.isInitialized());
+    }
+
+    window.Kakao.Auth.authorize({
+      // window.location.origin: 현재 웹사이트의 도메인 주소를 가져옴 => 환경에 따라 자동으로 적절한 도메인이 적용됨
+      redirectUri: `${window.location.origin}/users/login/kakao`,
+      // scope는 사용자가 로그인할 때 동의해야 하는 권한을 지정하는 데 사용됩니다.
+      // 이를 통해 카카오 계정으로부터 어떤 정보를 가져올지를 결정할 수 있습니다.
+    });
+    // console.log("리다이렉트 URI: ", `${window.location.origin}/users/login/kakao`);
+  };
+
   return (
     <div className="p-5">
       {/* 로고 영역 */}
-      <div className="m-auto w-[300px] h-[300px]">
-        <img className="block w-full" src="/images/Logo1_old.svg" alt="바로팜 로고 이미지" />
+      <div className="flex justify-center items-center m-auto w-[300px] h-[300px]">
+        <img className="block w-full" src="/images/BaroFarmLogo.png" alt="바로팜 로고 이미지" />
       </div>
 
       {/* 폼 영역 */}
@@ -139,7 +159,7 @@ export default function LoginPage() {
         {errors.password && <p className="text-red1 text-xs -mt-3 mb-4">{errors.password.message}</p>}
         <label className="mb-8 flex items-center gap-1 font-normal">
           <input
-            className="w-5 h-5 mr-1 rounded-full appearance-none bg-gray2 checked:bg-btn-primary checked:bg-[url('/icons/icon_check_white.svg')] checked:bg-center checked:bg-no-repeat cursor-pointer "
+            className="w-5 h-5 mr-1 rounded-full appearance-none bg-gray2  bg-[url('/icons/icon_check_white.svg')] bg-center bg-no-repeat  checked:bg-btn-primary checked:bg-[url('/icons/icon_check_white.svg')] checked:bg-center checked:bg-no-repeat cursor-pointer "
             type="checkbox"
             checked={rememberMe}
             onChange={(e) => {
@@ -164,12 +184,24 @@ export default function LoginPage() {
       </form>
 
       <div className="mb-5 w-full h-[3.25rem] m-auto">
-        <Link
-          to="/users/signup"
-          className="block w-full h-full text-center text-xl rounded-full border-btn-primary border text-btn-primary font-medium leading-[3.25rem] "
+        <button
+          type="button"
+          className="w-full h-[3.25rem] text-xl rounded-full bg-yellow1 font-medium flex items-center justify-center gap-1"
+          onClick={handleKakaoLogin}
         >
-          회원가입
-        </Link>
+          {/* 이미지가 장식 목적이고 옆의 텍스트가 이미 충분한 의미를 전달하고 있기 때문에 alt = "" 지정*/}
+          <img className="w-8 h-8" src="/images/login/kakaoLogo.png" alt="" />
+          <span>카카오로 로그인하기</span>
+        </button>
+      </div>
+
+      <div className="mb-5 w-full h-[3.25rem] m-auto">
+        <p className="flex justify-center text-sm gap-1.5 font-medium">
+          바로팜이 처음이신가요?
+          <Link to="/users/signup" className="text-btn-primary font-medium hover:font-bold">
+            회원가입
+          </Link>
+        </p>
       </div>
     </div>
   );

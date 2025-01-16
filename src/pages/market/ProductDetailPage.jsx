@@ -5,7 +5,7 @@ import {
   Link,
   useParams,
 } from "react-router-dom";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useLikeToggle } from "@hooks/useLikeToggle";
@@ -33,6 +33,7 @@ export default function ProductDetailPage() {
   const navigate = useNavigate();
 
   const instance = useAxiosInstance();
+  const queryClient = useQueryClient();
 
   const {
     data: product,
@@ -130,6 +131,7 @@ export default function ProductDetailPage() {
     },
     onSuccess: () => {
       openModal();
+      queryClient.invalidateQueries(["cart"]);
     },
     onError: (error) => {
       console.error("Error adding to cart", error);
