@@ -11,6 +11,7 @@ import {
   useOutletContext,
   useParams,
 } from "react-router-dom";
+import Spinner from "@components/Spinner";
 
 export default function BoardDetailPage() {
   const { setHeaderContents } = useOutletContext();
@@ -39,12 +40,7 @@ export default function BoardDetailPage() {
   });
 
   if (isLoading) {
-    return (
-      <div className="mt-0 mx-auto text-center">
-        로딩중..... <br />
-        잠시만 기다려주세요
-      </div>
-    );
+    return <Spinner />;
   }
 
   const deletePost = async () => {

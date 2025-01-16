@@ -1,15 +1,15 @@
 import HeaderIcon from "@components/HeaderIcon";
+import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function MyPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   const url = "https://11.fesp.shop";
-  const [isSeller, setIsSeller] = useState("/users/sale");
 
   // zustand store에서 유저 상태 가져옴
   const user = useUserStore((store) => store.user);
@@ -53,18 +53,8 @@ export default function MyPage() {
   // 로그인 아닌 경우에는 로그아웃 시 화면 보일 수 있게 예외처리
   if (isLoading && user) {
     //이 아래에는 로딩 페이지
-    return;
+    return <Spinner />;
   }
-
-  const onlySeller = (e) => {
-    if (data.type !== "seller") {
-      e.preventDefault();
-      setIsSeller("");
-      return alert("판매자 회원만이 이용할 수 있는 기능입니다");
-    } else {
-      setIsSeller("/users/sale");
-    }
-  };
 
   return (
     <div className="pt-[18px] px-5 mb-[70px]">
@@ -138,8 +128,7 @@ export default function MyPage() {
             </Link>
             {data.type === "seller" && (
               <Link
-                onClick={onlySeller}
-                to={isSeller}
+                to={"/users/sale"}
                 className="flex justify-center items-center flex-1 text-center h-[50px] border-r-[1px] border-gray2"
               >
                 판매 내역

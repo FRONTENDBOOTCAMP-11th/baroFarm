@@ -1,4 +1,5 @@
 import HeaderIcon from "@components/HeaderIcon";
+import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import BoardPageDetail from "@pages/board/BoardPageDetail";
 import { useQuery } from "@tanstack/react-query";
@@ -61,12 +62,7 @@ export default function BoardPage() {
   });
 
   if (isLoading || isLoading2) {
-    return (
-      <div className="mt-0 mx-auto text-center">
-        로딩중... <br />
-        잠시만 기다려주세요
-      </div>
-    );
+    return <Spinner />;
   }
 
   const mergeData = [...communityBoard, ...noPicBoard];

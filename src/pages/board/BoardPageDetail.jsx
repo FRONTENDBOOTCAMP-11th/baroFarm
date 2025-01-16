@@ -13,7 +13,7 @@ BoardPageDetail.propTypes = {
       name: PropTypes.string.isRequired,
       image: PropTypes.string,
     }),
-    image: PropTypes.string.isRequired,
+    image: PropTypes.string,
   }),
 };
 
