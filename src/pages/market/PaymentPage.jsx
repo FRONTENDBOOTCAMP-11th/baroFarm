@@ -9,6 +9,8 @@ import useUserStore from "@zustand/useUserStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import PaymentModal from "@components/PaymentModal";
 import AddressModal from "@components/AddressModal";
+import Spinner from "@components/Spinner";
+import DataErrorPage from "@pages/DataErrorPage";
 
 export default function PaymentPage() {
   // axios instance
@@ -185,6 +187,9 @@ export default function PaymentPage() {
     },
     onError: (err) => console.error(err),
   });
+
+  if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
 
   if (!data) return null;
 
