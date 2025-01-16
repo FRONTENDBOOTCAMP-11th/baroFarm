@@ -8,13 +8,13 @@ UserForm.propTypes = {
   userInfo: PropTypes.shape({
     // 프로필 수정 시 사용되는 필드들
     name: PropTypes.string, // 닉네임
-    phone: PropTypes.string,
-    address: PropTypes.string,
+    // phone: PropTypes.string,
+    // address: PropTypes.string,
     email: PropTypes.string,
     type: PropTypes.string,
     extra: PropTypes.shape({
       userName: PropTypes.string,
-      birth: PropTypes.string,
+      // birth: PropTypes.string,
     }),
   }),
   buttonText: PropTypes.string.isRequired,
@@ -33,12 +33,12 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
     defaultValues: {
       // input의 defaultValue 속성 대신 useForm의 defaultValues 옵션으로 초기값 설정
       name: userInfo?.name || "",
-      phone: userInfo?.phone || "",
-      address: userInfo?.address || "",
+      // phone: userInfo?.phone || "",
+      // address: userInfo?.address || "",
       email: userInfo?.email || "",
       extra: {
         userName: userInfo?.extra?.userName || "",
-        birth: userInfo?.extra?.birth || "",
+        // birth: userInfo?.extra?.birth || "",
       },
       type: userInfo?.type || "",
     },
@@ -171,36 +171,36 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         }
       },
     },
-    phone: {
-      required: userInfo ? undefined : "전화번호는 필수입니다.",
-      pattern: {
-        value: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
-        message: "올바른 전화번호 형식이 아닙니다.",
-      },
-      onChange: (e) => {
-        // 숫자가 아닌 모든 문자 제거 (예: "010-1234-5678" → "01012345678")
-        const number = e.target.value.replace(/[^\d]/g, "");
+    // phone: {
+    //   required: userInfo ? undefined : "전화번호는 필수입니다.",
+    //   pattern: {
+    //     value: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
+    //     message: "올바른 전화번호 형식이 아닙니다.",
+    //   },
+    //   onChange: (e) => {
+    //     // 숫자가 아닌 모든 문자 제거 (예: "010-1234-5678" → "01012345678")
+    //     const number = e.target.value.replace(/[^\d]/g, "");
 
-        // 하이픈 추가 로직
-        let formattedNumber = "";
-        if (number.length <= 3) {
-          formattedNumber = number;
-        } else if (number.length <= 7) {
-          formattedNumber = `${number.slice(0, 3)}-${number.slice(3)}`;
-        } else {
-          formattedNumber = `${number.slice(0, 3)}-${number.slice(
-            3,
-            7
-          )}-${number.slice(7, 11)}`;
-        }
+    //     // 하이픈 추가 로직
+    //     let formattedNumber = "";
+    //     if (number.length <= 3) {
+    //       formattedNumber = number;
+    //     } else if (number.length <= 7) {
+    //       formattedNumber = `${number.slice(0, 3)}-${number.slice(3)}`;
+    //     } else {
+    //       formattedNumber = `${number.slice(0, 3)}-${number.slice(
+    //         3,
+    //         7
+    //       )}-${number.slice(7, 11)}`;
+    //     }
 
-        // 입력 값 업데이트
-        e.target.value = formattedNumber;
-      },
-    },
-    address: {
-      required: userInfo ? undefined : "주소는 필수입니다.",
-    },
+    //     // 입력 값 업데이트
+    //     e.target.value = formattedNumber;
+    //   },
+    // },
+    // address: {
+    //   required: userInfo ? undefined : "주소는 필수입니다.",
+    // },
   };
 
   // FormData에서 confirmPassword는 비밀번호 확인용으로만 사용되고 서버에는 보낼 필요가 없어서 제외시키는 작업
@@ -315,7 +315,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         )}
       </div>
       {/* 휴대폰 */}
-      {userInfo && (
+      {/* {userInfo && (
         <>
           <div className="mb-2.5 text-sm">
             <label className="block mb-2.5 font-semibold" htmlFor="phone">
@@ -337,10 +337,11 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
             )}
           </div>
         </>
-      )}
+      )} */}
+
+      {/* 회원 유형 */}
       {!userInfo && (
         <>
-          {/* 회원 유형 */}
           <div className="flex flex-wrap items-center gap-5 text-sm mb-5 mt-5">
             <p className="font-semibold">회원 유형</p>
             <div className="flex items-center gap-1">
@@ -376,7 +377,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         </>
       )}
       {/* 주소 */}
-      {userInfo && (
+      {/* {userInfo && (
         <>
           <div className="mb-5 text-sm">
             <label className="block mb-2.5 font-semibold" htmlFor="address">
@@ -395,7 +396,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
             )}
           </div>
         </>
-      )}
+      )} */}
       {!userInfo && (
         <>
           {/* 성별 */}
@@ -434,7 +435,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         </>
       )}
       {/* 생년월일 */}
-      {userInfo && (
+      {/* {userInfo && (
         <>
           <div className="mb-6 text-sm">
             <label className="block mb-2.5 font-semibold" htmlFor="birth">
@@ -453,7 +454,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
             )}
           </div>
         </>
-      )}
+      )} */}
 
       {/* 가입하기 버튼 */}
       <button

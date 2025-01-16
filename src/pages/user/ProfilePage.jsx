@@ -148,21 +148,13 @@ export default function ProfilePage() {
       <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
         <section className="min-w-[65px]">
           이름 <br />
-          이메일 <br />
-          전화번호 <br />
-          주소
+          사용자 유형 <br />
         </section>
         <section className="text-gray5 break-keep">
           {userData?.extra?.userName ? userData.extra.userName : "미입력"}{" "}
           <br />
-          {userData?.email
-            ? userData.email
-            : userData.type === "email"
-            ? "미입력"
-            : "Kakao"}
+          {userData.type === "user" ? "구매자" : "판매자"}
           <br />
-          {userData?.phone ? userData.phone : "미입력"} <br />
-          {userData?.address ? userData.address : "미입력"}
         </section>
         <Link
           to={"/users/profile/edit"}

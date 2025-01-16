@@ -23,7 +23,10 @@ export default function EditProfilePage() {
   }, []);
 
   const editUserInfo = useMutation({
-    mutationFn: (formData) => axios.patch(`/users/${data._id}`, formData),
+    mutationFn: (formData) => {
+      console.log(formData);
+      return axios.patch(`/users/${data._id}`, formData);
+    },
     onSuccess: () => {
       resetUser();
       alert(
