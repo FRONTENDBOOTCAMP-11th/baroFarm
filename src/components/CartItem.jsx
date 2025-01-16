@@ -36,6 +36,7 @@ export default function CartItem({
   deleteItem,
   updateItem,
   toggleCartItemCheck,
+  isChecked,
 }) {
   // 판매자 이름 상태관리
   const [seller, setSeller] = useState("");
@@ -70,6 +71,8 @@ export default function CartItem({
           name={`${_id}`}
           register={register(`${_id}`)}
           onClick={() => toggleCartItemCheck(_id)}
+          refer={`product${_id}`}
+          checked={isChecked}
         />
         <img
           src={`https://11.fesp.shop${product.image.path}`}

@@ -122,7 +122,22 @@ export default function CartPage() {
     select: (res) => res.data.item,
   });
 
-  // 장바구니 아이템 체크하기
+  // 전체 선택 핸들러
+  // 전체 선택 체크박스의 체크 상태를 인수로 받는다.
+  const toggleCheckAll = (isChecked) => {
+    // 전체 선택 체크박스가 체크되었을 때
+    if (isChecked) {
+      // 장바구니에 담긴 모든 아이템의 아이디를 checkedItemsIds 배열에 담음
+      const allProductsIds = data.item.map((item) => item.product_id);
+      setCheckedItemsIds(allProductsIds);
+    } else {
+      // 체크 해제되었으면 checkedItemsIds 배열을 빈 배열로 설정
+      setCheckedItemsIds([]);
+    }
+  };
+  console.log(checkedItemsIds);
+
+  // 장바구니 개별 아이템 체크 핸들러
   const toggleCartItemCheck = (targetId) => {
     // 체크한 상품을 장바구니 데이터에서 찾음
     const cartItem = data.item.find((item) => item._id === targetId);
@@ -199,6 +214,7 @@ export default function CartPage() {
       deleteItem={deleteItem}
       updateItem={updateItem}
       toggleCartItemCheck={toggleCartItemCheck}
+      isChecked={checkedItemsIds.includes(item.product_id)}
     />
   ));
 
@@ -264,7 +280,12 @@ export default function CartPage() {
                   className="flex items-center cursor-pointer relative gap-2 grow"
                   htmlFor="checkAll"
                 >
-                  <Checkbox id="checkAll" name="checkAll" />
+                  <Checkbox
+                    id="checkAll"
+                    name="checkAll"
+                    checked={checkedItemsIds.length === data.item.length}
+                    onChange={(e) => toggleCheckAll(e.target.checked)}
+                  />
                   전체 선택 ({checkedItemsIds.length}/{itemList?.length})
                 </label>
                 <Button>삭제</Button>
