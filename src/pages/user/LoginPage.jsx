@@ -73,7 +73,6 @@ export default function LoginPage() {
       setUser({
         _id: user._id,
         name: user.name,
-        userName: user.extra.userName,
         accessToken: user.token.accessToken,
         refreshToken: user.token.refreshToken,
       });
@@ -187,22 +186,22 @@ export default function LoginPage() {
       <div className="mb-5 w-full h-[3.25rem] m-auto">
         <button
           type="button"
-          className="w-full h-[3.25rem] text-center text-xl rounded-full bg-yellow1 font-medium flex items-center gap-16"
+          className="w-full h-[3.25rem] text-xl rounded-full bg-yellow1 font-medium flex items-center justify-center gap-1"
           onClick={handleKakaoLogin}
         >
           {/* 이미지가 장식 목적이고 옆의 텍스트가 이미 충분한 의미를 전달하고 있기 때문에 alt = "" 지정*/}
-          <img className="w-8 h-8 ml-6" src="/images/login/kakaoLogo.png" alt="" />
-          <span>카카오 로그인</span>
+          <img className="w-8 h-8" src="/images/login/kakaoLogo.png" alt="" />
+          <span>카카오로 로그인하기</span>
         </button>
       </div>
 
       <div className="mb-5 w-full h-[3.25rem] m-auto">
-        <Link
-          to="/users/signup"
-          className="block w-full h-full text-center text-xl rounded-full border-btn-primary border text-btn-primary font-medium leading-[3.25rem] "
-        >
-          회원가입
-        </Link>
+        <p className="flex justify-center text-sm gap-1.5 font-medium">
+          바로팜이 처음이신가요?
+          <Link to="/users/signup" className="text-btn-primary font-medium hover:font-bold">
+            회원가입
+          </Link>
+        </p>
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ export default function KakaoAuthPage() {
   // 헤더 설정은 컴포넌트 마운트 시에만 실행
   useEffect(() => {
     setHeaderContents({
-      title: "카카오 로그인",
+      title: "카카오로 로그인",
     });
   }, []);
 
@@ -45,7 +45,6 @@ export default function KakaoAuthPage() {
         setUser({
           _id: user._id,
           name: user.name,
-          userName: null,
           accessToken: user.token.accessToken,
           refreshToken: user.token.refreshToken,
         });
@@ -56,6 +55,7 @@ export default function KakaoAuthPage() {
     },
     onError: (error) => {
       console.error("카카오 로그인 실패", error);
+      navigate("/users/login");
     },
   });
 

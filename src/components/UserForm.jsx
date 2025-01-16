@@ -203,7 +203,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
               type="email"
               id="email"
-              placeholder="이메일을 입력해주세요 or barofarm@market.com"
+              placeholder="이메일을 입력해주세요"
               {...register("email", validationSchema.email)}
             />
             {errors.email && <p className="text-red1 text-xs mt-1 ps-1">{errors.email.message}</p>}
@@ -237,7 +237,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
             {errors.confirmPassword && <p className="text-red1 text-xs mt-1 ps-1">{errors.confirmPassword.message}</p>}
           </div>
           {/* 이름 */}
-          <div className="mb-2.5 text-sm">
+          {/* <div className="mb-2.5 text-sm">
             <label className="block mb-2.5 font-semibold" htmlFor="userName">
               이름
             </label>
@@ -249,7 +249,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               {...register("extra.userName", validationSchema.extra.userName)}
             />
             {errors.extra?.userName && <p className="text-red1 text-xs mt-1 ps-1">{errors.extra.userName.message}</p>}
-          </div>
+          </div> */}
         </>
       )}
       {/* 닉네임 */}
@@ -269,7 +269,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         {errors.name && <p className="text-red1 text-xs mt-1 ps-1">{errors.name.message}</p>}
       </div>
       {/* 휴대폰 */}
-      <div className="mb-2.5 text-sm">
+      {/* <div className="mb-2.5 text-sm">
         <label className="block mb-2.5 font-semibold" htmlFor="phone">
           휴대폰
         </label>
@@ -283,11 +283,11 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
           {...register("phone", validationSchema.phone)}
         />
         {errors.phone && <p className="text-red1 text-xs -mt-1.5 ps-1">{errors.phone.message}</p>}
-      </div>
+      </div> */}
       {!userInfo && (
         <>
           {/* 회원 유형 */}
-          <div className="flex flex-wrap items-center gap-5 text-sm mb-5">
+          <div className="flex flex-wrap items-center gap-5 text-sm mb-5 mt-5">
             <p className="font-semibold">회원 유형</p>
             <div className="flex items-center gap-1">
               <input
@@ -320,7 +320,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         </>
       )}
       {/* 주소 */}
-      <div className="mb-5 text-sm">
+      {/* <div className="mb-5 text-sm">
         <label className="block mb-2.5 font-semibold" htmlFor="address">
           주소
         </label>
@@ -333,7 +333,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
           {...register("address", validationSchema.address)}
         />
         {errors.address && <p className="text-red1 text-xs ps-1">{errors.address.message}</p>}
-      </div>
+      </div> */}
       {/* {!userInfo && (
         <> */}
       {/* 성별 */}
