@@ -34,6 +34,7 @@ export default function PaymentPage() {
   const targetRef = useRef(null);
   // 결제 모달 창 상태
   const [isPayModalOpen, setIsPayModalOpen] = useState(false);
+
   // 모달창 오픈시 body에 스크롤 X
   useEffect(() => {
     if (isPayModalOpen) {
@@ -83,7 +84,7 @@ export default function PaymentPage() {
   useEffect(() => {
     if (addressId === 0) {
       setCurrentAddress({
-        userName: data?.name,
+        userName: data?.extra?.userName,
         phone: data?.phone,
         value: data?.address,
       });
@@ -93,6 +94,7 @@ export default function PaymentPage() {
       );
     }
   }, [data, addressId]);
+  console.log("유저 정보", data);
 
   // 스크롤에 따라 결제버튼 보이게 하기
   useEffect(() => {
@@ -199,6 +201,7 @@ export default function PaymentPage() {
   const formatPhoneNumber = (number) => {
     return number.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
   };
+  console.log("currentAddress", currentAddress);
 
   return (
     <>
@@ -219,7 +222,7 @@ export default function PaymentPage() {
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-bold">
                     {addressId === 0
-                      ? data?.name
+                      ? currentAddress?.userName
                       : `${currentAddress?.userName} (${currentAddress?.name})`}
                   </p>
                   <Button onClick={() => setIsAddressModalOpen(true)}>
@@ -261,13 +264,15 @@ export default function PaymentPage() {
               </div>
             </div>
           ) : (
-            <Button
-              isBig={true}
-              isWhite={true}
-              onClick={() => setIsOpenForm(true)}
-            >
-              + 배송지 신규입력
-            </Button>
+            <div className="mb-5">
+              <Button
+                isBig={true}
+                isWhite={true}
+                onClick={() => setIsAddressModalOpen(true)}
+              >
+                + 배송지 신규입력
+              </Button>
+            </div>
           )}
         </div>
         <div>

@@ -13,13 +13,14 @@ AddressModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func,
   userData: PropTypes.shape({
-    address: PropTypes.string.isRequired,
+    address: PropTypes.string,
     extra: PropTypes.shape({
       addressBook: PropTypes.array,
+      userName: PropTypes.string,
     }).isRequired,
     name: PropTypes.string.isRequired,
     _id: PropTypes.number.isRequired,
-    phone: PropTypes.string.isRequired,
+    phone: PropTypes.string,
   }).isRequired,
   addressId: PropTypes.number.isRequired,
   setAddressId: PropTypes.func.isRequired,
@@ -43,7 +44,7 @@ export default function AddressModal({
   // 전달 받은 유저 데이터를 변수에 할당
   const defaultAddress = userData.address;
   const addressBook = userData.extra.addressBook;
-  const userName = userData.name;
+  const userName = userData.extra.userName;
 
   // 신규 배송지 입력을 받기 위한 reack-hook-form
   const {
@@ -55,8 +56,29 @@ export default function AddressModal({
     mode: "onSubmit", // 유효성 검사 실행 시점
   });
 
-  // 배송지 추가
   const queryClient = useQueryClient();
+  // 기본 배송지 추가 (배송지가 하나도 없는 상태)
+  const addDefaultAddress = useMutation({
+    mutationFn: (formData) => {
+      const defaultAddress = {
+        phone: formData.phone,
+        address: `${formData.value} ${formData.detailValue}`,
+      };
+
+      const ok = confirm("주소를 등록하시겠습니까?");
+      if (ok) {
+        axios.patch(`/users/${userData._id}`, defaultAddress);
+        alert("신규 주소가 등록되었습니다.");
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      setIsOpenForm(false);
+      reset();
+    },
+  });
+
+  // 추가 배송지 추가
   const addAddress = useMutation({
     mutationFn: (formData) => {
       // addressBook 속성이 없으면 에러가 나기에 빈배열로 할당
@@ -82,10 +104,12 @@ export default function AddressModal({
       };
 
       const ok = confirm("주소를 등록하시겠습니까?");
-      if (ok) axios.patch(`/users/${userData._id}`, newAddress);
+      if (ok) {
+        axios.patch(`/users/${userData._id}`, newAddress);
+        alert("신규 주소가 등록되었습니다.");
+      }
     },
     onSuccess: () => {
-      alert("신규 주소가 등록되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["users"] });
       setIsOpenForm(false);
       reset();
@@ -118,38 +142,40 @@ export default function AddressModal({
   // 상태가 변경되면 모달 닫기
   if (!isOpen) return null;
 
-  console.log(userData);
+  console.log("userData", userData);
 
   // 회원가입시 입력한 기본 배송지 렌더링
   const RenderDefaultAddress = () => {
-    return (
-      <div className="[&:not(:last-child)]:border-b border-gray2 py-3">
-        <div className="flex mb-2 justify-between">
-          <div className="flex flex-col gap-1">
-            <span
-              className={
-                addressId === 0
-                  ? `text-base font-bold text-btn-primary`
-                  : `text-base font-medium`
-              }
-            >
-              {`${userName}`}
-            </span>
-            <span className="text-sm text-gray4">{userData.phone}</span>
-          </div>
-          <div>
-            {addressId === 0 ? (
-              <span className="text-sm text-btn-primary font-semibold">
-                선택됨
+    // 기본 배송지가 있으면
+    if (userData.address)
+      return (
+        <div className="[&:not(:last-child)]:border-b border-gray2 py-3">
+          <div className="flex mb-2 justify-between">
+            <div className="flex flex-col gap-1">
+              <span
+                className={
+                  addressId === 0
+                    ? `text-base font-bold text-btn-primary`
+                    : `text-base font-medium`
+                }
+              >
+                {`${userName}`}
               </span>
-            ) : (
-              <Button onClick={() => setAddressId(0)}>선택</Button>
-            )}
+              <span className="text-sm text-gray4">{userData.phone}</span>
+            </div>
+            <div>
+              {addressId === 0 ? (
+                <span className="text-sm text-btn-primary font-semibold">
+                  선택됨
+                </span>
+              ) : (
+                <Button onClick={() => setAddressId(0)}>선택</Button>
+              )}
+            </div>
           </div>
+          <p className="text-sm font-regular mb-2">{defaultAddress}</p>
         </div>
-        <p className="text-sm font-regular mb-2">{defaultAddress}</p>
-      </div>
-    );
+      );
   };
 
   // extra.address 속성에 있는 주소 목록으로 추가 주소 렌더링
@@ -232,7 +258,11 @@ export default function AddressModal({
           <>
             {/* 배송지 신규 입력 폼 */}
             <form
-              onSubmit={handleSubmit(addAddress.mutate)}
+              onSubmit={
+                userData.address.length !== 0
+                  ? handleSubmit(addAddress.mutate)
+                  : handleSubmit(addDefaultAddress.mutate)
+              }
               className="my-4 bg-gray1 p-3 rounded-lg"
             >
               <div className="mb-2.5 text-sm">
