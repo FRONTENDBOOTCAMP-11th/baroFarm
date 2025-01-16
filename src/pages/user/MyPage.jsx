@@ -66,9 +66,7 @@ export default function MyPage() {
               <img
                 src={
                   data.image
-                    ? data.loginType === "email"
-                      ? url + data.image //이메일 타입
-                      : data.image //카카오 타입
+                    ? url + data.image //이메일 타입
                     : "/images/profile/ProfileImage_Sample.svg" //이미지 설정이 없는 경우
                 }
                 className="mr-5 w-[49px] h-[50px] rounded-full object-cover"
