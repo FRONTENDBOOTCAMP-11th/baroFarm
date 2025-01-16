@@ -104,6 +104,7 @@ export default function CartPage() {
   // 장바구니 수량 변경
   const updateItem = useMutation({
     mutationFn: ({ _id, quantity }) =>
+      // _id는 장바구니 _id다 (상품의 _id는 product_id)
       axios.patch(`/carts/${_id}`, {
         // 보낼 데이터
         quantity: quantity,
@@ -128,7 +129,7 @@ export default function CartPage() {
     // 전체 선택 체크박스가 체크되었을 때
     if (isChecked) {
       // 장바구니에 담긴 모든 아이템의 아이디를 checkedItemsIds 배열에 담음
-      const allProductsIds = data.item.map((item) => item.product_id);
+      const allProductsIds = data.item.map((item) => item._id);
       setCheckedItemsIds(allProductsIds);
     } else {
       // 체크 해제되었으면 checkedItemsIds 배열을 빈 배열로 설정
@@ -143,14 +144,39 @@ export default function CartPage() {
 
     // 체크한 상품의 product_id를 checkedCartItems 상태에 추가/제거
     setCheckedItemsIds((prevCheckedIds) => {
-      const isAlreadyChecked = prevCheckedIds.includes(cartItem.product_id);
+      const isAlreadyChecked = prevCheckedIds.includes(cartItem._id);
 
       if (isAlreadyChecked) {
-        return prevCheckedIds.filter((id) => id !== cartItem.product_id);
+        return prevCheckedIds.filter((id) => id !== cartItem._id);
       }
-      return [...prevCheckedIds, cartItem.product_id];
+      return [...prevCheckedIds, cartItem._id];
     });
   };
+  console.log("checkedItemsIds", checkedItemsIds);
+  console.log("장바구니 상품", data?.item);
+
+  // 장바구니 아이템 여러건 삭제
+  const deleteItems = useMutation({
+    mutationFn: () => {
+      if (checkedItemsIds.length !== 0) {
+        const ok = confirm("선택하신 상품을 삭제할까요?");
+        if (ok) {
+          setCheckedItemsIds([]);
+          return axios.delete("/carts", {
+            data: {
+              carts: checkedItemsIds,
+            },
+          });
+        }
+      } else {
+        alert("삭제할 상품을 선택하세요.");
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["carts"] });
+    },
+    onError: (err) => console.error(err),
+  });
 
   // 선택한 아이템, 데이터가 변경될 때 상품 금액, 할인 금액 다시 계산
   useEffect(() => {
@@ -165,18 +191,18 @@ export default function CartPage() {
       (acc, checkedId) => {
         // 장바구니에서 아이템 찾기
         const currentCartItem = data.item.find(
-          (item) => item.product_id === checkedId
+          (item) => item._id === checkedId
         );
 
         // 해당 아이템의 총 합산 금액 구하기
         const itemTotal =
-          currentCartItem.quantity * currentCartItem.product.price;
+          currentCartItem?.quantity * currentCartItem?.product.price;
 
         // 해당 아이템의 할인 금액 구하기
         const itemDiscount =
-          currentCartItem.quantity *
-          (currentCartItem.product.price -
-            currentCartItem.product.extra.saledPrice);
+          currentCartItem?.quantity *
+          (currentCartItem?.product.price -
+            currentCartItem?.product.extra.saledPrice);
 
         return {
           subtotal: acc.subtotal + itemTotal, // 상품 금액 합계
@@ -213,7 +239,7 @@ export default function CartPage() {
       deleteItem={deleteItem}
       updateItem={updateItem}
       toggleCartItemCheck={toggleCartItemCheck}
-      isChecked={checkedItemsIds.includes(item.product_id)}
+      isChecked={checkedItemsIds.includes(item._id)}
     />
   ));
 
@@ -230,9 +256,9 @@ export default function CartPage() {
     }
 
     // 결제 페이지로 체크한 상품의 데이터 넘기기
-    const selectedItems = checkedItemsIds.map((id) =>
+    const selectedItems = checkedItemsIds.map((_id) =>
       // 각각의 id 마다 checkedItemsIds에 담긴 id와 같은 상품을 장바구니에서 찾아서 리턴
-      data.item.find((item) => item.product_id === id)
+      data.item.find((item) => item._id === _id)
     );
     const currentUrl = window.location.href;
 
@@ -287,7 +313,7 @@ export default function CartPage() {
                   />
                   전체 선택 ({checkedItemsIds.length}/{itemList?.length})
                 </label>
-                <Button>삭제</Button>
+                <Button onClick={() => deleteItems.mutate()}>삭제</Button>
               </section>
               <form onSubmit={handleSubmit(selectItem)}>
                 <section className="px-5 pb-4 border-b-4 border-gray2">
