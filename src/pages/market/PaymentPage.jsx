@@ -13,13 +13,18 @@ import Spinner from "@components/Spinner";
 import DataErrorPage from "@pages/DataErrorPage";
 
 export default function PaymentPage() {
+  // 이전 페이지에서 넘어온 정보
+  const location = useLocation();
+  // 이전 페이지에서 넘어온 구매할 상품, 최종금액, 배송비
+  const { selectedItems, totalFees, totalShippingFees, previousUrl } =
+    location.state;
+  const navigate = useNavigate();
   // axios instance
   const axios = useAxiosInstance();
   // 구매할 상품 목록 상태 관리
   const [paymentItems, setPaymentItems] = useState([]);
   // 헤더 상태 설정 함수
   const { setHeaderContents } = useOutletContext();
-  const navigate = useNavigate();
   // 결제 버튼 보이기 상태
   const [showButton, setShowButton] = useState(false);
   // 배송 메모 관리
@@ -48,13 +53,6 @@ export default function PaymentPage() {
   }, [isPayModalOpen]);
   // 주소지 모달 창 상태
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-
-  // 이전 페이지에서 넘어온 정보
-  const location = useLocation();
-  // 이전 페이지에서 넘어온 구매할 상품, 최종금액, 배송비
-  const { selectedItems, totalFees, totalShippingFees, previousUrl } =
-    location.state;
-  console.log(location);
 
   // 구매할 상품 컴포넌트 동적 렌더링
   useEffect(() => {
@@ -189,9 +187,6 @@ export default function PaymentPage() {
     },
     onError: (err) => console.error(err),
   });
-
-  if (isLoading) return <Spinner />;
-  if (isError) return <DataErrorPage />;
 
   if (isLoading) return <Spinner />;
   if (isError) return <DataErrorPage />;
