@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
 
 Checkbox.propTypes = {
   id: PropTypes.string,

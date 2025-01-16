@@ -10,6 +10,7 @@ CartItem.propTypes = {
   quantity: PropTypes.number.isRequired,
   register: PropTypes.func,
   product: PropTypes.shape({
+    _id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     seller_id: PropTypes.number.isRequired,
@@ -26,6 +27,7 @@ CartItem.propTypes = {
   deleteItem: PropTypes.object.isRequired,
   updateItem: PropTypes.object.isRequired,
   toggleCartItemCheck: PropTypes.func,
+  isChecked: PropTypes.bool,
 };
 
 export default function CartItem({
@@ -71,7 +73,6 @@ export default function CartItem({
           name={`${_id}`}
           register={register(`${_id}`)}
           onClick={() => toggleCartItemCheck(_id)}
-          refer={`product${_id}`}
           checked={isChecked}
         />
         <img

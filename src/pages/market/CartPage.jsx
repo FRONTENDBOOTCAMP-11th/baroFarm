@@ -135,7 +135,6 @@ export default function CartPage() {
       setCheckedItemsIds([]);
     }
   };
-  console.log(checkedItemsIds);
 
   // 장바구니 개별 아이템 체크 핸들러
   const toggleCartItemCheck = (targetId) => {
