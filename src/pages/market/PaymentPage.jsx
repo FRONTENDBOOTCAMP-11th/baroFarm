@@ -190,6 +190,9 @@ export default function PaymentPage() {
 
   if (isLoading) return <Spinner />;
   if (isError) return <DataErrorPage />;
+
+  if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
   if (!data) return null;
 
   // 유저 정보에 있던 폰 번호를 폰 번호 형식으로 변경
