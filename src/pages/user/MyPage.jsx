@@ -1,17 +1,18 @@
 import HeaderIcon from "@components/HeaderIcon";
+import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function MyPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
   const url = "https://11.fesp.shop";
-  const [isSeller, setIsSeller] = useState("/users/sale");
 
   // zustand store에서 유저 상태 가져옴
+  // 유저가 로그인 상태인지 확인하는 용도
   const user = useUserStore((store) => store.user);
 
   const axios = useAxiosInstance();
@@ -42,7 +43,7 @@ export default function MyPage() {
     navigate("/users/login");
   };
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["user", user?._id],
     queryFn: () => axios.get(`/users/${user._id}`),
     select: (res) => res.data.item,
@@ -51,20 +52,10 @@ export default function MyPage() {
   });
 
   // 로그인 아닌 경우에는 로그아웃 시 화면 보일 수 있게 예외처리
-  if (!data && user) {
+  if (isLoading && user) {
     //이 아래에는 로딩 페이지
-    return;
+    return <Spinner />;
   }
-
-  const onlySeller = (e) => {
-    if (data.type !== "seller") {
-      e.preventDefault();
-      setIsSeller("");
-      return alert("판매자 회원만이 이용할 수 있는 기능입니다");
-    } else {
-      setIsSeller("/users/sale");
-    }
-  };
 
   return (
     <div className="pt-[18px] px-5 mb-[70px]">
@@ -75,8 +66,8 @@ export default function MyPage() {
               <img
                 src={
                   data.image
-                    ? url + data.image
-                    : "/images/profile/ProfileImage_Sample.svg"
+                    ? url + data.image //이메일 타입
+                    : "/images/profile/ProfileImage_Sample.svg" //이미지 설정이 없는 경우
                 }
                 className="mr-5 w-[49px] h-[50px] rounded-full object-cover"
                 loading="lazy"
@@ -86,7 +77,7 @@ export default function MyPage() {
                   {data.type == "seller" ? "판매자" : "구매자"}
                 </p>
                 <h2 className="text-[16px] leading-[18px] mt-[4px]">
-                  {user.name}님! 어서오세요
+                  {data?.name}님! 어서오세요
                 </h2>
               </div>
               <button
@@ -136,13 +127,14 @@ export default function MyPage() {
             >
               구매 내역
             </Link>
-            <Link
-              onClick={onlySeller}
-              to={isSeller}
-              className="flex justify-center items-center flex-1 text-center h-[50px] border-r-[1px] border-gray2"
-            >
-              판매 내역
-            </Link>
+            {data.type === "seller" && (
+              <Link
+                to={"/users/sale"}
+                className="flex justify-center items-center flex-1 text-center h-[50px] border-r-[1px] border-gray2"
+              >
+                판매 내역
+              </Link>
+            )}
             <Link
               to={"/users/myboard"}
               className="flex justify-center items-center flex-1 text-center h-[50px]"
@@ -180,7 +172,7 @@ export default function MyPage() {
         </Link>
       </div>
       {/* 해당 영역은 로그아웃 상태일 시 사용을 필요로 하지 않음 */}
-      {user && isSeller && (
+      {user && data?.type === "seller" && (
         <>
           <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
           <div className="h-[109px] pt-[18px] ">
@@ -207,7 +199,7 @@ export default function MyPage() {
             <Link
               to={`/users/profile`}
               className="flex items-center text-[14px] mt-[27px] mb-[24px]"
-              state={{ user: data }}
+              state={{ id: data._id }}
             >
               내 정보 보기
               <img

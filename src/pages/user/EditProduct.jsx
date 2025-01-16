@@ -1,5 +1,6 @@
 import HeaderIcon from "@components/HeaderIcon";
 import ProductInfoForm from "@components/ProductInfoForm";
+import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -84,7 +85,7 @@ export default function EditProduct() {
   });
 
   if (isLoading) {
-    return;
+    return <Spinner />;
   }
 
   console.log(data);
