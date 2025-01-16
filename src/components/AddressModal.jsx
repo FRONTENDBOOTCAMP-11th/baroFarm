@@ -17,7 +17,7 @@ AddressModal.propTypes = {
     extra: PropTypes.shape({
       addressBook: PropTypes.array,
       userName: PropTypes.string,
-    }).isRequired,
+    }),
     name: PropTypes.string.isRequired,
     _id: PropTypes.number.isRequired,
     phone: PropTypes.string,
@@ -43,8 +43,8 @@ export default function AddressModal({
 
   // 전달 받은 유저 데이터를 변수에 할당
   const defaultAddress = userData.address;
-  const addressBook = userData.extra.addressBook;
-  const userName = userData.extra.userName;
+  const addressBook = userData.extra?.addressBook;
+  const userName = userData.extra?.userName;
 
   // 신규 배송지 입력을 받기 위한 reack-hook-form
   const {
@@ -159,7 +159,7 @@ export default function AddressModal({
                     : `text-base font-medium`
                 }
               >
-                {`${userName}`}
+                {`${userName ? userName : userData.name}`}
               </span>
               <span className="text-sm text-gray4">{userData.phone}</span>
             </div>
@@ -259,7 +259,7 @@ export default function AddressModal({
             {/* 배송지 신규 입력 폼 */}
             <form
               onSubmit={
-                userData.address.length !== 0
+                userData.address
                   ? handleSubmit(addAddress.mutate)
                   : handleSubmit(addDefaultAddress.mutate)
               }
