@@ -16,6 +16,8 @@ export default function ProfilePage() {
   const axios = useAxiosInstance();
   const url = "https://11.fesp.shop";
 
+  const user = useUserStore();
+
   const location = useLocation();
   const data = location.state.user;
 
@@ -101,15 +103,13 @@ export default function ProfilePage() {
       document.getElementById("profileImgChange").click();
   };
 
-  console.log(data.image);
-
   return (
     <div className="pt-[60px] mb-[70px]">
       <div className="w-fit mx-auto text-center relative">
         <img
           id="profileImg"
           src={
-            data.image
+            data?.image
               ? url + data.image
               : "/images/profile/ProfileImage_Sample.svg"
           }
@@ -131,7 +131,7 @@ export default function ProfilePage() {
         />
       </div>
       <div className="mt-[25px] mb-[30px] mx-auto max-w-fit text-2xl font-bold">
-        {data.name}
+        {data?.name ? data.name : "닉네임 없음"}
       </div>
       <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
         <section className="min-w-[65px]">
@@ -141,10 +141,10 @@ export default function ProfilePage() {
           주소
         </section>
         <section className="text-gray5 break-keep">
-          {data.extra.userName ? data.extra.userName : "미입력"} <br />
-          {data.email ? data.email : "미입력"} <br />
-          {data.phone ? data.phone : "미입력"} <br />
-          {data.address ? data.address : "미입력"}
+          {data?.extra.userName ? data.extra.userName : "미입력"} <br />
+          {data?.email ? data.email : "미입력"} <br />
+          {data?.phone ? data.phone : "미입력"} <br />
+          {data?.address ? data.address : "미입력"}
         </section>
         <Link
           to={"/users/profile/edit"}

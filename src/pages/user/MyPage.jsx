@@ -42,7 +42,7 @@ export default function MyPage() {
     navigate("/users/login");
   };
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["user", user?._id],
     queryFn: () => axios.get(`/users/${user._id}`),
     select: (res) => res.data.item,
@@ -51,7 +51,7 @@ export default function MyPage() {
   });
 
   // 로그인 아닌 경우에는 로그아웃 시 화면 보일 수 있게 예외처리
-  if (!data && user) {
+  if (isLoading && user) {
     //이 아래에는 로딩 페이지
     return;
   }
@@ -136,13 +136,15 @@ export default function MyPage() {
             >
               구매 내역
             </Link>
-            <Link
-              onClick={onlySeller}
-              to={isSeller}
-              className="flex justify-center items-center flex-1 text-center h-[50px] border-r-[1px] border-gray2"
-            >
-              판매 내역
-            </Link>
+            {data.type === "seller" && (
+              <Link
+                onClick={onlySeller}
+                to={isSeller}
+                className="flex justify-center items-center flex-1 text-center h-[50px] border-r-[1px] border-gray2"
+              >
+                판매 내역
+              </Link>
+            )}
             <Link
               to={"/users/myboard"}
               className="flex justify-center items-center flex-1 text-center h-[50px]"
@@ -180,7 +182,7 @@ export default function MyPage() {
         </Link>
       </div>
       {/* 해당 영역은 로그아웃 상태일 시 사용을 필요로 하지 않음 */}
-      {user && isSeller && (
+      {user && data?.type === "seller" && (
         <>
           <div className="h-[7px] bg-gray1 mx-[-20px]"></div>
           <div className="h-[109px] pt-[18px] ">
@@ -207,7 +209,7 @@ export default function MyPage() {
             <Link
               to={`/users/profile`}
               className="flex items-center text-[14px] mt-[27px] mb-[24px]"
-              state={{ user: data }}
+              state={{ user: null }}
             >
               내 정보 보기
               <img
