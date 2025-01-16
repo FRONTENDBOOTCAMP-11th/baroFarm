@@ -1,4 +1,6 @@
+import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import DataErrorPage from "@pages/DataErrorPage";
 import { useMutation } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
@@ -37,19 +39,19 @@ export default function KakaoAuthPage() {
       }),
     onSuccess: (res) => {
       if (res.data.item) {
-        console.log("카카오 로그인 성공:", res);
+        // console.log("카카오 로그인 성공:", res);
 
         const user = res.data.item;
         setUser({
           _id: user._id,
           name: user.name,
-          userName: "이름을 등록해주세요",
+          userName: null,
           accessToken: user.token.accessToken,
           refreshToken: user.token.refreshToken,
         });
 
-        // alert(user.name + "님, 로그인 되었습니다.");
-        // navigate("/");
+        alert(user.name + "님, 로그인 되었습니다.");
+        navigate("/");
       }
     },
     onError: (error) => {
@@ -58,16 +60,12 @@ export default function KakaoAuthPage() {
   });
 
   if (kakaoLogin.isLoading) {
-    return <p>카카오 로그인 처리중</p>;
+    return <Spinner />;
   }
 
-  return (
-    <div className="flex flex-col items-center justify-center">
-      <p className="mb-4">로그인 처리 중 오류가 발생했습니다.</p>
-      <p className="mb-4">로그인 페이지로 이동합니다...</p>
-      <button onClick={() => navigate("/users/login")} className="text-btn-primary underline">
-        바로 로그인 페이지로 이동
-      </button>
-    </div>
-  );
+  if (kakaoLogin.isError) {
+    return <DataErrorPage />;
+  }
+
+  return <Spinner />;
 }

@@ -7,6 +7,8 @@ import HeaderIcon from "@components/HeaderIcon";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import Products from "@components/Products";
+import Spinner from "@components/Spinner";
+import DataErrorPage from "@pages/DataErrorPage";
 
 export default function SearchResultsPage() {
   // URL의 쿼리 파라미터를 가져오기
@@ -57,20 +59,11 @@ export default function SearchResultsPage() {
   });
 
   if (isLoading) {
-    return (
-      <div className="mt-0 mx-auto text-center">
-        로딩중... <br />
-        잠시만 기다려주세요
-      </div>
-    );
+    return <Spinner />;
   }
+
   if (isError) {
-    return (
-      <div className="mt-0 mx-auto text-center">
-        에러가 발생했습니다. <br />
-        잠시 후 다시 시도해주세요.
-      </div>
-    );
+    return <DataErrorPage />;
   }
 
   return (
