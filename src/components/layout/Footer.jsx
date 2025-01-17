@@ -1,4 +1,6 @@
 import NavItem from "@components/NavItem";
+import useUserStore from "@zustand/useUserStore";
+import { useNavigate } from "react-router-dom";
 
 const icons = {
   category: {
@@ -24,6 +26,16 @@ const icons = {
 };
 
 export default function Footer() {
+  const { user } = useUserStore();
+  const navigate = useNavigate();
+  function navigateLogin() {
+    const gotoLogin = confirm(
+      "로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?"
+    );
+    if (gotoLogin)
+      navigate("/users/login", { state: { from: location.pathname } });
+  }
+
   return (
     <nav className="h-[100px] border-t border-gray1 flex items-center justify-around fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto bg-white">
       <NavItem
@@ -51,12 +63,13 @@ export default function Footer() {
         activeIcon={icons.profile.active}
         label="프로필"
       />
-      <NavItem
-        to="/cart"
-        defaultIcon={icons.cart.default}
-        activeIcon={icons.cart.active}
-        label="장바구니"
-      />
+      <button
+        className="flex flex-col items-center"
+        onClick={!user ? () => navigateLogin() : navigate("/cart")}
+      >
+        <img src={icons.cart.default} className="w-10" alt={`장바구니icon`} />
+        <span>장바구니</span>
+      </button>
     </nav>
   );
 }
