@@ -74,7 +74,7 @@ export default function ReviewPage() {
       </section>
 
       {photoReviews.length > 0 && (
-        <section className="p-5 border-b-8 border-b-gray1">
+        <section className="p-5 pb-0 border-b-8 border-b-gray1">
           <div className="flex items-center justify-between">
             <span className="font-bold">사진 후기</span>
             {/* <Link
@@ -85,7 +85,7 @@ export default function ReviewPage() {
           <img src={forwardIcon} className="w-3" />
         </Link> */}
           </div>
-          <div className="flex overflow-x-auto gap-3 scrollbar-hide pt-5">
+          <div className="flex overflow-x-auto gap-3 pt-5 pb-5">
             {photoReviews.map((review) => (
               <PhotoReviewItem key={review._id} image={review.extra.image} />
             ))}

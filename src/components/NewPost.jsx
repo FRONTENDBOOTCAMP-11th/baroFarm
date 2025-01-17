@@ -107,7 +107,7 @@ export default function NewPost({
           id="attach"
           accept="image/*"
           placeholder="이미지를 선택하세요"
-          className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 mt-[10px] mb-[25px]"
+          className="w-full px-3 py-2 border rounded-lg mt-[10px] mb-[25px]"
           name="attach"
           {...register("image")}
         />

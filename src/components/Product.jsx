@@ -36,13 +36,10 @@ export default function Product(product) {
   const { isLiked, handleLike } = useLikeToggle(product);
 
   return (
-    <section
-      className="flex flex-col w-[165px] cursor-pointer"
-      onClick={goDetailPage}
-    >
+    <section className="flex flex-col cursor-pointer" onClick={goDetailPage}>
       <div className="relative">
         <img
-          className="h-[165px] rounded-lg object-cover w-full"
+          className="h-[160px] rounded-lg object-cover w-full"
           alt={product.name}
           src={`https://11.fesp.shop${product.mainImages[0]?.path}`}
         />
@@ -66,7 +63,7 @@ export default function Product(product) {
         <p className="text-xs line-clamp-1">{product.name}</p>
         <div className="pt-1 flex items-center">
           <span className="text-red1 font-semibold text-base pr-1">
-            {product.extra.sale}%
+            {product.extra.sale !== 0 ? `${product.extra.sale}%` : undefined}
           </span>
           <span className="font-extrabold text-lg line-clamp-1">
             {product.extra.saledPrice.toLocaleString()}원

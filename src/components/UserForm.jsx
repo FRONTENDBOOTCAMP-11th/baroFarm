@@ -75,17 +75,14 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         if (email && /\S+@\S+\.\S+/.test(email) && !userInfo) {
           try {
             console.log("axios 요청 직전");
-            const { data } = await axios.get(
-              "https://11.fesp.shop/users/email",
-              {
-                params: { email },
-                headers: {
-                  "client-id": "final04",
-                  "Content-Type": "application/json",
-                  accept: "application/json",
-                },
-              }
-            );
+            const { data } = await axios.get("https://11.fesp.shop/users/email", {
+              params: { email },
+              headers: {
+                "client-id": "final04",
+                "Content-Type": "application/json",
+                accept: "application/json",
+              },
+            });
 
             // ok 1이면 사용 가능(사용 가능한 이메일)
             if (data.ok === 1) {
@@ -120,8 +117,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
       required: "비밀번호를 확인해주세요.",
       // 기본 제공 되는 required,pattern 등으로는 처리할 수 없는 복잡한 유효성 검사를 할 때 사용(사용자 정의 유효성 검사 기능)
       validate: {
-        matchPassword: (value) =>
-          value === watch("password") || "비밀번호가 일치하지 않습니다.",
+        matchPassword: (value) => value === watch("password") || "비밀번호가 일치하지 않습니다.",
       },
     },
     type: { required: userInfo ? undefined : "회원 유형을 선택해주세요." },
@@ -133,8 +129,6 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
           message: "한글 또는 영문만 입력 가능합니다",
         },
       },
-      // gender: { required: "성별을 선택해주세요." },
-      // birth: { required: "생년월일을 선택해주세요." },
     },
     // 공통 필드(회원가입 및 프로필 수정 시 공통으로 사용)
     name: {
@@ -146,18 +140,15 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
 
         if (name && !userInfo) {
           try {
-            console.log("axios 요청 직전");
-            const { data } = await axios.get(
-              "https://11.fesp.shop/users/name",
-              {
-                params: { name },
-                headers: {
-                  "client-id": "final04",
-                  "Content-Type": "application/json",
-                  accept: "application/json",
-                },
-              }
-            );
+            // console.log("axios 요청 직전");
+            const { data } = await axios.get("https://11.fesp.shop/users/name", {
+              params: { name },
+              headers: {
+                "client-id": "final04",
+                "Content-Type": "application/json",
+                accept: "application/json",
+              },
+            });
 
             // ok 1이면 사용 가능(사용 가능한 닉네임)
             if (data.ok === 1) {
@@ -173,11 +164,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               },
               { shouldFocus: true }
             );
-            console.error("에러 상세:", {
-              message: error.message,
-              status: error.response?.status,
-              data: error.response?.data,
-            });
+            console.error("닉네임 에러:", error);
           }
         }
       },
@@ -199,19 +186,13 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         } else if (number.length <= 7) {
           formattedNumber = `${number.slice(0, 3)}-${number.slice(3)}`;
         } else {
-          formattedNumber = `${number.slice(0, 3)}-${number.slice(
-            3,
-            7
-          )}-${number.slice(7, 11)}`;
+          formattedNumber = `${number.slice(0, 3)}-${number.slice(3, 7)}-${number.slice(7, 11)}`;
         }
 
         // 입력 값 업데이트
         e.target.value = formattedNumber;
       },
     },
-    // address: {
-    //   required: userInfo ? undefined : "주소는 필수입니다.",
-    // },
   };
 
   // FormData에서 confirmPassword는 비밀번호 확인용으로만 사용되고 서버에는 보낼 필요가 없어서 제외시키는 작업
@@ -238,11 +219,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               placeholder="이메일을 입력해주세요"
               {...register("email", validationSchema.email)}
             />
-            {errors.email && (
-              <p className="text-red1 text-xs mt-1 ps-1">
-                {errors.email.message}
-              </p>
-            )}
+            {errors.email && <p className="text-red1 text-xs mt-1 ps-1">{errors.email.message}</p>}
           </div>
           {/* 비밀번호 */}
           <div className="mb-2.5 text-sm">
@@ -256,18 +233,11 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               placeholder="비밀번호를 입력해주세요"
               {...register("password", validationSchema.password)}
             />
-            {errors.password && (
-              <p className="text-red1 text-xs mt-1 ps-1">
-                {errors.password.message}
-              </p>
-            )}
+            {errors.password && <p className="text-red1 text-xs mt-1 ps-1">{errors.password.message}</p>}
           </div>
           {/* 비밀번호 확인 */}
           <div className="mb-2.5 text-sm">
-            <label
-              className="block mb-2.5 font-semibold"
-              htmlFor="confirmPassword"
-            >
+            <label className="block mb-2.5 font-semibold" htmlFor="confirmPassword">
               비밀번호 확인
             </label>
             <input
@@ -277,17 +247,15 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               placeholder="비밀번호를 한번 더 입력해주세요"
               {...register("confirmPassword", validationSchema.confirmPassword)}
             />
-            {errors.confirmPassword && (
-              <p className="text-red1 text-xs mt-1 ps-1">
-                {errors.confirmPassword.message}
-              </p>
-            )}
+            {errors.confirmPassword && <p className="text-red1 text-xs mt-1 ps-1">{errors.confirmPassword.message}</p>}
           </div>
         </>
       )}
       {/* 닉네임 */}
       {userInfo && (
+
         <label className="block mb-2.5 font-semibold">개인 정보</label>
+
       )}
       <div className="mb-5 text-sm">
         <label className="block mb-2.5 font-semibold" htmlFor="name">
@@ -297,15 +265,13 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
           className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
           type="text"
           id="name"
-          placeholder="닉네임을 입력해주세요"
-          // userName을 name으로 변경해야 함 => useForm의 defaultValues로 들어가 필요 없음(수정 완료)
-          // defaultValue={userInfo ? userInfo.extra.userName : ""}
+          placeholder="닉네임을 입력해주세요 (최대 7자)"
           {...register("name", validationSchema.name)}
+          maxLength={7}
         />
-        {errors.name && (
-          <p className="text-red1 text-xs mt-1 ps-1">{errors.name.message}</p>
-        )}
+        {errors.name && <p className="text-red1 text-xs mt-1 ps-1">{errors.name.message}</p>}
       </div>
+
 
       {/* 회원 유형 */}
       {!userInfo && (
@@ -336,9 +302,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
             </div>
             {errors.type && (
               <div className="w-full">
-                <p className=" text-red1 text-xs ps-0.5 -mt-3">
-                  {errors.type.message}
-                </p>
+                <p className=" text-red1 text-xs ps-0.5 -mt-3">{errors.type.message}</p>
               </div>
             )}
           </div>
@@ -423,6 +387,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
                 {errors.phone.message}
               </p>
             )}
+
           </div>
 
           {/* 주소 */}
@@ -430,16 +395,12 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
             <label className="block mb-2.5 font-semibold" htmlFor="address">
               주소
             </label>
-            <PostcodeSearch
-              isOpenIframe={isOpenIframe}
-              setIsOpenIframe={setIsOpenIframe}
-              register={register}
-            />
+            <PostcodeSearch isOpenIframe={isOpenIframe} setIsOpenIframe={setIsOpenIframe} register={register} />
           </div>
         </>
       )}
 
-      {/* 가입하기, 또는 수정하기 버튼 */}
+      {/* 가입, 수정버튼 */}
       <button
         className="w-full h-[3.25rem] text-center text-xl rounded-full border border-btn-primary font-medium block m-auto mb-1 text-btn-primary"
         type="submit"
