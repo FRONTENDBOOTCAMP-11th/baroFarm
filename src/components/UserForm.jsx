@@ -279,8 +279,9 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
           className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
           type="text"
           id="name"
-          placeholder="닉네임을 입력해주세요"
+          placeholder="닉네임을 입력해주세요 (최대 7자)"
           {...register("name", validationSchema.name)}
+          maxLength={7}
         />
         {errors.name && <p className="text-red1 text-xs mt-1 ps-1">{errors.name.message}</p>}
       </div>
