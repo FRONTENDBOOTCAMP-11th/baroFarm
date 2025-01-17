@@ -226,14 +226,14 @@ export default function MainPage() {
         </div>
         {storyImages}
       </section>
-      <section className="flex flex-col gap-1 px-5 bg-gray1 text-black text-sm py-5">
-        <p className="font-semibold">(주) 농담 사업자 정보</p>
+      <section className="flex flex-col gap-1 px-5 bg-gray1 text-black text-sm py-5 text-center">
+        <p className="font-semibold">(주) 바로팜 사업자 정보</p>
         <p>
-          (주)농담 | 대표자 : 넝담~ <br />
+          (주)바로팜 | 대표자 : 바로팜 <br />
           사업자 등록번호 : 023-25-59672 <br />
           주소 : 서울 강남구 옆집의 옆집 234로 무천타워 2층 <br />
           대표번호 : 1588-1028 <br />
-          메일 : nongDam@nongDam.co.kr
+          메일 : baroFarm@baroFarm.co.kr
         </p>
         <p className="font-semibold">고객센터 1800-1800</p>
         <p className="mb-[58px]">
