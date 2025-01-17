@@ -36,13 +36,10 @@ export default function Product(product) {
   const { isLiked, handleLike } = useLikeToggle(product);
 
   return (
-    <section
-      className="flex flex-col w-[165px] cursor-pointer"
-      onClick={goDetailPage}
-    >
+    <section className="flex flex-col cursor-pointer" onClick={goDetailPage}>
       <div className="relative">
         <img
-          className="h-[165px] rounded-lg object-cover w-full"
+          className="h-[160px] rounded-lg object-cover w-full"
           alt={product.name}
           src={`https://11.fesp.shop${product.mainImages[0]?.path}`}
         />
