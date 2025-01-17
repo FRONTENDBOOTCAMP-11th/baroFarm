@@ -53,7 +53,7 @@ export default function ProductSmall({ product, bookmarkId }) {
       }),
     onSuccess: () => {
       deleteBookmark.mutate();
-      queryClient.invalidateQueries({ queryKey: ["bookmarks", "product"] });
+      queryClient.invalidateQueries({ queryKey: ["bookmarks"] });
       alert("장바구니에 추가되었습니다.");
     },
     onError: (error) => {
@@ -65,7 +65,7 @@ export default function ProductSmall({ product, bookmarkId }) {
     <section className="flex flex-col cursor-pointer">
       <div className="relative">
         <img
-          className="h-[135px] rounded-lg object-cover w-full"
+          className="aspect-square rounded-lg object-cover w-full"
           alt={product.name}
           src={`https://11.fesp.shop${product.mainImages[0]?.path}`}
           onClick={goDetailPage}

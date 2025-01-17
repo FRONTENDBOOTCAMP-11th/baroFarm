@@ -152,8 +152,6 @@ export default function CartPage() {
       return [...prevCheckedIds, cartItem._id];
     });
   };
-  console.log("checkedItemsIds", checkedItemsIds);
-  console.log("장바구니 상품", data?.item);
 
   // 장바구니 아이템 여러건 삭제
   const deleteItems = useMutation({
@@ -384,7 +382,7 @@ export default function CartPage() {
           // 찜한 상품렌더링
           <div>
             {likeItem.length > 0 ? (
-              <div className="grid grid-cols-3 gap-x-2 gap-y-4 py-2">
+              <div className="grid grid-cols-3 gap-x-2 gap-y-4 py-2 px-5">
                 {likeItems}
               </div>
             ) : (
