@@ -74,7 +74,7 @@ export default function MyPage() {
               />
               <div>
                 <p className="text-gray5/50 text-[12px] leading-[14px]">
-                  {data.type == "seller" ? "판매자" : "구매자"}
+                  {data.type == "seller" ? "판매회원" : "구매회원"}
                 </p>
                 <h2 className="text-[16px] leading-[18px] mt-[4px]">
                   {data?.name}님! 어서오세요
