@@ -4,15 +4,9 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 import HeaderIcon from "@components/HeaderIcon";
 import Products from "@components/Products";
 
-import Spinner from "@components/Spinner";
-import DataErrorPage from "@pages/DataErrorPage";
-
 export default function RecentPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [productsData, setProductsData] = useState(null);
 
   useEffect(() => {
     setHeaderContents({
@@ -24,15 +18,9 @@ export default function RecentPage() {
         </>
       ),
     });
-    const data = JSON.parse(sessionStorage.getItem("productData"));
-    setProductsData(data);
-
-    if (!!data) {
-      setIsLoading(false);
-    }
   }, []);
 
-  if (isLoading) return <Spinner />;
+  const productsData = JSON.parse(sessionStorage.getItem("productData"));
 
   return !!productsData ? (
     <Products productsData={productsData} />
