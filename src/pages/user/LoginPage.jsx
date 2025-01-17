@@ -171,7 +171,7 @@ export default function LoginPage() {
               }
             }}
           />
-          <span className="text-sm cursor-pointer">로그인 저장 정보</span>
+          <span className="text-sm cursor-pointer">로그인 정보 저장</span>
         </label>
         <div className="mb-5 w-full h-[3.25rem] m-auto">
           <button
