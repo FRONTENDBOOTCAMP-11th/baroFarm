@@ -31,7 +31,7 @@ export default function MenuPage() {
 
   return (
     <>
-      <MenuItem to="/menu/fruit" image={fruitImage} title="제철과일" />
+      <MenuItem to="/menu/fruit" image={fruitImage} title="과일" />
       <MenuItem to="/menu/vegetable" image={vegetableImage} title="채소" />
       <MenuItem to="/menu/kimchi" image={kimchiImage} title="김치" />
       <MenuItem to="/menu/liveStock" image={liveStockImage} title="축산물" />

@@ -14,7 +14,7 @@ export default function CategoryPage() {
   const navigate = useNavigate();
 
   const categoryTitle = [
-    { key: "fruit", label: "제철과일" },
+    { key: "fruit", label: "과일" },
     { key: "vegetable", label: "채소" },
     { key: "kimchi", label: "김치" },
     { key: "liveStock", label: "축산물" },
