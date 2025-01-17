@@ -126,8 +126,8 @@ export default function BoardPage() {
         <p className="text-white text-sm break-keep">
           바로파밍은 모든 이용자이 이용할 수 있는
           <span className="text-green1"> 소통</span>의 공간입니다.
-          <br /> 바로팜에서 구매한 상품으로 만든 요리를 자랑하거나 레시피 팁을
-          나누어 봅시다!
+          <br /> 바로팜에서 구매한 상품으로 만든 요리를 자랑하거나 나만의 레시피
+          팁을 나누어 보세요!
         </p>
       </div>
 

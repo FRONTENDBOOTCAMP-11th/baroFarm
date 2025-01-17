@@ -15,13 +15,13 @@ NewPost.propTypes = {
   isBoard: PropTypes.bool,
   handleSubmit: PropTypes.func,
   register: PropTypes.func.isRequired,
-  handleRating: PropTypes.func.isRequired,
+  handleRating: PropTypes.func,
   editInfo: PropTypes.string,
   errors: PropTypes.shape(),
 };
 
 export default function NewPost({
-  isBoard,
+  isBoard = false,
   handleSubmit,
   register,
   handleRating,

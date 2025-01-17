@@ -7,6 +7,7 @@ import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import {
   Link,
+  useLocation,
   useNavigate,
   useOutletContext,
   useParams,
@@ -19,10 +20,22 @@ export default function BoardDetailPage() {
   const { _id } = useParams();
   const { user } = useUserStore();
   const axios = useAxiosInstance();
+  const location = useLocation();
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      leftChild: (
+        <HeaderIcon
+          name="back"
+          onClick={() => {
+            const prevPage = location.state?.from;
+            if (prevPage && prevPage.includes("edit")) navigate(-3);
+            else {
+              navigate(-1);
+            }
+          }}
+        />
+      ),
       title: "게시글",
       rightChild: (
         <>

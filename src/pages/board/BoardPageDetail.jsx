@@ -68,11 +68,10 @@ export default function BoardPageDetail({ item }) {
               <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-white to-transparent pointer-events-none"></div>
             )}
           </div>
-
-          <span className="text-[10px] text-gray4 text-left mb-5 mt-1 block">
-            {newDate}
-          </span>
         </div>
+        <span className="text-[10px] text-gray4 text-left mb-5 block">
+          {newDate}
+        </span>
       </Link>
       <div className="h-[7px] bg-gray1 -mx-5"></div>
     </div>

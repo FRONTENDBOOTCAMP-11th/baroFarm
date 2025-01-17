@@ -96,7 +96,7 @@ export default function BoardEditPage() {
     onSuccess: () => {
       alert("게시물이 수정되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["posts", _id] });
-      navigate(`/board/${_id}`);
+      navigate(`/board/${_id}`, { state: { from: window.location.pathname } });
     },
     onError: (err) => {
       console.error(err);

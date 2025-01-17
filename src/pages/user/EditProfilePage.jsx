@@ -26,6 +26,14 @@ export default function EditProfilePage() {
   const editUserInfo = useMutation({
     mutationFn: (formData) => {
       const { value, detailValue, ...userData } = formData;
+      console.log(data.address);
+      if (data.address && !value) {
+        const body = {
+          ...userData,
+        };
+        console.log(body);
+        return axios.patch(`/users/${data._id}`, body);
+      }
       const body = {
         ...userData,
         address: `${value ? value : ""} ${detailValue ? detailValue : ""}`,
@@ -35,9 +43,8 @@ export default function EditProfilePage() {
     },
     onSuccess: () => {
       resetUser();
-      alert(
-        "프로필 정보 변경이 완료되었습니다. 설정 적용을 위해 로그아웃합니다"
-      );
+      alert("프로필 정보 변경이 완료되었습니다.");
+      alert("설정 적용을 위해 로그아웃합니다. 다시 로그인해주세요.");
       queryClient.invalidateQueries({ queryKey: ["user", data._id] });
       navigate("/users/mypage");
     },
