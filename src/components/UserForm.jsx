@@ -164,7 +164,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               },
               { shouldFocus: true }
             );
-            console.error("에러:", error);
+            console.error("닉네임 에러:", error);
           }
         }
       },
