@@ -86,6 +86,7 @@ export default function ProductDetailPage() {
         </>
       ),
     });
+    window.scrollTo(0, 0);
   }, [product, categoryTitle]);
 
   const purchaseModalRef = useRef();
@@ -145,7 +146,7 @@ export default function ProductDetailPage() {
     <>
       <img
         alt={product.name}
-        className="w-[390px] h-[390px] object-cover"
+        className="w-[390px] h-[330px] object-cover"
         src={`https://11.fesp.shop${product.mainImages[0]?.path}`}
       />
       <section className="p-5 border-b-8 border-b-gray1">
@@ -166,13 +167,19 @@ export default function ProductDetailPage() {
         <span className="text-xs">{product.replies.length}개 후기</span>
 
         <div className="pt-1">
-          <span className="text-gray4 font-semibold pr-1">
-            {product.extra.sale}%
-          </span>
-          <span className="font-semibold text-gray3 line-through">
-            {product.price.toLocaleString()}원
-          </span>
-          <p className="font-extrabold text-xl text-btn-primary">
+          {product.extra.sale !== 0 ? (
+            <>
+              <span className="text-gray4 font-semibold pr-1">
+                {product.extra.sale}%
+              </span>
+              <span className="font-semibold text-gray3 line-through">
+                {product.price.toLocaleString()}원
+              </span>
+            </>
+          ) : undefined}
+          <p
+            className={`font-extrabold text-xl ${product.extra.sale !== 0 ? "text-btn-primary" : "text-black"}`}
+          >
             {product.extra.saledPrice.toLocaleString()}원
           </p>
         </div>
@@ -206,7 +213,7 @@ export default function ProductDetailPage() {
         <div dangerouslySetInnerHTML={{ __html: product.content }} />
       </section>
 
-      <footer className="h-[100px] p-5 border-t border-gray1 flex items-center justify-between fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto bg-white">
+      <footer className="h-[95px] p-5 border-t border-gray1 flex items-center justify-between fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto bg-white">
         <button onClick={handleLike} className="pl-2">
           <img
             src={isLiked ? likeIcon.active : likeIcon.default}
