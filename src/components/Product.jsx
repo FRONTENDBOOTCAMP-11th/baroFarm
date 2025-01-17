@@ -66,7 +66,7 @@ export default function Product(product) {
         <p className="text-xs line-clamp-1">{product.name}</p>
         <div className="pt-1 flex items-center">
           <span className="text-red1 font-semibold text-base pr-1">
-            {product.extra.sale}%
+            {product.extra.sale !== 0 ? `${product.extra.sale}%` : undefined}
           </span>
           <span className="font-extrabold text-lg line-clamp-1">
             {product.extra.saledPrice.toLocaleString()}원
