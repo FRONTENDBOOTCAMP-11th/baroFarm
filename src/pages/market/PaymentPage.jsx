@@ -9,15 +9,22 @@ import useUserStore from "@zustand/useUserStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import PaymentModal from "@components/PaymentModal";
 import AddressModal from "@components/AddressModal";
+import Spinner from "@components/Spinner";
+import DataErrorPage from "@pages/DataErrorPage";
 
 export default function PaymentPage() {
+  // 이전 페이지에서 넘어온 정보
+  const location = useLocation();
+  // 이전 페이지에서 넘어온 구매할 상품, 최종금액, 배송비
+  const { selectedItems, totalFees, totalShippingFees, previousUrl } =
+    location.state;
+  const navigate = useNavigate();
   // axios instance
   const axios = useAxiosInstance();
   // 구매할 상품 목록 상태 관리
   const [paymentItems, setPaymentItems] = useState([]);
   // 헤더 상태 설정 함수
   const { setHeaderContents } = useOutletContext();
-  const navigate = useNavigate();
   // 결제 버튼 보이기 상태
   const [showButton, setShowButton] = useState(false);
   // 배송 메모 관리
@@ -32,6 +39,7 @@ export default function PaymentPage() {
   const targetRef = useRef(null);
   // 결제 모달 창 상태
   const [isPayModalOpen, setIsPayModalOpen] = useState(false);
+
   // 모달창 오픈시 body에 스크롤 X
   useEffect(() => {
     if (isPayModalOpen) {
@@ -45,13 +53,6 @@ export default function PaymentPage() {
   }, [isPayModalOpen]);
   // 주소지 모달 창 상태
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-
-  // 이전 페이지에서 넘어온 정보
-  const location = useLocation();
-  // 이전 페이지에서 넘어온 구매할 상품, 최종금액, 배송비
-  const { selectedItems, totalFees, totalShippingFees, previousUrl } =
-    location.state;
-  console.log(location);
 
   // 구매할 상품 컴포넌트 동적 렌더링
   useEffect(() => {
@@ -81,7 +82,7 @@ export default function PaymentPage() {
   useEffect(() => {
     if (addressId === 0) {
       setCurrentAddress({
-        userName: data?.name,
+        userName: data?.extra?.userName ? data.extra.userName : data.name,
         phone: data?.phone,
         value: data?.address,
       });
@@ -91,6 +92,7 @@ export default function PaymentPage() {
       );
     }
   }, [data, addressId]);
+  console.log("유저 정보", data);
 
   // 스크롤에 따라 결제버튼 보이게 하기
   useEffect(() => {
@@ -168,7 +170,7 @@ export default function PaymentPage() {
           },
         ],
       }),
-    onSuccess: (res) => {
+    onSuccess: () => {
       // 구매 성공시
       // 장바구니에서 넘어온 상태라면 장바구니에서 구매한 아이템 삭제
       if (previousUrl.includes("/cart")) {
@@ -186,12 +188,15 @@ export default function PaymentPage() {
     onError: (err) => console.error(err),
   });
 
+  if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
   if (!data) return null;
 
   // 유저 정보에 있던 폰 번호를 폰 번호 형식으로 변경
   const formatPhoneNumber = (number) => {
     return number.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
   };
+  console.log("currentAddress", currentAddress);
 
   return (
     <>
@@ -205,53 +210,65 @@ export default function PaymentPage() {
       <section className="px-5 py-[14px]">
         <div>
           <h3 className="mb-3 text-sm font-bold">주문자 정보</h3>
-          <div className="flex flex-col gap-5 px-5 py-6 bg-white border-2 border-bg-primary2/50 rounded-[10px] shadow-md mb-6">
-            {/* 기본 배송지 렌더링 */}
-            <div className="flex flex-col gap-[6px]">
-              <div className="flex items-center justify-between">
-                <p className="text-sm font-bold">
+          {data?.address ? (
+            <div className="flex flex-col gap-5 px-5 py-6 bg-white border-2 border-bg-primary2/50 rounded-[10px] shadow-md mb-6">
+              {/* 기본 배송지 렌더링 */}
+              <div className="flex flex-col gap-[6px]">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-bold">
+                    {addressId === 0
+                      ? currentAddress?.userName
+                      : `${currentAddress?.userName} (${currentAddress?.name})`}
+                  </p>
+                  <Button onClick={() => setIsAddressModalOpen(true)}>
+                    변경
+                  </Button>
+                </div>
+                <p className="text-xs text-gray4 font-medium">
                   {addressId === 0
-                    ? data?.name
-                    : `${currentAddress?.userName} (${currentAddress?.name})`}
+                    ? formatPhoneNumber(data?.phone)
+                    : currentAddress?.phone}
                 </p>
-                <Button onClick={() => setIsAddressModalOpen(true)}>
-                  변경
-                </Button>
-              </div>
-              <p className="text-xs text-gray4 font-medium">
-                {addressId === 0
-                  ? formatPhoneNumber(data?.phone)
-                  : currentAddress?.phone}
-              </p>
-              <p className="text-xs font-medium">
-                {addressId === 0 ? data?.address : currentAddress?.value}
-              </p>
-              <select
-                id="memo"
-                className="text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
-                name="memo"
-                onChange={postMemo}
-              >
-                <option value="null">배송메모를 선택하세요.</option>
-                <option value="문 앞에 놓아주세요">문 앞에 놓아주세요</option>
-                <option value="부재시 미리 연락 부탁드려요">
-                  부재시 미리 연락 부탁드려요
-                </option>
-                <option value="배송 전 미리 연락해주세요">
-                  배송 전 미리 연락해주세요
-                </option>
-                <option value={"직접 입력하기"}>직접 입력하기</option>
-              </select>
-              {memo.memo === "직접 입력하기" && (
-                <input
-                  className="border border-gray3 rounded-md w-full px-2 py-1 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
-                  placeholder="이 곳에 입력하세요."
-                  name="detail"
+                <p className="text-xs font-medium">
+                  {addressId === 0 ? data?.address : currentAddress?.value}
+                </p>
+                <select
+                  id="memo"
+                  className="text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
+                  name="memo"
                   onChange={postMemo}
-                />
-              )}
+                >
+                  <option value="null">배송메모를 선택하세요.</option>
+                  <option value="문 앞에 놓아주세요">문 앞에 놓아주세요</option>
+                  <option value="부재시 미리 연락 부탁드려요">
+                    부재시 미리 연락 부탁드려요
+                  </option>
+                  <option value="배송 전 미리 연락해주세요">
+                    배송 전 미리 연락해주세요
+                  </option>
+                  <option value={"직접 입력하기"}>직접 입력하기</option>
+                </select>
+                {memo.memo === "직접 입력하기" && (
+                  <input
+                    className="border border-gray3 rounded-md w-full px-2 py-1 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
+                    placeholder="이 곳에 입력하세요."
+                    name="detail"
+                    onChange={postMemo}
+                  />
+                )}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="mb-5">
+              <Button
+                isBig={true}
+                isWhite={true}
+                onClick={() => setIsAddressModalOpen(true)}
+              >
+                + 배송지 신규입력
+              </Button>
+            </div>
+          )}
         </div>
         <div>
           <h3 className="mb-3 text-sm font-bold">주문 상품 (총 2건)</h3>

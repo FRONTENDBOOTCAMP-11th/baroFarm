@@ -6,6 +6,8 @@ import ProductBig from "@components/ProductBig";
 import Carousel from "@components/Carousel";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import Spinner from "@components/Spinner";
+import DataErrorPage from "@pages/DataErrorPage";
 
 const categories = [
   { title: "제철 과일", image: "/images/menu/Fruit.svg", url: "/menu/fruit" },
@@ -85,23 +87,8 @@ export default function MainPage() {
     staleTime: 1000 * 10,
   });
 
-  if (isLoading) {
-    return (
-      <div className="mt-0 mx-auto text-center">
-        로딩중... <br />
-        잠시만 기다려주세요
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="mt-0 mx-auto text-center">
-        에러가 발생했습니다. <br />
-        잠시 후 다시 시도해주세요.
-      </div>
-    );
-  }
+  if (isLoading) return <Spinner />;
+  if (isError) return <DataErrorPage />;
 
   // 데이터 없을시 null 반환하여 에러 방지
   if (!data) return null;

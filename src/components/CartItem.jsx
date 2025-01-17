@@ -10,6 +10,7 @@ CartItem.propTypes = {
   quantity: PropTypes.number.isRequired,
   register: PropTypes.func,
   product: PropTypes.shape({
+    _id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     seller_id: PropTypes.number.isRequired,
@@ -26,6 +27,7 @@ CartItem.propTypes = {
   deleteItem: PropTypes.object.isRequired,
   updateItem: PropTypes.object.isRequired,
   toggleCartItemCheck: PropTypes.func,
+  isChecked: PropTypes.bool,
 };
 
 export default function CartItem({
@@ -36,6 +38,7 @@ export default function CartItem({
   deleteItem,
   updateItem,
   toggleCartItemCheck,
+  isChecked,
 }) {
   // 판매자 이름 상태관리
   const [seller, setSeller] = useState("");
@@ -70,6 +73,7 @@ export default function CartItem({
           name={`${_id}`}
           register={register(`${_id}`)}
           onClick={() => toggleCartItemCheck(_id)}
+          checked={isChecked}
         />
         <img
           src={`https://11.fesp.shop${product.image.path}`}

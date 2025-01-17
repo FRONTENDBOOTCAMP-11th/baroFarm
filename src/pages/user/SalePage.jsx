@@ -6,6 +6,7 @@ import SoldItem from "@components/SoldItem";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import Spinner from "@components/Spinner";
 
 export default function SalePage() {
   const { setHeaderContents } = useOutletContext();
@@ -34,7 +35,7 @@ export default function SalePage() {
   });
 
   if (isLoading) {
-    return <>로딩 중입니다...</>;
+    return <Spinner />;
   }
 
   const groupedData = data.reduce((acc, item) => {

@@ -3,7 +3,7 @@ import UserForm from "@components/UserForm";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function SignupPage() {
   const { setHeaderContents } = useOutletContext();
@@ -19,7 +19,7 @@ export default function SignupPage() {
     },
     onError: (err) => {
       console.error("회원가입 실패:", err);
-      alert("회원가입에 실패했습니다.");
+      alert("회원가입 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
       navigate("/users/signup");
     },
   });
@@ -31,5 +31,15 @@ export default function SignupPage() {
     });
   }, []);
 
-  return <UserForm buttonText="가입하기" onSubmitUser={handleSignup.mutate} />;
+  return (
+    <>
+      <UserForm buttonText="회원가입" onSubmitUser={handleSignup.mutate} />
+      <p className="flex justify-center text-sm gap-1.5 font-medium -mt-2.5">
+        이미 바로팜 회원이신가요?
+        <Link to="/users/login" className="text-btn-primary hover:font-bold">
+          로그인
+        </Link>
+      </p>
+    </>
+  );
 }
