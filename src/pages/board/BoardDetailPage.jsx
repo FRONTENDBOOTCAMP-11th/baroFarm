@@ -72,7 +72,7 @@ export default function BoardDetailPage() {
           {newDate}
         </span>
       </div>
-      <div className="mx-[5px] mt-[30px]">{data.content}</div>
+      <div className="mx-[5px] my-[30px]">{data.content}</div>
       {data.image && (
         <img
           className="relative mt-10 mb-1 rounded-md"
@@ -80,11 +80,14 @@ export default function BoardDetailPage() {
         />
       )}
       {data.user._id === user?._id && (
-        <div className="text-right text-xs">
-          <Link to="edit" state={{ data: data }}>
+        <div className="text-right text-sm">
+          <Link className="underline" to="edit" state={{ data: data }}>
             수정
           </Link>{" "}
-          | <button onClick={deletePost}>삭제</button>
+          |{" "}
+          <button className="underline" onClick={deletePost}>
+            삭제
+          </button>
         </div>
       )}
       <Comment replies={data.replies} />

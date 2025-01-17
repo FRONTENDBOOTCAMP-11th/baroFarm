@@ -23,7 +23,6 @@ export default function CommentItem({ item }) {
   const axios = useAxiosInstance();
   const { _id } = useParams();
   const queryClient = useQueryClient();
-  console.log(item);
 
   const deleteComment = async () => {
     if (confirm("댓글을 삭제하시겠습니까?")) {
@@ -57,7 +56,9 @@ export default function CommentItem({ item }) {
         <div className="mt-3 text-xs text-gray5 pl-5">{item.content}</div>
         {user?._id === item.user._id && (
           <span className="ml-auto text-xs mt-auto flex-shrink-0">
-            <button onClick={deleteComment}>삭제</button>
+            <button className="underline" onClick={deleteComment}>
+              삭제
+            </button>
           </span>
         )}
       </div>
