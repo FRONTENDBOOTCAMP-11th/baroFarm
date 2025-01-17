@@ -82,7 +82,7 @@ export default function PaymentPage() {
   useEffect(() => {
     if (addressId === 0) {
       setCurrentAddress({
-        userName: data?.extra?.userName ? data.extra.userName : data.name,
+        userName: data?.extra?.userName ? data.extra.userName : data?.name,
         phone: data?.phone,
         value: data?.address,
       });

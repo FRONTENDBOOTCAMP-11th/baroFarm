@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import Spinner from "@components/Spinner";
 import DataErrorPage from "@pages/DataErrorPage";
+import getMonthlyData from "@utils/getMonthlyData";
 
 const categories = [
   { title: "제철 과일", image: "/images/menu/Fruit.svg", url: "/menu/fruit" },
@@ -27,14 +28,6 @@ const categories = [
   { title: "떡", image: "/images/menu/Ricecake.svg", url: "/menu/riceCake" },
   { title: "쌀/잡곡", image: "/images/menu/Rice.svg", url: "/menu/rice" },
 ];
-
-const getMonthlyData = (data) => {
-  // 30일 전을 시작 시간으로 잡는다.
-  const beginTime = new Date().getTime() - 2592000 * 1000;
-
-  // 시작 시간보다 뒤에 생성된 아이템만 필터링
-  return data.filter((item) => beginTime <= new Date(item.createdAt).getTime());
-};
 
 export default function MainPage() {
   // axios instance
@@ -112,7 +105,7 @@ export default function MainPage() {
     .filter((_, index) => index < 4)
     .map((product) => <Product key={product._id} {...product} />);
 
-  // // 제철 상품 렌더링
+  // 제철 상품 렌더링
   const filteredOnMonthData = data.filter((item) =>
     item.extra.bestMonth?.includes(currentMonth)
   );
@@ -121,8 +114,7 @@ export default function MainPage() {
     .map((product) => <ProductBig key={product._id} {...product} />);
 
   // 게시글 개수에 따라 rows 정하기
-  const howManyRows = Math.ceil(board.length / 3);
-  console.log(howManyRows);
+  const howManyRows = Math.ceil(board?.length / 3);
   // 게시글 이미지 렌더링
   const storyImages = (
     <div
@@ -158,11 +150,9 @@ export default function MainPage() {
           <h2 className="text-xl">
             지금 최고 <span className="font-bold">인기 상품! 🔥</span>
           </h2>
-          <button
+          <Link
+            to={"/search/best"}
             className="text-xs flex gap-1 items-start cursor-pointer"
-            onClick={() =>
-              navigate("/search/best", { state: { sortedBestData } })
-            }
           >
             더보기
             <img
@@ -170,7 +160,7 @@ export default function MainPage() {
               alt="더보기 버튼"
               className="size-4"
             />
-          </button>
+          </Link>
         </div>
         <div className="flex flex-wrap justify-between gap-3">
           {bestProducts}
@@ -181,11 +171,9 @@ export default function MainPage() {
           <h2 className="text-xl">
             따끈따끈한 <span className="font-bold">신상품! ⏰</span>
           </h2>
-          <button
+          <Link
+            to={"/search/new"}
             className="text-xs flex gap-1 items-start cursor-pointer"
-            onClick={() =>
-              navigate("/search/new", { state: { filteredNewData } })
-            }
           >
             더보기
             <img
@@ -193,7 +181,7 @@ export default function MainPage() {
               alt="더보기 버튼"
               className="size-4"
             />
-          </button>
+          </Link>
         </div>
         <div className="flex flex-wrap justify-between gap-3">
           {newProducts}
@@ -204,11 +192,9 @@ export default function MainPage() {
           <h2 className="text-xl">
             이 맛이야! <span className="font-bold">제철 음식 🍂</span>
           </h2>
-          <button
+          <Link
+            to={"/search/seasonal"}
             className="text-xs flex gap-1 items-start cursor-pointer"
-            onClick={() =>
-              navigate("/search/seasonal", { state: { filteredOnMonthData } })
-            }
           >
             더보기
             <img
@@ -216,7 +202,7 @@ export default function MainPage() {
               alt="더보기 버튼"
               className="size-4"
             />
-          </button>
+          </Link>
         </div>
         <div className="flex overflow-x-auto gap-3">{onMonthProducts}</div>
       </section>
