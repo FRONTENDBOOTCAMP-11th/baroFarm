@@ -26,24 +26,68 @@ export default function EditProfilePage() {
   const editUserInfo = useMutation({
     mutationFn: (formData) => {
       const { value, detailValue, ...userData } = formData;
+      console.log(
+        !!userData.extra.userName +
+          !!userData.address.trim() +
+          !!userData.phone ===
+          1 || // 하나만 존재
+          !!userData.extra.userName +
+            !!userData.address.trim() +
+            !!userData.phone ===
+            2
+      );
+      if (
+        !!userData.extra.userName +
+          (!!userData.address.trim() || !!value) +
+          !!userData.phone ===
+          1 ||
+        !!userData.extra.userName +
+          (!!userData.address.trim() || !!value) +
+          !!userData.phone ===
+          2
+      ) {
+        if (userData.address)
+          throw new Error(
+            "기본 배송지 정보를 전부 입력해주시거나 전부 비워주시길 바랍니다\n(이름, 전화번호, 주소)"
+          );
+      }
+      if (data.address && !value) {
+        const body = {
+          ...data,
+          ...userData,
+          extra: {
+            ...data.extra,
+            ...userData.extra,
+          },
+        };
+        console.log(body);
+        return axios.patch(`/users/${data._id}`, body);
+      }
       const body = {
+        ...data,
         ...userData,
         address: `${value ? value : ""} ${detailValue ? detailValue : ""}`,
+        extra: {
+          ...data.extra,
+          ...userData.extra,
+        },
       };
       console.log(body);
       return axios.patch(`/users/${data._id}`, body);
     },
     onSuccess: () => {
       resetUser();
-      alert(
-        "프로필 정보 변경이 완료되었습니다. 설정 적용을 위해 로그아웃합니다"
-      );
+      alert("프로필 정보 변경이 완료되었습니다.");
+      alert("설정 적용을 위해 로그아웃합니다. 다시 로그인해주세요.");
       queryClient.invalidateQueries({ queryKey: ["user", data._id] });
       navigate("/users/mypage");
     },
     onError: (err) => {
       console.error("회원 정보 변경 실패:", err);
-      return <ErrorPage />;
+      const errorMessage = err.response
+        ? err.response.data.errors[0].msg
+        : err.message.replace(/^Error:\s*/, "");
+      alert(errorMessage);
     },
   });
   return (

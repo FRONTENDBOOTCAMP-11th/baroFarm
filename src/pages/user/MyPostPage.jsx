@@ -82,8 +82,8 @@ export default function MyPost() {
     <>
       {myBoardList}
       {myBoardList.length === 0 && (
-        <span className="mt-10 block text-center text-gray4">
-          작성하신 글이 없습니다.
+        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray4">
+          작성한 글이 없습니다.
         </span>
       )}
     </>

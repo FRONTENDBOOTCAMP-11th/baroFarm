@@ -26,10 +26,7 @@ export default function Comment({ replies = [] }) {
   const addComment = useMutation({
     mutationFn: async (item) => {
       if (user) return axios.post(`/posts/${_id}/replies`, item);
-      else
-        throw Error(
-          "로그인 후에 이용할 수 있는 기능입니다. 로그인하시겠습니까?"
-        );
+      else throw Error();
     },
     onSuccess: (res) => {
       console.log("data", res.data);
@@ -39,7 +36,10 @@ export default function Comment({ replies = [] }) {
     },
     onError: (err) => {
       console.error(err);
-      if (!user && confirm(err)) {
+      if (
+        !user &&
+        confirm("로그인 후에 이용할 수 있는 기능입니다. 로그인하시겠습니까?")
+      ) {
         navigate("/users/login");
       }
     },
@@ -50,8 +50,11 @@ export default function Comment({ replies = [] }) {
       <section className="pt-5">
         <span className="font-semibold">댓글 ({replies.length})</span>
         {replies.length === 0 && (
-          <div className="h-[85px]  flex justify-center items-center border-b-[1px] border-gray3/50">
+          <div className="min-h-[85px] flex justify-center items-center border-b-[1px] border-gray3/50 text-gray4 break-keep text-center text-sm py-[30px]">
             아직 댓글이 없습니다!
+            <br />
+            <br /> 댓글은 작성자에게 큰 힘이 됩니다.
+            <br /> 지금 바로 첫 댓글의 주인공이 되어보세요!
           </div>
         )}
         {replies.length !== 0 && repliesList}
@@ -64,13 +67,12 @@ export default function Comment({ replies = [] }) {
           type="text"
           id="comment"
           name="comment"
-          className="max-w-[285px] h-[35px] rounded-full px-[15px] mr-5 bg-gray1 flex-grow focus:outline-btn-primary"
+          className="text-sm border border-gray3 max-w-[285px] h-[30px] rounded-md px-[5px] mr-5 flex-grow placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
+          placeholder="댓글을 입력해주세요"
           {...register("content")}
         />
         <div>
-          <Button width={45} height={35} type="submit">
-            등록
-          </Button>
+          <Button type="submit">등록</Button>
         </div>
       </form>
     </>

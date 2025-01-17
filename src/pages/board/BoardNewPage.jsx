@@ -96,7 +96,11 @@ export default function BoardNewPage() {
     },
     onError: (err) => {
       console.error(err);
-      alert(err);
+      const errorMessage = err.response
+        ? err.response.data.errors[0].msg
+        : err.message.replace(/^Error:\s*/, "");
+
+      alert(errorMessage);
     },
   });
 

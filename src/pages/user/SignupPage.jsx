@@ -12,8 +12,8 @@ export default function SignupPage() {
   const axios = useAxiosInstance();
   const handleSignup = useMutation({
     mutationFn: (formData) => axios.post("/users", formData),
-    onSuccess: (res) => {
-      console.log("회원가입 성공 데이터:", res.data);
+    onSuccess: () => {
+      // console.log("회원가입 성공 데이터:", res.data);
       alert("회원가입이 완료되었습니다.");
       navigate("/users/login");
     },
