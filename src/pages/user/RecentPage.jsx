@@ -25,7 +25,7 @@ export default function RecentPage() {
   return !!productsData ? (
     <Products productsData={productsData} />
   ) : (
-    <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+    <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray4">
       최근 본 상품이 없습니다.
     </p>
   );

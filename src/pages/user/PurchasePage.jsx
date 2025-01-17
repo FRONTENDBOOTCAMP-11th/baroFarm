@@ -44,7 +44,7 @@ export default function PurchasePage() {
   if (!reviewData || reviewData.length === 0) {
     return (
       <>
-        <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray4">
           구매 내역이 없습니다.
         </p>
       </>
