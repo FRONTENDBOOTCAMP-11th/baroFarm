@@ -84,7 +84,7 @@ export default function CartPage() {
         observer.unobserve(targetElement);
       }
     };
-  }, [data]);
+  }, [data, renderCart]);
 
   // 장바구니 상품 삭제
   const queryClient = useQueryClient();
