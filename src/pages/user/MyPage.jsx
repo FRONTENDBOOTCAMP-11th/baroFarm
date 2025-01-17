@@ -208,14 +208,6 @@ export default function MyPage() {
                 alt="addProduct icon"
               />
             </Link>
-            <Link to={""} className="flex items-center text-[14px] my-[24px]">
-              탈퇴하기
-              <img
-                src="/icons/icon_forward.svg"
-                className="h-[16px] ml-auto"
-                alt="addProduct icon"
-              />
-            </Link>
           </div>
         </>
       )}
