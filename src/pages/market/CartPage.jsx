@@ -7,6 +7,7 @@ import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import DataErrorPage from "@pages/DataErrorPage";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import useUserStore from "@zustand/useUserStore";
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -14,6 +15,7 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function CartPage() {
   const axios = useAxiosInstance();
+  const { user } = useUserStore();
   // 구매할 물품 선택을 위한 폼
   const { register, handleSubmit } = useForm();
   // 결제 버튼 보이기 상태
