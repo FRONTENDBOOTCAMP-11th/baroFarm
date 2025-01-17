@@ -15,13 +15,13 @@ NewPost.propTypes = {
   isBoard: PropTypes.bool,
   handleSubmit: PropTypes.func,
   register: PropTypes.func.isRequired,
-  handleRating: PropTypes.func.isRequired,
+  handleRating: PropTypes.func,
   editInfo: PropTypes.string,
   errors: PropTypes.shape(),
 };
 
 export default function NewPost({
-  isBoard,
+  isBoard = false,
   handleSubmit,
   register,
   handleRating,
@@ -56,7 +56,7 @@ export default function NewPost({
           src={
             data.image
               ? `https://11.fesp.shop${data.image}`
-              : "/images/profile/ProfileImage_Sample.svg"
+              : "/images/profile/ProfileImage_Sample.jpg"
           }
           alt="ProfileImage"
           className="w-6 h-6 rounded-full object-cover"

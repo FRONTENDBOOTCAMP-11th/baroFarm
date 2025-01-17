@@ -123,7 +123,7 @@ export default function ProfilePage() {
           src={
             userData?.image
               ? url + userData.image
-              : "/images/profile/ProfileImage_Sample.svg"
+              : "/images/profile/ProfileImage_Sample.jpg"
           }
           alt="Profile Image"
           className="w-[100px] h-[100px] rounded-full object-cover"
@@ -159,7 +159,7 @@ export default function ProfilePage() {
           {userData?.extra?.userName ? (
             userData.extra.userName
           ) : (
-            <span className="text-gray3">이름을 입력해주세요</span>
+            <span className="text-gray3 font-light">이름 정보가 없습니다</span>
           )}
           <br />
           {userData?.extra?.gender ? (
@@ -169,7 +169,7 @@ export default function ProfilePage() {
               "여성"
             )
           ) : (
-            <span className="text-gray3">성별을 입력해주세요</span>
+            <span className="text-gray3 font-light">성별 정보가 없습니다</span>
           )}
           <br />
           {userData?.email ? userData.email : "Kakao 로그인 회원"}
@@ -177,23 +177,29 @@ export default function ProfilePage() {
           {userData?.phone ? (
             userData.phone
           ) : (
-            <span className="text-gray3">전화번호를 입력해주세요</span>
+            <span className="text-gray3 font-light">
+              전화번호 정보가 없습니다
+            </span>
           )}{" "}
           <br />
           {userData?.extra?.birth ? (
             userData.extra.birth
           ) : (
-            <span className="text-gray3">생년월일을 입력해주세요</span>
+            <span className="text-gray3 font-light">
+              생년월일 정보가 없습니다
+            </span>
           )}
           <br />
           {userData?.address ? (
             userData.address.trim("") === "" ? (
-              <span className="text-gray3">주소를 입력해주세요</span>
+              <span className="text-gray3 font-light">
+                주소 정보가 없습니다
+              </span>
             ) : (
               userData.address
             )
           ) : (
-            <span className="text-gray3">주소를 입력해주세요</span>
+            <span className="text-gray3 font-light">주소 정보가 없습니다</span>
           )}
         </section>
         <Link
@@ -206,7 +212,7 @@ export default function ProfilePage() {
             className="h-10 ml-auto"
             alt="addProduct icon"
           />
-          <div className="absolute w-auto box-border text-nowrap -translate-x-8 px-1 bg-btn-primary text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <div className="absolute rounded-md w-auto box-border text-nowrap -translate-x-8 px-1 bg-btn-primary text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <p className="">수정</p>
           </div>
         </Link>
