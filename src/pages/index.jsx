@@ -120,9 +120,9 @@ export default function MainPage() {
     <div
       className={`grid grid-cols-3 grid-rows-${howManyRows} px-5 gap-1 *:size-[120px] *:object-cover *:cursor-pointer`}
     >
+      {/* 최대 9개까지만 필터링 */}
       {board
-        // 최대 9개까지만 필터링
-        .filter((_, index) => index < 9)
+        ?.filter((_, index) => index < 9)
         .map((item, index) => (
           <img
             key={index}
