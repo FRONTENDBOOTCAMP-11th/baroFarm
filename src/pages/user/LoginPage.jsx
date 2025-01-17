@@ -145,6 +145,8 @@ export default function LoginPage() {
             placeholder="이메일"
             className="placeholder:text-gray4 w-full outline-none"
             {...register("email", { required: "이메일은 필수입니다." })}
+            // 강사님 배포 테스트 이메일
+            defaultValue={"barofarm@market.com"}
           />
         </div>
         {errors.email && <p className="text-red1 text-xs -mt-7 mb-4">{errors.email.message}</p>}
@@ -154,6 +156,8 @@ export default function LoginPage() {
             placeholder="비밀번호"
             className="placeholder:text-gray4 w-full outline-none"
             {...register("password", { required: "비밀번호는 필수입니다." })}
+            // 강사님 배포 테스트 패스워드
+            defaultValue={11111111}
           />
         </div>
         {errors.password && <p className="text-red1 text-xs -mt-3 mb-4">{errors.password.message}</p>}
@@ -171,7 +175,7 @@ export default function LoginPage() {
               }
             }}
           />
-          <span className="text-sm cursor-pointer">로그인 저장 정보</span>
+          <span className="text-sm cursor-pointer">로그인 정보 저장</span>
         </label>
         <div className="mb-5 w-full h-[3.25rem] m-auto">
           <button
