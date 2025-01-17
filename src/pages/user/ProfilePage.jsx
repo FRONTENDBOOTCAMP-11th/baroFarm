@@ -123,7 +123,7 @@ export default function ProfilePage() {
           src={
             userData?.image
               ? url + userData.image
-              : "/images/profile/ProfileImage_Sample.svg"
+              : "/images/profile/ProfileImage_Sample.jpg"
           }
           alt="Profile Image"
           className="w-[100px] h-[100px] rounded-full object-cover"

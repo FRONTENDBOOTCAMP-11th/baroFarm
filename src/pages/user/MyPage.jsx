@@ -67,7 +67,7 @@ export default function MyPage() {
                 src={
                   data.image
                     ? url + data.image //이메일 타입
-                    : "/images/profile/ProfileImage_Sample.svg" //이미지 설정이 없는 경우
+                    : "/images/profile/ProfileImage_Sample.jpg" //이미지 설정이 없는 경우
                 }
                 className="mr-5 w-[49px] h-[50px] rounded-full object-cover"
                 loading="lazy"
@@ -96,7 +96,7 @@ export default function MyPage() {
           {!user && (
             <>
               <img
-                src={"/images/profile/ProfileImage_Sample.svg"}
+                src={"/images/profile/ProfileImage_Sample.jpg"}
                 className="mr-5 w-[49px] h-[50px] rounded-full"
                 loading="lazy"
               />

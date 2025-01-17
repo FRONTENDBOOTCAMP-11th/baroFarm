@@ -75,7 +75,7 @@ export default function BoardDetailPage() {
           src={
             data.user.image
               ? `https://11.fesp.shop${data.user.image}`
-              : "/images/profile/ProfileImage_Sample.svg"
+              : "/images/profile/ProfileImage_Sample.jpg"
           }
           alt="ProfileImage"
           className="w-6 h-6 rounded-full object-cover"

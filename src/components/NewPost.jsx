@@ -56,7 +56,7 @@ export default function NewPost({
           src={
             data.image
               ? `https://11.fesp.shop${data.image}`
-              : "/images/profile/ProfileImage_Sample.svg"
+              : "/images/profile/ProfileImage_Sample.jpg"
           }
           alt="ProfileImage"
           className="w-6 h-6 rounded-full object-cover"

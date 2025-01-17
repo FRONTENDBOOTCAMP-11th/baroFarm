@@ -285,33 +285,11 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
           </div>
         </>
       )}
-      {/* 이름 */}
-      {userInfo && (
-        <>
-          <div className="mb-2.5 text-sm">
-            <label className="block mb-2.5 font-semibold" htmlFor="userName">
-              이름
-            </label>
-            <input
-              className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
-              type="text"
-              id="userName"
-              placeholder="이름을 입력해주세요"
-              defaultValue={
-                userInfo?.extra?.userName ? userInfo.extra.userName : ""
-              }
-              {...register("extra.userName", validationSchema.extra.userName)}
-            />
-            {errors.extra?.userName && (
-              <p className="text-red1 text-xs mt-1 ps-1">
-                {errors.extra.userName.message}
-              </p>
-            )}
-          </div>
-        </>
-      )}
       {/* 닉네임 */}
-      <div className="mb-2.5 text-sm">
+      {userInfo && (
+        <label className="block mb-2.5 font-semibold">개인 정보</label>
+      )}
+      <div className="mb-5 text-sm">
         <label className="block mb-2.5 font-semibold" htmlFor="name">
           닉네임
         </label>
@@ -328,30 +306,6 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
           <p className="text-red1 text-xs mt-1 ps-1">{errors.name.message}</p>
         )}
       </div>
-      {/* 휴대폰 */}
-      {userInfo && (
-        <>
-          <div className="mb-2.5 text-sm">
-            <label className="block mb-2.5 font-semibold" htmlFor="phone">
-              휴대폰
-            </label>
-            <input
-              className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-2.5 outline-none focus:border-btn-primary"
-              type="tel"
-              inputMode="numeric" // 모바일에서 숫자 키패드가 나타나도록 설정
-              id="phone"
-              placeholder="숫자만 입력해주세요 or 예시: 010-1234-5678"
-              // defaultValue={userInfo ? userInfo.phone : ""}
-              {...register("phone", validationSchema.phone)}
-            />
-            {errors.phone && (
-              <p className="text-red1 text-xs -mt-1.5 ps-1">
-                {errors.phone.message}
-              </p>
-            )}
-          </div>
-        </>
-      )}
 
       {/* 회원 유형 */}
       {!userInfo && (
@@ -418,17 +372,10 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
                 여자
               </label>
             </div>
-            {/* {errors.extra?.gender && (
-              <div className="w-full">
-                <p className=" text-red1 text-xs ps-0.5 -mt-3">
-                  {errors.extra.gender.message}
-                </p>
-              </div>
-            )} */}
           </div>
 
           {/* 생년월일 */}
-          <div className="mb-5 text-sm">
+          <div className="mb-10 text-sm">
             <label className="block mb-2.5 font-semibold" htmlFor="birth">
               생년월일
             </label>
@@ -438,11 +385,44 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               id="birth"
               {...register("extra.birth", validationSchema.extra.birth)}
             />
-            {/* {errors.extra?.birth && (
-              <p className="text-red1 text-xs mt-1 ps-1">
-                {errors.extra.birth.message}
+          </div>
+          <label className="block mb-2.5 font-semibold">기본 배송지 정보</label>
+          {/* 이름 */}
+          <div className="mb-5 text-sm">
+            <label className="block mb-2.5 font-semibold" htmlFor="userName">
+              이름
+            </label>
+            <input
+              className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
+              type="text"
+              id="userName"
+              placeholder="이름을 입력해주세요"
+              defaultValue={
+                userInfo?.extra?.userName ? userInfo.extra.userName : ""
+              }
+              {...register("extra.userName", validationSchema.extra.userName)}
+            />
+          </div>
+
+          {/* 휴대폰 */}
+          <div className="mb-2.5 text-sm">
+            <label className="block mb-2.5 font-semibold" htmlFor="phone">
+              휴대폰
+            </label>
+            <input
+              className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-2.5 outline-none focus:border-btn-primary"
+              type="tel"
+              inputMode="numeric" // 모바일에서 숫자 키패드가 나타나도록 설정
+              id="phone"
+              placeholder="숫자만 입력해주세요 or 예시: 010-1234-5678"
+              // defaultValue={userInfo ? userInfo.phone : ""}
+              {...register("phone", validationSchema.phone)}
+            />
+            {errors.phone && (
+              <p className="text-red1 text-xs -mt-1.5 ps-1">
+                {errors.phone.message}
               </p>
-            )} */}
+            )}
           </div>
 
           {/* 주소 */}
