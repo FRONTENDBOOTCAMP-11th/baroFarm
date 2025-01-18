@@ -65,7 +65,7 @@ export default function Footer() {
       />
       <button
         className="flex flex-col items-center"
-        onClick={!user ? () => navigateLogin() : navigate("/cart")}
+        onClick={!user ? () => navigateLogin() : () => navigate("/cart")}
       >
         <img src={icons.cart.default} className="w-10" alt={`장바구니icon`} />
         <span>장바구니</span>

@@ -162,7 +162,7 @@ export default function MainPage() {
             />
           </Link>
         </div>
-        <div className="flex flex-wrap justify-between gap-3">
+        <div className="grid grid-cols-2 justify-between gap-5">
           {bestProducts}
         </div>
       </section>
@@ -183,7 +183,7 @@ export default function MainPage() {
             />
           </Link>
         </div>
-        <div className="flex flex-wrap justify-between gap-3">
+        <div className="grid grid-cols-2 justify-between gap-5">
           {newProducts}
         </div>
       </section>
