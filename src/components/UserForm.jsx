@@ -100,11 +100,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               }, // 오류가 발생한 필드로 포커스 자동으로 이동
               { shouldFocus: true }
             );
-            console.error("에러 상세:", {
-              message: error.message,
-              status: error.response?.status,
-              data: error.response?.data,
-            });
+            console.error("이메일 에러:", error);
           }
         }
       },
@@ -252,11 +248,7 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         </>
       )}
       {/* 닉네임 */}
-      {userInfo && (
-
-        <label className="block mb-2.5 font-semibold">개인 정보</label>
-
-      )}
+      {userInfo && <label className="block mb-2.5 font-semibold">개인 정보</label>}
       <div className="mb-5 text-sm">
         <label className="block mb-2.5 font-semibold" htmlFor="name">
           닉네임
@@ -271,7 +263,6 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
         />
         {errors.name && <p className="text-red1 text-xs mt-1 ps-1">{errors.name.message}</p>}
       </div>
-
 
       {/* 회원 유형 */}
       {!userInfo && (
@@ -361,33 +352,26 @@ export default function UserForm({ userInfo, buttonText, onSubmitUser }) {
               type="text"
               id="userName"
               placeholder="이름을 입력해주세요"
-              defaultValue={
-                userInfo?.extra?.userName ? userInfo.extra.userName : ""
-              }
+              defaultValue={userInfo?.extra?.userName ? userInfo.extra.userName : ""}
               {...register("extra.userName", validationSchema.extra.userName)}
             />
           </div>
 
-          {/* 휴대폰 */}
+          {/* 전화번호 */}
           <div className="mb-2.5 text-sm">
             <label className="block mb-2.5 font-semibold" htmlFor="phone">
-              휴대폰
+              전화번호
             </label>
             <input
               className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 mb-2.5 outline-none focus:border-btn-primary"
               type="tel"
               inputMode="numeric" // 모바일에서 숫자 키패드가 나타나도록 설정
               id="phone"
-              placeholder="숫자만 입력해주세요 or 예시: 010-1234-5678"
+              placeholder="숫자만 입력해주세요"
               // defaultValue={userInfo ? userInfo.phone : ""}
               {...register("phone", validationSchema.phone)}
             />
-            {errors.phone && (
-              <p className="text-red1 text-xs -mt-1.5 ps-1">
-                {errors.phone.message}
-              </p>
-            )}
-
+            {errors.phone && <p className="text-red1 text-xs -mt-1.5 ps-1">{errors.phone.message}</p>}
           </div>
 
           {/* 주소 */}

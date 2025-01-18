@@ -4,12 +4,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useOutletContext,
-} from "react-router-dom";
+import { Link, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function ProfilePage() {
   const { setHeaderContents } = useOutletContext();
@@ -34,14 +29,7 @@ export default function ProfilePage() {
 
   // 이미지 파일 유효성 검사
   const checkImg = (file) => {
-    const validTypes = [
-      "image/jpeg",
-      "image/jpg",
-      "image/png",
-      "image/gif",
-      "image/webp",
-      "image/svg",
-    ]; // 허용 MIME 타입
+    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp", "image/svg"]; // 허용 MIME 타입
     if (!validTypes.includes(file.type)) {
       return true;
     }
@@ -71,10 +59,7 @@ export default function ProfilePage() {
           });
           imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
         } catch (error) {
-          console.error(
-            "Image upload failed:",
-            error.response?.data || error.message
-          );
+          console.error("Image upload failed:", error.response?.data || error.message);
           throw new Error("Image upload failed.");
         }
         const body = {
@@ -84,7 +69,7 @@ export default function ProfilePage() {
       }
     },
     onSuccess: () => {
-      alert("프로필 이미지 설정 성공!\n설정 적용을 위해 로그아웃합니다");
+      alert("프로필 이미지 설정 성공!\n설정 적용을 위해 로그아웃합니다.");
       queryClient.invalidateQueries({ queryKey: ["user", id] });
       resetUser();
       navigate("/users/mypage");
@@ -101,8 +86,7 @@ export default function ProfilePage() {
   };
 
   const setProfileImg = () => {
-    if (confirm("프로필 이미지를 변경하시겠습니까?"))
-      document.getElementById("profileImgChange").click();
+    if (confirm("프로필 이미지를 변경하시겠습니까?")) document.getElementById("profileImgChange").click();
   };
 
   const { data: userData, isLoading } = useQuery({
@@ -120,27 +104,14 @@ export default function ProfilePage() {
       <div className="w-fit mx-auto text-center relative">
         <img
           id="profileImg"
-          src={
-            userData?.image
-              ? url + userData.image
-              : "/images/profile/ProfileImage_Sample.jpg"
-          }
+          src={userData?.image ? url + userData.image : "/images/profile/ProfileImage_Sample.jpg"}
           alt="Profile Image"
           className="w-[100px] h-[100px] rounded-full object-cover"
         />
         <button className="absolute right-0 -bottom-2" onClick={setProfileImg}>
-          <img
-            src="/icons/icon_camera.svg"
-            alt="이미지 수정 아이콘"
-            className="w-7 h-7"
-          />
+          <img src="/icons/icon_camera.svg" alt="이미지 수정 아이콘" className="w-7 h-7" />
         </button>
-        <input
-          id="profileImgChange"
-          type="file"
-          className="hidden"
-          onChange={handleFileChange}
-        />
+        <input id="profileImgChange" type="file" className="hidden" onChange={handleFileChange} />
       </div>
       <div className="mt-[25px] mb-[30px] mx-auto max-w-fit text-2xl font-bold">
         {userData?.name ? userData.name : "닉네임 없음"}
@@ -159,7 +130,7 @@ export default function ProfilePage() {
           {userData?.extra?.userName ? (
             userData.extra.userName
           ) : (
-            <span className="text-gray3 font-light">이름 정보가 없습니다</span>
+            <span className="text-gray3 font-light">이름을 입력해주세요</span>
           )}
           <br />
           {userData?.extra?.gender ? (
@@ -169,37 +140,31 @@ export default function ProfilePage() {
               "여성"
             )
           ) : (
-            <span className="text-gray3 font-light">성별 정보가 없습니다</span>
+            <span className="text-gray3 font-light">성별을 선택해주세요</span>
           )}
           <br />
-          {userData?.email ? userData.email : "Kakao 로그인 회원"}
+          {userData?.email ? userData.email : "카카오 회원"}
           <br />
           {userData?.phone ? (
             userData.phone
           ) : (
-            <span className="text-gray3 font-light">
-              전화번호 정보가 없습니다
-            </span>
+            <span className="text-gray3 font-light">전화번호를 등록해주세요</span>
           )}{" "}
           <br />
           {userData?.extra?.birth ? (
             userData.extra.birth
           ) : (
-            <span className="text-gray3 font-light">
-              생년월일 정보가 없습니다
-            </span>
+            <span className="text-gray3 font-light">생일을 등록해주세요</span>
           )}
           <br />
           {userData?.address ? (
             userData.address.trim("") === "" ? (
-              <span className="text-gray3 font-light">
-                주소 정보가 없습니다
-              </span>
+              <span className="text-gray3 font-light">주소를 입력해주세요</span>
             ) : (
               userData.address
             )
           ) : (
-            <span className="text-gray3 font-light">주소 정보가 없습니다</span>
+            <span className="text-gray3 font-light">주소를 입력해주세요</span>
           )}
         </section>
         <Link
@@ -207,11 +172,7 @@ export default function ProfilePage() {
           className="flex w-7 h-7 items-center text-[14px] absolute right-2 top-2 group"
           state={{ user: userData }}
         >
-          <img
-            src="/icons/icon_profileEdit_full.svg"
-            className="h-10 ml-auto"
-            alt="addProduct icon"
-          />
+          <img src="/icons/icon_profileEdit_full.svg" className="h-10 ml-auto" alt="addProduct icon" />
           <div className="absolute rounded-md w-auto box-border text-nowrap -translate-x-8 px-1 bg-btn-primary text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <p className="">수정</p>
           </div>
