@@ -7,6 +7,7 @@ import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import {
   Link,
+  useLocation,
   useNavigate,
   useOutletContext,
   useParams,
@@ -19,10 +20,22 @@ export default function BoardDetailPage() {
   const { _id } = useParams();
   const { user } = useUserStore();
   const axios = useAxiosInstance();
+  const location = useLocation();
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      leftChild: (
+        <HeaderIcon
+          name="back"
+          onClick={() => {
+            const prevPage = location.state?.from;
+            if (prevPage && prevPage.includes("edit")) navigate(-3);
+            else {
+              navigate(-1);
+            }
+          }}
+        />
+      ),
       title: "게시글",
       rightChild: (
         <>
@@ -62,7 +75,7 @@ export default function BoardDetailPage() {
           src={
             data.user.image
               ? `https://11.fesp.shop${data.user.image}`
-              : "/images/profile/ProfileImage_Sample.svg"
+              : "/images/profile/ProfileImage_Sample.jpg"
           }
           alt="ProfileImage"
           className="w-6 h-6 rounded-full object-cover"
@@ -72,7 +85,7 @@ export default function BoardDetailPage() {
           {newDate}
         </span>
       </div>
-      <div className="mx-[5px] mt-[30px]">{data.content}</div>
+      <div className="mx-[5px] my-[30px]">{data.content}</div>
       {data.image && (
         <img
           className="relative mt-10 mb-1 rounded-md"
@@ -80,11 +93,14 @@ export default function BoardDetailPage() {
         />
       )}
       {data.user._id === user?._id && (
-        <div className="text-right text-xs">
-          <Link to="edit" state={{ data: data }}>
+        <div className="text-right text-sm">
+          <Link className="underline" to="edit" state={{ data: data }}>
             수정
           </Link>{" "}
-          | <button onClick={deletePost}>삭제</button>
+          |{" "}
+          <button className="underline" onClick={deletePost}>
+            삭제
+          </button>
         </div>
       )}
       <Comment replies={data.replies} />

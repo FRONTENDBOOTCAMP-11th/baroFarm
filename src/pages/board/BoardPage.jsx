@@ -117,16 +117,17 @@ export default function BoardPage() {
           />
         </div>
       </form>
-      <div className="flex my-2 items-center bg-green1 rounded-md">
+      <div className="flex my-2 items-center bg-btn-primary rounded-md gap-3 p-3">
         <img
-          src="/images/BaroFarmLogo.svg"
+          src="/images/BaroFarmIcon.png"
           alt="바로팜 로고"
           className="w-[90px]"
         />
         <p className="text-white text-sm break-keep">
-          바로파밍은 모든 이용자들을 위한
-          <span className="text-btn-primary"> 소통</span>의 공간입니다.
-          <br /> 매너를 지키는 바로팜인이 됩시다!
+          바로파밍은 모든 이용자이 이용할 수 있는
+          <span className="text-green1"> 소통</span>의 공간입니다.
+          <br /> 바로팜에서 구매한 상품으로 만든 요리를 자랑하거나 나만의 레시피
+          팁을 나누어 보세요!
         </p>
       </div>
 

@@ -67,14 +67,14 @@ export default function MyPage() {
                 src={
                   data.image
                     ? url + data.image //이메일 타입
-                    : "/images/profile/ProfileImage_Sample.svg" //이미지 설정이 없는 경우
+                    : "/images/profile/ProfileImage_Sample.jpg" //이미지 설정이 없는 경우
                 }
                 className="mr-5 w-[49px] h-[50px] rounded-full object-cover"
                 loading="lazy"
               />
               <div>
                 <p className="text-gray5/50 text-[12px] leading-[14px]">
-                  {data.type == "seller" ? "판매자" : "구매자"}
+                  {data.type == "seller" ? "판매회원" : "구매회원"}
                 </p>
                 <h2 className="text-[16px] leading-[18px] mt-[4px]">
                   {data?.name}님! 어서오세요
@@ -96,7 +96,7 @@ export default function MyPage() {
           {!user && (
             <>
               <img
-                src={"/images/profile/ProfileImage_Sample.svg"}
+                src={"/images/profile/ProfileImage_Sample.jpg"}
                 className="mr-5 w-[49px] h-[50px] rounded-full"
                 loading="lazy"
               />
@@ -202,14 +202,6 @@ export default function MyPage() {
               state={{ id: data._id }}
             >
               내 정보 보기
-              <img
-                src="/icons/icon_forward.svg"
-                className="h-[16px] ml-auto"
-                alt="addProduct icon"
-              />
-            </Link>
-            <Link to={""} className="flex items-center text-[14px] my-[24px]">
-              탈퇴하기
               <img
                 src="/icons/icon_forward.svg"
                 className="h-[16px] ml-auto"
