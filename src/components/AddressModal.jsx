@@ -260,20 +260,51 @@ export default function AddressModal({
               </div>
               <div className="mb-2.5 text-sm">
                 <label className="block mb-2.5 font-semibold" htmlFor="email">
-                  연락처
+                  연락처{" "}
+                  <span className="text-gray4 font-light text-sm">
+                    (예시 : 01011112222)
+                  </span>
                 </label>
                 <input
                   className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
                   type="text"
                   id="phone"
+                  // 모바일에서 숫자 키패드가 나타나도록 설정
+                  inputMode="numeric"
                   placeholder="연락처를 입력해주세요."
                   {...register("phone", {
                     required: "연락처를 입력해주세요.",
+                    pattern: {
+                      value: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
+                      message: "올바른 전화번호 형식이 아닙니다.",
+                    },
                   })}
+                  onChange={(e) => {
+                    // 숫자가 아닌 모든 문자 제거 (예: "010-1234-5678" → "01012345678")
+                    const number = e.target.value.replace(/[^\d]/g, "");
+
+                    // 하이픈 추가 로직
+                    let formattedNumber = "";
+                    if (number.length <= 3) {
+                      formattedNumber = number;
+                    } else if (number.length <= 7) {
+                      formattedNumber = `${number.slice(0, 3)}-${number.slice(
+                        3
+                      )}`;
+                    } else {
+                      formattedNumber = `${number.slice(0, 3)}-${number.slice(
+                        3,
+                        7
+                      )}-${number.slice(7, 11)}`;
+                    }
+
+                    // 입력값 업데이트
+                    e.target.value = formattedNumber;
+                  }}
                 />
-                {errors.userName && (
+                {errors.phone && (
                   <p className="text-red1 text-xs mt-1 ps-1">
-                    {errors.userName.message}
+                    {errors.phone.message}
                   </p>
                 )}
               </div>
@@ -302,6 +333,7 @@ export default function AddressModal({
                   isOpenIframe={isOpenIframe}
                   setIsOpenIframe={setIsOpenIframe}
                   register={register}
+                  errors={errors}
                 />
               </div>
 
