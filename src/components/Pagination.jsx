@@ -1,3 +1,11 @@
+import PropTypes from "prop-types";
+
+Pagination.propTypes = {
+  page: PropTypes.number.isRequired,
+  handlePageChange: PropTypes.func.isRequired,
+  totalPages: PropTypes.number.isRequired,
+};
+
 export default function Pagination({ page, handlePageChange, totalPages }) {
   return (
     <>
