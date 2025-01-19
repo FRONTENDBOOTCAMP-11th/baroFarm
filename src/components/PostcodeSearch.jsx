@@ -6,12 +6,14 @@ PostcodeSearch.propTypes = {
   isOpenIframe: PropTypes.bool.isRequired,
   setIsOpenIframe: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
+  errors: PropTypes.object,
 };
 
 export default function PostcodeSearch({
   isOpenIframe,
   setIsOpenIframe,
   register,
+  errors,
 }) {
   // 주소 검색 iframe에 접근
   const iframeRef = useRef(null);
@@ -78,8 +80,15 @@ export default function PostcodeSearch({
             type="text"
             placeholder="상세주소"
             autoFocus
-            {...register("detailValue")}
+            {...register("detailValue", {
+              required: "상세주소를 입력해주세요.",
+            })}
           />
+          {errors.detailValue && (
+            <p className="text-red1 text-xs mt-1 ps-1">
+              {errors.detailValue.message}
+            </p>
+          )}
         </div>
       )}
 

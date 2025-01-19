@@ -20,12 +20,11 @@ export default function Carousel({ width = 390, height, data }) {
         src={`https://11.fesp.shop${item?.mainImages[0]?.path}`}
         alt={`${index}번 이미지`}
         style={{
-          width: `${width}px`,
           height: `${height}px`,
           objectFit: "cover",
         }}
         onClick={() => navigate(`/product/${item._id}`)}
-        className="cursor-pointer"
+        className="cursor-pointer w-full"
       />
       {/* 상품 정보를 나타내는 자막 */}
       <div className="absolute flex bottom-7 left-3 bg-white/80 rounded-lg px-2 py-1 items-center gap-2">
@@ -41,8 +40,8 @@ export default function Carousel({ width = 390, height, data }) {
 
   return (
     <section
-      style={{ width: `${width}px`, height: `${height}px` }}
-      className="flex text-center mb-[10px] relative"
+      style={{ height: `${height}px` }}
+      className="flex text-center mb-[10px] relative w-full"
     >
       <Swiper
         style={{ height: `${height}}px` }}

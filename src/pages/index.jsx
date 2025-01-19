@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import Spinner from "@components/Spinner";
 import DataErrorPage from "@pages/DataErrorPage";
+import getMonthlyData from "@utils/getMonthlyData";
 
 const categories = [
   { title: "제철 과일", image: "/images/menu/Fruit.svg", url: "/menu/fruit" },
@@ -27,14 +28,6 @@ const categories = [
   { title: "떡", image: "/images/menu/Ricecake.svg", url: "/menu/riceCake" },
   { title: "쌀/잡곡", image: "/images/menu/Rice.svg", url: "/menu/rice" },
 ];
-
-const getMonthlyData = (data) => {
-  // 30일 전을 시작 시간으로 잡는다.
-  const beginTime = new Date().getTime() - 2592000 * 1000;
-
-  // 시작 시간보다 뒤에 생성된 아이템만 필터링
-  return data.filter((item) => beginTime <= new Date(item.createdAt).getTime());
-};
 
 export default function MainPage() {
   // axios instance
@@ -112,7 +105,7 @@ export default function MainPage() {
     .filter((_, index) => index < 4)
     .map((product) => <Product key={product._id} {...product} />);
 
-  // // 제철 상품 렌더링
+  // 제철 상품 렌더링
   const filteredOnMonthData = data.filter((item) =>
     item.extra.bestMonth?.includes(currentMonth)
   );
@@ -121,16 +114,15 @@ export default function MainPage() {
     .map((product) => <ProductBig key={product._id} {...product} />);
 
   // 게시글 개수에 따라 rows 정하기
-  const howManyRows = Math.ceil(board.length / 3);
-  console.log(howManyRows);
+  const howManyRows = Math.ceil(board?.length / 3);
   // 게시글 이미지 렌더링
   const storyImages = (
     <div
       className={`grid grid-cols-3 grid-rows-${howManyRows} px-5 gap-1 *:size-[120px] *:object-cover *:cursor-pointer`}
     >
+      {/* 최대 9개까지만 필터링 */}
       {board
-        // 최대 9개까지만 필터링
-        .filter((_, index) => index < 9)
+        ?.filter((_, index) => index < 9)
         .map((item, index) => (
           <img
             key={index}
@@ -158,11 +150,9 @@ export default function MainPage() {
           <h2 className="text-xl">
             지금 최고 <span className="font-bold">인기 상품! 🔥</span>
           </h2>
-          <button
+          <Link
+            to={"/search/best"}
             className="text-xs flex gap-1 items-start cursor-pointer"
-            onClick={() =>
-              navigate("/search/best", { state: { sortedBestData } })
-            }
           >
             더보기
             <img
@@ -170,9 +160,9 @@ export default function MainPage() {
               alt="더보기 버튼"
               className="size-4"
             />
-          </button>
+          </Link>
         </div>
-        <div className="flex flex-wrap justify-between gap-3">
+        <div className="grid grid-cols-2 justify-between gap-5">
           {bestProducts}
         </div>
       </section>
@@ -181,11 +171,9 @@ export default function MainPage() {
           <h2 className="text-xl">
             따끈따끈한 <span className="font-bold">신상품! ⏰</span>
           </h2>
-          <button
+          <Link
+            to={"/search/new"}
             className="text-xs flex gap-1 items-start cursor-pointer"
-            onClick={() =>
-              navigate("/search/new", { state: { filteredNewData } })
-            }
           >
             더보기
             <img
@@ -193,9 +181,9 @@ export default function MainPage() {
               alt="더보기 버튼"
               className="size-4"
             />
-          </button>
+          </Link>
         </div>
-        <div className="flex flex-wrap justify-between gap-3">
+        <div className="grid grid-cols-2 justify-between gap-5">
           {newProducts}
         </div>
       </section>
@@ -204,11 +192,9 @@ export default function MainPage() {
           <h2 className="text-xl">
             이 맛이야! <span className="font-bold">제철 음식 🍂</span>
           </h2>
-          <button
+          <Link
+            to={"/search/seasonal"}
             className="text-xs flex gap-1 items-start cursor-pointer"
-            onClick={() =>
-              navigate("/search/seasonal", { state: { filteredOnMonthData } })
-            }
           >
             더보기
             <img
@@ -216,7 +202,7 @@ export default function MainPage() {
               alt="더보기 버튼"
               className="size-4"
             />
-          </button>
+          </Link>
         </div>
         <div className="flex overflow-x-auto gap-3">{onMonthProducts}</div>
       </section>
@@ -240,14 +226,14 @@ export default function MainPage() {
         </div>
         {storyImages}
       </section>
-      <section className="flex flex-col gap-1 px-5 bg-gray1 text-black text-sm py-5">
-        <p className="font-semibold">(주) 농담 사업자 정보</p>
+      <section className="flex flex-col gap-1 px-5 bg-gray1 text-black text-sm py-5 text-center">
+        <p className="font-semibold">(주) 바로팜 사업자 정보</p>
         <p>
-          (주)농담 | 대표자 : 넝담~ <br />
+          (주)바로팜 | 대표자 : 바로팜 <br />
           사업자 등록번호 : 023-25-59672 <br />
           주소 : 서울 강남구 옆집의 옆집 234로 무천타워 2층 <br />
           대표번호 : 1588-1028 <br />
-          메일 : nongDam@nongDam.co.kr
+          메일 : baroFarm@baroFarm.co.kr
         </p>
         <p className="font-semibold">고객센터 1800-1800</p>
         <p className="mb-[58px]">
