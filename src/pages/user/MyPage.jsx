@@ -1,7 +1,7 @@
 import HeaderIcon from "@components/HeaderIcon";
 import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
@@ -9,6 +9,7 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 export default function MyPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const url = "https://11.fesp.shop";
 
   // zustand store에서 유저 상태 가져옴
@@ -34,8 +35,9 @@ export default function MyPage() {
 
   const logoutClick = () => {
     //로그아웃 시 데이터 삭제
+    queryClient.invalidateQueries({ queryKey: ["carts"] });
     resetUser();
-    navigate("/");
+    navigate(0);
   };
 
   //로그인 시 데이터 추가
