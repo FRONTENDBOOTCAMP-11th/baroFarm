@@ -67,9 +67,12 @@ export default function MyPage() {
             <>
               <img
                 src={
-                  data.image
-                    ? url + data.image //이메일 타입
-                    : "/images/profile/ProfileImage_Sample.jpg" //이미지 설정이 없는 경우
+                  data?.image
+                    ? data.image.includes("http://") ||
+                      data.image.includes("https://")
+                      ? data.image
+                      : url + data.image
+                    : "/images/profile/ProfileImage_Sample.jpg"
                 }
                 className="mr-5 w-[49px] h-[50px] rounded-full object-cover"
                 loading="lazy"

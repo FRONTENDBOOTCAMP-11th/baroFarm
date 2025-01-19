@@ -122,7 +122,10 @@ export default function ProfilePage() {
           id="profileImg"
           src={
             userData?.image
-              ? url + userData.image
+              ? userData.image.includes("http://") ||
+                userData.image.includes("https://")
+                ? userData.image
+                : url + userData.image
               : "/images/profile/ProfileImage_Sample.jpg"
           }
           alt="Profile Image"

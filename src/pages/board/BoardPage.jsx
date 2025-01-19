@@ -2,7 +2,7 @@ import HeaderIcon from "@components/HeaderIcon";
 import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import BoardPageDetail from "@pages/board/BoardPageDetail";
-import Pagination from "@pages/board/Pagination";
+import Pagination from "@components/Pagination";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect, useState } from "react";
@@ -104,8 +104,6 @@ export default function BoardPage() {
   const boards = currentPosts?.map((item) => (
     <BoardPageDetail key={item._id} item={item} />
   ));
-
-  console.log(sortedData);
 
   return (
     <div className="relative mx-5">
