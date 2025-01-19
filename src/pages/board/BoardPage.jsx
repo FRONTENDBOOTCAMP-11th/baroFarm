@@ -5,12 +5,7 @@ import BoardPageDetail from "@pages/board/BoardPageDetail";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect, useState } from "react";
-import {
-  Link,
-  useNavigate,
-  useOutletContext,
-  useSearchParams,
-} from "react-router-dom";
+import { Link, useNavigate, useOutletContext, useSearchParams } from "react-router-dom";
 
 export default function BoardPage() {
   const { setHeaderContents } = useOutletContext();
@@ -69,11 +64,7 @@ export default function BoardPage() {
   const sortedData = mergeData.sort((prev, next) => next._id - prev._id);
 
   const handleClick = (event) => {
-    if (
-      !confirm(
-        "게스트 상태로 게시글 작성을 이용하실 수 없습니다.\n로그인 하시겠습니까?"
-      )
-    ) {
+    if (!confirm("게스트 상태로 게시글 작성을 이용하실 수 없습니다.\n로그인 하시겠습니까?")) {
       event.preventDefault();
     }
   };
@@ -86,9 +77,7 @@ export default function BoardPage() {
     console.log(keyword);
   };
 
-  const boards = sortedData?.map((item) => (
-    <BoardPageDetail key={item._id} item={item} />
-  ));
+  const boards = sortedData?.map((item) => <BoardPageDetail key={item._id} item={item} />);
 
   console.log(boards);
 
@@ -118,16 +107,12 @@ export default function BoardPage() {
         </div>
       </form>
       <div className="flex my-2 items-center bg-btn-primary rounded-md gap-3 p-3">
-        <img
-          src="/images/BaroFarmIcon.png"
-          alt="바로팜 로고"
-          className="w-[90px]"
-        />
+        <img src="/images/BaroFarmIcon.png" alt="바로팜 로고" className="w-[90px]" />
         <p className="text-white text-sm break-keep">
-          바로파밍은 모든 이용자이 이용할 수 있는
-          <span className="text-green1"> 소통</span>의 공간입니다.
-          <br /> 바로팜에서 구매한 상품으로 만든 요리를 자랑하거나 나만의 레시피
-          팁을 나누어 보세요!
+          바로파밍은
+          <br />
+          모든 회원이 함께하는<span className="text-orange-400"> 소통</span> 공간입니다.
+          <br /> 바로팜에서 구매한 상품으로 만든 요리를 자랑하고 나만의 레시피를 나누어 보세요!
         </p>
       </div>
 
@@ -142,9 +127,7 @@ export default function BoardPage() {
       {boards}
       {boards.length === 0 && keyword !== "" && (
         <div className="relative">
-          <span className="mt-10 block text-center text-gray4">
-            &quot;{keyword}&quot; 검색 결과가 없습니다.
-          </span>
+          <span className="mt-10 block text-center text-gray4">&quot;{keyword}&quot; 검색 결과가 없습니다.</span>
         </div>
       )}
       <Link
