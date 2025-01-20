@@ -25,9 +25,12 @@ export default function OrderCompletePage() {
     });
   }, []);
 
-  const { selectedItems, currentAddress, memo, totalFees } = JSON.parse(
-    localStorage.getItem("payData")
-  );
+  const payData = JSON.parse(localStorage.getItem("payData"));
+  const selectedItems = payData.selectedItems;
+  const currentAddress = payData.currentAddress;
+  const memo = payData.memo;
+  const totalFees = payData.totalFees;
+  console.log("payData", payData);
 
   const products = selectedItems.map((item) => {
     return (
