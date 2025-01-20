@@ -35,12 +35,9 @@ export default function MyPage() {
 
   const logoutClick = () => {
     //로그아웃 시 캐시 삭제
-    queryClient.invalidateQueries({ queryKey: ["carts"] });
     resetUser();
-    axios.defaults.headers.Authorization = ``; // 로그아웃된 경우 헤더 제거
-    // window.location.reload();
+    queryClient.clear();
     navigate("/users/login");
-    navigate(0);
   };
 
   //로그인 시 로그인 화면으로 이동
