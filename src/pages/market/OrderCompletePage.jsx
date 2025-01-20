@@ -1,11 +1,15 @@
 import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
+import usePayStore from "@zustand/usePayStore";
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function OrderCompletePage() {
   // 헤더 아이콘 설정
   const { setHeaderContents } = useOutletContext();
+  // 결제 완료 정보 가져오기
+  const { payData, resetPayData } = usePayStore();
+
   const navigate = useNavigate();
   useEffect(() => {
     setHeaderContents({
@@ -25,12 +29,8 @@ export default function OrderCompletePage() {
     });
   }, []);
 
-  const payData = JSON.parse(localStorage.getItem("payData"));
-  const selectedItems = payData.selectedItems;
-  const currentAddress = payData.currentAddress;
-  const memo = payData.memo;
-  const totalFees = payData.totalFees;
   console.log("payData", payData);
+  const { selectedItems, totalFees, memo, currentAddress } = payData;
 
   const products = selectedItems.map((item) => {
     return (
@@ -88,7 +88,7 @@ export default function OrderCompletePage() {
             isBig={true}
             onClick={() => {
               navigate("/");
-              localStorage.removeItem("payData");
+              resetPayData();
             }}
           >
             홈으로
