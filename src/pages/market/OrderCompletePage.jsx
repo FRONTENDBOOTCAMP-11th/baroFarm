@@ -30,9 +30,12 @@ export default function OrderCompletePage() {
   }, []);
 
   console.log("payData", payData);
-  const { selectedItems, totalFees, memo, currentAddress } = payData;
+  const selectedItems = payData?.selectedItems;
+  const totalFees = payData?.totalFees;
+  const memo = payData?.memo;
+  const currentAddress = payData?.currentAddress;
 
-  const products = selectedItems.map((item) => {
+  const products = selectedItems?.map((item) => {
     return (
       <div
         key={item.product._id}
@@ -71,16 +74,16 @@ export default function OrderCompletePage() {
           <div className="space-y-2 border-b">
             <span className="text-gray4">배송지</span>
             <div className="space-y-0.5 text-sm pl-3">
-              <p>{`${currentAddress.userName} ${
-                currentAddress.name ? `(${currentAddress.name})` : ""
+              <p>{`${currentAddress?.userName} ${
+                currentAddress?.name ? `(${currentAddress?.name})` : ""
               }`}</p>
-              <p className="text-gray4">{currentAddress.phone}</p>
-              <p>{currentAddress.value}</p>
+              <p className="text-gray4">{currentAddress?.phone}</p>
+              <p>{currentAddress?.value}</p>
             </div>
           </div>
           <div className="space-y-2">
             <span className="text-gray4">배송메모</span>
-            <p className="text-sm pl-3">{memo.memo ? memo.memo : "없음"}</p>
+            <p className="text-sm pl-3">{memo?.memo ? memo?.memo : "없음"}</p>
           </div>
         </section>
         <section className="px-4">
