@@ -34,13 +34,15 @@ export default function MyPage() {
   const resetUser = useUserStore((store) => store.resetUser);
 
   const logoutClick = () => {
-    //로그아웃 시 데이터 삭제
+    //로그아웃 시 캐시 삭제
     queryClient.invalidateQueries({ queryKey: ["carts"] });
     resetUser();
-    navigate(0);
+    axios.defaults.headers.Authorization = ``; // 로그아웃된 경우 헤더 제거
+    // window.location.reload();
+    navigate("/");
   };
 
-  //로그인 시 데이터 추가
+  //로그인 시 로그인 화면으로 이동
   const loginClick = () => {
     navigate("/users/login");
   };
