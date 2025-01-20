@@ -39,7 +39,8 @@ export default function MyPage() {
     resetUser();
     axios.defaults.headers.Authorization = ``; // 로그아웃된 경우 헤더 제거
     // window.location.reload();
-    navigate("/");
+    navigate("/users/login");
+    navigate(0);
   };
 
   //로그인 시 로그인 화면으로 이동
