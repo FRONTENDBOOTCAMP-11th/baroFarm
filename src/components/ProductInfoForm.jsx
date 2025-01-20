@@ -205,7 +205,7 @@ export default function ProductInfoForm({
         <p className="font-bold">할인을 적용하시겠습니까?</p>
         <input
           type="radio"
-          className="w-3.5 h-3.5 rounded-full appearance-none bg-gray2 checked:bg-btn-primary cursor-pointer ml-3"
+          className="w-3.5 h-3.5 rounded-full appearance-none bg-gray2 checked:bg-btn-primary cursor-pointer"
           name="discount"
           id="discount-true"
           value="true"
@@ -220,7 +220,7 @@ export default function ProductInfoForm({
         </label>
         <input
           type="radio"
-          className="w-3.5 h-3.5 rounded-full appearance-none bg-gray2 checked:bg-btn-primary cursor-pointer ml-3"
+          className="w-3.5 h-3.5 rounded-full appearance-none bg-gray2 checked:bg-btn-primary cursor-pointer"
           name="discount"
           id="discount-false"
           value="false"

@@ -4,12 +4,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useOutletContext,
-} from "react-router-dom";
+import { Link, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function ProfilePage() {
   const { setHeaderContents } = useOutletContext();
@@ -34,14 +29,7 @@ export default function ProfilePage() {
 
   // 이미지 파일 유효성 검사
   const checkImg = (file) => {
-    const validTypes = [
-      "image/jpeg",
-      "image/jpg",
-      "image/png",
-      "image/gif",
-      "image/webp",
-      "image/svg",
-    ]; // 허용 MIME 타입
+    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp", "image/svg"]; // 허용 MIME 타입
     if (!validTypes.includes(file.type)) {
       return true;
     }
@@ -71,10 +59,7 @@ export default function ProfilePage() {
           });
           imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
         } catch (error) {
-          console.error(
-            "Image upload failed:",
-            error.response?.data || error.message
-          );
+          console.error("Image upload failed:", error.response?.data || error.message);
           throw new Error("Image upload failed.");
         }
         const body = {
@@ -101,8 +86,7 @@ export default function ProfilePage() {
   };
 
   const setProfileImg = () => {
-    if (confirm("프로필 이미지를 변경하시겠습니까?"))
-      document.getElementById("profileImgChange").click();
+    if (confirm("프로필 이미지를 변경하시겠습니까?")) document.getElementById("profileImgChange").click();
   };
 
   const { data: userData, isLoading } = useQuery({
@@ -120,36 +104,20 @@ export default function ProfilePage() {
       <div className="w-fit mx-auto text-center relative">
         <img
           id="profileImg"
-          src={
-            userData?.image
-              ? userData.image.includes("http://") ||
-                userData.image.includes("https://")
-                ? userData.image
-                : url + userData.image
-              : "/images/profile/ProfileImage_Sample.jpg"
-          }
+          src={userData?.image ? url + userData.image : "/images/profile/ProfileImage_Sample.jpg"}
           alt="Profile Image"
           className="w-[100px] h-[100px] rounded-full object-cover"
         />
         <button className="absolute right-0 -bottom-2" onClick={setProfileImg}>
-          <img
-            src="/icons/icon_camera.svg"
-            alt="이미지 수정 아이콘"
-            className="w-7 h-7"
-          />
+          <img src="/icons/icon_camera.svg" alt="이미지 수정 아이콘" className="w-7 h-7" />
         </button>
-        <input
-          id="profileImgChange"
-          type="file"
-          className="hidden"
-          onChange={handleFileChange}
-        />
+        <input id="profileImgChange" type="file" className="hidden" onChange={handleFileChange} />
       </div>
       <div className="mt-[25px] mb-[30px] mx-auto max-w-fit text-2xl font-bold">
         {userData?.name ? userData.name : "닉네임 없음"}
       </div>
       <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
-        <section className="min-w-[65px] break-keep leading-8">
+        <section className="min-w-[65px] break-keep">
           이름 <br />
           성별 <br />
           이메일 <br />
@@ -158,7 +126,7 @@ export default function ProfilePage() {
           주소
         </section>
 
-        <section className="text-gray5 break-keep leading-8">
+        <section className="text-gray5 break-keep">
           {userData?.extra?.userName ? (
             userData.extra.userName
           ) : (
@@ -180,9 +148,7 @@ export default function ProfilePage() {
           {userData?.phone ? (
             userData.phone
           ) : (
-            <span className="text-gray3 font-light">
-              전화번호를 등록해주세요
-            </span>
+            <span className="text-gray3 font-light">전화번호를 등록해주세요</span>
           )}{" "}
           <br />
           {userData?.extra?.birth ? (
@@ -206,11 +172,7 @@ export default function ProfilePage() {
           className="flex w-7 h-7 items-center text-[14px] absolute right-2 top-2 group"
           state={{ user: userData }}
         >
-          <img
-            src="/icons/icon_profileEdit_full.svg"
-            className="h-10 ml-auto"
-            alt="addProduct icon"
-          />
+          <img src="/icons/icon_profileEdit_full.svg" className="h-10 ml-auto" alt="addProduct icon" />
           <div className="absolute rounded-md w-auto box-border text-nowrap -translate-x-8 px-1 bg-btn-primary text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <p className="">수정</p>
           </div>
