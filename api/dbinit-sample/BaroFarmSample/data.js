@@ -1,7 +1,10 @@
 import moment from "moment";
 
 function getTime(day = 0, second = 0) {
-  return moment().add(day, "days").add(second, "seconds").format("YYYY.MM.DD HH:mm:ss");
+  return moment()
+    .add(day, "days")
+    .add(second, "seconds")
+    .format("YYYY.MM.DD HH:mm:ss");
 }
 
 export const initData = async (clientId, nextSeq) => {
@@ -11,7 +14,8 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "admin@market.com",
-        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password:
+          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "무지",
         phone: "01011112222",
         address: "서울시 강남구 역삼동 123",
@@ -40,7 +44,8 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "s1@market.com",
-        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password:
+          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "네오",
         phone: "01022223333",
         address: "서울시 강남구 삼성동 456",
@@ -69,7 +74,8 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "s2@market.com",
-        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password:
+          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "어피치",
         phone: "01033334444",
         address: "서울시 강남구 도곡동 789",
@@ -99,7 +105,8 @@ export const initData = async (clientId, nextSeq) => {
       {
         _id: await nextSeq("user"),
         email: "u1@market.com",
-        password: "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
+        password:
+          "$2b$10$S.8GNMDyvUF0xzujPtHBu.j5gtS19.OhRmYbpJBnCHg2S83WLx1T2",
         name: "제이지",
         phone: "01044445555",
         address: "서울시 강남구 논현동 222",
@@ -837,7 +844,8 @@ export const initData = async (clientId, nextSeq) => {
           custom_data: null,
           status: "paid",
           paid_at: 1702540626,
-          receipt_url: "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
+          receipt_url:
+            "https://iniweb.inicis.com/DefaultWebApp/mall/cr/cm/mCmReceipt_head.jsp?noTid=StdpayCARDINIpayTest20231214165706277441&noMethod=1",
           card_name: "국민KB카드",
           bank_name: null,
           card_quota: 0,
@@ -951,7 +959,8 @@ export const initData = async (clientId, nextSeq) => {
         order_id: 5,
         product_id: 2,
         rating: 5,
-        content: "너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다!",
+        content:
+          "너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다! 너무 너무 맛있어요 추천드립니다!",
         createdAt: getTime(-4, -60 * 60 * 12),
       },
       {
@@ -965,7 +974,8 @@ export const initData = async (clientId, nextSeq) => {
         order_id: 6,
         product_id: 2,
         rating: 1,
-        content: "너무 너무 별로에요 사지마세요 ㅠㅠ 너무 너무 별로에요 사지마세요 ㅠㅠ 너무 너무 별로에요 사지마세요 ㅠㅠ",
+        content:
+          "너무 너무 별로에요 사지마세요 ㅠㅠ 너무 너무 별로에요 사지마세요 ㅠㅠ 너무 너무 별로에요 사지마세요 ㅠㅠ",
         createdAt: getTime(-4, -60 * 60 * 12),
       },
       {
@@ -1104,123 +1114,6 @@ export const initData = async (clientId, nextSeq) => {
     post: [
       {
         _id: await nextSeq("post"),
-        type: "qna",
-        product_id: 1,
-        seller_id: 2,
-        views: 5,
-        user: {
-          _id: 4,
-          name: "제이지",
-          image: "user-jayg.webp",
-        },
-        title: "크기가 얼만만한가요?",
-        content: "아이가 6살인데 가지고 놀기 적당한 크기인가요?",
-        replies: [
-          {
-            _id: 1,
-            user_id: 2,
-            user: {
-              _id: 2,
-              name: "네오",
-              image: "user-neo.webp",
-            },
-            content: "크기는 상품 상세정보에 나와 있습니다.",
-            like: 5,
-            createdAt: getTime(-2, -60 * 60 * 20),
-            updatedAt: getTime(-2, -60 * 60 * 2),
-          },
-          {
-            _id: 2,
-            user_id: 4,
-            user: {
-              _id: 4,
-              name: "제이지",
-              image: "user-jayg.webp",
-            },
-            content: "어디있나 모르겠어요.",
-            like: 7,
-            createdAt: getTime(-2, -60 * 60 * 10),
-            updatedAt: getTime(-2, -60 * 60 * 1),
-          },
-          {
-            _id: 3,
-            user_id: 2,
-            user: {
-              _id: 2,
-              name: "네오",
-              image: "user-neo.webp",
-            },
-            content: "높이 60cm 입니다.",
-            like: 3,
-            createdAt: getTime(-2, -60 * 60 * 9),
-            updatedAt: getTime(-1, -60 * 60 * 20),
-          },
-        ],
-        createdAt: getTime(-3, -60 * 60 * 2),
-        updatedAt: getTime(-3, -60 * 60 * 2),
-      },
-      {
-        _id: await nextSeq("post"),
-        type: "qna",
-        product_id: 1,
-        seller_id: 2,
-        views: 50,
-        user: {
-          _id: 4,
-          name: "제이지",
-          image: "user-jayg.webp",
-        },
-        title: "이번주 토요일까지 받아볼 수 있을까요?",
-        content: "토요일 생일 선물로 준비중인데 그때까지 배송 가능할까요?",
-        createdAt: getTime(-2, -60 * 60 * 1),
-        updatedAt: getTime(-1, -60 * 60 * 20),
-      },
-      {
-        _id: await nextSeq("post"),
-        type: "qna",
-        product_id: 4,
-        seller_id: 3,
-        views: 0,
-        user: {
-          _id: 2,
-          name: "네오",
-          image: "user-neo.webp",
-        },
-        title: "배송 빨리 보내주세요.",
-        content: "양품으로 보내주세요.",
-        createdAt: getTime(-1, -60 * 60 * 14),
-        updatedAt: getTime(-1, -60 * 60 * 2),
-      },
-      {
-        _id: await nextSeq("post"),
-        type: "notice",
-        views: 10,
-        user: {
-          _id: 1,
-          name: "무지",
-          image: "user-muzi.webp",
-        },
-        title: "배송지연 안내",
-        content: "크리스마스 물류 증가로 인해 평소보다 2~3일 지연될 예정입니다.",
-        createdAt: getTime(-4, -60 * 60 * 2),
-        updatedAt: getTime(-2, -60 * 60 * 13),
-      },
-      {
-        _id: await nextSeq("post"),
-        type: "notice",
-        views: 15,
-        user: {
-          _id: 1,
-          name: "무지",
-          image: "user-muzi.webp",
-        },
-        title: "배송비 인상 안내",
-        content: "택배사 배송비 인상으로 인해 기존 3,000원에서 3,500원으로 인상됩니다.",
-        createdAt: getTime(-6, -60 * 60 * 20),
-        updatedAt: getTime(-4, -60 * 60 * 13),
-      },
-      {
-        _id: await nextSeq("post"),
         type: "community",
         views: 15,
         image: "/files/final04/sample-duck.png",
@@ -1245,7 +1138,8 @@ export const initData = async (clientId, nextSeq) => {
           name: "네오",
           image: "/files/final04/user-neo.webp",
         },
-        content: "그거 아시나요? 이 사이트는 원래 농담이라는 이름을 가지고 있었습니다.",
+        content:
+          "그거 아시나요? 이 사이트는 원래 농담이라는 이름을 가지고 있었습니다.",
         createdAt: getTime(-9, -60 * 60 * 20),
         updatedAt: getTime(-9, -60 * 60 * 13),
       },
@@ -1320,7 +1214,8 @@ export const initData = async (clientId, nextSeq) => {
           name: "어피치",
           image: "/files/final04/user-apeach.webp",
         },
-        content: "가끔은 피자가 땡기는 날이 있죠! 마침 집에 쟤료가 있어서 한 번 만들어봤습니다~",
+        content:
+          "가끔은 피자가 땡기는 날이 있죠! 마침 집에 쟤료가 있어서 한 번 만들어봤습니다~",
         createdAt: getTime(-7, -60 * 60 * 8),
         updatedAt: getTime(-7, -60 * 60 * 8),
       },
@@ -1335,7 +1230,8 @@ export const initData = async (clientId, nextSeq) => {
           name: "무지",
           image: "/files/final04/user-muzi.webp",
         },
-        content: "70대 목동이 목동 대 소가 아닌 남자 대 여자로 키우던 소가 있었습니다. 그러나 딸을 대학에 보내기 위해 어쩔 수 없이 팔았던 소의 3번 갈비를 어렵게 구해 갈비찜을 만들었습니다. 눈물 나는 맛이군요",
+        content:
+          "70대 목동이 목동 대 소가 아닌 남자 대 여자로 키우던 소가 있었습니다. 그러나 딸을 대학에 보내기 위해 어쩔 수 없이 팔았던 소의 3번 갈비를 어렵게 구해 갈비찜을 만들었습니다. 눈물 나는 맛이군요",
         createdAt: getTime(-7, -60 * 60 * 20),
         updatedAt: getTime(-7, -60 * 60 * 20),
       },
