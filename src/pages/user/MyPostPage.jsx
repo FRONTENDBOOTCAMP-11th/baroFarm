@@ -63,8 +63,6 @@ export default function MyPost() {
     items,
   }));
 
-  console.log(groupedArray);
-
   const myBoardList = groupedArray.map((data) => {
     return (
       <div key={data.date} className="p-5 pb-0">

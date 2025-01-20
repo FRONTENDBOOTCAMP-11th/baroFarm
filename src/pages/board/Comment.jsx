@@ -28,8 +28,7 @@ export default function Comment({ replies = [] }) {
       if (user) return axios.post(`/posts/${_id}/replies`, item);
       else throw Error();
     },
-    onSuccess: (res) => {
-      console.log("data", res.data);
+    onSuccess: () => {
       reset();
       alert("댓글이 등록되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["posts", _id] });

@@ -26,16 +26,6 @@ export default function EditProfilePage() {
   const editUserInfo = useMutation({
     mutationFn: (formData) => {
       const { value, detailValue, ...userData } = formData;
-      console.log(
-        !!userData.extra.userName +
-          !!userData.address.trim() +
-          !!userData.phone ===
-          1 || // 하나만 존재
-          !!userData.extra.userName +
-            !!userData.address.trim() +
-            !!userData.phone ===
-            2
-      );
       if (
         !!userData.extra.userName +
           (!!userData.address.trim() || !!value) +
@@ -60,7 +50,6 @@ export default function EditProfilePage() {
             ...userData.extra,
           },
         };
-        console.log(body);
         return axios.patch(`/users/${data._id}`, body);
       }
       const body = {
@@ -72,7 +61,6 @@ export default function EditProfilePage() {
           ...userData.extra,
         },
       };
-      console.log(body);
       return axios.patch(`/users/${data._id}`, body);
     },
     onSuccess: () => {
@@ -81,7 +69,7 @@ export default function EditProfilePage() {
       alert("설정 적용을 위해 로그아웃합니다. 다시 로그인해주세요.");
       resetUser();
       queryClient.clear();
-      navigate("/users/login");
+      navigate("/users/login", { replace: true });
     },
     onError: (err) => {
       console.error("회원 정보 변경 실패:", err);

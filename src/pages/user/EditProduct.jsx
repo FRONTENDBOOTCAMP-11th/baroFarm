@@ -71,12 +71,11 @@ export default function EditProduct() {
       };
       return axios.patch(`/seller/products/${id}`, body);
     },
-    onSuccess: (res) => {
-      console.log(`수정 결과: ${res.data.item}`);
+    onSuccess: () => {
       alert("상품 정보가 수정되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["products"] });
       queryClient.invalidateQueries({ queryKey: ["products", id] });
-      navigate("/users/sale");
+      navigate("/users/sale", { replace: true });
     },
     onError: (err) => {
       console.err(err);
@@ -87,8 +86,6 @@ export default function EditProduct() {
   if (isLoading) {
     return <Spinner />;
   }
-
-  console.log(data);
 
   return (
     <ProductInfoForm
