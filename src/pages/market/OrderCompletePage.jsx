@@ -1,11 +1,15 @@
 import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
+import usePayStore from "@zustand/usePayStore";
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function OrderCompletePage() {
   // 헤더 아이콘 설정
   const { setHeaderContents } = useOutletContext();
+  // 결제 완료 정보 가져오기
+  const { payData, resetPayData } = usePayStore();
+
   const navigate = useNavigate();
   useEffect(() => {
     setHeaderContents({
@@ -25,11 +29,13 @@ export default function OrderCompletePage() {
     });
   }, []);
 
-  const { selectedItems, currentAddress, memo, totalFees } = JSON.parse(
-    localStorage.getItem("payData")
-  );
+  console.log("payData", payData);
+  const selectedItems = payData?.selectedItems;
+  const totalFees = payData?.totalFees;
+  const memo = payData?.memo;
+  const currentAddress = payData?.currentAddress;
 
-  const products = selectedItems.map((item) => {
+  const products = selectedItems?.map((item) => {
     return (
       <div
         key={item.product._id}
@@ -68,16 +74,16 @@ export default function OrderCompletePage() {
           <div className="space-y-2 border-b">
             <span className="text-gray4">배송지</span>
             <div className="space-y-0.5 text-sm pl-3">
-              <p>{`${currentAddress.userName} ${
-                currentAddress.name ? `(${currentAddress.name})` : ""
+              <p>{`${currentAddress?.userName} ${
+                currentAddress?.name ? `(${currentAddress?.name})` : ""
               }`}</p>
-              <p className="text-gray4">{currentAddress.phone}</p>
-              <p>{currentAddress.value}</p>
+              <p className="text-gray4">{currentAddress?.phone}</p>
+              <p>{currentAddress?.value}</p>
             </div>
           </div>
           <div className="space-y-2">
             <span className="text-gray4">배송메모</span>
-            <p className="text-sm pl-3">{memo.memo ? memo.memo : "없음"}</p>
+            <p className="text-sm pl-3">{memo?.memo ? memo?.memo : "없음"}</p>
           </div>
         </section>
         <section className="px-4">
@@ -85,7 +91,7 @@ export default function OrderCompletePage() {
             isBig={true}
             onClick={() => {
               navigate("/");
-              localStorage.removeItem("payData");
+              resetPayData();
             }}
           >
             홈으로

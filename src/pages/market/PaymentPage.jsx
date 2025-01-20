@@ -11,6 +11,7 @@ import PaymentModal from "@components/PaymentModal";
 import AddressModal from "@components/AddressModal";
 import Spinner from "@components/Spinner";
 import DataErrorPage from "@pages/DataErrorPage";
+import usePayStore from "@zustand/usePayStore";
 
 export default function PaymentPage() {
   // 이전 페이지에서 넘어온 정보
@@ -35,6 +36,8 @@ export default function PaymentPage() {
   const [currentAddress, setCurrentAddress] = useState();
   // 로그인한 유저 정보 가져오기
   const { user } = useUserStore();
+  // 결제에 필요한 정보 가져오기
+  const { setPayData } = usePayStore();
   // targetRef가 보이면 결제버튼을 보이게 함
   const targetRef = useRef(null);
   // 결제 모달 창 상태
@@ -184,8 +187,8 @@ export default function PaymentPage() {
         deleteItem.mutate(purchasedItems);
       }
       const payData = { selectedItems, totalFees, memo, currentAddress };
-      localStorage.setItem("payData", JSON.stringify(payData));
-      navigate("/complete");
+      setPayData(payData);
+      setTimeout(() => navigate("/complete"), 500);
       // openModal(); // 모달창으로 안내
     },
     onError: (err) => console.error(err),
