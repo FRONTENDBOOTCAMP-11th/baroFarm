@@ -76,7 +76,7 @@ export default function EditProduct() {
       alert("상품 정보가 수정되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["products"] });
       queryClient.invalidateQueries({ queryKey: ["products", id] });
-      navigate("/users/sale");
+      navigate("/users/sale", { replace: true });
     },
     onError: (err) => {
       console.err(err);

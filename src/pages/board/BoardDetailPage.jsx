@@ -4,10 +4,9 @@ import Comment from "@pages/board/Comment";
 import createdTime from "@utils/createdTime.js";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Link,
-  useLocation,
   useNavigate,
   useOutletContext,
   useParams,
@@ -20,23 +19,11 @@ export default function BoardDetailPage() {
   const { _id } = useParams();
   const { user } = useUserStore();
   const axios = useAxiosInstance();
-  const location = useLocation();
   const queryClient = useQueryClient();
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: (
-        <HeaderIcon
-          name="back"
-          onClick={() => {
-            const prevPage = location.state?.from;
-            if (prevPage && prevPage.includes("edit")) navigate(-3);
-            else {
-              navigate(-1);
-            }
-          }}
-        />
-      ),
+      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
       title: "게시글",
       rightChild: (
         <>
@@ -65,12 +52,14 @@ export default function BoardDetailPage() {
         queryClient.invalidateQueries({
           queryKey: ["posts"],
         });
-        navigate("/board");
+        navigate("/board", { replace: true });
       }
     }
   };
 
   const newDate = createdTime(data.createdAt);
+
+  console.log(data.content, data.content.replace('"', ""));
 
   return (
     <div className="mx-5">
@@ -92,7 +81,14 @@ export default function BoardDetailPage() {
           {newDate}
         </span>
       </div>
-      <div className="mx-[5px] my-[30px]">{data.content}</div>
+      <div className="mx-[5px] my-[30px]">
+        {data.content.split("<br/>").map((line, index) => (
+          <React.Fragment key={index}>
+            {line}
+            <br />
+          </React.Fragment>
+        ))}
+      </div>
       {data.image && (
         <img
           className="relative mt-10 mb-1 rounded-md"

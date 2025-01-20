@@ -81,7 +81,7 @@ export default function EditProfilePage() {
       alert("설정 적용을 위해 로그아웃합니다. 다시 로그인해주세요.");
       resetUser();
       queryClient.clear();
-      navigate("/users/login");
+      navigate("/users/login", { replace: true });
     },
     onError: (err) => {
       console.error("회원 정보 변경 실패:", err);

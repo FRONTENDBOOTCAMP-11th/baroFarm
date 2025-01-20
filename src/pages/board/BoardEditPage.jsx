@@ -74,8 +74,12 @@ export default function BoardEditPage() {
             },
           });
           imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
+          console.log(
+            item.content,
+            item.content.replaceAll(/\n|\r\n/, "<br/>")
+          );
           const body = {
-            content: item.content,
+            content: item.content.replaceAll(/\n|\r\n/g, "<br/>"),
             image: imageUrl,
           };
           return axios.patch(`/posts/${_id}`, body);
@@ -88,15 +92,16 @@ export default function BoardEditPage() {
         }
       } else {
         const body = {
-          content: item.content,
+          content: item.content.replaceAll(/\n|\r\n/g, "<br/>"),
         };
         return axios.patch(`/posts/${_id}`, body);
       }
     },
     onSuccess: () => {
       alert("게시물이 수정되었습니다.");
+
       queryClient.invalidateQueries({ queryKey: ["posts", _id] });
-      navigate(`/board/${_id}`, { state: { from: window.location.pathname } });
+      navigate(`/board/${_id}`, { replace: true });
     },
     onError: (err) => {
       console.error(err);

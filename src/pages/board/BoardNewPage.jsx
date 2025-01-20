@@ -4,7 +4,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function BoardNewPage() {
   const { setHeaderContents } = useOutletContext();
@@ -75,7 +75,7 @@ export default function BoardNewPage() {
         }
 
         const body = {
-          content: item.content,
+          content: item.content.replace(/\n|\r\n/g, "<br/>"),
           type: "community",
           image: imageUrl,
         };
@@ -88,11 +88,13 @@ export default function BoardNewPage() {
         return axios.post(`/posts`, body);
       }
     },
-    onSuccess: (res) => {
-      console.log("data", res.data);
+    onSuccess: () => {
       alert("게시물이 등록되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-      navigate(`/board`);
+      navigate(`/board`, {
+        state: { from: window.location.pathname },
+        replace: true,
+      });
     },
     onError: (err) => {
       console.error(err);

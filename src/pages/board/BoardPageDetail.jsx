@@ -1,6 +1,6 @@
 import createdTime from "@utils/createdTime.js";
 import PropTypes from "prop-types";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 BoardPageDetail.propTypes = {
@@ -57,7 +57,14 @@ export default function BoardPageDetail({ item }) {
               댓글 {item.repliesCount}개
             </span>
           </div>
-          <div className="mx-[5px] mt-[30px]">{item.content}</div>
+          <div className="mx-[5px] mt-[30px]">
+            {item.content.split("<br/>").map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
+          </div>
           <div className="mt-10">
             {item.image && (
               <img

@@ -71,12 +71,15 @@ export default function NewPost({
         <textarea
           name="content"
           id="content"
+          wrap="hard"
+          cols="20"
+          rows="50"
           className="w-full mt-[10px] mb-[25px] h-[200px] p-3 border-gray3 border-[1px] bg-gray2/20 focus:outline-btn-primary rounded-md"
           placeholder="본문 내용을 입력해주세요."
           {...register("content", {
             required: "본문 내용을 입력해주세요",
           })}
-          defaultValue={editInfo ? editInfo : null}
+          defaultValue={editInfo ? editInfo.replaceAll("<br/>", "\n") : null}
         ></textarea>
         {errors.content && (
           <p className="text-red1 text-xs -mt-7 ps-1">
