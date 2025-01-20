@@ -38,7 +38,7 @@ export default function PaymentModal({
   // 카카오페이로 결제하기
   async function requestKaKaoPayment() {
     const response = await PortOne.requestPayment({
-      redirectUrl: `http://localhost:5173/complete`,
+      redirectUrl: `${window.location.origin}/complete`,
       // Store ID 설정
       storeId: "store-e90f21f0-954a-4a58-ae68-e155e0670351",
       // 채널 키 설정
@@ -66,7 +66,7 @@ export default function PaymentModal({
   // 토스페이로 결제하기
   async function requestTossPayment() {
     const response = await PortOne.requestPayment({
-      redirectUrl: "localhost:5173/complete",
+      redirectUrl: `${window.location.origin}/complete`,
       // Store ID 설정
       storeId: "store-e90f21f0-954a-4a58-ae68-e155e0670351",
       // 채널 키 설정
