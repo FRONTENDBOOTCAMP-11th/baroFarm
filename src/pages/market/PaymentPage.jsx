@@ -183,9 +183,9 @@ export default function PaymentPage() {
         // 배열을 삭제 요청에 전달
         deleteItem.mutate(purchasedItems);
       }
-      navigate("/complete", {
-        state: { selectedItems, totalFees, memo, currentAddress },
-      });
+      const payData = { selectedItems, totalFees, memo, currentAddress };
+      localStorage.setItem("payData", JSON.stringify(payData));
+      navigate("/complete");
       // openModal(); // 모달창으로 안내
     },
     onError: (err) => console.error(err),

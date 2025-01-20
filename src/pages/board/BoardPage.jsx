@@ -170,11 +170,11 @@ export default function BoardPage() {
       <Link
         to={isLogin ? "new" : "/users/login"}
         onClick={!isLogin ? (event) => handleClick(event) : null}
-        className="fixed right-[calc(50%-155px)] bottom-[130px] w-[40px] h-[40px] rounded-full shadow-bottom"
+        className="fixed right-[calc(50%-155px)] bottom-[150px] w-[40px] h-[40px] rounded-full shadow-bottom"
       >
         <img src="/icons/icon_newpost.svg" className="w-full h-full" />
       </Link>
-      <div className="flex justify-center mt-5">
+      <div className="flex justify-center my-5 items-center gap-2">
         <Pagination
           page={page}
           handlePageChange={handlePageChange}
