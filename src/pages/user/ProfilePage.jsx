@@ -141,6 +141,7 @@ export default function ProfilePage() {
         <input
           id="profileImgChange"
           type="file"
+          accept="image/*"
           className="hidden"
           onChange={handleFileChange}
         />
