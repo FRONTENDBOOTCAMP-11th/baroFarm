@@ -86,11 +86,9 @@ export default function ProfilePage() {
     onSuccess: () => {
       alert("프로필 이미지 설정 성공!");
       alert("설정 적용을 위해 로그아웃합니다.\n다시 로그인 해주십시오.");
-      queryClient.invalidateQueries({ queryKey: ["user", id] });
-      queryClient.invalidateQueries({ queryKey: ["carts"] });
       resetUser();
+      queryClient.clear();
       navigate("/users/login");
-      navigate(0);
     },
     onError: (error) => {
       alert(`에러: ${error.message}`);

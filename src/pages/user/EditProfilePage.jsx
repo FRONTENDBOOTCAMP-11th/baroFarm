@@ -79,8 +79,9 @@ export default function EditProfilePage() {
       resetUser();
       alert("프로필 정보 변경이 완료되었습니다.");
       alert("설정 적용을 위해 로그아웃합니다. 다시 로그인해주세요.");
-      queryClient.invalidateQueries({ queryKey: ["user", data._id] });
-      navigate("/users/mypage");
+      resetUser();
+      queryClient.clear();
+      navigate("/users/login");
     },
     onError: (err) => {
       console.error("회원 정보 변경 실패:", err);
