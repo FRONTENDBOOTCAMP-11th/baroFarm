@@ -188,7 +188,7 @@ export default function PaymentPage() {
       }
       const payData = { selectedItems, totalFees, memo, currentAddress };
       setPayData(payData);
-      navigate("/complete");
+      setTimeout(() => navigate("/complete"), 500);
       // openModal(); // 모달창으로 안내
     },
     onError: (err) => console.error(err),
