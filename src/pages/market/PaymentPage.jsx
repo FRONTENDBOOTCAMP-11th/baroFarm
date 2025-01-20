@@ -80,14 +80,12 @@ export default function PaymentPage() {
 
   // 데이터 로딩 완료 후 기본 배송지를 유저의 기본 정보로 설정
   useEffect(() => {
-    if (
-      data?.extra?.userName &&
-      data?.phone &&
-      data?.address &&
-      addressId === 0
-    ) {
+    // 닉네임과 실명 둘 중 하나를 유저의 이름으로 설정
+    const name = data?.extra?.userName || data?.name;
+
+    if (name && data?.phone && data?.address && addressId === 0) {
       setCurrentAddress({
-        userName: data?.extra?.userName,
+        userName: name,
         phone: data?.phone,
         value: data?.address,
       });
@@ -201,6 +199,8 @@ export default function PaymentPage() {
   const formatPhoneNumber = (number) => {
     return number.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
   };
+
+  console.log("현재주소", currentAddress);
 
   return (
     <>
