@@ -1,7 +1,7 @@
 import Button from "@components/Button";
 import HeaderIcon from "@components/HeaderIcon";
 import { useEffect } from "react";
-import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function OrderCompletePage() {
   // 헤더 아이콘 설정
@@ -25,9 +25,9 @@ export default function OrderCompletePage() {
     });
   }, []);
 
-  const location = useLocation();
-
-  const { selectedItems, currentAddress, memo, totalFees } = location.state;
+  const { selectedItems, currentAddress, memo, totalFees } = JSON.parse(
+    localStorage.getItem("payData")
+  );
 
   const products = selectedItems.map((item) => {
     return (
@@ -81,7 +81,13 @@ export default function OrderCompletePage() {
           </div>
         </section>
         <section className="px-4">
-          <Button isBig={true} onClick={() => navigate("/")}>
+          <Button
+            isBig={true}
+            onClick={() => {
+              navigate("/");
+              localStorage.removeItem("payData");
+            }}
+          >
             홈으로
           </Button>
         </section>
