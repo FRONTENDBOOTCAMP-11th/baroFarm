@@ -10,6 +10,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useLikeToggle } from "@hooks/useLikeToggle";
 import { useCategory } from "@hooks/useCategory";
+import useUserStore from "@zustand/useUserStore";
 
 import PurchaseModal from "@components/PurchaseModal";
 import Modal from "@components/Modal";
@@ -34,6 +35,16 @@ export default function ProductDetailPage() {
 
   const instance = useAxiosInstance();
   const queryClient = useQueryClient();
+
+  const { user } = useUserStore();
+
+  function navigateLogin() {
+    const gotoLogin = confirm(
+      "로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?"
+    );
+    if (gotoLogin)
+      navigate("/users/login", { state: { from: location.pathname } });
+  }
 
   const {
     data: product,
@@ -278,15 +289,19 @@ export default function ProductDetailPage() {
           <button
             className="flex-1 text-lg text-white bg-btn-primary p-3 rounded-[10px]"
             onClick={() => {
-              const currentUrl = window.location.href;
-              navigate("/payment", {
-                state: {
-                  selectedItems: purchaseItem,
-                  totalFees: product.extra.saledPrice * count,
-                  totalShippingFees: product.shippingFees,
-                  previousUrl: currentUrl,
-                },
-              });
+              if (!user) {
+                navigateLogin();
+              } else {
+                const currentUrl = window.location.href;
+                navigate("/payment", {
+                  state: {
+                    selectedItems: purchaseItem,
+                    totalFees: product.extra.saledPrice * count,
+                    totalShippingFees: product.shippingFees,
+                    previousUrl: currentUrl,
+                  },
+                });
+              }
             }}
           >
             구매하기

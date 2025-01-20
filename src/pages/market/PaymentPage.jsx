@@ -80,9 +80,12 @@ export default function PaymentPage() {
 
   // 데이터 로딩 완료 후 기본 배송지를 유저의 기본 정보로 설정
   useEffect(() => {
-    if (addressId === 0) {
+    // 닉네임과 실명 둘 중 하나를 유저의 이름으로 설정
+    const name = data?.extra?.userName || data?.name;
+
+    if (name && data?.phone && data?.address && addressId === 0) {
       setCurrentAddress({
-        userName: data?.extra?.userName ? data.extra.userName : data.name,
+        userName: name,
         phone: data?.phone,
         value: data?.address,
       });
@@ -92,7 +95,6 @@ export default function PaymentPage() {
       );
     }
   }, [data, addressId]);
-  console.log("유저 정보", data);
 
   // 스크롤에 따라 결제버튼 보이게 하기
   useEffect(() => {
@@ -170,6 +172,7 @@ export default function PaymentPage() {
           },
         ],
       }),
+
     onSuccess: () => {
       // 구매 성공시
       // 장바구니에서 넘어온 상태라면 장바구니에서 구매한 아이템 삭제
@@ -196,7 +199,8 @@ export default function PaymentPage() {
   const formatPhoneNumber = (number) => {
     return number.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
   };
-  console.log("currentAddress", currentAddress);
+
+  console.log("현재주소", currentAddress);
 
   return (
     <>
@@ -210,7 +214,7 @@ export default function PaymentPage() {
       <section className="px-5 py-[14px]">
         <div>
           <h3 className="mb-3 text-sm font-bold">주문자 정보</h3>
-          {data?.address ? (
+          {currentAddress ? (
             <div className="flex flex-col gap-5 px-5 py-6 bg-white border-2 border-bg-primary2/50 rounded-[10px] shadow-md mb-6">
               {/* 기본 배송지 렌더링 */}
               <div className="flex flex-col gap-[6px]">
@@ -311,7 +315,15 @@ export default function PaymentPage() {
         <Button
           isBig={true}
           onClick={() => {
-            setIsPayModalOpen(true);
+            if (
+              !currentAddress.userName ||
+              !currentAddress.phone ||
+              !currentAddress.value
+            ) {
+              alert("이름, 전화번호, 주소 입력은 필수입니다.");
+            } else {
+              setIsPayModalOpen(true);
+            }
           }}
         >
           {(totalFees + totalShippingFees).toLocaleString()}원 결제하기

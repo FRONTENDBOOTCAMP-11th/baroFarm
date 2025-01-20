@@ -42,6 +42,10 @@ export default function ProductSmall({ product, bookmarkId }) {
   // 북마크 해제 기능
   const deleteBookmark = useMutation({
     mutationFn: () => axios.delete(`/bookmarks/${bookmarkId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["bookmarks"] });
+      queryClient.invalidateQueries({ queryKey: ["carts"] });
+    },
   });
 
   // 장바구니에 추가 기능
@@ -53,7 +57,6 @@ export default function ProductSmall({ product, bookmarkId }) {
       }),
     onSuccess: () => {
       deleteBookmark.mutate();
-      queryClient.invalidateQueries({ queryKey: ["bookmarks", "product"] });
       alert("장바구니에 추가되었습니다.");
     },
     onError: (error) => {
@@ -65,7 +68,7 @@ export default function ProductSmall({ product, bookmarkId }) {
     <section className="flex flex-col cursor-pointer">
       <div className="relative">
         <img
-          className="h-[135px] rounded-lg object-cover w-full"
+          className="aspect-square rounded-lg object-cover w-full"
           alt={product.name}
           src={`https://11.fesp.shop${product.mainImages[0]?.path}`}
           onClick={goDetailPage}
@@ -96,7 +99,7 @@ export default function ProductSmall({ product, bookmarkId }) {
       </div>
       <div className="self-center">
         <Button isWhite={true} onClick={() => addCartItem.mutate()}>
-          장바구니에 추가
+          장바구니 담기
         </Button>
       </div>
     </section>
