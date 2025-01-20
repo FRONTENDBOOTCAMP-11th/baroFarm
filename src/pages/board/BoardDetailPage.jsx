@@ -59,8 +59,6 @@ export default function BoardDetailPage() {
 
   const newDate = createdTime(data.createdAt);
 
-  console.log(data.content, data.content.replace('"', ""));
-
   return (
     <div className="mx-5">
       <div className="flex flex-row mt-5 items-center">

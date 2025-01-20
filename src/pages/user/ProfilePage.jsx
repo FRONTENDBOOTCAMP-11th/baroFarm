@@ -50,7 +50,6 @@ export default function ProfilePage() {
 
   const addProfileImg = useMutation({
     mutationFn: async (item) => {
-      console.log("item", item);
       let imageUrl = null;
 
       // 이미지 파일 확인 절차

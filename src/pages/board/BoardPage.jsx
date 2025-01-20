@@ -86,7 +86,6 @@ export default function BoardPage() {
     e.preventDefault();
     const searchWord = e.target.keyword.value.trim();
     setSearchParams({ keyword: searchWord }); // URL에 keyword 저장
-    console.log(keyword);
   };
 
   // 페이지에 맞는 데이터 계산
@@ -104,8 +103,6 @@ export default function BoardPage() {
   const boards = currentPosts?.map((item) => (
     <BoardPageDetail key={item._id} item={item} />
   ));
-
-  console.log(boards);
 
   return (
     <div className="relative mx-5">

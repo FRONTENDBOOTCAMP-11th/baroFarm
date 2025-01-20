@@ -74,10 +74,6 @@ export default function BoardEditPage() {
             },
           });
           imageUrl = uploadImg.data.item[0].path; // 서버에서 반환된 이미지 URL
-          console.log(
-            item.content,
-            item.content.replaceAll(/\n|\r\n/, "<br/>")
-          );
           const body = {
             content: item.content.replaceAll(/\n|\r\n/g, "<br/>"),
             image: imageUrl,
