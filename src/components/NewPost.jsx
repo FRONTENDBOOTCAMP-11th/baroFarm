@@ -54,11 +54,8 @@ export default function NewPost({
       <div className="flex flex-row items-center">
         <img
           src={
-            data?.image
-              ? data.image.includes("http://") ||
-                data.image.includes("https://")
-                ? data.image
-                : `https://11.fesp.shop${data.image}`
+            data.image
+              ? `https://11.fesp.shop${data.image}`
               : "/images/profile/ProfileImage_Sample.jpg"
           }
           alt="ProfileImage"

@@ -1,7 +1,7 @@
 import HeaderIcon from "@components/HeaderIcon";
 import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
@@ -9,7 +9,6 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 export default function MyPage() {
   const { setHeaderContents } = useOutletContext();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const url = "https://11.fesp.shop";
 
   // zustand store에서 유저 상태 가져옴
@@ -34,15 +33,12 @@ export default function MyPage() {
   const resetUser = useUserStore((store) => store.resetUser);
 
   const logoutClick = () => {
-    //로그아웃 시 캐시 삭제
-    queryClient.invalidateQueries({ queryKey: ["carts"] });
+    //로그아웃 시 데이터 삭제
     resetUser();
-    axios.defaults.headers.Authorization = ``; // 로그아웃된 경우 헤더 제거
-    // window.location.reload();
     navigate("/");
   };
 
-  //로그인 시 로그인 화면으로 이동
+  //로그인 시 데이터 추가
   const loginClick = () => {
     navigate("/users/login");
   };
@@ -69,12 +65,9 @@ export default function MyPage() {
             <>
               <img
                 src={
-                  data?.image
-                    ? data.image.includes("http://") ||
-                      data.image.includes("https://")
-                      ? data.image
-                      : url + data.image
-                    : "/images/profile/ProfileImage_Sample.jpg"
+                  data.image
+                    ? url + data.image //이메일 타입
+                    : "/images/profile/ProfileImage_Sample.jpg" //이미지 설정이 없는 경우
                 }
                 className="mr-5 w-[49px] h-[50px] rounded-full object-cover"
                 loading="lazy"
