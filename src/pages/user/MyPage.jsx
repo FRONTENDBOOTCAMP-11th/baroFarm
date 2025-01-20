@@ -20,7 +20,7 @@ export default function MyPage() {
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="back" onClick={() => navigate(-1)} />,
+      leftChild: <HeaderIcon name="back" onClick={() => navigate("/")} />,
       title: "마이 페이지",
       rightChild: (
         <>
