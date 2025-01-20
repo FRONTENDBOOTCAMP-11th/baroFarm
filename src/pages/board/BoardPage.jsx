@@ -1,11 +1,17 @@
 import HeaderIcon from "@components/HeaderIcon";
+import Pagination from "@components/Pagination";
 import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import BoardPageDetail from "@pages/board/BoardPageDetail";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useOutletContext, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useOutletContext,
+  useSearchParams,
+} from "react-router-dom";
 
 export default function BoardPage() {
   const { setHeaderContents } = useOutletContext();
@@ -15,6 +21,8 @@ export default function BoardPage() {
   const axios = useAxiosInstance();
   const [searchParams, setSearchParams] = useSearchParams();
   const keyword = searchParams.get("keyword") || ""; // URL에서 keyword 가져오기
+  const [page, setPage] = useState(1);
+  const postsPerPage = 10;
 
   useEffect(() => {
     setHeaderContents({
@@ -39,7 +47,7 @@ export default function BoardPage() {
     queryKey: ["posts", "community", keyword],
     queryFn: () =>
       axios.get(`/posts`, {
-        params: { type: "community", keyword: keyword },
+        params: { type: "community", keyword: keyword, limit: 10 },
       }),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
@@ -50,7 +58,7 @@ export default function BoardPage() {
     queryKey: ["posts", "noPic", keyword],
     queryFn: () =>
       axios.get(`/posts`, {
-        params: { type: "noPic", keyword: keyword },
+        params: { type: "noPic", keyword: keyword, limit: 10 },
       }),
     select: (res) => res.data.item,
     staleTime: 1000 * 10,
@@ -64,7 +72,11 @@ export default function BoardPage() {
   const sortedData = mergeData.sort((prev, next) => next._id - prev._id);
 
   const handleClick = (event) => {
-    if (!confirm("게스트 상태로 게시글 작성을 이용하실 수 없습니다.\n로그인 하시겠습니까?")) {
+    if (
+      !confirm(
+        "게스트 상태로 게시글 작성을 이용하실 수 없습니다.\n로그인 하시겠습니까?"
+      )
+    ) {
       event.preventDefault();
     }
   };
@@ -77,7 +89,21 @@ export default function BoardPage() {
     console.log(keyword);
   };
 
-  const boards = sortedData?.map((item) => <BoardPageDetail key={item._id} item={item} />);
+  // 페이지에 맞는 데이터 계산
+  const indexOfLastPost = page * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = sortedData.slice(indexOfFirstPost, indexOfLastPost);
+
+  const totalPages = Math.ceil(sortedData.length / postsPerPage);
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0 });
+  };
+
+  const boards = currentPosts?.map((item) => (
+    <BoardPageDetail key={item._id} item={item} />
+  ));
 
   console.log(boards);
 
@@ -107,12 +133,21 @@ export default function BoardPage() {
         </div>
       </form>
       <div className="flex my-2 items-center bg-btn-primary rounded-md gap-3 p-3">
-        <img src="/images/BaroFarmIcon.png" alt="바로팜 로고" className="w-[90px]" />
+        <img
+          src="/images/BaroFarmIcon.png"
+          alt="바로팜 로고"
+          className="w-[90px]"
+        />
         <p className="text-white text-sm break-keep">
           바로파밍은
           <br />
-          모든 회원이 함께하는<span className="text-orange-400"> 소통</span> 공간입니다.
-          <br /> 바로팜에서 구매한 상품으로 만든 요리를 자랑하고 나만의 레시피를 나누어 보세요!
+          모든 회원이 함께하는<span className="text-orange-400">
+            {" "}
+            소통
+          </span>{" "}
+          공간입니다.
+          <br /> 바로팜에서 구매한 상품으로 만든 요리를 자랑하고 나만의 레시피를
+          나누어 보세요!
         </p>
       </div>
 
@@ -127,7 +162,9 @@ export default function BoardPage() {
       {boards}
       {boards.length === 0 && keyword !== "" && (
         <div className="relative">
-          <span className="mt-10 block text-center text-gray4">&quot;{keyword}&quot; 검색 결과가 없습니다.</span>
+          <span className="mt-10 block text-center text-gray4">
+            &quot;{keyword}&quot; 검색 결과가 없습니다.
+          </span>
         </div>
       )}
       <Link
@@ -137,6 +174,13 @@ export default function BoardPage() {
       >
         <img src="/icons/icon_newpost.svg" className="w-full h-full" />
       </Link>
+      <div className="flex justify-center mt-5">
+        <Pagination
+          page={page}
+          handlePageChange={handlePageChange}
+          totalPages={totalPages}
+        />
+      </div>
     </div>
   );
 }

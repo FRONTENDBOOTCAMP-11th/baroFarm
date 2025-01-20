@@ -2,7 +2,7 @@ import HeaderIcon from "@components/HeaderIcon";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import Comment from "@pages/board/Comment";
 import createdTime from "@utils/createdTime.js";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import {
@@ -21,6 +21,7 @@ export default function BoardDetailPage() {
   const { user } = useUserStore();
   const axios = useAxiosInstance();
   const location = useLocation();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     setHeaderContents({
@@ -61,6 +62,9 @@ export default function BoardDetailPage() {
       const response = await axios.delete(`/posts/${_id}`);
       if (response.status === 200) {
         alert("게시글 삭제가 완료되었습니다.");
+        queryClient.invalidateQueries({
+          queryKey: ["posts"],
+        });
         navigate("/board");
       }
     }
@@ -74,7 +78,10 @@ export default function BoardDetailPage() {
         <img
           src={
             data.user.image
-              ? `https://11.fesp.shop${data.user.image}`
+              ? data.user.image.includes("http://") ||
+                data.user.image.includes("https://")
+                ? data.user.image
+                : `https://11.fesp.shop${data.user.image}`
               : "/images/profile/ProfileImage_Sample.jpg"
           }
           alt="ProfileImage"
