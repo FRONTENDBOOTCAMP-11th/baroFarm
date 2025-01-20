@@ -30,6 +30,7 @@ export default function BoardPageDetail({ item }) {
     checkOverflow();
   }, []);
 
+  console.log(item);
   const newDate = createdTime(item.createdAt);
   return (
     <div className="relative">
@@ -42,10 +43,7 @@ export default function BoardPageDetail({ item }) {
             <img
               src={
                 item.user.image
-                  ? item.user.image.includes("http://") ||
-                    item.user.image.includes("https://")
-                    ? item.user.image
-                    : `https://11.fesp.shop${item.user.image}`
+                  ? `https://11.fesp.shop${item.user.image}`
                   : "/images/profile/ProfileImage_Sample.jpg"
               }
               alt="ProfileImage"

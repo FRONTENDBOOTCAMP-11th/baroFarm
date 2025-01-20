@@ -44,7 +44,7 @@ export default function AddressModal({
   // 전달 받은 유저 데이터를 변수에 할당
   const defaultAddress = userData.address;
   const addressBook = userData.extra?.addressBook;
-  const userName = userData.extra?.userName;
+  const userName = userData.extra?.userName || userData.name;
 
   // 신규 배송지 입력을 받기 위한 reack-hook-form
   const {
@@ -57,6 +57,26 @@ export default function AddressModal({
   });
 
   const queryClient = useQueryClient();
+  // 기본 배송지 추가 (배송지가 하나도 없는 상태)
+  const addDefaultAddress = useMutation({
+    mutationFn: (formData) => {
+      const defaultAddress = {
+        phone: formData.phone,
+        address: `${formData.value} ${formData.detailValue}`,
+      };
+
+      const ok = confirm("주소를 등록하시겠습니까?");
+      if (ok) {
+        axios.patch(`/users/${userData._id}`, defaultAddress);
+        alert("신규 주소가 등록되었습니다.");
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      setIsOpenForm(false);
+      reset();
+    },
+  });
 
   // 추가 배송지 추가
   const addAddress = useMutation({
@@ -124,7 +144,7 @@ export default function AddressModal({
 
   // 아래 3개 정보가 다 있으면 기본 배송지로 설정
   const RenderDefaultAddress = () => {
-    if (userData.address && userData.phone && userData.extra.userName)
+    if (userData.address)
       return (
         <div className="[&:not(:last-child)]:border-b border-gray2 py-3">
           <div className="flex mb-2 justify-between">
@@ -198,6 +218,7 @@ export default function AddressModal({
       </div>
     );
   });
+  console.log(userData);
 
   return createPortal(
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -235,7 +256,11 @@ export default function AddressModal({
           <>
             {/* 배송지 신규 입력 폼 */}
             <form
-              onSubmit={handleSubmit(addAddress.mutate)}
+              onSubmit={
+                userData.address && userData.name && userData.phone
+                  ? handleSubmit(addAddress.mutate)
+                  : handleSubmit(addDefaultAddress.mutate)
+              }
               className="my-4 bg-gray1 p-3 rounded-lg"
             >
               <div className="mb-2.5 text-sm">
@@ -260,10 +285,7 @@ export default function AddressModal({
               </div>
               <div className="mb-2.5 text-sm">
                 <label className="block mb-2.5 font-semibold" htmlFor="email">
-                  연락처{" "}
-                  <span className="text-gray4 font-light text-sm">
-                    (예시 : 01011112222)
-                  </span>
+                  연락처
                 </label>
                 <input
                   className="border border-gray3 rounded-md w-full p-2 placeholder:font-thin placeholder:text-gray4 outline-none focus:border-btn-primary"
@@ -271,7 +293,7 @@ export default function AddressModal({
                   id="phone"
                   // 모바일에서 숫자 키패드가 나타나도록 설정
                   inputMode="numeric"
-                  placeholder="연락처를 입력해주세요."
+                  placeholder="숫자만 입력해주세요."
                   {...register("phone", {
                     required: "연락처를 입력해주세요.",
                     pattern: {
