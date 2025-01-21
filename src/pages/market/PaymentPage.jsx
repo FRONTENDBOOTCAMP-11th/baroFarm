@@ -12,6 +12,7 @@ import AddressModal from "@components/AddressModal";
 import Spinner from "@components/Spinner";
 import DataErrorPage from "@pages/DataErrorPage";
 import usePayStore from "@zustand/usePayStore";
+import { Helmet } from "react-helmet-async";
 
 export default function PaymentPage() {
   // 이전 페이지에서 넘어온 정보
@@ -207,6 +208,9 @@ export default function PaymentPage() {
 
   return (
     <>
+      <Helmet>
+        <title>주문/결제 | 바로Farm</title>
+      </Helmet>
       <AddressModal
         isOpen={isAddressModalOpen}
         onClose={() => setIsAddressModalOpen(false)}

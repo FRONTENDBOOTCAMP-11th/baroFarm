@@ -5,6 +5,7 @@ import ErrorPage from "@pages/ErrorPage";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function EditProfilePage() {
@@ -80,10 +81,15 @@ export default function EditProfilePage() {
     },
   });
   return (
-    <UserForm
-      buttonText="수정하기"
-      userInfo={data}
-      onSubmitUser={editUserInfo.mutate}
-    />
+    <>
+      <Helmet>
+        <title>프로필 수정 | 바로Farm</title>
+      </Helmet>
+      <UserForm
+        buttonText="수정하기"
+        userInfo={data}
+        onSubmitUser={editUserInfo.mutate}
+      />
+    </>
   );
 }
