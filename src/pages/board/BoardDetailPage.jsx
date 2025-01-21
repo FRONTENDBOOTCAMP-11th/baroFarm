@@ -14,6 +14,7 @@ import {
 import Spinner from "@components/Spinner";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
+import ShowConfirmToast from "@components/ShowConfirmToast";
 
 export default function BoardDetailPage() {
   const { setHeaderContents } = useOutletContext();
@@ -47,7 +48,8 @@ export default function BoardDetailPage() {
   }
 
   const deletePost = async () => {
-    if (confirm("게시글을 삭제하시겠습니까?")) {
+    const confirmed = await ShowConfirmToast("게시글을 삭제하시겠습니까?");
+    if (confirmed) {
       const response = await axios.delete(`/posts/${_id}`);
       if (response.status === 200) {
         toast.success("게시글 삭제가 완료되었습니다.");
