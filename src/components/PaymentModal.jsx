@@ -2,6 +2,7 @@ import PGButton from "@components/PGButton";
 import PortOne from "@portone/browser-sdk/v2";
 import PropTypes from "prop-types";
 import { createPortal } from "react-dom";
+import { toast } from "react-toastify";
 
 PaymentModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -52,7 +53,7 @@ export default function PaymentModal({
 
     if (response.code !== undefined) {
       // 오류 발생
-      return alert(response.message);
+      return toast.error(response.message);
     }
 
     selectedItems.forEach((item) =>
@@ -81,7 +82,7 @@ export default function PaymentModal({
 
     if (response.code !== undefined) {
       // 오류 발생
-      return alert(response.message);
+      return toast.error(response.message);
     }
 
     selectedItems.forEach((item) =>

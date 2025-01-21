@@ -3,6 +3,7 @@ import RecentKeywordItem from "@components/RecentKeywordItem";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function SearchPage() {
   // 최근 검색어 상태 관리
@@ -49,7 +50,9 @@ export default function SearchPage() {
   // 검색어 개별 삭제하는 함수
   const removeKeyword = (keywordToRemove) => {
     // filter로 선택된 검색어만 제외하고 새 배열 생성
-    const filteredKeywords = recentKeywords.filter((keyword) => keyword !== keywordToRemove);
+    const filteredKeywords = recentKeywords.filter(
+      (keyword) => keyword !== keywordToRemove
+    );
     // localStorage 업데이트
     localStorage.setItem("recentKeywords", JSON.stringify(filteredKeywords));
     // state 업데이트
@@ -70,7 +73,7 @@ export default function SearchPage() {
 
     // 검색어가 없는 경우 경고 메시지 출력 후 종료
     if (!keyword) {
-      alert("검색어를 입력해주세요.");
+      toast.info("검색어를 입력해주세요.");
       return; // navigate 방지
     }
 
@@ -115,14 +118,22 @@ export default function SearchPage() {
         {/* 최근 검색어 */}
         <div className="flex items-center mt-2.5">
           <h5 className="flex-grow text-sm font-semibold">최근 검색어</h5>
-          <button className="text-xs font-medium" type="button" onClick={clearAllKeyword}>
+          <button
+            className="text-xs font-medium"
+            type="button"
+            onClick={clearAllKeyword}
+          >
             전체 삭제
           </button>
         </div>
 
         <ul className="mt-2.5 flex items-center flex-wrap gap-2.5 text-sm">
           {recentKeywords.map((keyword) => (
-            <RecentKeywordItem key={keyword} keyword={keyword} onRemove={removeKeyword} />
+            <RecentKeywordItem
+              key={keyword}
+              keyword={keyword}
+              onRemove={removeKeyword}
+            />
           ))}
         </ul>
       </div>

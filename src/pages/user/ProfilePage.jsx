@@ -11,6 +11,7 @@ import {
   useNavigate,
   useOutletContext,
 } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function ProfilePage() {
   const { setHeaderContents } = useOutletContext();
@@ -84,14 +85,14 @@ export default function ProfilePage() {
       }
     },
     onSuccess: () => {
-      alert("프로필 이미지 설정 성공!");
-      alert("설정 적용을 위해 로그아웃합니다. 다시 로그인해주세요.");
+      toast.success("프로필 이미지 설정 성공!");
+      toast.success("설정 적용을 위해 로그아웃합니다. 다시 로그인해주세요.");
       resetUser();
       queryClient.clear();
       navigate("/users/login", { replace: true });
     },
     onError: (error) => {
-      alert(`에러: ${error.message}`);
+      toast.error(`에러: ${error.message}`);
     },
   });
 

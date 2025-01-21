@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 CommentItem.propTypes = {
   item: PropTypes.shape({
@@ -28,7 +29,7 @@ export default function CommentItem({ item }) {
     if (confirm("댓글을 삭제하시겠습니까?")) {
       const response = await axios.delete(`/posts/${_id}/replies/${item._id}`);
       if (response.status === 200) {
-        alert("댓글 삭제가 완료되었습니다.");
+        toast.success("댓글 삭제가 완료되었습니다.");
         queryClient.invalidateQueries({ queryKey: ["posts", _id] });
       }
     }

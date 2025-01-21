@@ -4,7 +4,12 @@ import DataErrorPage from "@pages/DataErrorPage";
 import { useMutation } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
-import { useNavigate, useOutletContext, useSearchParams } from "react-router-dom";
+import {
+  useNavigate,
+  useOutletContext,
+  useSearchParams,
+} from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function KakaoAuthPage() {
   const [searchParms] = useSearchParams();
@@ -49,7 +54,7 @@ export default function KakaoAuthPage() {
           refreshToken: user.token.refreshToken,
         });
 
-        alert(user.name + "님, 로그인 되었습니다.");
+        toast.success(user.name + "님, 로그인 되었습니다.");
         navigate("/");
       }
     },

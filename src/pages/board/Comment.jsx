@@ -6,6 +6,7 @@ import useUserStore from "@zustand/useUserStore";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 Comment.propTypes = {
   replies: PropTypes.array,
@@ -30,7 +31,7 @@ export default function Comment({ replies = [] }) {
     },
     onSuccess: () => {
       reset();
-      alert("댓글이 등록되었습니다.");
+      toast.success("댓글이 등록되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["posts", _id] });
     },
     onError: (err) => {
