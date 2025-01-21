@@ -21,6 +21,7 @@ import forwardIcon from "/icons/icon_forward.svg";
 import cartIcon from "/icons/icon_cart_modal.svg";
 import HeaderIcon from "@components/HeaderIcon";
 import DataErrorPage from "@pages/DataErrorPage";
+import { Helmet } from "react-helmet-async";
 
 const likeIcon = {
   default: "/icons/icon_likeHeart_no.svg",
@@ -155,6 +156,9 @@ export default function ProductDetailPage() {
 
   return (
     <>
+      <Helmet>
+        <title>{product.name} | 바로Farm</title>
+      </Helmet>
       <img
         alt={product.name}
         className="w-[390px] h-[330px] object-cover"
@@ -264,7 +268,7 @@ export default function ProductDetailPage() {
               {(product.extra.saledPrice * count).toLocaleString()}원
             </span>
             <span className="text-[12px] text-red1 mt-[3px]">
-              (
+              (-
               {(
                 (product.price - product.extra.saledPrice) *
                 count

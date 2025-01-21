@@ -9,6 +9,8 @@ import ReviewItem from "@components/ReviewItem";
 import Spinner from "@components/Spinner";
 import DataErrorPage from "@pages/DataErrorPage";
 
+import { Helmet } from "react-helmet-async";
+
 export default function ReviewPage() {
   const { setHeaderContents } = useOutletContext();
 
@@ -65,6 +67,9 @@ export default function ReviewPage() {
   );
   return (
     <>
+      <Helmet>
+        <title>후기 | 바로Farm</title>
+      </Helmet>
       <section className="p-5 border-b-[1px] border-b-gray2">
         <p className="font-medium pb-2">전체 구매자 평점</p>
         <span className="font-semibold pr-2">
