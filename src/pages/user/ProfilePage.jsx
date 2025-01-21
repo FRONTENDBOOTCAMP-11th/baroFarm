@@ -1,4 +1,5 @@
 import HeaderIcon from "@components/HeaderIcon";
+import ShowConfirmToast from "@components/ShowConfirmToast";
 import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -102,9 +103,11 @@ export default function ProfilePage() {
     addProfileImg.mutate({ image: [file] });
   };
 
-  const setProfileImg = () => {
-    if (confirm("프로필 이미지를 변경하시겠습니까?"))
-      document.getElementById("profileImgChange").click();
+  const setProfileImg = async () => {
+    const isConfirmed = await ShowConfirmToast(
+      "프로필 이미지를 변경하시겠습니까?"
+    );
+    if (isConfirmed) document.getElementById("profileImgChange").click();
   };
 
   const { data: userData, isLoading } = useQuery({

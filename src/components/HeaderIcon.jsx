@@ -1,3 +1,4 @@
+import ShowConfirmToast from "@components/ShowConfirmToast";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
@@ -32,8 +33,8 @@ export default function HeaderIcon({ name, onClick }) {
 
   // 로그인되지 않은 사용자가 장바구니에 접근할 때 리다이렉트
   const navigate = useNavigate();
-  function navigateLogin() {
-    const gotoLogin = confirm(
+  async function navigateLogin() {
+    const gotoLogin = await ShowConfirmToast(
       "로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?"
     );
     if (gotoLogin)

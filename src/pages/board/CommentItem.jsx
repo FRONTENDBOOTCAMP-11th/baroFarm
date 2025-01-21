@@ -5,6 +5,7 @@ import useUserStore from "@zustand/useUserStore";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import ShowConfirmToast from "@components/ShowConfirmToast";
 
 CommentItem.propTypes = {
   item: PropTypes.shape({
@@ -26,7 +27,8 @@ export default function CommentItem({ item }) {
   const queryClient = useQueryClient();
 
   const deleteComment = async () => {
-    if (confirm("댓글을 삭제하시겠습니까?")) {
+    const isConfirmed = await ShowConfirmToast("댓글을 삭제하시겠습니까?");
+    if (isConfirmed) {
       const response = await axios.delete(`/posts/${_id}/replies/${item._id}`);
       if (response.status === 200) {
         toast.success("댓글 삭제가 완료되었습니다.");

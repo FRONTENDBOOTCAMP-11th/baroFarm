@@ -3,6 +3,7 @@ import CartItem from "@components/CartItem";
 import Checkbox from "@components/Checkbox";
 import HeaderIcon from "@components/HeaderIcon";
 import ProductSmall from "@components/ProductSmall";
+import ShowConfirmToast from "@components/ShowConfirmToast";
 import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import DataErrorPage from "@pages/DataErrorPage";
@@ -93,8 +94,8 @@ export default function CartPage() {
   // 장바구니 상품 삭제
   const queryClient = useQueryClient();
   const deleteItem = useMutation({
-    mutationFn: (_id) => {
-      const ok = confirm("상품을 삭제하시겠습니까?");
+    mutationFn: async (_id) => {
+      const ok = await ShowConfirmToast("상품을 삭제하시겠습니까?");
       if (ok) axios.delete(`/carts/${_id}`);
     },
     onSuccess: () => {
@@ -159,9 +160,9 @@ export default function CartPage() {
 
   // 장바구니 아이템 여러건 삭제
   const deleteItems = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       if (checkedItemsIds.length !== 0) {
-        const ok = confirm("선택하신 상품을 삭제할까요?");
+        const ok = await ShowConfirmToast("선택하신 상품을 삭제할까요?");
         if (ok) {
           setCheckedItemsIds([]);
           return axios.delete("/carts", {
