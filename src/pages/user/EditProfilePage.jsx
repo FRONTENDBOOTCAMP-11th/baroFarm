@@ -7,6 +7,7 @@ import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function EditProfilePage() {
   const { setHeaderContents } = useOutletContext();
@@ -66,8 +67,8 @@ export default function EditProfilePage() {
     },
     onSuccess: () => {
       resetUser();
-      alert("프로필 정보 변경이 완료되었습니다.");
-      alert("설정 적용을 위해 로그아웃합니다. 다시 로그인해주세요.");
+      toast.success("프로필 정보 변경이 완료되었습니다.");
+      toast.success("설정 적용을 위해 로그아웃합니다. 다시 로그인해주세요.");
       resetUser();
       queryClient.clear();
       navigate("/users/login", { replace: true });
@@ -77,7 +78,7 @@ export default function EditProfilePage() {
       const errorMessage = err.response
         ? err.response.data.errors[0].msg
         : err.message.replace(/^Error:\s*/, "");
-      alert(errorMessage);
+      toast.error(errorMessage);
     },
   });
   return (

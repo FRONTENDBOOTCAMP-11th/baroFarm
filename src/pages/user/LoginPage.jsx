@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
   const { setHeaderContents } = useOutletContext();
@@ -43,7 +44,10 @@ export default function LoginPage() {
     if (savedUserInfo) {
       const { email, password: encryptedPW } = JSON.parse(savedUserInfo);
       // 암호화된 비밀번호 복호화
-      const decryptedPW = CryptoJS.AES.decrypt(encryptedPW, SECRET_PW_KEY).toString(CryptoJS.enc.Utf8);
+      const decryptedPW = CryptoJS.AES.decrypt(
+        encryptedPW,
+        SECRET_PW_KEY
+      ).toString(CryptoJS.enc.Utf8);
 
       setValue("email", email); // 이메일 입력란에 저장된 이메일 설정
       setValue("password", decryptedPW); // 비밀번호 입력란에 저장된 비밀번호 설정
@@ -78,12 +82,15 @@ export default function LoginPage() {
         refreshToken: user.token.refreshToken,
       });
 
-      alert(user.name + "님, 로그인 되었습니다.");
+      toast.success(user.name + "님, 로그인 되었습니다.");
 
       // 자동 로그인이 체크되어 있는 경우에만 실행
       if (rememberMe) {
         // 비밀번호 암호화
-        const encryptedPW = CryptoJS.AES.encrypt(getValues().password, SECRET_PW_KEY).toString();
+        const encryptedPW = CryptoJS.AES.encrypt(
+          getValues().password,
+          SECRET_PW_KEY
+        ).toString();
         // 로컬스토리지에 저장할 객체 생성 (이메일은 평문, 비밀번호는 암호화)
         const userInfo = {
           email: getValues().email,
@@ -102,10 +109,12 @@ export default function LoginPage() {
       console.error("로그인 에러:", err);
       // 422: 입력값 검증 오류
       if (err.response?.data.errors) {
-        err.response?.data.errors.forEach((error) => setError(error.path, { message: error.msg }));
+        err.response?.data.errors.forEach((error) =>
+          setError(error.path, { message: error.msg })
+        );
       } else {
         // 403:로그인 실패, 500:서버 에러
-        alert(err.response?.data.message || "잠시후 다시 요청하세요.");
+        toast.error(err.response?.data.message || "잠시후 다시 요청하세요.");
       }
     },
   });
@@ -145,7 +154,11 @@ export default function LoginPage() {
       <div className="p-5">
         {/* 로고 영역 */}
         <div className="flex justify-center items-center m-auto w-[300px] h-[300px]">
-          <img className="block w-full" src="/images/BaroFarmLogo.png" alt="바로팜 로고 이미지" />
+          <img
+            className="block w-full"
+            src="/images/BaroFarmLogo.png"
+            alt="바로팜 로고 이미지"
+          />
         </div>
 
         {/* 폼 영역 */}
@@ -160,7 +173,11 @@ export default function LoginPage() {
               defaultValue={"barofarm@market.com"}
             />
           </div>
-          {errors.email && <p className="text-red1 text-xs -mt-7 mb-4">{errors.email.message}</p>}
+          {errors.email && (
+            <p className="text-red1 text-xs -mt-7 mb-4">
+              {errors.email.message}
+            </p>
+          )}
           <div className="border-b-2  border-gray2 mb-4 focus-within:border-b-btn-primary">
             <input
               type="password"
@@ -171,7 +188,11 @@ export default function LoginPage() {
               defaultValue={11111111}
             />
           </div>
-          {errors.password && <p className="text-red1 text-xs -mt-3 mb-4">{errors.password.message}</p>}
+          {errors.password && (
+            <p className="text-red1 text-xs -mt-3 mb-4">
+              {errors.password.message}
+            </p>
+          )}
           <label className="mb-8 flex items-center gap-1 font-normal">
             <input
               className="w-5 h-5 mr-1 rounded-full appearance-none bg-gray2  bg-[url('/icons/icon_check_white.svg')] bg-center bg-no-repeat  checked:bg-btn-primary checked:bg-[url('/icons/icon_check_white.svg')] checked:bg-center checked:bg-no-repeat cursor-pointer "
@@ -213,7 +234,10 @@ export default function LoginPage() {
         <div className="mb-5 w-full h-[3.25rem] m-auto">
           <p className="flex justify-center text-sm gap-1.5 font-medium">
             바로팜이 처음이신가요?
-            <Link to="/users/signup" className="text-btn-primary font-medium hover:font-bold">
+            <Link
+              to="/users/signup"
+              className="text-btn-primary font-medium hover:font-bold"
+            >
               회원가입
             </Link>
           </p>

@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function CartPage() {
   const axios = useAxiosInstance();
@@ -97,7 +98,7 @@ export default function CartPage() {
       if (ok) axios.delete(`/carts/${_id}`);
     },
     onSuccess: () => {
-      alert("상품이 삭제되었습니다.");
+      toast.success("상품이 삭제되었습니다.");
       // 캐시된 데이터 삭제 후 리렌더링
       queryClient.invalidateQueries({ queryKey: ["carts"] });
     },
@@ -170,7 +171,7 @@ export default function CartPage() {
           });
         }
       } else {
-        alert("삭제할 상품을 선택하세요.");
+        toast.warning("삭제할 상품을 선택하세요.");
       }
     },
     onSuccess: () => {
@@ -252,7 +253,7 @@ export default function CartPage() {
   // 체크한 아이템의 데이터가 담긴 배열을 구매 페이지로 전송
   const selectItem = () => {
     if (checkedItemsIds.length === 0) {
-      alert("구매할 물품을 선택하세요");
+      toast.alert("구매할 물품을 선택하세요");
       return;
     }
 

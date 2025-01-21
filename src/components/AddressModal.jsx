@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 AddressModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -68,7 +69,7 @@ export default function AddressModal({
       const ok = confirm("주소를 등록하시겠습니까?");
       if (ok) {
         axios.patch(`/users/${userData._id}`, defaultAddress);
-        alert("신규 주소가 등록되었습니다.");
+        toast.success("신규 주소가 등록되었습니다.");
       }
     },
     onSuccess: () => {
@@ -106,7 +107,7 @@ export default function AddressModal({
       const ok = confirm("주소를 등록하시겠습니까?");
       if (ok) {
         axios.patch(`/users/${userData._id}`, newAddress);
-        alert("신규 주소가 등록되었습니다.");
+        toast("신규 주소가 등록되었습니다.");
       }
     },
     onSuccess: () => {
@@ -134,7 +135,7 @@ export default function AddressModal({
       if (ok) axios.patch(`/users/${userData._id}`, newAddressList);
     },
     onSuccess: () => {
-      alert("삭제되었습니다.");
+      toast("삭제되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["users"] });
     },
   });

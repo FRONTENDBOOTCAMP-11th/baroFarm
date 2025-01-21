@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function BoardNewPage() {
   const { setHeaderContents } = useOutletContext();
@@ -90,7 +91,7 @@ export default function BoardNewPage() {
       }
     },
     onSuccess: () => {
-      alert("게시물이 등록되었습니다.");
+      toast.success("게시물이 등록되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       navigate(`/board`, {
         state: { from: window.location.pathname },
@@ -103,7 +104,7 @@ export default function BoardNewPage() {
         ? err.response.data.errors[0].msg
         : err.message.replace(/^Error:\s*/, "");
 
-      alert(errorMessage);
+      toast.error(errorMessage);
     },
   });
 
