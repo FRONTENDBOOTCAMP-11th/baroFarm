@@ -1,6 +1,7 @@
 import HeaderIcon from "@components/HeaderIcon";
 import RecentKeywordItem from "@components/RecentKeywordItem";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function SearchPage() {
@@ -80,44 +81,51 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="p-5">
-      {/* 검색창 */}
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="search" className="text-sm font-semibold block mb-2">
-          찾으시는 상품이 있으신가요?
-        </label>
-        <div className="flex items-center gap-1 w-full rounded-md p-1 border border-gray3 focus-within:border-btn-primary">
-          <button type="submit" aria-label="검색하기">
-            <img src="/icons/icon_search.svg" alt="" />
-          </button>
-          <input
-            className="flex-grow border-none outline-none
+    <>
+      <Helmet>
+        <title>검색페이지 | 바로Farm</title>
+        {/* <meta name="description" content="신선한 농수산물을 간편하게 찾아보세요."></meta> */}
+      </Helmet>
+
+      <div className="p-5">
+        {/* 검색창 */}
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="search" className="text-sm font-semibold block mb-2">
+            찾으시는 상품이 있으신가요?
+          </label>
+          <div className="flex items-center gap-1 w-full rounded-md p-1 border border-gray3 focus-within:border-btn-primary">
+            <button type="submit" aria-label="검색하기">
+              <img src="/icons/icon_search.svg" alt="" />
+            </button>
+            <input
+              className="flex-grow border-none outline-none
               [&::-webkit-search-cancel-button]:appearance-none
               [&::-webkit-search-cancel-button]:bg-[url('/icons/icon_x_thin.svg')]
               [&::-webkit-search-cancel-button]:bg-center
               [&::-webkit-search-cancel-button]:h-4
               [&::-webkit-search-cancel-button]:w-4"
-            type="search"
-            placeholder="검색어를 입력해주세요"
-            id="search"
-            name="keyword"
-            maxLength={20}
-          />
+              type="search"
+              placeholder="검색어를 입력해주세요"
+              id="search"
+              name="keyword"
+              maxLength={20}
+            />
+          </div>
+        </form>
+        {/* 최근 검색어 */}
+        <div className="flex items-center mt-2.5">
+          <h5 className="flex-grow text-sm font-semibold">최근 검색어</h5>
+          <button className="text-xs font-medium" type="button" onClick={clearAllKeyword}>
+            전체 삭제
+          </button>
         </div>
-      </form>
-      {/* 최근 검색어 */}
-      <div className="flex items-center mt-2.5">
-        <h5 className="flex-grow text-sm font-semibold">최근 검색어</h5>
-        <button className="text-xs font-medium" type="button" onClick={clearAllKeyword}>
-          전체 삭제
-        </button>
-      </div>
 
-      <ul className="mt-2.5 flex items-center flex-wrap gap-2.5 text-sm">
-        {recentKeywords.map((keyword) => (
-          <RecentKeywordItem key={keyword} keyword={keyword} onRemove={removeKeyword} />
-        ))}
-      </ul>
-    </div>
+        <ul className="mt-2.5 flex items-center flex-wrap gap-2.5 text-sm">
+          {recentKeywords.map((keyword) => (
+            <RecentKeywordItem key={keyword} keyword={keyword} onRemove={removeKeyword} />
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }
