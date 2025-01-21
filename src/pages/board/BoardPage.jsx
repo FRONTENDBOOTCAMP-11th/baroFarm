@@ -76,7 +76,7 @@ export default function BoardPage() {
   const handleClick = async (event) => {
     event.preventDefault();
     const isConfirmed = await ShowConfirmToast(
-      "게스트 상태로 게시글 작성을 이용하실 수 없습니다.\n로그인 하시겠습니까?"
+      "로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?"
     );
     if (isConfirmed) {
       navigate("/users/login");

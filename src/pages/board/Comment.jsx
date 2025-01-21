@@ -38,7 +38,7 @@ export default function Comment({ replies = [] }) {
     onError: async (err) => {
       console.error(err);
       const isConfirmed = await ShowConfirmToast(
-        "로그인 후에 이용할 수 있는 기능입니다. 로그인하시겠습니까?"
+        "로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?"
       );
       if (!user && isConfirmed) {
         navigate("/users/login");
