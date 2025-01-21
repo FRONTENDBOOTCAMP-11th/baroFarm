@@ -96,10 +96,12 @@ export default function CartPage() {
   const deleteItem = useMutation({
     mutationFn: async (_id) => {
       const ok = await ShowConfirmToast("상품을 삭제하시겠습니까?");
-      if (ok) axios.delete(`/carts/${_id}`);
+      if (ok) {
+        axios.delete(`/carts/${_id}`);
+        toast.success("상품이 삭제되었습니다.");
+      }
     },
     onSuccess: () => {
-      toast.success("상품이 삭제되었습니다.");
       // 캐시된 데이터 삭제 후 리렌더링
       queryClient.invalidateQueries({ queryKey: ["carts"] });
     },
