@@ -6,6 +6,7 @@ import useUserStore from "@zustand/useUserStore";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 export default function LoginPage() {
   const { setHeaderContents } = useOutletContext();
@@ -131,82 +132,93 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="p-5">
-      {/* 로고 영역 */}
-      <div className="flex justify-center items-center m-auto w-[300px] h-[300px]">
-        <img className="block w-full" src="/images/BaroFarmLogo.png" alt="바로팜 로고 이미지" />
-      </div>
+    <>
+      <Helmet>
+        <title>로그인 | 바로Farm</title>
+        {/* <meta name="description" content="로그인하시면 더 다양한 서비스를 만나보실 수 있습니다."></meta> */}
 
-      {/* 폼 영역 */}
-      <form onSubmit={handleSubmit(login.mutate)}>
-        <div className="border-b-2 border-gray2 mb-8 focus-within:border-b-btn-primary">
-          <input
-            type="email"
-            placeholder="이메일"
-            className="placeholder:text-gray4 w-full outline-none"
-            {...register("email", { required: "이메일은 필수입니다." })}
-            // 강사님 배포 테스트 이메일
-            defaultValue={"barofarm@market.com"}
-          />
+        {/* <meta property="og:title" content="로그인 | 바로Farm"></meta>
+        <meta property="og:description" content="로그인하시면 더 다양한 서비스를 만나보실 수 있습니다."></meta>
+        <meta property="og:url" content="https://barofarm.netlify.app/"></meta> */}
+      </Helmet>
+
+      <div className="p-5">
+        {/* 로고 영역 */}
+        <div className="flex justify-center items-center m-auto w-[300px] h-[300px]">
+          <img className="block w-full" src="/images/BaroFarmLogo.png" alt="바로팜 로고 이미지" />
         </div>
-        {errors.email && <p className="text-red1 text-xs -mt-7 mb-4">{errors.email.message}</p>}
-        <div className="border-b-2  border-gray2 mb-4 focus-within:border-b-btn-primary">
-          <input
-            type="password"
-            placeholder="비밀번호"
-            className="placeholder:text-gray4 w-full outline-none"
-            {...register("password", { required: "비밀번호는 필수입니다." })}
-            // 강사님 배포 테스트 패스워드
-            defaultValue={11111111}
-          />
-        </div>
-        {errors.password && <p className="text-red1 text-xs -mt-3 mb-4">{errors.password.message}</p>}
-        <label className="mb-8 flex items-center gap-1 font-normal">
-          <input
-            className="w-5 h-5 mr-1 rounded-full appearance-none bg-gray2  bg-[url('/icons/icon_check_white.svg')] bg-center bg-no-repeat  checked:bg-btn-primary checked:bg-[url('/icons/icon_check_white.svg')] checked:bg-center checked:bg-no-repeat cursor-pointer "
-            type="checkbox"
-            checked={rememberMe}
-            onChange={(e) => {
-              setRememberMe(e.target.checked);
-              // 체크 해제 시
-              if (!e.target.checked) {
-                reset({ email: "", password: "" }); // 폼 필드 초기화
-                localStorage.removeItem("userInfo"); // 로컬 스토리지 데이터 삭제
-              }
-            }}
-          />
-          <span className="text-sm cursor-pointer">로그인 정보 저장</span>
-        </label>
+
+        {/* 폼 영역 */}
+        <form onSubmit={handleSubmit(login.mutate)}>
+          <div className="border-b-2 border-gray2 mb-8 focus-within:border-b-btn-primary">
+            <input
+              type="email"
+              placeholder="이메일"
+              className="placeholder:text-gray4 w-full outline-none"
+              {...register("email", { required: "이메일은 필수입니다." })}
+              // 강사님 배포 테스트 이메일
+              defaultValue={"barofarm@market.com"}
+            />
+          </div>
+          {errors.email && <p className="text-red1 text-xs -mt-7 mb-4">{errors.email.message}</p>}
+          <div className="border-b-2  border-gray2 mb-4 focus-within:border-b-btn-primary">
+            <input
+              type="password"
+              placeholder="비밀번호"
+              className="placeholder:text-gray4 w-full outline-none"
+              {...register("password", { required: "비밀번호는 필수입니다." })}
+              // 강사님 배포 테스트 패스워드
+              defaultValue={11111111}
+            />
+          </div>
+          {errors.password && <p className="text-red1 text-xs -mt-3 mb-4">{errors.password.message}</p>}
+          <label className="mb-8 flex items-center gap-1 font-normal">
+            <input
+              className="w-5 h-5 mr-1 rounded-full appearance-none bg-gray2  bg-[url('/icons/icon_check_white.svg')] bg-center bg-no-repeat  checked:bg-btn-primary checked:bg-[url('/icons/icon_check_white.svg')] checked:bg-center checked:bg-no-repeat cursor-pointer "
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => {
+                setRememberMe(e.target.checked);
+                // 체크 해제 시
+                if (!e.target.checked) {
+                  reset({ email: "", password: "" }); // 폼 필드 초기화
+                  localStorage.removeItem("userInfo"); // 로컬 스토리지 데이터 삭제
+                }
+              }}
+            />
+            <span className="text-sm cursor-pointer">로그인 정보 저장</span>
+          </label>
+          <div className="mb-5 w-full h-[3.25rem] m-auto">
+            <button
+              type="submit"
+              className="w-full h-[3.25rem] text-center text-xl rounded-full bg-btn-primary font-medium text-white"
+            >
+              로그인
+            </button>
+          </div>
+        </form>
+
         <div className="mb-5 w-full h-[3.25rem] m-auto">
           <button
-            type="submit"
-            className="w-full h-[3.25rem] text-center text-xl rounded-full bg-btn-primary font-medium text-white"
+            type="button"
+            className="w-full h-[3.25rem] text-xl rounded-full bg-yellow1 font-medium flex items-center justify-center gap-1"
+            onClick={handleKakaoLogin}
           >
-            로그인
+            {/* 이미지가 장식 목적이고 옆의 텍스트가 이미 충분한 의미를 전달하고 있기 때문에 alt = "" 지정*/}
+            <img className="w-8 h-8" src="/images/login/kakaoLogo.png" alt="" />
+            <span>카카오로 로그인하기</span>
           </button>
         </div>
-      </form>
 
-      <div className="mb-5 w-full h-[3.25rem] m-auto">
-        <button
-          type="button"
-          className="w-full h-[3.25rem] text-xl rounded-full bg-yellow1 font-medium flex items-center justify-center gap-1"
-          onClick={handleKakaoLogin}
-        >
-          {/* 이미지가 장식 목적이고 옆의 텍스트가 이미 충분한 의미를 전달하고 있기 때문에 alt = "" 지정*/}
-          <img className="w-8 h-8" src="/images/login/kakaoLogo.png" alt="" />
-          <span>카카오로 로그인하기</span>
-        </button>
+        <div className="mb-5 w-full h-[3.25rem] m-auto">
+          <p className="flex justify-center text-sm gap-1.5 font-medium">
+            바로팜이 처음이신가요?
+            <Link to="/users/signup" className="text-btn-primary font-medium hover:font-bold">
+              회원가입
+            </Link>
+          </p>
+        </div>
       </div>
-
-      <div className="mb-5 w-full h-[3.25rem] m-auto">
-        <p className="flex justify-center text-sm gap-1.5 font-medium">
-          바로팜이 처음이신가요?
-          <Link to="/users/signup" className="text-btn-primary font-medium hover:font-bold">
-            회원가입
-          </Link>
-        </p>
-      </div>
-    </div>
+    </>
   );
 }

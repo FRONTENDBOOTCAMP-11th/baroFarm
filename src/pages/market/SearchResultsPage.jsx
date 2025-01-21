@@ -9,6 +9,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import Products from "@components/Products";
 import Spinner from "@components/Spinner";
 import DataErrorPage from "@pages/DataErrorPage";
+import { Helmet } from "react-helmet-async";
 
 export default function SearchResultsPage() {
   // URL의 쿼리 파라미터를 가져오기
@@ -67,38 +68,48 @@ export default function SearchResultsPage() {
   }
 
   return (
-    <div>
-      <div className="p-5 flex items-center font-semibold">
-        <h2>총 {data.length}개</h2>
-        <div className="ml-auto text-sm">
-          <select
-            className=" text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer
+    <>
+      <Helmet>
+        <title>{`검색 결과 > ${keyword} | 바로Farm `}</title>
+        {/* <meta
+          name="description"
+          content={`${keyword} - 품질 보장! 검증된 생산자의 신선한 농수산물을 지금 확인해보세요`}
+        ></meta> */}
+      </Helmet>
+
+      <div>
+        <div className="p-5 flex items-center font-semibold">
+          <h2>총 {data.length}개</h2>
+          <div className="ml-auto text-sm">
+            <select
+              className=" text-center bg-gray2 rounded-lg py-1 ps-3 pe-6 appearance-none focus:outline-none cursor-pointer
     bg-[url('/icons/icon_dropdown.svg')] bg-no-repeat bg-[center_right_0.5rem]"
-            aria-label="정렬 기준 선택"
-            name="sort"
-            value={sort} // 현재 URL의 sort 값을 반영
-            onChange={(e) => handleSortChange(e.target.value)} // 정렬 기준 변경 시 handleSortChange 호출
-          >
-            <option value='{"createdAt":-1}'>최신순</option>
-            <option value='{"extra.saledPrice":-1}'>높은 가격순</option>
-            <option value='{"extra.saledPrice":1}'>낮은 가격순</option>
-            {/* extra.rating: 임의로 설정한 평점, rating: 리뷰의 평점을 기반으로 서버에서 자동 계산된 값 */}
-            <option value='{"rating":-1}'>평점순</option>
-            <option value='{"replies":-1}'>후기 개수순</option>
-            <option value='{"buyQuantity":-1}'>판매 수량순</option>
-          </select>
+              aria-label="정렬 기준 선택"
+              name="sort"
+              value={sort} // 현재 URL의 sort 값을 반영
+              onChange={(e) => handleSortChange(e.target.value)} // 정렬 기준 변경 시 handleSortChange 호출
+            >
+              <option value='{"createdAt":-1}'>최신순</option>
+              <option value='{"extra.saledPrice":-1}'>높은 가격순</option>
+              <option value='{"extra.saledPrice":1}'>낮은 가격순</option>
+              {/* extra.rating: 임의로 설정한 평점, rating: 리뷰의 평점을 기반으로 서버에서 자동 계산된 값 */}
+              <option value='{"rating":-1}'>평점순</option>
+              <option value='{"replies":-1}'>후기 개수순</option>
+              <option value='{"buyQuantity":-1}'>판매 수량순</option>
+            </select>
+          </div>
         </div>
+        {/* 검색 결과 없을 때와 있을 때의 조건부 렌더링 */}
+        {data.length === 0 ? (
+          <div className="p-5 text-sm text-center font-medium mt-3">
+            <img className="block m-auto mb-2" src="/icons/icon_sad.svg" alt="검색 결과 없음을 나타내는 슬픈 표정" />
+            <p>입력하신 검색어의 결과를 찾을 수 없습니다.</p>
+            <p>다른 검색어로 시도하시거나 맞춤법을 확인해주세요.</p>
+          </div>
+        ) : (
+          <Products productsData={data} />
+        )}
       </div>
-      {/* 검색 결과 없을 때와 있을 때의 조건부 렌더링 */}
-      {data.length === 0 ? (
-        <div className="p-5 text-sm text-center font-medium mt-3">
-          <img className="block m-auto mb-2" src="/icons/icon_sad.svg" alt="검색 결과 없음을 나타내는 슬픈 표정" />
-          <p>입력하신 검색어의 결과를 찾을 수 없습니다.</p>
-          <p>다른 검색어로 시도하시거나 맞춤법을 확인해주세요.</p>
-        </div>
-      ) : (
-        <Products productsData={data} />
-      )}
-    </div>
+    </>
   );
 }
