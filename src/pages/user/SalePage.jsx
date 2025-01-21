@@ -39,6 +39,8 @@ export default function SalePage() {
     return <Spinner />;
   }
 
+  console.log(data);
+
   const groupedData = data.reduce((acc, item) => {
     const date = new Date(item.createdAt).toLocaleDateString(); // 날짜만 추출 (YYYY.MM.DD)
     if (!acc[date]) acc[date] = []; // 날짜 키가 없으면 생성
@@ -60,16 +62,18 @@ export default function SalePage() {
       </div>
     );
   });
+
+  console.log(!!data);
   return (
     <>
       <Helmet>
         <title>판매 내역 | 바로Farm</title>
       </Helmet>
-      {data && <>{SoldItemList}</>}
-      {!data && (
-        <div className="text-center my-auto py-5">
-          아직 등록된 물품이 없습니다.
-        </div>
+      {data.length !== 0 && <>{SoldItemList}</>}
+      {data.length === 0 && (
+        <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray4">
+          아직 등록된 상품이 없습니다.
+        </p>
       )}
     </>
   );
