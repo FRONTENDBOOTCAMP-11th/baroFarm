@@ -17,7 +17,7 @@ function App() {
           <ToastContainer
             position="top-center"
             hideProgressBar={true}
-            autoClose={1500}
+            autoClose={2500}
             closeOnClick={true}
             theme="light"
             transition={Slide}
