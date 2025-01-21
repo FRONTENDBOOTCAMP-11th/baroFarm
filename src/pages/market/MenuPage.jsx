@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 import fruitImage from "/images/menu/Fruit.svg";
 import vegetableImage from "/images/menu/Vegetable.svg";
@@ -31,6 +32,10 @@ export default function MenuPage() {
 
   return (
     <>
+      <Helmet>
+        <title>카테고리 | 바로Farm</title>
+      </Helmet>
+
       <MenuItem to="/menu/fruit" image={fruitImage} title="과일" />
       <MenuItem to="/menu/vegetable" image={vegetableImage} title="채소" />
       <MenuItem to="/menu/kimchi" image={kimchiImage} title="김치" />

@@ -7,6 +7,7 @@ import HeaderIcon from "@components/HeaderIcon";
 import Products from "@components/Products";
 import Spinner from "@components/Spinner";
 import DataErrorPage from "@pages/DataErrorPage";
+import { Helmet } from "react-helmet-async";
 
 export default function CategoryPage() {
   const { category } = useParams();
@@ -58,5 +59,12 @@ export default function CategoryPage() {
   if (isLoading) return <Spinner />;
   if (isError) return <DataErrorPage />;
 
-  return <Products productsData={productsData} />;
+  return (
+    <>
+      <Helmet>
+        <title>{categoryLabel} | 바로Farm</title>
+      </Helmet>
+      <Products productsData={productsData} />
+    </>
+  );
 }
