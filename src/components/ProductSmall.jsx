@@ -5,6 +5,7 @@ import { useLikeToggle } from "@hooks/useLikeToggle";
 import Button from "@components/Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosInstance from "@hooks/useAxiosInstance";
+import { toast } from "react-toastify";
 
 const likeIcon = {
   default: "/icons/icon_likeHeart_no.svg",
@@ -57,7 +58,7 @@ export default function ProductSmall({ product, bookmarkId }) {
       }),
     onSuccess: () => {
       deleteBookmark.mutate();
-      alert("장바구니에 추가되었습니다.");
+      toast.success("장바구니에 추가되었습니다.");
     },
     onError: (error) => {
       console.error("Error adding to cart", error);

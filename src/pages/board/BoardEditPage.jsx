@@ -13,6 +13,7 @@ import {
   useOutletContext,
   useParams,
 } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function BoardEditPage() {
   const { setHeaderContents } = useOutletContext();
@@ -95,14 +96,14 @@ export default function BoardEditPage() {
       }
     },
     onSuccess: () => {
-      alert("게시물이 수정되었습니다.");
+      toast.success("게시물이 수정되었습니다.");
 
       queryClient.invalidateQueries({ queryKey: ["posts", _id] });
       navigate(`/board/${_id}`, { replace: true });
     },
     onError: (err) => {
       console.error(err);
-      alert(err);
+      toast.error(err);
     },
   });
 

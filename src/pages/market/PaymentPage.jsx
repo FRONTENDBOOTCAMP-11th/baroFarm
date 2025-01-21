@@ -13,6 +13,7 @@ import Spinner from "@components/Spinner";
 import DataErrorPage from "@pages/DataErrorPage";
 import usePayStore from "@zustand/usePayStore";
 import { Helmet } from "react-helmet-async";
+import { toast } from "react-toastify";
 
 export default function PaymentPage() {
   // 이전 페이지에서 넘어온 정보
@@ -327,7 +328,7 @@ export default function PaymentPage() {
               !currentAddress.phone ||
               !currentAddress.value
             ) {
-              alert("이름, 전화번호, 주소 입력은 필수입니다.");
+              toast.error("이름, 전화번호, 주소 입력은 필수입니다.");
             } else {
               setIsPayModalOpen(true);
             }

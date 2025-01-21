@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { toast } from "react-toastify";
 
 export default function ProductNewReviewPage() {
   const { setHeaderContents } = useOutletContext();
@@ -62,7 +63,7 @@ export default function ProductNewReviewPage() {
       return axios.post(`/replies`, body);
     },
     onSuccess: () => {
-      alert("후기가 등록되었습니다.");
+      toast.success("후기가 등록되었습니다.");
       navigate(-1);
       queryClient.invalidateQueries({ queryKey: ["post", "review"] });
     },

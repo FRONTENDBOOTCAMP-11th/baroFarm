@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function SignupPage() {
   const { setHeaderContents } = useOutletContext();
@@ -15,19 +16,23 @@ export default function SignupPage() {
     mutationFn: (formData) => axios.post("/users", formData),
     onSuccess: () => {
       // console.log("회원가입 성공 데이터:", res.data);
-      alert("회원가입이 완료되었습니다.");
+      toast.success("회원가입이 완료되었습니다.");
       navigate("/users/login");
     },
     onError: (err) => {
       console.error("회원가입 실패:", err);
-      alert("회원가입 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      toast.error(
+        "회원가입 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요."
+      );
       navigate("/users/signup");
     },
   });
 
   useEffect(() => {
     setHeaderContents({
-      leftChild: <HeaderIcon name="x_thin" onClick={() => navigate("/users/login")} />,
+      leftChild: (
+        <HeaderIcon name="x_thin" onClick={() => navigate("/users/login")} />
+      ),
       title: "회원가입",
     });
   }, []);

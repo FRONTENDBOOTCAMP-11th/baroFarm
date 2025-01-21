@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function EditProduct() {
   const { id } = useParams();
@@ -73,14 +74,14 @@ export default function EditProduct() {
       return axios.patch(`/seller/products/${id}`, body);
     },
     onSuccess: () => {
-      alert("상품 정보가 수정되었습니다.");
+      toast.success("상품 정보가 수정되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["products"] });
       queryClient.invalidateQueries({ queryKey: ["products", id] });
       navigate("/users/sale", { replace: true });
     },
     onError: (err) => {
       console.err(err);
-      alert("에러 메시지: ", err);
+      toast.error("에러 메시지: ", err);
     },
   });
 

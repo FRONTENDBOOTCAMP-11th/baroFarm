@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { toast } from "react-toastify";
 
 export default function ProductNewPage() {
   const {
@@ -120,7 +121,7 @@ export default function ProductNewPage() {
       }
     },
     onSuccess: () => {
-      alert("상품이 등록되었습니다.");
+      toast.success("상품이 등록되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["posts", "community"] });
       // 판매 내역 페이지로 이동하도록 이후 설정
       navigate("/users/mypage");
@@ -128,7 +129,7 @@ export default function ProductNewPage() {
     onError: (error) => {
       setValue("image", null);
       console.error("에러 발생: ", error.message);
-      alert(`에러: ${error.message}`);
+      toast.error(`에러: ${error.message}`);
     },
   });
 

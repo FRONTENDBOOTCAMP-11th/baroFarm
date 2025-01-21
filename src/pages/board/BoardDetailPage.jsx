@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 import Spinner from "@components/Spinner";
 import { Helmet } from "react-helmet-async";
+import { toast } from "react-toastify";
 
 export default function BoardDetailPage() {
   const { setHeaderContents } = useOutletContext();
@@ -49,7 +50,7 @@ export default function BoardDetailPage() {
     if (confirm("게시글을 삭제하시겠습니까?")) {
       const response = await axios.delete(`/posts/${_id}`);
       if (response.status === 200) {
-        alert("게시글 삭제가 완료되었습니다.");
+        toast.success("게시글 삭제가 완료되었습니다.");
         queryClient.invalidateQueries({
           queryKey: ["posts"],
         });
