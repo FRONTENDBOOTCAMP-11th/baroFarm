@@ -74,11 +74,12 @@ export default function BoardPage() {
   const sortedData = mergeData.sort((prev, next) => next._id - prev._id);
 
   const handleClick = async (event) => {
+    event.preventDefault();
     const isConfirmed = await ShowConfirmToast(
       "게스트 상태로 게시글 작성을 이용하실 수 없습니다.\n로그인 하시겠습니까?"
     );
-    if (!isConfirmed) {
-      event.preventDefault();
+    if (isConfirmed) {
+      navigate("/users/login");
     }
   };
 
@@ -170,7 +171,7 @@ export default function BoardPage() {
           </div>
         )}
         <Link
-          to={isLogin ? "new" : "/users/login"}
+          to={isLogin ? "new" : ""}
           onClick={!isLogin ? (event) => handleClick(event) : null}
           className="fixed right-[calc(50%-155px)] bottom-[150px] w-[40px] h-[40px] rounded-full shadow-bottom"
         >

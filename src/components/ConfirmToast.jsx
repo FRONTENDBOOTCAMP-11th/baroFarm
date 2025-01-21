@@ -9,7 +9,7 @@ ConfirmToast.propTypes = {
 export default function ConfirmToast({ message, resolve }) {
   return (
     <div>
-      <p>{message}</p>
+      <p className="break-keep">{message}</p>
       <div className="flex gap-2 mt-2">
         <button
           onClick={() => {
