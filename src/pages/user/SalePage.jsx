@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import Spinner from "@components/Spinner";
+import { Helmet } from "react-helmet-async";
 
 export default function SalePage() {
   const { setHeaderContents } = useOutletContext();
@@ -61,6 +62,9 @@ export default function SalePage() {
   });
   return (
     <>
+      <Helmet>
+        <title>판매 내역 | 바로Farm</title>
+      </Helmet>
       {data && <>{SoldItemList}</>}
       {!data && (
         <div className="text-center my-auto py-5">

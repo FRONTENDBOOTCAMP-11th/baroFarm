@@ -5,6 +5,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import {
   useLocation,
@@ -106,11 +107,16 @@ export default function BoardEditPage() {
   });
 
   return (
-    <NewPost
-      isBoard={true}
-      handleSubmit={handleSubmit(editPost.mutate)}
-      register={register}
-      editInfo={data.content}
-    />
+    <>
+      <Helmet>
+        <title>게시글 수정 | 바로Farm</title>
+      </Helmet>
+      <NewPost
+        isBoard={true}
+        handleSubmit={handleSubmit(editPost.mutate)}
+        register={register}
+        editInfo={data.content}
+      />
+    </>
   );
 }

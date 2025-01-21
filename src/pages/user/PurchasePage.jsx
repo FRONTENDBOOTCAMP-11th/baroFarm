@@ -7,6 +7,7 @@ import HeaderIcon from "@components/HeaderIcon";
 import PurchaseItem from "@components/PurchaseItem";
 import Spinner from "@components/Spinner";
 import DataErrorPage from "@pages/DataErrorPage";
+import { Helmet } from "react-helmet-async";
 
 export default function PurchasePage() {
   const { setHeaderContents } = useOutletContext();
@@ -61,22 +62,27 @@ export default function PurchasePage() {
   }, {});
 
   return (
-    <div className="p-5 pb-0">
-      {Object.entries(groupedData).map(([date, orders]) => (
-        <div key={date} className="mb-5">
-          <p className="font-bold text-lg pl-1">{date}</p>
-          {orders.map((order) =>
-            order.products.map((product) => (
-              <PurchaseItem
-                key={product._id}
-                orderId={order._id}
-                product={product}
-                date={order.createdAt}
-              />
-            ))
-          )}
-        </div>
-      ))}
-    </div>
+    <>
+      <Helmet>
+        <title>구매 내역 | 바로Farm</title>
+      </Helmet>
+      <div className="p-5 pb-0">
+        {Object.entries(groupedData).map(([date, orders]) => (
+          <div key={date} className="mb-5">
+            <p className="font-bold text-lg pl-1">{date}</p>
+            {orders.map((order) =>
+              order.products.map((product) => (
+                <PurchaseItem
+                  key={product._id}
+                  orderId={order._id}
+                  product={product}
+                  date={order.createdAt}
+                />
+              ))
+            )}
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

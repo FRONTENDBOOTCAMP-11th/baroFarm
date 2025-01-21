@@ -6,6 +6,7 @@ import BoardPageDetail from "@pages/board/BoardPageDetail";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import Spinner from "@components/Spinner";
+import { Helmet } from "react-helmet-async";
 
 export default function MyPost() {
   const { setHeaderContents } = useOutletContext();
@@ -78,6 +79,9 @@ export default function MyPost() {
 
   return (
     <>
+      <Helmet>
+        <title>작성한 글 | 바로Farm</title>
+      </Helmet>
       {myBoardList}
       {myBoardList.length === 0 && (
         <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray4">

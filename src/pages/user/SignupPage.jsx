@@ -3,6 +3,7 @@ import UserForm from "@components/UserForm";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 
 export default function SignupPage() {
@@ -33,6 +34,11 @@ export default function SignupPage() {
 
   return (
     <>
+      <Helmet>
+        <title>회원가입 | 바로Farm</title>
+        {/* <meta name="description" content="회원가입 1분이면 충분합니다. 바로Farm과 함께하세요."></meta> */}
+      </Helmet>
+
       <UserForm buttonText="회원가입" onSubmitUser={handleSignup.mutate} />
       <p className="flex justify-center text-sm gap-1.5 font-medium -mt-2.5">
         이미 바로팜 회원이신가요?

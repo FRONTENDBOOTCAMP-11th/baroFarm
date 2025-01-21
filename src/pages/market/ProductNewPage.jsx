@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 export default function ProductNewPage() {
   const {
@@ -89,7 +90,7 @@ export default function ProductNewPage() {
           name: item.name,
           content: `<p>${item.content}</p>`,
           price: price,
-          shippingFees: price >= 35000 ? 2500 : 0,
+          shippingFees: price <= 35000 ? 2500 : 0,
           quantity: parseInt(item.quantity),
           extra: {
             isNew: true,
@@ -132,12 +133,17 @@ export default function ProductNewPage() {
   });
 
   return (
-    <ProductInfoForm
-      register={register}
-      handlesubmit={handleSubmit(addProduct.mutate)}
-      errors={errors}
-      price={price}
-      setPrice={setPrice}
-    />
+    <>
+      <Helmet>
+        <title>상품 등록 | 바로Farm</title>
+      </Helmet>
+      <ProductInfoForm
+        register={register}
+        handlesubmit={handleSubmit(addProduct.mutate)}
+        errors={errors}
+        price={price}
+        setPrice={setPrice}
+      />
+    </>
   );
 }

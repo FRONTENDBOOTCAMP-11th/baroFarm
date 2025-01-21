@@ -5,6 +5,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 export default function ProductNewReviewPage() {
   const { setHeaderContents } = useOutletContext();
@@ -72,6 +73,9 @@ export default function ProductNewReviewPage() {
 
   return (
     <>
+      <Helmet>
+        <title>후기 작성 | 바로Farm</title>
+      </Helmet>
       <NewPost
         isBoard={false}
         handleSubmit={handleSubmit(addReview.mutate)}
