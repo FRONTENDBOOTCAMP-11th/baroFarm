@@ -4,7 +4,7 @@ import Comment from "@pages/board/Comment";
 import createdTime from "@utils/createdTime.js";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
-import React, { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import {
   Link,
   useNavigate,
@@ -89,10 +89,10 @@ export default function BoardDetailPage() {
         </div>
         <div className="mx-[5px] my-[30px]">
           {data.content.split("<br/>").map((line, index) => (
-            <React.Fragment key={index}>
+            <Fragment key={index}>
               {line}
               <br />
-            </React.Fragment>
+            </Fragment>
           ))}
         </div>
         {data.image && (

@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { Fragment } from "react";
 import { toast } from "react-toastify";
 
 ConfirmToast.propTypes = {
@@ -7,9 +8,16 @@ ConfirmToast.propTypes = {
 };
 
 export default function ConfirmToast({ message, resolve }) {
+  const newMessage = message.split("\n").map((line, index) => (
+    <Fragment key={index}>
+      {line}
+      <br />
+    </Fragment>
+  ));
+
   return (
     <div>
-      <p className="break-keep">{message}</p>
+      <p className="break-keep">{newMessage}</p>
       <div className="flex gap-2 mt-2">
         <button
           onClick={() => {
