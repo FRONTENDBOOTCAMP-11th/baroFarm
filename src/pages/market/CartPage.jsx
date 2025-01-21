@@ -253,7 +253,7 @@ export default function CartPage() {
   // 체크한 아이템의 데이터가 담긴 배열을 구매 페이지로 전송
   const selectItem = () => {
     if (checkedItemsIds.length === 0) {
-      toast.alert("구매할 물품을 선택하세요");
+      toast.warning("구매할 물품을 선택하세요");
       return;
     }
 
