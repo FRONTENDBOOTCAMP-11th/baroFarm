@@ -39,8 +39,6 @@ export default function SalePage() {
     return <Spinner />;
   }
 
-  console.log(data);
-
   const groupedData = data.reduce((acc, item) => {
     const date = new Date(item.createdAt).toLocaleDateString(); // 날짜만 추출 (YYYY.MM.DD)
     if (!acc[date]) acc[date] = []; // 날짜 키가 없으면 생성
@@ -62,8 +60,6 @@ export default function SalePage() {
       </div>
     );
   });
-
-  console.log(!!data);
   return (
     <>
       <Helmet>
