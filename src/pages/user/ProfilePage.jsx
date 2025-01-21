@@ -4,6 +4,7 @@ import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useUserStore from "@zustand/useUserStore";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import {
   Link,
   useLocation,
@@ -116,107 +117,117 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="pt-[60px] mb-[70px]">
-      <div className="w-fit mx-auto text-center relative">
-        <img
-          id="profileImg"
-          src={
-            userData?.image
-              ? userData.image.includes("http://") ||
-                userData.image.includes("https://")
-                ? userData.image
-                : url + userData.image
-              : "/images/profile/ProfileImage_Sample.jpg"
-          }
-          alt="Profile Image"
-          className="w-[100px] h-[100px] rounded-full object-cover"
-        />
-        <button className="absolute right-0 -bottom-2" onClick={setProfileImg}>
+    <>
+      <Helmet>
+        <title>프로필 상세 | 바로Farm</title>
+      </Helmet>
+      <div className="pt-[60px] mb-[70px]">
+        <div className="w-fit mx-auto text-center relative">
           <img
-            src="/icons/icon_camera.svg"
-            alt="이미지 수정 아이콘"
-            className="w-7 h-7"
+            id="profileImg"
+            src={
+              userData?.image
+                ? userData.image.includes("http://") ||
+                  userData.image.includes("https://")
+                  ? userData.image
+                  : url + userData.image
+                : "/images/profile/ProfileImage_Sample.jpg"
+            }
+            alt="Profile Image"
+            className="w-[100px] h-[100px] rounded-full object-cover"
           />
-        </button>
-        <input
-          id="profileImgChange"
-          type="file"
-          accept="image/*"
-          className="hidden"
-          onChange={handleFileChange}
-        />
-      </div>
-      <div className="mt-[25px] mb-[30px] mx-auto max-w-fit text-2xl font-bold">
-        {userData?.name ? userData.name : "닉네임 없음"}
-      </div>
-      <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
-        <section className="min-w-[65px] break-keep leading-8">
-          이름 <br />
-          성별 <br />
-          이메일 <br />
-          전화번호 <br />
-          생년월일 <br />
-          주소
-        </section>
+          <button
+            className="absolute right-0 -bottom-2"
+            onClick={setProfileImg}
+          >
+            <img
+              src="/icons/icon_camera.svg"
+              alt="이미지 수정 아이콘"
+              className="w-7 h-7"
+            />
+          </button>
+          <input
+            id="profileImgChange"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        </div>
+        <div className="mt-[25px] mb-[30px] mx-auto max-w-fit text-2xl font-bold">
+          {userData?.name ? userData.name : "닉네임 없음"}
+        </div>
+        <div className="flex flex-row gap-5 bg-gray1 mx-5 px-4 py-4 font-medium rounded-md relative">
+          <section className="min-w-[65px] break-keep leading-8">
+            이름 <br />
+            성별 <br />
+            이메일 <br />
+            전화번호 <br />
+            생년월일 <br />
+            주소
+          </section>
 
-        <section className="text-gray5 break-keep leading-8">
-          {userData?.extra?.userName ? (
-            userData.extra.userName
-          ) : (
-            <span className="text-gray3 font-light">이름을 입력해주세요</span>
-          )}
-          <br />
-          {userData?.extra?.gender ? (
-            userData.extra.gender === "male" ? (
-              "남성"
+          <section className="text-gray5 break-keep leading-8">
+            {userData?.extra?.userName ? (
+              userData.extra.userName
             ) : (
-              "여성"
-            )
-          ) : (
-            <span className="text-gray3 font-light">성별을 선택해주세요</span>
-          )}
-          <br />
-          {userData?.email ? userData.email : "카카오 회원"}
-          <br />
-          {userData?.phone ? (
-            userData.phone
-          ) : (
-            <span className="text-gray3 font-light">
-              전화번호를 등록해주세요
-            </span>
-          )}{" "}
-          <br />
-          {userData?.extra?.birth ? (
-            userData.extra.birth
-          ) : (
-            <span className="text-gray3 font-light">생일을 등록해주세요</span>
-          )}
-          <br />
-          {userData?.address ? (
-            userData.address.trim("") === "" ? (
+              <span className="text-gray3 font-light">이름을 입력해주세요</span>
+            )}
+            <br />
+            {userData?.extra?.gender ? (
+              userData.extra.gender === "male" ? (
+                "남성"
+              ) : (
+                "여성"
+              )
+            ) : (
+              <span className="text-gray3 font-light">성별을 선택해주세요</span>
+            )}
+            <br />
+            {userData?.email ? userData.email : "카카오 회원"}
+            <br />
+            {userData?.phone ? (
+              userData.phone
+            ) : (
+              <span className="text-gray3 font-light">
+                전화번호를 등록해주세요
+              </span>
+            )}{" "}
+            <br />
+            {userData?.extra?.birth ? (
+              userData.extra.birth
+            ) : (
+              <span className="text-gray3 font-light">생일을 등록해주세요</span>
+            )}
+            <br />
+            {userData?.address ? (
+              userData.address.trim("") === "" ? (
+                <span className="text-gray3 font-light">
+                  주소를 입력해주세요
+                </span>
+              ) : (
+                userData.address
+              )
+            ) : (
               <span className="text-gray3 font-light">주소를 입력해주세요</span>
-            ) : (
-              userData.address
-            )
-          ) : (
-            <span className="text-gray3 font-light">주소를 입력해주세요</span>
-          )}
-        </section>
-        <Link
-          to={"/users/profile/edit"}
-          className="flex w-7 h-7 items-center text-[14px] absolute right-2 top-2 group"
-          state={{ user: userData }}
-        >
-          <img
-            src="/icons/icon_profileEdit_full.svg"
-            className="h-10 ml-auto"
-            alt="addProduct icon"
-          />
-          <div className="absolute rounded-md w-auto box-border text-nowrap -translate-x-8 px-1 bg-btn-primary text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <p className="">수정</p>
-          </div>
-        </Link>
+            )}
+          </section>
+          <Link
+            to={"/users/profile/edit"}
+            className="flex w-7 h-7 items-center text-[14px] absolute right-2 top-2 group"
+            state={{ user: userData }}
+          >
+            <img
+              src="/icons/icon_profileEdit_full.svg"
+              className="h-10 ml-auto"
+              alt="addProduct icon"
+            />
+            <div className="absolute rounded-md w-auto box-border text-nowrap -translate-x-8 px-1 bg-btn-primary text-white flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <p className="">수정</p>
+            </div>
+          </Link>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

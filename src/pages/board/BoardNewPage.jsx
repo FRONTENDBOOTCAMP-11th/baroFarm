@@ -3,6 +3,7 @@ import NewPost from "@components/NewPost";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
 
@@ -108,6 +109,9 @@ export default function BoardNewPage() {
 
   return (
     <>
+      <Helmet>
+        <title>게시글 작성 | 바로Farm</title>
+      </Helmet>
       <NewPost
         isBoard={isBoard}
         handleSubmit={handleSubmit(addItem.mutate)}

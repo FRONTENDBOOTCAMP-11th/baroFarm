@@ -4,6 +4,7 @@ import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 
@@ -88,14 +89,19 @@ export default function EditProduct() {
   }
 
   return (
-    <ProductInfoForm
-      register={register}
-      handlesubmit={handleSubmit(patchProduct.mutate)}
-      errors={errors}
-      price={price}
-      setPrice={setPrice}
-      isEdit={true}
-      editInfo={data}
-    ></ProductInfoForm>
+    <>
+      <Helmet>
+        <title>상품 수정 | 바로Farm</title>
+      </Helmet>
+      <ProductInfoForm
+        register={register}
+        handlesubmit={handleSubmit(patchProduct.mutate)}
+        errors={errors}
+        price={price}
+        setPrice={setPrice}
+        isEdit={true}
+        editInfo={data}
+      ></ProductInfoForm>
+    </>
   );
 }
