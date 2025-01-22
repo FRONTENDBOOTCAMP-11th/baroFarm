@@ -1,6 +1,7 @@
 import axios from "axios";
 import useUserStore from "@zustand/useUserStore";
 import { useLocation, useNavigate } from "react-router-dom";
+import ShowConfirmToast from "@components/ShowConfirmToast";
 
 // access token 재발급 URL
 const REFRESH_URL = "/auth/refresh";
@@ -101,10 +102,13 @@ function useAxiosInstance() {
   );
 
   // 로그인되지 않은 사용자가 로그인 이후에 사용할 api호출할 때 리다이렉트
-  function navigateLogin() {
+  async function navigateLogin() {
     resetUser();
-    const gotoLogin = confirm("로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?");
-    if (gotoLogin) navigate("/users/login", { state: { from: location.pathname } });
+    const gotoLogin = await ShowConfirmToast(
+      "로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?"
+    );
+    if (gotoLogin)
+      navigate("/users/login", { state: { from: location.pathname } });
   }
 
   return instance;

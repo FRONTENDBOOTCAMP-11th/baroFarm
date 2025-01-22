@@ -1,5 +1,6 @@
 import HeaderIcon from "@components/HeaderIcon";
 import Pagination from "@components/Pagination";
+import ShowConfirmToast from "@components/ShowConfirmToast";
 import Spinner from "@components/Spinner";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import BoardPageDetail from "@pages/board/BoardPageDetail";
@@ -72,13 +73,13 @@ export default function BoardPage() {
   const mergeData = [...communityBoard, ...noPicBoard];
   const sortedData = mergeData.sort((prev, next) => next._id - prev._id);
 
-  const handleClick = (event) => {
-    if (
-      !confirm(
-        "게스트 상태로 게시글 작성을 이용하실 수 없습니다.\n로그인 하시겠습니까?"
-      )
-    ) {
-      event.preventDefault();
+  const handleClick = async (event) => {
+    event.preventDefault();
+    const isConfirmed = await ShowConfirmToast(
+      "로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?"
+    );
+    if (isConfirmed) {
+      navigate("/users/login");
     }
   };
 
@@ -170,7 +171,7 @@ export default function BoardPage() {
           </div>
         )}
         <Link
-          to={isLogin ? "new" : "/users/login"}
+          to={isLogin ? "new" : ""}
           onClick={!isLogin ? (event) => handleClick(event) : null}
           className="fixed right-[calc(50%-155px)] bottom-[150px] w-[40px] h-[40px] rounded-full shadow-bottom"
         >
