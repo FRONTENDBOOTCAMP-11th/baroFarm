@@ -22,6 +22,7 @@ import cartIcon from "/icons/icon_cart_modal.svg";
 import HeaderIcon from "@components/HeaderIcon";
 import DataErrorPage from "@pages/DataErrorPage";
 import { Helmet } from "react-helmet-async";
+import ShowConfirmToast from "@components/ShowConfirmToast";
 
 const likeIcon = {
   default: "/icons/icon_likeHeart_no.svg",
@@ -39,8 +40,8 @@ export default function ProductDetailPage() {
 
   const { user } = useUserStore();
 
-  function navigateLogin() {
-    const gotoLogin = confirm(
+  async function navigateLogin() {
+    const gotoLogin = await ShowConfirmToast(
       "로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?"
     );
     if (gotoLogin)
@@ -193,7 +194,9 @@ export default function ProductDetailPage() {
             </>
           ) : undefined}
           <p
-            className={`font-extrabold text-xl ${product.extra.sale !== 0 ? "text-btn-primary" : "text-black"}`}
+            className={`font-extrabold text-xl ${
+              product.extra.sale !== 0 ? "text-btn-primary" : "text-black"
+            }`}
           >
             {product.extra.saledPrice.toLocaleString()}원
           </p>

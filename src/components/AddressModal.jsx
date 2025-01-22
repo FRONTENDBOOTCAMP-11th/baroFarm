@@ -1,6 +1,7 @@
 import Button from "@components/Button";
 import PGButton from "@components/PGButton";
 import PostcodeSearch from "@components/PostcodeSearch";
+import ShowConfirmToast from "@components/ShowConfirmToast";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import PortOne from "@portone/browser-sdk/v2";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -60,13 +61,13 @@ export default function AddressModal({
   const queryClient = useQueryClient();
   // 기본 배송지 추가 (배송지가 하나도 없는 상태)
   const addDefaultAddress = useMutation({
-    mutationFn: (formData) => {
+    mutationFn: async (formData) => {
       const defaultAddress = {
         phone: formData.phone,
         address: `${formData.value} ${formData.detailValue}`,
       };
 
-      const ok = confirm("주소를 등록하시겠습니까?");
+      const ok = await ShowConfirmToast("주소를 등록하시겠습니까?");
       if (ok) {
         axios.patch(`/users/${userData._id}`, defaultAddress);
         toast.success("신규 주소가 등록되었습니다.");
@@ -81,7 +82,7 @@ export default function AddressModal({
 
   // 추가 배송지 추가
   const addAddress = useMutation({
-    mutationFn: (formData) => {
+    mutationFn: async (formData) => {
       // addressBook 속성이 없으면 에러가 나기에 빈배열로 할당
       const currentAddressBook = userData.extra?.addressBook || [];
       // 새롭게 추가될 주소를 더한 extra 속성
@@ -104,7 +105,7 @@ export default function AddressModal({
         },
       };
 
-      const ok = confirm("주소를 등록하시겠습니까?");
+      const ok = await ShowConfirmToast("주소를 등록하시겠습니까?");
       if (ok) {
         axios.patch(`/users/${userData._id}`, newAddress);
         toast("신규 주소가 등록되었습니다.");
@@ -122,7 +123,7 @@ export default function AddressModal({
 
   // 배송지 삭제
   const deleteAddress = useMutation({
-    mutationFn: (targetId) => {
+    mutationFn: async (targetId) => {
       const filteredAddressList = addressBook.filter(
         (item) => item.id !== targetId
       );
@@ -131,7 +132,7 @@ export default function AddressModal({
           addressBook: filteredAddressList,
         },
       };
-      const ok = confirm("이 주소를 삭제하시겠습니까?");
+      const ok = await ShowConfirmToast("이 주소를 삭제하시겠습니까?");
       if (ok) axios.patch(`/users/${userData._id}`, newAddressList);
     },
     onSuccess: () => {

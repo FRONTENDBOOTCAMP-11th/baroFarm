@@ -1,6 +1,6 @@
 import createdTime from "@utils/createdTime.js";
 import PropTypes from "prop-types";
-import React, { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 BoardPageDetail.propTypes = {
@@ -59,10 +59,10 @@ export default function BoardPageDetail({ item }) {
           </div>
           <div className="mx-[5px] mt-[30px]">
             {item.content.split("<br/>").map((line, index) => (
-              <React.Fragment key={index}>
+              <Fragment key={index}>
                 {line}
                 <br />
-              </React.Fragment>
+              </Fragment>
             ))}
           </div>
           <div className="mt-10">

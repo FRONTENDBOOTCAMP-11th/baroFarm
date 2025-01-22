@@ -1,4 +1,5 @@
 import Button from "@components/Button";
+import ShowConfirmToast from "@components/ShowConfirmToast";
 import useAxiosInstance from "@hooks/useAxiosInstance";
 import CommentItem from "@pages/board/CommentItem";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -34,12 +35,12 @@ export default function Comment({ replies = [] }) {
       toast.success("댓글이 등록되었습니다.");
       queryClient.invalidateQueries({ queryKey: ["posts", _id] });
     },
-    onError: (err) => {
+    onError: async (err) => {
       console.error(err);
-      if (
-        !user &&
-        confirm("로그인 후에 이용할 수 있는 기능입니다. 로그인하시겠습니까?")
-      ) {
+      const isConfirmed = await ShowConfirmToast(
+        "로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?"
+      );
+      if (!user && isConfirmed) {
         navigate("/users/login");
       }
     },

@@ -1,4 +1,5 @@
 import NavItem from "@components/NavItem";
+import ShowConfirmToast from "@components/ShowConfirmToast";
 import useUserStore from "@zustand/useUserStore";
 import { useNavigate } from "react-router-dom";
 
@@ -28,8 +29,8 @@ const icons = {
 export default function Footer() {
   const { user } = useUserStore();
   const navigate = useNavigate();
-  function navigateLogin() {
-    const gotoLogin = confirm(
+  async function navigateLogin() {
+    const gotoLogin = await ShowConfirmToast(
       "로그인 후 이용 가능합니다.\n로그인 페이지로 이동하시겠습니까?"
     );
     if (gotoLogin)
