@@ -49,10 +49,10 @@
 
 <table style="border-collapse: collapse;">
     <tr>
-      <td style="border: 1px solid #ddd; text-align: center;"><strong>강진수</strong></td>
-      <td style="border: 1px solid #ddd; text-align: center;"><strong>고태호</strong></td>
-      <td style="border: 1px solid #ddd; text-align: center;"><strong>권새봄</strong></td>
-      <td style="border: 1px solid #ddd; text-align: center;"><strong>황은지</strong></td>
+      <td style="border: 1px solid #ddd; text-align: center;"><strong>강진수 (발표자)</strong></td>
+      <td style="border: 1px solid #ddd; text-align: center;"><strong>고태호 (리더)</strong></td>
+      <td style="border: 1px solid #ddd; text-align: center;"><strong>권새봄 (팀원)</strong></td>
+      <td style="border: 1px solid #ddd; text-align: center;"><strong>황은지 (팀원)</strong></td>
     </tr>
     <tr>
       <td style="border: 1px solid #ddd; text-align: center;">
@@ -77,32 +77,36 @@
       </td>
     </tr>
     <tr>
-      <td style="border: 1px solid #ddd; text-align: center; padding: 10px;">
-        메인 페이지<br/>
-        장바구니 페이지<br/>
-        결제 페이지<br/>
-        <strong>(발표자)</strong>
+      <td style="border: 1px solid #ddd;">
+        <p align="center" style="margin: 0;">
+          메인 페이지<br/>
+          장바구니 페이지<br/>
+          결제 페이지
+        </p>
       </td>
-      <td style="border: 1px solid #ddd; text-align: center; padding: 10px;">
-        마이 페이지<br/>
-        커뮤니티 페이지<br/>
-        상품등록 페이지<br/>
-        <strong>(리더)</strong>
+      <td style="border: 1px solid #ddd;">
+        <p align="center" style="margin: 0;">
+          마이 페이지<br/>
+          커뮤니티 페이지<br/>
+          상품등록 페이지
+        </p>
       </td>
-      <td style="border: 1px solid #ddd; text-align: center; padding: 10px;">
-        카테고리 페이지<br/>
-        상품상세 페이지<br/>
-        리뷰 페이지<br/>
-        <strong>(팀원)</strong>
+      <td style="border: 1px solid #ddd;">
+        <p align="center" style="margin: 0;">
+          카테고리 페이지<br/>
+          상품상세 페이지<br/>
+          리뷰 페이지
+        </p>
       </td>
-      <td style="border: 1px solid #ddd; text-align: center; padding: 10px;">
-        회원가입<br/>
-        로그인<br/>
-        검색 페이지<br/>
-        <strong>(팀원)</strong>
+      <td style="border: 1px solid #ddd;">
+        <p align="center" style="margin: 0;">
+          회원가입<br/>
+          로그인<br/>
+          검색 페이지
+        </p>
       </td>
     </tr>
-  </table>
+</table>
 <br>
 <br>
 
