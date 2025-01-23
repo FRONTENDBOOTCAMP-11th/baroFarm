@@ -2,7 +2,7 @@
 <div align='center'> <img src='./public/images/BaroFarmLogo_long.png' width=50%> </div>
 <br>
 
-# <br> <div align='center'> 소규모 농수산물 생산자와 도시의 소비자를 직접 연결하는 스마트 거래 플랫폼 , 바로Farm 🌱 </div> <br>
+## <br> <div align='center'> 소규모 농수산물 생산자와 도시의 소비자를 직접 연결하는 스마트 거래 플랫폼 , 바로Farm 🌱 </div> <br>
 
 <br>
 
@@ -49,30 +49,34 @@
 
 <table style="border-collapse: collapse;">
     <tr>
-      <td style="border: 1px solid #ddd; text-align: center;"><strong>강진수 (발표자)</strong></td>
-      <td style="border: 1px solid #ddd; text-align: center;"><strong>고태호 (리더)</strong></td>
-      <td style="border: 1px solid #ddd; text-align: center;"><strong>권새봄 (팀원)</strong></td>
-      <td style="border: 1px solid #ddd; text-align: center;"><strong>황은지 (팀원)</strong></td>
+      <td style="border: 1px solid #ddd; text-align: center;"><p align="center" style="margin: 0;"><strong>강진수 (발표자)</strong></p></td>
+      <td style="border: 1px solid #ddd; text-align: center;"><p align="center" style="margin: 0;"><strong>고태호 (리더)</strong></p></td>
+      <td style="border: 1px solid #ddd; text-align: center;"><p align="center" style="margin: 0;"><strong>권새봄 (팀원)</strong></p></td>
+      <td style="border: 1px solid #ddd; text-align: center;"><p align="center" style="margin: 0;"><strong>황은지 (팀원)</strong></p></td>
     </tr>
     <tr>
       <td style="border: 1px solid #ddd; text-align: center;">
         <a href="https://github.com/JSKangx">
-          <img src="./public/images/reademe/jinsu.png" width="150" height="150"><br/>JSKangx
+          <img src="./public/images/reademe/jinsu.png" width="150" height="150">
+          <p align="center" style="margin: 0;">JSKangx</p>
         </a>
       </td>
       <td style="border: 1px solid #ddd; text-align: center;">
         <a href="https://github.com/Taiho1998">
-          <img src="./public/images/reademe/taiho.png" width="150" height="150"><br/>Taiho1998
+          <img src="./public/images/reademe/taiho.png" width="150" height="150">
+          <p align="center" style="margin: 0;">Taiho1998</p>
         </a>
       </td>
       <td style="border: 1px solid #ddd; text-align: center;">
         <a href="https://github.com/kwonsaebom">
-          <img src="./public/images/reademe/seabom.png" width="150" height="150"><br/>kwonsaebom
+          <img src="./public/images/reademe/seabom.png" width="150" height="150">
+          <p align="center" style="margin: 0;">kwonsaebom</p>
         </a>
       </td>
       <td style="border: 1px solid #ddd; text-align: center;">
         <a href="https://github.com/gitlookgitlook">
-          <img src="./public/images/reademe/eunji.png" width="150" height="150"><br/>gitlookgitlook
+          <img src="./public/images/reademe/eunji.png" width="150" height="150">
+          <p align="center" style="margin: 0;">gitlookgitlook</p>
         </a>
       </td>
     </tr>
